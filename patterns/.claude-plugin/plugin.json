@@ -1,0 +1,22 @@
+{
+  "name": "patterns",
+  "description": "Design patterns to ensure high-quality, idiomatic domain driven design.",
+  "version": "1.0.0",
+  "owner": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com"
+  },
+  "homepage": "https://github.com/davidsouther/ddd_skill",
+  "repository": "https://github.com/davidsouther/ddd_skill",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "design-patterns",
+    "aggregate",
+    "builder",
+    "repository",
+    "new-type",
+    "type-state",
+    "unit-of-work"
+  ]
+}

@@ -15,6 +15,16 @@
         "name": "David Souther",
         "email": "davidsouther@gmail.com"
       }
+    },
+    {
+    "name": "patterns",
+    "description": "Design patterns to ensure high-quality, idiomatic domain driven design.",
+      "version": "1.0.0",
+      "source": "./patterns",
+      "author": {
+        "name": "David Souther",
+        "email": "davidsouther@gmail.com"
+      }
     }
   ]
 }
