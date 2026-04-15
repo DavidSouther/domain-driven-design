@@ -1,0 +1,20 @@
+{
+  "name": "ddd-dev",
+  "description": "Development marketplace for domain driven design skills library",
+  "owner": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "ddd",
+      "description": "Domain driven design skills library for Claude Code: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
+      "version": "1.0.0",
+      "source": "./ddd",
+      "author": {
+        "name": "David Souther",
+        "email": "davidsouther@gmail.com"
+      }
+    }
+  ]
+}

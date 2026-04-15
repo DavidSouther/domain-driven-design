@@ -1,0 +1,19 @@
+{
+  "name": "ddd",
+  "description": "Domain driven design skills library for Claude Code: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
+  "version": "1.0.0",
+  "owner": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com"
+  },
+  "homepage": "https://github.com/davidsouther/ddd_skill",
+  "repository": "https://github.com/davidsouther/ddd_skill",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "ddd",
+    "domain-modelling",
+    "ubiquitous-langauge",
+    "workflows"
+  ]
+}
