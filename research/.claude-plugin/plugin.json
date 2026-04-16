@@ -1,0 +1,20 @@
+{
+  "name": "research",
+  "description": "Research skills library for Claude Code: public internet, internal documents, domain model, local codebase, and project dependencies.",
+  "version": "1.0.0",
+  "owner": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com"
+  },
+  "homepage": "https://github.com/davidsouther/ddd_skill",
+  "repository": "https://github.com/davidsouther/ddd_skill",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "ddd",
+    "domain-modeling",
+    "domain-driven-design",
+    "ubiquitous-langauge",
+    "workflows"
+  ]
+}

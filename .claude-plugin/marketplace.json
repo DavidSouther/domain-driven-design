@@ -17,10 +17,20 @@
       }
     },
     {
-    "name": "patterns",
-    "description": "Design patterns to ensure high-quality, idiomatic domain driven design.",
+      "name": "patterns",
+      "description": "Design patterns to ensure high-quality, idiomatic domain driven design.",
       "version": "1.0.0",
       "source": "./patterns",
+      "author": {
+        "name": "David Souther",
+        "email": "davidsouther@gmail.com"
+      }
+    },
+    {
+      "name": "research",
+      "description": "Research skills library for Claude Code: public internet, internal documents, domain model, local codebase, and project dependencies.",
+      "version": "1.0.0",
+      "source": "./research",
       "author": {
         "name": "David Souther",
         "email": "davidsouther@gmail.com"

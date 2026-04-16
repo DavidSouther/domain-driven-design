@@ -1,0 +1,83 @@
+# LSP Reference: TypeScript (tsserver)
+
+## Configuration
+
+tsserver is bundled with TypeScript. It activates automatically when a `tsconfig.json` is present. No separate installation is required beyond `npm install` (or equivalent) to populate `node_modules`.
+
+For accurate cross-package resolution in monorepos, ensure `paths` or `references` in `tsconfig.json` are configured correctly. Project references (`composite: true`) allow tsserver to resolve types across sub-packages.
+
+## Most Useful Queries for Research
+
+### Find where a symbol is defined
+
+```
+LSP definition
+  file: src/api/handler.ts
+  line: <line where symbol appears>
+  character: <column>
+```
+
+Follows `export * from`, barrel files, type aliases, and declaration merging. Works across `node_modules` into `.d.ts` declaration files when source maps are unavailable.
+
+### Understand a type at a specific site
+
+```
+LSP hover
+  file: src/api/handler.ts
+  line: <line of expression>
+  character: <column>
+```
+
+Returns the fully resolved type after generic substitution and type narrowing. Hover after an `if` or `switch` discriminant to see the narrowed type inside the branch — this is faster than manually tracing `typeof` / `instanceof` chains.
+
+### Find all references / call sites
+
+```
+LSP references
+  file: src/domain/user.ts    # file containing the definition
+  line: <definition line>
+  character: <column of name>
+  includeDeclaration: false
+```
+
+Returns every usage across the project including `.tsx` files. For an interface method, returns implementations in addition to call sites when `includeDeclaration: true`.
+
+### Find all implementations of an interface
+
+Point `references` at the interface or abstract method definition. tsserver returns every `implements` clause and every class that satisfies the structural type (if used structurally).
+
+Alternatively, hover on the interface name and read the "X implementations" inlay if available.
+
+### Understand available members on a value
+
+```
+LSP completions
+  file: src/service.ts
+  line: <line after a `.` access>
+  character: <column after the dot>
+```
+
+Returns all valid members including inherited ones and those from merged declarations. Use this to understand what a third-party type exposes without reading its `.d.ts` file manually.
+
+### Errors in a file
+
+```
+LSP diagnostics
+  file: src/service.ts
+```
+
+Returns TypeScript compiler errors (type mismatches, missing properties, unused variables if configured). Useful for quickly checking whether a module is type-correct without running `tsc`.
+
+## TypeScript-Specific Patterns
+
+**Generic resolution:** Hover on a call to a generic function to see the concrete type arguments TypeScript inferred. This saves manually tracing which overload was selected.
+
+**Type narrowing:** Hover inside an `if`, `switch`, or optional-chain branch to see the narrowed type. The type after `if (x !== null)` is different from outside — LSP shows the correct narrowed form.
+
+**Barrel files (`index.ts`):** `definition` follows barrel re-exports to the canonical source. If a symbol appears exported from an `index.ts`, use `definition` to jump to the original implementation file.
+
+**Declaration merging:** Interfaces and namespaces can be merged across files. `references` on an interface name finds all merge sites as well as all `implements` sites.
+
+**`.d.ts` only dependencies:** When a package ships only declarations (no source), `definition` lands in the `.d.ts` file. Hover there to read the type; use `completions` to enumerate members. Do not grep the `node_modules` source — use LSP instead.
+
+**Monorepo project references:** If tsserver fails to resolve cross-package imports, run `tsc --build` in the root to regenerate declaration files for referenced sub-packages.
