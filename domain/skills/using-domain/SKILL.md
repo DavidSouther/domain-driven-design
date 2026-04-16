@@ -1,6 +1,6 @@
 ---
-name: using-ddd
-description: Bootstrap skill for Domain-Driven Design. Loaded at session start to establish when to invoke each DDD skill.
+name: using-domain
+description: Bootstrap skill for Domain-Driven Design. Loaded when brainstorming, researching, or designing, to ensure domain knowledge is available. Not loaded during implementation, as the domain knowledge has already been summarized in the prompt.
 ---
 
 # Domain-Driven Design Workflow

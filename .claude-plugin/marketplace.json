@@ -7,10 +7,10 @@
   },
   "plugins": [
     {
-      "name": "ddd",
+      "name": "domain",
       "description": "Domain driven design skills library for Claude Code: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
       "version": "1.0.0",
-      "source": "./ddd",
+      "source": "./domain",
       "author": {
         "name": "David Souther",
         "email": "davidsouther@gmail.com"

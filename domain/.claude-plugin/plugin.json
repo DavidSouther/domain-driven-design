@@ -1,5 +1,5 @@
 {
-  "name": "ddd",
+  "name": "domain",
   "description": "Domain driven design skills library for Claude Code: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
   "version": "1.0.0",
   "owner": {
@@ -12,7 +12,8 @@
   "keywords": [
     "skills",
     "ddd",
-    "domain-modelling",
+    "domain-modeling",
+    "domain-driven-design",
     "ubiquitous-langauge",
     "workflows"
   ]
