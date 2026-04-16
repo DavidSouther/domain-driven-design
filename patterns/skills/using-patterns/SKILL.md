@@ -19,6 +19,7 @@ You are working in a project that uses structured design patterns. During a plan
 | Bridging an Aggregate with a Repository inside a single durable transaction | `patterns:unit-of-work` |
 | Structuring the application layer, wiring concrete dependencies, or separating domain from HTTP/CLI | `patterns:bootstrap-and-service` |
 | Writing or reviewing a test — ensuring setup, action, and assertions are clearly separated | `patterns:arrange-act-assert` |
+| Fake implementation passes the first test and the correct generalization is not yet obvious | `patterns:triangulate` |
 
 ## Pattern Composition
 
