@@ -18,6 +18,7 @@ You are working in a project that uses structured design patterns. During a plan
 | Defining an operation that must transition the domain from one legal state to another atomically | `patterns:aggregate` |
 | Bridging an Aggregate with a Repository inside a single durable transaction | `patterns:unit-of-work` |
 | Structuring the application layer, wiring concrete dependencies, or separating domain from HTTP/CLI | `patterns:bootstrap-and-service` |
+| Writing or reviewing a test — ensuring setup, action, and assertions are clearly separated | `patterns:arrange-act-assert` |
 
 ## Pattern Composition
 
