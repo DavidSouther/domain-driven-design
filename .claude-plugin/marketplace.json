@@ -7,6 +7,16 @@
   },
   "plugins": [
     {
+      "name": "developer",
+      "description": "Skills for a software developer agent to follow a strict Domain- and Test-Driven Development lifecycle.",
+      "version": "1.0.0",
+      "source": "./developer",
+      "owner": {
+        "name": "David Souther",
+        "email": "davidsouther@gmail.com"
+      }
+    },
+    {
       "name": "domain",
       "description": "Domain driven design skills library for Claude Code: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
       "version": "1.0.0",

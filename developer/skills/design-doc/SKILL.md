@@ -1,6 +1,6 @@
 ---
 name: design-doc 
-description: "Use this skill to explore the current and desired states, creating a design doc the describes the component that will be implemented."
+description: "Use when starting any creative work — building features, components, or modifying system behavior. Explores alternatives and produces a formal design document before implementation."
 ---
 
 # Brainstorming Ideas Into Designs
@@ -12,6 +12,10 @@ Start by understanding the current project context, then ask questions one at a 
 <HARD-GATE>
 Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
 </HARD-GATE>
+
+## Anti-Pattern: "This Is Too Simple To Need A Design"
+
+Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
 
 ## Design Docs
 
@@ -37,8 +41,8 @@ Create a task for each of these items and complete them in order:
 5. **Propose 2-3 approaches** with trade-offs and your recommendation.
 6. **Present design** in sections scaled to their complexity, getting user approval after each section.
 7. **Write design doc** saved to `docs/developer/specs/YYYY-MM-DD-<topic>-design.md`.
-7. **Spec self-review** on that design doc, doing a quick check for placeholders, contradictions, ambiguity, and scope.  
-8. **User reviews written doc** — refer the user to the design, ask them to provide their edits, and tell them how to begin the next phase in a new session. Stop at this point.
+8. **Spec self-review** on that design doc, doing a quick check for placeholders, contradictions, ambiguity, and scope.
+9. **User reviews written doc** — refer the user to the design, ask them to provide their edits, and tell them how to begin the next phase in a new session. Stop at this point.
 
 ## Process Flow
 
@@ -115,7 +119,7 @@ digraph brainstorming {
 **Working in existing codebases:**
 
 - Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), suggest these for later sessions but do not include them in the current design.
+- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design — the way a good developer improves code they're working in.
 - Don't propose unrelated refactoring. Stay focused on what serves the current goal.
 
 ## After the Design
@@ -134,7 +138,7 @@ After writing the spec document, look at it with fresh eyes:
 
 Fix any issues inline. No need to re-review — just fix and move on. Commit this final draft design document.
 
-**User Review Gate**
+**User Review Gate:**
 After the spec review loop passes, ask the user to review the written spec before proceeding.
 
 > "The spec for this design is at `<path>`. Please make any further modifications you find appropriate. When you're satisfied, end this session. Remove the `*DRAFT*` tag, and use the writing-specs skill in a new session to continue."
@@ -149,21 +153,21 @@ Wait for the user's response. If they request changes, make them and re-run the 
 
 ## Key Principles
 
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design, get approval before moving on
-- **Be flexible** - Go back and clarify when something doesn't make sense
+- **One question at a time** — Don't overwhelm with multiple questions
+- **Multiple choice preferred** — Easier to answer than open-ended when possible
+- **YAGNI ruthlessly** — Remove unnecessary features from all designs
+- **Explore alternatives** — Always propose 2-3 approaches before settling
+- **Incremental validation** — Present design sections, get approval before moving on
+- **Be flexible** — Go back and clarify when something doesn't make sense
 
 ## Visual Companion
 
-A browser-based companion for showing mockups, diagrams, and visual options during brainstorming. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
+A browser-based companion for showing mockups, diagrams, and visual options during design. Available as a tool — not a mode. Accepting the companion means it's available for questions that benefit from visual treatment; it does NOT mean every question goes through the browser.
 
 **Offering the companion:** When you anticipate that upcoming questions will involve visual content (mockups, layouts, diagrams), offer it once for consent:
 > "Some of what we're working on might be easier to explain if I can show it to you in a web browser. I can put together mockups, diagrams, comparisons, and other visuals as we go. This feature is still new and can be token-intensive. Want to try it? (Requires opening a local URL)"
 
-**This offer MUST be its own message.** Do not combine it with clarifying questions, context summaries, or any other content. The message should contain ONLY the offer above and nothing else. Wait for the user's response before continuing. If they decline, proceed with text-only brainstorming.
+**This offer MUST be its own message.** Do not combine it with clarifying questions, context summaries, or any other content. The message should contain ONLY the offer above and nothing else. Wait for the user's response before continuing. If they decline, proceed with text-only design.
 
 **Per-question decision:** Even after the user accepts, decide FOR EACH QUESTION whether to use the browser or the terminal. The test: **would the user understand this better by seeing it than reading it?**
 

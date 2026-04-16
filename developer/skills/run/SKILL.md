@@ -1,0 +1,98 @@
+---
+name: run
+description: Use when starting a feature development session or resuming one — coordinates the outer/middle/inner loops and enforces draft gates
+---
+
+# developer:run
+
+## Overview
+
+Session coordinator for the full developer loop. Creates and manages the session folder, passes it to each skill, enforces draft gates, and determines where to resume when re-entering an existing session.
+
+**Announce at start:** "Using developer:run to coordinate this session."
+
+## Session Folder
+
+On first invocation, create:
+
+```
+docs/developer/YYYY-MM-DD-<topic>/
+```
+
+If the folder already exists for the current topic, determine resume point:
+
+| Files present | Draft marker cleared? | Resume at |
+|---|---|---|
+| No files | — | Outer loop (design-doc) |
+| `design.md` | No | Wait — ask user to clear the draft |
+| `design.md` | Yes | Middle loop (feature-test) |
+| `feature-test.md` | No | Wait — ask user to clear the draft |
+| `feature-test.md` | Yes | Middle loop (planning) |
+| `plan.md` | No | Wait — ask user to clear the draft |
+| `plan.md` | Yes | Inner loop (red-green-refactor) |
+
+A file has its draft cleared when it no longer contains the `*Draft` marker.
+
+## Loop Structure
+
+```dot
+digraph run {
+    "Session start" [shape=doublecircle];
+    "Determine resume point" [shape=box];
+    "Outer loop:\ndeveloper:design-doc" [shape=box];
+    "Draft gate:\ndesign" [shape=diamond];
+    "Middle loop:\ndeveloper:feature-test" [shape=box];
+    "Draft gate:\nfeature-test" [shape=diamond];
+    "Middle loop:\ndeveloper:planning" [shape=box];
+    "Draft gate:\nplan" [shape=diamond];
+    "Inner loop:\ndeveloper:red-green-refactor" [shape=box];
+    "Stop session" [shape=doublecircle];
+
+    "Session start" -> "Determine resume point";
+    "Determine resume point" -> "Outer loop:\ndeveloper:design-doc";
+    "Determine resume point" -> "Middle loop:\ndeveloper:feature-test";
+    "Determine resume point" -> "Middle loop:\ndeveloper:planning";
+    "Determine resume point" -> "Inner loop:\ndeveloper:red-green-refactor";
+
+    "Outer loop:\ndeveloper:design-doc" -> "Draft gate:\ndesign";
+    "Draft gate:\ndesign" -> "Stop session" [label="not cleared"];
+    "Draft gate:\ndesign" -> "Middle loop:\ndeveloper:feature-test" [label="cleared"];
+
+    "Middle loop:\ndeveloper:feature-test" -> "Draft gate:\nfeature-test";
+    "Draft gate:\nfeature-test" -> "Stop session" [label="not cleared"];
+    "Draft gate:\nfeature-test" -> "Middle loop:\ndeveloper:planning" [label="cleared"];
+
+    "Middle loop:\ndeveloper:planning" -> "Draft gate:\nplan";
+    "Draft gate:\nplan" -> "Stop session" [label="not cleared"];
+    "Draft gate:\nplan" -> "Inner loop:\ndeveloper:red-green-refactor" [label="cleared"];
+
+    "Inner loop:\ndeveloper:red-green-refactor" -> "Stop session" [label="feature test passes"];
+}
+```
+
+## Draft Gate Enforcement
+
+After any outer or middle loop skill (design-doc, feature-test, planning) produces output, stop the session and tell the user:
+
+> "This step is complete. Review `<path>`, make any changes, then remove the `*Draft YYYY-MM-DD*` marker from the top of the file. Start a new session and run `developer:run` to continue."
+
+**Do not proceed past a draft gate in the same session under any circumstances.** If the user asks to continue anyway, decline:
+
+> "I can't continue past the draft gate in this session. The draft gate exists so you have a chance to review and refine before the next step builds on it."
+
+## Skill Invocations
+
+Pass the session folder path to each skill. The session folder is the single source of truth for all session artifacts.
+
+- Outer loop: invoke `developer:brainstorming` or `developer:design-doc`
+- Middle loop entry: invoke `developer:feature-test`
+- Middle loop planning: invoke `developer:planning`
+- Inner loop: invoke `developer:red-green-refactor`
+
+## Topic Slug
+
+If the user's prompt doesn't make the topic slug obvious, ask for one before creating the session folder:
+
+> "What's a short slug for this session? (e.g., `user-auth`, `csv-export`)"
+
+Use it to name the session folder: `docs/developer/YYYY-MM-DD-<slug>/`.

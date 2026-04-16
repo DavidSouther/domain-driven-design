@@ -1,0 +1,21 @@
+{
+  "name": "developer",
+  "description": "Skills for a software developer agent to follow a strict Domain- and Test-Driven Development lifecycle.",
+  "version": "1.0.0",
+  "owner": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com"
+  },
+  "homepage": "https://github.com/davidsouther/ddd_skill",
+  "repository": "https://github.com/davidsouther/ddd_skill",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "ddd",
+    "tdd",
+    "domain-driven-design",
+    "test-driven-development",
+    "red-green-refactor",
+    "workflows"
+  ]
+}
