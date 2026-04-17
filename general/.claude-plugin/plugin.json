@@ -1,7 +1,7 @@
 {
-  "name": "General",
+  "name": "general",
   "description": "General skills library for Claude Code: subagents, skill development, and git worktrees. From obra/superpowers.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "owner": {
     "name": "David Souther",
     "email": "davidsouther@gmail.com"

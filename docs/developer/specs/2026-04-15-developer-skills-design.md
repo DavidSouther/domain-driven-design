@@ -57,7 +57,7 @@ Skill files live at `developer/skills/<name>/SKILL.md`. Reference files live at 
 
 **Behavior:**
 1. Prompts for a topic slug if not provided or obviously derived from the prompt.
-2. Creates `docs/developer/YYYY-MM-DD-<topic>/` as the session folder.
+2. Creates `docs/developer/YYYY-MM-DD-AA-<topic>/` as the session folder.
 3. Passes the session folder path to all subsequent skills in this session.
 4. Walks the outer → middle → inner loops in sequence, invoking the appropriate skill at each stage.
 5. Enforces the draft gate: after each big-step skill completes, stops and tells the user to review the draft, clear the `*Draft*` marker, and start a new session to continue.
@@ -78,7 +78,7 @@ Skill files live at `developer/skills/<name>/SKILL.md`. Reference files live at 
 1. Reads the cleared design doc to understand the feature.
 2. Writes a user story in plain language (Given/When/Then or narrative form).
 3. Writes an executable feature test — a test that runs end-to-end through the user story and asserts it completes as expected. Language-agnostic process; actual test code follows the language established by `developer:initialize`.
-4. Saves both to `docs/developer/YYYY-MM-DD-<topic>/feature-test.md` (user story) and the appropriate test file in the project.
+4. Saves both to `docs/developer/YYYY-MM-DD-AA-<topic>/feature-test.md` (user story) and the appropriate test file in the project.
 5. Marks the feature test file `*Draft YYYY-MM-DD*`.
 6. Stops. Declines to implement any code to make the test pass.
 
@@ -97,7 +97,7 @@ Skill files live at `developer/skills/<name>/SKILL.md`. Reference files live at 
 2. Proactively considers a step 0 for domain object design — introduces any new domain objects needed, leaning on `patterns:` skills (especially `patterns:entities-value-objects-services`, `patterns:newtype`, `patterns:type-states`).
 3. Breaks the path to a passing feature test into 3–7 incremental steps. Each step must leave the codebase in a runnable state and advance the feature test measurably closer to passing.
 4. For each step: names it, describes what it implements, and identifies which part of the feature test it enables.
-5. Saves the plan to `docs/developer/YYYY-MM-DD-<topic>/plan.md` marked `*Draft YYYY-MM-DD*`.
+5. Saves the plan to `docs/developer/YYYY-MM-DD-AA-<topic>/plan.md` marked `*Draft YYYY-MM-DD*`.
 6. Stops. Declines to implement.
 
 **Distinction from `developer:writing-plans`:** `developer:planning` is a middle-loop skill focused on making piecemeal progress toward a specific failing test. It is not a general spec-to-plan conversion tool.
@@ -147,7 +147,7 @@ Skill files live at `developer/skills/<name>/SKILL.md`. Reference files live at 
 
 **Loop abort:** If `developer:thinking` has already been invoked for the current error and the same or equivalent error reappears after following its plan, do not invoke `developer:thinking` again. Instead, stop immediately and report:
 - The current error
-- The path to the thinking doc (`docs/developer/YYYY-MM-DD-<topic>/thinking/<problem>.md`)
+- The path to the thinking doc (`docs/developer/YYYY-MM-DD-AA-<topic>/thinking/<problem>.md`)
 - A suggestion to review the current diff or restore the working directory and try again
 
 ---
@@ -162,7 +162,7 @@ Skill files live at `developer/skills/<name>/SKILL.md`. Reference files live at 
 1. Receives a summary of the current situation: the error, the code added in this step, and the plan step being implemented. No editorialization.
 2. May use `research:` skills to investigate the problem.
 3. Must not edit any files or run any code.
-4. Produces `docs/developer/YYYY-MM-DD-<topic>/thinking/<problem>.md` containing:
+4. Produces `docs/developer/YYYY-MM-DD-AA-<topic>/thinking/<problem>.md` containing:
    - Summary of the situation
    - Analysis of the root cause
    - Concrete next-steps plan (specific changes to try, in order)
@@ -182,7 +182,7 @@ Skill files live at `developer/skills/<name>/SKILL.md`. Reference files live at 
 3. Applies each refactoring one at a time. After each: run check, run tests.
 4. **Abort on repeated errors:** If a refactoring causes an error and a fix attempt causes the same or a new error, abort. Tell the user to review the current diff or restore the working directory and try again.
 5. Stops when the smell is gone — not when the code is maximally elegant.
-6. May produce a `docs/developer/YYYY-MM-DD-<topic>/deferred-refactoring.md` noting smells left for a later session.
+6. May produce a `docs/developer/YYYY-MM-DD-AA-<topic>/deferred-refactoring.md` noting smells left for a later session.
 
 **Constraint:** Never refactor behavior and structure simultaneously. If a test is failing, fix the code first — then refactor.
 
