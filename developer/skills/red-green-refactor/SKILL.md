@@ -97,7 +97,7 @@ Pass to the thinking subagent:
 
 If `developer:thinking` has already been invoked for the current error and the same or equivalent error reappears after following its plan, do **not** invoke `developer:thinking` again. Stop immediately and report:
 
-> "Stuck on the same error after thinking. Error: `<error>`. Thinking doc at `docs/developer/YYYY-MM-DD-<topic>/thinking/<problem>.md`. Suggestion: review the current diff (`git diff`) or restore the working directory (`git restore .`) and try again."
+> "Stuck on the same error after thinking. Error: `<error>`. Thinking doc at `docs/developer/YYYY-MM-DD-AA-<topic>/thinking/<problem>.md`. Suggestion: review the current diff (`git diff`) or restore the working directory (`git restore .`) and try again."
 
 Do not loop. Do not try a different approach on your own. Abort and report.
 

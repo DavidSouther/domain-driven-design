@@ -77,12 +77,12 @@ Implement `<what>`. The feature test will still fail but `<specific assertion>` 
 
 ## Output Artifacts
 
-Save `plan.md` to the session folder (`docs/developer/YYYY-MM-DD-<topic>/plan.md`) with `*Draft YYYY-MM-DD*` at the top.
+Save `plan.md` to the session folder (`docs/developer/YYYY-MM-DD-AA-<topic>/plan.md`) with `*Draft YYYY-MM-DD*` at the top.
 
 ## Stop Condition
 
 After saving, tell the user:
 
-> "Plan saved to `docs/developer/YYYY-MM-DD-<topic>/plan.md`. Review it and make any adjustments. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:run` (or `developer:red-green-refactor`) to begin implementation."
+> "Plan saved to `docs/developer/YYYY-MM-DD-AA-<topic>/plan.md`. Review it and make any adjustments. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:run` (or `developer:red-green-refactor`) to begin implementation."
 
 Do not implement any step. Do not run the feature test. Do not invoke `developer:red-green-refactor`.

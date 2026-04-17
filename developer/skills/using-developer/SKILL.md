@@ -52,9 +52,9 @@ The outer and middle loops produce `*Draft YYYY-MM-DD*` artifacts. A human must 
 
 | Artifact | Location | Clears to enter |
 |---|---|---|
-| Design doc | `docs/developer/YYYY-MM-DD-<topic>/design.md` | Middle loop |
-| Feature test | `docs/developer/YYYY-MM-DD-<topic>/feature-test.md` | Planning |
-| Plan | `docs/developer/YYYY-MM-DD-<topic>/plan.md` | Inner loop |
+| Design doc | `docs/developer/YYYY-MM-DD-AA-<topic>/design.md` | Middle loop |
+| Feature test | `docs/developer/YYYY-MM-DD-AA-<topic>/feature-test.md` | Planning |
+| Plan | `docs/developer/YYYY-MM-DD-AA-<topic>/plan.md` | Inner loop |
 
 ## Platform Adaptation
 

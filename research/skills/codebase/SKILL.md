@@ -47,7 +47,7 @@ Run all variants; union results before drawing conclusions.
 
 ## Output Format
 
-Write findings to `docs/research/YYYY-MM-DD-<topic>/codebase.md`.
+Write findings to `docs/research/YYYY-MM-DD-AA-<topic>/codebase.md`.
 
 ```
 # Codebase: <question>

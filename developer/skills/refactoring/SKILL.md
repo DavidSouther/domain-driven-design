@@ -81,7 +81,7 @@ Do not continue refactoring after an abort. Do not try another refactoring.
 
 If smells remain that are too risky to address now (e.g., would require changing multiple modules), record them:
 
-Save to `docs/developer/YYYY-MM-DD-<topic>/deferred-refactoring.md`:
+Save to `docs/developer/YYYY-MM-DD-AA-<topic>/deferred-refactoring.md`:
 
 ```markdown
 # Deferred Refactoring

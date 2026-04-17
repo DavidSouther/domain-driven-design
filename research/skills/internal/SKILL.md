@@ -47,8 +47,8 @@ Example — topic "deployment freeze policy":
 
 ## Output Format
 
-1. Create folder `docs/research/YYYY-MM-DD-<topic>/`
-2. Write findings to `docs/research/YYYY-MM-DD-<topic>/internal.md`
+1. Create folder `docs/research/YYYY-MM-DD-AA-<topic>/`
+2. Write findings to `docs/research/YYYY-MM-DD-AA-<topic>/internal.md`
 3. Include a `**Sources**` section listing:
    - Which MCP servers were queried
    - Which documents, threads, or tickets were consulted

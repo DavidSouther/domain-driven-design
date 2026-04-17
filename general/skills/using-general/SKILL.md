@@ -1,11 +1,7 @@
 ---
 name: using-general
-description: Use to find the most relevant skills before thinking or acting.
+description: Bootstrap skill for general skills. Use to find the most relevant skills before thinking or acting.
 ---
-
-<SUBAGENT-STOP>
-If you were dispatched as a subagent to execute a specific task, skip this skill.
-</SUBAGENT-STOP>
 
 Always prefer skills to guide thinking when available. Use general skills first, then find specific skills later in the session.
 
@@ -92,6 +88,20 @@ The skill itself specifies which type it is.
 | "This doesn't need a formal skill" | If a skill exists, use it. |
 | "The skill is overkill" | Simple things become complex. Use it. |
 | "I'll just do this one thing first" | Check before doing anything. |
+
+## General Skills
+
+| Skill | When to use |
+|-------|-------------|
+| `conversation` | Before asking a question, presenting options, or pausing for confirmation |
+| `review` | After finishing a work product, before claiming a task complete, or after an editing pass |
+| `writing-skills` | When creating or improving skill documents |
+| `dispatching-parallel-agents` | When facing multiple independent tasks that can proceed without shared state |
+| `using-git-worktrees` | When starting feature work that needs isolation from the current workspace |
+
+## Intermediate files
+
+Write intermediate files judiciously, both to share results across tasks and to allow users to edit findings directly. Write intermediate files to `docs/<plugin>/<skill>/YYYY-MM-DD-AA-<topic>.md`, where YYYY-MM-DD-AA is the year, month, day, and AA incrementing value starting at 01, then 02, then 03, and so on.
 
 ## User Instructions
 

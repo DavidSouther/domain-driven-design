@@ -16,7 +16,7 @@ Session coordinator for the full developer loop. Creates and manages the session
 On first invocation, create:
 
 ```
-docs/developer/YYYY-MM-DD-<topic>/
+docs/developer/YYYY-MM-DD-AA-<topic>/
 ```
 
 If the folder already exists for the current topic, determine resume point:
@@ -99,7 +99,7 @@ Use it to name the session folder: `docs/developer/YYYY-MM-DD-<slug>/`.
 
 ## Session Artifacts
 
-All artifacts for a session live under `docs/developer/YYYY-MM-DD-<topic>/`.
+All artifacts for a session live under `docs/developer/YYYY-MM-DD-AA-<topic>/`.
 
 - `design.md` is the overal design doc for a topic.
 - `feature-test.md` is a specific plan for the feature test for this topic.

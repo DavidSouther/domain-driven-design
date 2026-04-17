@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: Use when finishing a task, before claiming work is complete, or after producing a diff — to verify changes are correct, minimal, and conform to the stated requirements.
+description: Use when finishing a coding task, before claiming programming is complete, or after producing a diff. Complete a code review for yourself to verify changes are correct, minimal, and conform to the stated requirements.
 ---
 
 # Code Review

@@ -40,9 +40,9 @@ Create a task for each of these items and complete them in order:
 4. **Ask clarifying questions** one at a time, to understand purpose, constraints, success criteria, and other salient details.
 5. **Propose 2-3 approaches** with trade-offs and your recommendation.
 6. **Present design** in sections scaled to their complexity, getting user approval after each section.
-7. **Write design doc** saved to `docs/developer/specs/YYYY-MM-DD-<topic>-design.md`.
-8. **Spec self-review** on that design doc, doing a quick check for placeholders, contradictions, ambiguity, and scope.
-9. **User reviews written doc** — refer the user to the design, ask them to provide their edits, and tell them how to begin the next phase in a new session. Stop at this point.
+7. **Write design doc** saved to `docs/developer/design/YYYY-MM-DD-AA-<topic>.md`.
+8. **Review** that design doc, using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
+9. **User reviews draft** — refer the user to the design, ask them to provide their edits, and tell them how to begin the next phase in a new session. Stop at this point.
 
 ## Process Flow
 
@@ -127,7 +127,7 @@ digraph brainstorming {
 
 **Documentation:**
 
-Write the validated design to `docs/developer/specs/YYYY-MM-DD-<topic>-design.md`. Include `*DRAFT YYYY-MM-DD*` at the beginning of the document, after the title. A human will remove the `*DRAFT*` mark when the design is ready.
+Write the validated design to `docs/developer/specs/YYYY-MM-DD-AA-<topic>-design.md`. Include `*DRAFT YYYY-MM-DD*` at the beginning of the document, after the title. A human will remove the `*DRAFT*` mark when the design is ready.
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:

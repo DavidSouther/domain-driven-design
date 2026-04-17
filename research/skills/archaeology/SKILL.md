@@ -68,7 +68,7 @@ git bisect good <known-good-ref>
 
 # Output Format
 
-Write findings to `docs/research/YYYY-MM-DD-<topic>/archaeology.md`.
+Write findings to `docs/research/YYYY-MM-DD-AA-<topic>/archaeology.md`.
 
 Structure:
 
