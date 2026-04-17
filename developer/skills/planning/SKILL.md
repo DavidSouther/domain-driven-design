@@ -24,6 +24,7 @@ Middle-loop planning skill. Given a failing feature test, breaks the path to mak
 3. Break the path to a passing feature test into several (no more than 7) incremental steps.
   - If it seems a plan would require more than a few steps, encourage the user to go back to the design and simplify the size of the step.
   - If it seems a plan would require more than 7 steps, insist that the user go back to the design.
+3a. If the path from the failing test to a passing test isn't obvious, apply the forward-backward method. Work backward from the passing test state (what must be true just before the failing assertion passes?) and forward from the current code (what can be derived or added without breaking anything?) until the two sides connect into a complete sequence of steps. Write each candidate step to a map file as it is generated — do not hold steps only in context. See `developer/references/forward_backward.md`.
 4. For each step: name it, describe what it implements, and identify which assertion in the feature test it enables.
 5. Save the plan as a draft and stop.
 

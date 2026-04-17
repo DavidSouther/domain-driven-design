@@ -27,6 +27,7 @@ The invoking skill must pass:
 
 1. Read the inputs without editorializing.
 2. Use `research:` skills to investigate the problem if needed (e.g., API docs, similar patterns in the codebase, error message semantics).
+2a. If the error or problem has no obvious fix after research, apply the forward-backward method: work backward from the desired green (passing) outcome and forward from the current red (failing) state. See `developer/references/forward_backward.md`. Note: for thinking skills, the map can be part of the file in the `thinking/<problem-slug>.md` file, rather than in the `maps/` directory.
 3. Produce a thinking doc.
 4. Return control to `developer:red-green-refactor` with a pointer to the thinking doc.
 
@@ -48,6 +49,10 @@ Save to `docs/developer/YYYY-MM-DD-<topic>/thinking/<problem-slug>.md`:
 ## Root Cause Analysis
 
 <What is actually wrong. Be specific: wrong type, missing import, API misuse, incorrect assumption about the library, etc.>
+
+## Forward-Backward Map <if more than two steps>
+
+<A forward-backward map for how the steps below were identified.>
 
 ## Next Steps (in order)
 

@@ -96,3 +96,12 @@ If the user's prompt doesn't make the topic slug obvious, ask for one before cre
 > "What's a short slug for this session? (e.g., `user-auth`, `csv-export`)"
 
 Use it to name the session folder: `docs/developer/YYYY-MM-DD-<slug>/`.
+
+## Session Artifacts
+
+All artifacts for a session live under `docs/developer/YYYY-MM-DD-<topic>/`.
+
+- `design.md` is the overal design doc for a topic.
+- `feature-test.md` is a specific plan for the feature test for this topic.
+- `maps/<path>.md` contains the maps found during any forward/backward planning. 
+- `thinking/` is a scratch pad area for the `thinking` skill to share its findings with the calling agent.

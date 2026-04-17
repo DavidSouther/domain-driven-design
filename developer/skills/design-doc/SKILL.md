@@ -100,6 +100,7 @@ digraph brainstorming {
 - Present options directly with your recommendation and reasoning
 - Lead with your recommended option and explain why
 - Include pros and cons of each approach
+- For each approach, forward-backward planning can help map the path from the current state to the proposed end state. Work backward from where the approach lands and forward from where the codebase is now, meeting in the middle. This surfaces whether an approach is feasibly reachable and where the hard steps are before committing to it. See `developer/references/forward_backward.md`.
 
 **Presenting the design:**
 

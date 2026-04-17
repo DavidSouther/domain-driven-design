@@ -65,8 +65,9 @@ digraph skill_flow {
 
 When multiple skills could apply:
 
-1. **Process skills first** — brainstorming, debugging. These determine *how* to approach the task.
-2. **Implementation skills second** — these guide execution within that approach.
+1. **Interaction skills first** — conversation. Load whenever about to ask a question, present options, or pause for confirmation.
+2. **Process skills second** — brainstorming, debugging. These determine *how* to approach the task.
+3. **Implementation skills third** — these guide execution within that approach.
 
 "Let's build X" → brainstorming first, then implementation skills.
 "Fix this bug" → debugging first, then domain-specific skills.
@@ -85,6 +86,7 @@ The skill itself specifies which type it is.
 |---------|------------|
 | "This is just a simple question" | Questions are tasks. Check for skills. |
 | "I need more context first" | Skill check comes before clarifying questions. |
+| "I need to ask or suggest something" | Load the conversation skill to determine question type and framing. |
 | "Let me explore the codebase first" | Skills define how to explore. Check first. |
 | "I remember this skill" | Skills evolve. Load the current version. |
 | "This doesn't need a formal skill" | If a skill exists, use it. |

@@ -43,7 +43,7 @@ Run all variants; union results before drawing conclusions.
 - String literals and comments (not symbols)
 - File-level discovery (`Glob` for paths, `Grep` for patterns)
 
-**Hard constraint:** Never run `git log`, `git blame`, `git show`, `git diff`, or any other git command. Use only current-state tools.
+**Hard constraint:** Never run `git log`, `git blame`, `git show`, `git diff`, or any other git command. Use only current-state tools. You may use `git rev-parse --short HEAD` to get the current commit sha for preparing `**Sources**`.
 
 ## Output Format
 
@@ -56,8 +56,8 @@ Write findings to `docs/research/YYYY-MM-DD-<topic>/codebase.md`.
 <narrative: what the code does, where key logic lives>
 
 ## Sources
-- `path/to/file.rs:42` — <symbol or reason consulted>
-- `path/to/other.ts:17` — <symbol or reason consulted>
+- [1] `path/to/file.rs` [CommitSha]
+- [2] `path/to/other.ts` [CommitSha]
 ```
 
 ## Common Mistakes
