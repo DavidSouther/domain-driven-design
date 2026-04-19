@@ -1,5 +1,5 @@
 ---
-name: brainstorming
+name: visual-design
 description: "Use when design exploration needs visual treatment — UI mockups, wireframes, layout comparisons, architecture diagrams, or side-by-side visual options. Launches an interactive browser-based visual companion."
 ---
 
