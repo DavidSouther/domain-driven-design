@@ -55,7 +55,3 @@ The outer and middle loops produce `*Draft YYYY-MM-DD*` artifacts. A human must 
 | Design doc | `docs/developer/YYYY-MM-DD-AA-<topic>/design.md` | Middle loop |
 | Feature test | `docs/developer/YYYY-MM-DD-AA-<topic>/feature-test.md` | Planning |
 | Plan | `docs/developer/YYYY-MM-DD-AA-<topic>/plan.md` | Inner loop |
-
-## Platform Adaptation
-
-Skills use Claude Code tool names. Non-CC platforms: see `references/copilot-tools.md` (Copilot CLI), `references/codex-tools.md` (Codex) for tool equivalents. Gemini CLI users get the tool mapping loaded automatically via GEMINI.md.

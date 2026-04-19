@@ -9,19 +9,9 @@ Always prefer skills to guide thinking when available. Use general skills first,
 
 Skills override default system prompt behavior. User instructions always take precedence:
 
-1. **User's explicit instructions** (CLAUDE.md, GEMINI.md, AGENTS.md, direct requests) — highest priority
-2. **General and specialist skills** — override default system behavior where they conflict
-3. **Default system prompt** — use only to clarify enough to find an applicable skill
-
-## How to Access Skills
-
-**Claude Code:** Use the `Skill` tool. Follow the loaded content directly. Never use Read on skill files.
-
-**Copilot CLI:** Use the `skill` tool. Skills are auto-discovered from installed plugins.
-
-**Gemini CLI:** Skills activate via the `activate_skill` tool. Metadata loads at session start; full content is on demand.
-
-**Other environments:** Check your platform's documentation.
+1. **Project Files** (CLAUDE.md, GEMINI.md, AGENTS.md) include details specific to this project (for instance, the team's slack channel, or specific web forums to track). 
+2. **General and specialist skills** provide additional conversational guidance and specific task lists.
+3. **Default system prompt** is only used to clarify and find an applicable skill.
 
 ## The Rule
 
@@ -57,24 +47,17 @@ digraph skill_flow {
 }
 ```
 
-## Skill Priority
 
-When multiple skills could apply:
+## General Skills
 
-1. **Interaction skills first** — conversation. Load whenever about to ask a question, present options, or pause for confirmation.
-2. **Process skills second** — brainstorming, debugging. These determine *how* to approach the task.
-3. **Implementation skills third** — these guide execution within that approach.
-
-"Let's build X" → brainstorming first, then implementation skills.
-"Fix this bug" → debugging first, then domain-specific skills.
-
-## Skill Types
-
-**Rigid** (TDD, debugging): Follow exactly. Do not adapt away the discipline.
-
-**Flexible** (patterns): Adapt principles to context.
-
-The skill itself specifies which type it is.
+| Skill | When to use |
+|-------|-------------|
+| `conversation` | Before asking a question, presenting options, or pausing for confirmation |
+| `review` | After finishing a work product, before claiming a task complete, or after an editing pass |
+| `writing-skills` | When creating or improving skill documents |
+| `dispatching-parallel-agents` | When facing multiple independent tasks that can proceed without shared state |
+| `using-git-worktrees` | When starting feature work that needs isolation from the current workspace |
+| `research:using-research` or `development:run`| to move from general skills to specifics for a task. |
 
 ## Common Mistakes
 
@@ -89,19 +72,9 @@ The skill itself specifies which type it is.
 | "The skill is overkill" | Simple things become complex. Use it. |
 | "I'll just do this one thing first" | Check before doing anything. |
 
-## General Skills
-
-| Skill | When to use |
-|-------|-------------|
-| `conversation` | Before asking a question, presenting options, or pausing for confirmation |
-| `review` | After finishing a work product, before claiming a task complete, or after an editing pass |
-| `writing-skills` | When creating or improving skill documents |
-| `dispatching-parallel-agents` | When facing multiple independent tasks that can proceed without shared state |
-| `using-git-worktrees` | When starting feature work that needs isolation from the current workspace |
-
 ## Intermediate files
 
-Write intermediate files judiciously, both to share results across tasks and to allow users to edit findings directly. Write intermediate files to `docs/<plugin>/<skill>/YYYY-MM-DD-AA-<topic>.md`, where YYYY-MM-DD-AA is the year, month, day, and AA incrementing value starting at 01, then 02, then 03, and so on.
+Write intermediate files judiciously, both to share results across tasks and to allow users to edit findings directly. Write intermediate files to `docs/<plugin>/<skill>/YYYY-MM-DD-AA-<topic>.md`, where YYYY-MM-DD-AA is the year, month, day, and AA incrementing value starting at `A`, then `B`, then `C`, and so on for topics started on the same day. (Some plugins may modify this layout, but `docs/<plugin>/` should always be the directory and `YYYY-MM-DD-AA-<topic>` as part of the path.)
 
 ## User Instructions
 

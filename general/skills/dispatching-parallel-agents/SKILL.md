@@ -1,6 +1,6 @@
 ---
 name: dispatching-parallel-agents
-description: Use when facing multiple independent tasks that can be worked on without shared state or sequential dependencies
+description: Use when preparing to start subagents. Especially multiple independent task.
 ---
 
 # Dispatching Parallel Agents
@@ -47,12 +47,17 @@ digraph when_to_use {
 
 ## The Pattern
 
-### 1. Identify Independent Domains
+### 1. Identify Independent Operations 
 
 Group failures by what is broken:
 - File A tests: Tool approval flow
 - File B tests: Batch completion behavior
 - File C tests: Abort functionality
+
+Group research by various areas
+- Internal search for conversations and designs
+- Codebase search for existing implementation
+- Public search for external context.
 
 Each domain is independent — fixing tool approval does not affect abort tests.
 

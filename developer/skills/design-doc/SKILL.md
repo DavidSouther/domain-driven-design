@@ -87,7 +87,7 @@ digraph brainstorming {
 - Check out the current project state first (files, docs, recent commits).
 - Perform web searches to fill in additional context. Perhaps the requested API has a known missing feature that would increase the complexity of the design. Or there's a library that already does this feature, and it would be faster to pull that instead.
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't do research or spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into smaller components: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first component through the normal design flow. Each further component gets its own spec → plan → implementation cycle, record this in `docs/developer/todo/<topic>.md`.
+- If the project is too large for a single spec, help the user decompose into smaller components: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first component through the normal design flow. Each further component gets its own spec → plan → implementation cycle, record this in `docs/developer/YYYY-MM-DD-AA-/TODO.md`.
 - For appropriately-scoped projects, ask questions one at a time to refine the idea
 - Present summaries of research results with links to sources to justify options
 - Prefer multiple choice questions when possible, but open-ended is fine too
@@ -100,7 +100,7 @@ digraph brainstorming {
 - Present options directly with your recommendation and reasoning
 - Lead with your recommended option and explain why
 - Include pros and cons of each approach
-- For each approach, forward-backward planning can help map the path from the current state to the proposed end state. Work backward from where the approach lands and forward from where the codebase is now, meeting in the middle. This surfaces whether an approach is feasibly reachable and where the hard steps are before committing to it. See `developer/references/forward_backward.md`.
+- For each approach, use forward-backward planning to map the path from the current state to the proposed end state. Work backward from where the approach lands and forward from where the codebase is now, meeting in the middle. This surfaces whether an approach is feasibly reachable and where the hard steps are before committing to it. See `developer/references/forward_backward.md`.
 
 **Presenting the design:**
 
@@ -127,7 +127,7 @@ digraph brainstorming {
 
 **Documentation:**
 
-Write the validated design to `docs/developer/specs/YYYY-MM-DD-AA-<topic>-design.md`. Include `*DRAFT YYYY-MM-DD*` at the beginning of the document, after the title. A human will remove the `*DRAFT*` mark when the design is ready.
+Write the validated design to `docs/developer/YYYY-MM-DD-AA-<topic>/design.md`. Include `*DRAFT YYYY-MM-DD*` at the beginning of the document, after the title. A human will remove the `*DRAFT*` mark when the design is ready.
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:
@@ -177,5 +177,4 @@ A browser-based companion for showing mockups, diagrams, and visual options duri
 
 A question about a UI topic is not automatically a visual question. "What does personality mean in this context?" is a conceptual question — use the terminal. "Which wizard layout works better?" is a visual question — use the browser.
 
-If they agree to the companion, read the detailed guide before proceeding:
-`skills/brainstorming/visual-companion.md`
+If they agree to the companion, use `developer:visual-design`.

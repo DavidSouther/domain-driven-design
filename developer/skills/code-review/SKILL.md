@@ -7,7 +7,7 @@ description: Use when finishing a coding task, before claiming programming is co
 
 ## Overview
 
-An LLM agent cannot accumulate shared understanding the way a human team does. Every session starts cold. What code review means for an agent is therefore different: it is not knowledge transfer, it is **spec conformance verification**. The goal is to catch what the author-frame missed by deliberately adopting a critic-frame before declaring done.
+An LLM agent cannot accumulate shared understanding the way a human team does. Every session starts cold. What code review means for an agent is therefore different: it is not knowledge transfer, it is **spec conformance verification**. The goal is to catch what the author-frame missed by deliberately adopting a critical point of view before declaring done.
 
 ## When to Use
 
@@ -30,9 +30,9 @@ Never change behavior and structure simultaneously. Refactoring and feature work
 
 ## Self-Review Process
 
-Adopt a **critic frame** — read the diff as if you are a skeptic who did not write it and is trying to find a reason to reject it.
+Adopt a **critical point of view**. Read the diff as if you are a skeptic who did not write it and is trying to find a reason to reject it.
 
-Check against the spec, not against your intentions:
+Check against the spec, project idioms, and language best practices.
 
 | Question | What to look for |
 |----------|-----------------|
@@ -56,7 +56,7 @@ Human teams use code review to build a collective mental model. Agents do not ac
 
 ## Common Mistakes
 
-- **Reviewing from author-frame.** You know what you meant to do, so you read past gaps. Explicitly reframe: what would a skeptic find wrong here?
+- **Reviewing from author's poing of view.** You know what you meant to do, so you read past gaps. Explicitly reframe: what would a skeptic find wrong here?
 - **Approving large diffs.** Size is a proxy for verification quality. A large diff that "looks fine" has not been reviewed — it has been scanned.
 - **Conflating refactor and feature.** Any diff that touches both structure and behavior cannot be reviewed as one unit. Split it.
 - **Checking style instead of correctness.** Style is mechanical and can be automated. Focus review attention on logic, coverage of the spec, and unintended side effects.

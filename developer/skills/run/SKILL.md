@@ -1,23 +1,19 @@
 ---
 name: run
-description: Use when starting a feature development session or resuming one — coordinates the outer/middle/inner loops and enforces draft gates
+description: Use when starting or resuming feature development.
 ---
 
 # developer:run
 
 ## Overview
 
-Session coordinator for the full developer loop. Creates and manages the session folder, passes it to each skill, enforces draft gates, and determines where to resume when re-entering an existing session.
+Session coordinator for a development loop. Creates and manages the session folder, passes it to each skill, enforces draft gates, and determines where to resume when re-entering an existing session.
 
 **Announce at start:** "Using developer:run to coordinate this session."
 
 ## Session Folder
 
-On first invocation, create:
-
-```
-docs/developer/YYYY-MM-DD-AA-<topic>/
-```
+If it does not exist, create `docs/developer/YYYY-MM-DD-A-<topic>` where `A` is `A`, `B`, `C`, etc to manage multiple features started in the same day. If not already on a branch of the same name, use `developer:git-workflow` to suggest moving to that branch.
 
 If the folder already exists for the current topic, determine resume point:
 
@@ -95,7 +91,7 @@ If the user's prompt doesn't make the topic slug obvious, ask for one before cre
 
 > "What's a short slug for this session? (e.g., `user-auth`, `csv-export`)"
 
-Use it to name the session folder: `docs/developer/YYYY-MM-DD-<slug>/`.
+Use it to name the session folder: `docs/developer/YYYY-MM-DD-<topic>/`.
 
 ## Session Artifacts
 
@@ -105,3 +101,7 @@ All artifacts for a session live under `docs/developer/YYYY-MM-DD-AA-<topic>/`.
 - `feature-test.md` is a specific plan for the feature test for this topic.
 - `maps/<path>.md` contains the maps found during any forward/backward planning. 
 - `thinking/` is a scratch pad area for the `thinking` skill to share its findings with the calling agent.
+
+## Next Task
+
+When finishing a session, append the next step to `docs/developer/NEXT`. When calling run, compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from NEXT.
