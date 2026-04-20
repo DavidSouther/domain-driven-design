@@ -1,5 +1,5 @@
 ---
-name: entities-value-objects-services
+name: domain-objects
 description: Use when modeling domain objects and operations and the code conflates identity-bearing things, immutable values, and logic that spans multiple objects. Distinguishes objects that have lifecycle and identity (Entities), objects that are equal by value alone (Value Objects), and pure functions that encode domain logic not owned by a single entity (Domain Service Functions).
 ---
 
