@@ -1,9 +1,9 @@
 ---
-name: refactoring
+name: refactor
 description: Use only when code is currently green (passing static checks and unit tests) to improve the codebase before finalizing a development task.
 ---
 
-# developer:refactoring
+# developer:refactor
 
 ## Overview
 
@@ -13,7 +13,7 @@ Post-green cleanup. Runs only when tests are green and the working directory is 
 
 > "Working directory is not clean. Please commit or stash your changes, then restart the refactoring step."
 
-**Constraint:** Never refactor behavior and structure simultaneously. If any check or test fails during refactoring, fix the code first — then restart the refactoring step.
+**Constraint:** Never refactor behavior and structure simultaneously. If any check or test fails during refactoring, fix the code first, then restart the refactoring step.
 
 ## Behavior
 
@@ -81,7 +81,7 @@ Do not continue refactoring after an abort. Do not try another refactoring.
 
 If smells remain that are too risky to address now (e.g., would require changing multiple modules), record them:
 
-Save to `docs/developer/YYYY-MM-DD-AA-<topic>/deferred-refactoring.md`:
+Save to `docs/developer/YYYY-MM-DD-A-<topic>/deferred-refactoring.md`:
 
 ```markdown
 # Deferred Refactoring

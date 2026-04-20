@@ -27,13 +27,13 @@ The invoking skill must pass:
 
 1. Read the inputs without editorializing.
 2. Use `research:` skills to investigate the problem if needed (e.g., API docs, similar patterns in the codebase, error message semantics).
-2a. If the error or problem has no obvious fix after research, apply the forward-backward method: work backward from the desired green (passing) outcome and forward from the current red (failing) state. See `developer/references/forward_backward.md`. Note: for thinking skills, the map can be part of the file in the `thinking/<problem-slug>.md` file, rather than in the `maps/` directory.
+  * If the error or problem has no obvious fix after research, apply the forward-backward method: work backward from the desired green (passing) outcome and forward from the current red (failing) state. See `developer/references/forward_backward.md`. Note: for thinking skills, the map can be part of the file in the `thinking/<problem-slug>.md` file, rather than in the `maps/` directory.
 3. Produce a thinking doc.
 4. Return control to `developer:red-green-refactor` with a pointer to the thinking doc.
 
 ## Thinking Doc Format
 
-Save to `docs/developer/YYYY-MM-DD-AA-<topic>/thinking/<problem-slug>.md`:
+Save to `docs/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`:
 
 ```markdown
 # Thinking: <problem-slug>
@@ -74,4 +74,4 @@ The next steps must be concrete and ordered. "Try X" without a predicted outcome
 
 After writing the thinking doc, return to the caller with:
 
-> "Thinking complete. Root cause: `<one sentence>`. Next steps in `docs/developer/YYYY-MM-DD-AA-<topic>/thinking/<problem-slug>.md`."
+> "Thinking complete. Root cause: `<one sentence>`. Next steps in `docs/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`."

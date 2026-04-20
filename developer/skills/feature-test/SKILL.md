@@ -69,7 +69,7 @@ test("returning user logs in and sees dashboard", async () => {
 
 ## Output Artifacts
 
-Save to the session folder (`docs/developer/YYYY-MM-DD-AA-<topic>/`):
+Save to the session folder (`docs/developer/YYYY-MM-DD-A-<topic>/`):
 
 - `feature-test.md` — user story in plain language plus a copy of the test file path
 - Test code in the appropriate project location (per project layout conventions)
@@ -80,6 +80,6 @@ Mark `feature-test.md` with `*Draft YYYY-MM-DD*` at the top.
 
 After saving both artifacts, tell the user:
 
-> "Feature test written and saved. The test is at `<test-file-path>` and the user story is at `docs/developer/YYYY-MM-DD-AA-<topic>/feature-test.md`. Review both, make any changes you want, then remove the `*Draft YYYY-MM-DD*` marker from `feature-test.md`. Start a new session and run `developer:run` (or `developer:planning`) to continue."
+> "Feature test written and saved. The test is at `<test-file-path>` and the user story is at `docs/developer/YYYY-MM-DD-A-<topic>/feature-test.md`. Review both, make any changes you want, then remove the `*Draft YYYY-MM-DD*` marker from `feature-test.md`. Start a new session and run `developer:run` (or `developer:planning`) to continue."
 
 Do not write implementation code. Do not run the test to verify it fails (the implementation doesn't exist yet). Do not invoke any other skill.

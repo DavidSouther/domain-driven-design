@@ -26,7 +26,7 @@ Every research skill applies Jeopardy! search: before issuing any query, generat
 
 ## Research Notes Convention
 
-Before dispatching search subagents, create `docs/research/YYYY-MM-DD-AA-<topic>/`. Each skill writes its findings to `<skill-name>.md` in that folder, with a `**Sources**` section listing every resource consulted. In text references to sources should use a loose IEEE style. See `references/citations.md` when formatting those sections for more details.
+Before dispatching search subagents, create `docs/research/YYYY-MM-DD-A-<topic>/`. Each skill writes its findings to `<skill-name>.md` in that folder, with a `**Sources**` section listing every resource consulted. In text references to sources should use a loose IEEE style. See `references/citations.md` when formatting those sections for more details.
 
 ## Combining Skills
 

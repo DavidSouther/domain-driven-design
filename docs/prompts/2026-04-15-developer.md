@@ -51,7 +51,7 @@ Big steps should make use of `domain:` tools to anchor their output in the ubiqu
 
 ## Brainstorm & Research
 
-Explore the prompt and feature collaboratively. Use `research:` tools to get a good understanding of the pieces both locally and publicly availalbe. Ask clarifying questions based on this research. Try to ask multiple choice questions. Prepare a file in `docs/developer/YYYY-MM-DD-AA-<topic>/research.md` for further tasks to reference.
+Explore the prompt and feature collaboratively. Use `research:` tools to get a good understanding of the pieces both locally and publicly availalbe. Ask clarifying questions based on this research. Try to ask multiple choice questions. Prepare a file in `docs/developer/YYYY-MM-DD-A-<topic>/research.md` for further tasks to reference.
 
 ## Design Doc
 
@@ -94,7 +94,7 @@ Repeat this process - edit, check, test, edit, check, test - until all tests are
 
 At some point in the edit-check-test portion of the red-green-refactor loop, a non-obvious situation may occur. Common indicators are an error unrelated to the code that's been added or edited in this step of the plan, or the same or substantially similar error has been seen multiple times. At that point, activate the thinking skill and take things slow.
 
-The thinking skill should always run in a subagent, to have fresh context. The skill should get a summary of the situation at the time of the error, with no editorialization. The thinking skill must not edit or run code, but it may use `research:` tasks. The subagent should prepare a file in `docs/developer/YYYY-MM-DD-AA-<topic>/thinking/<problem>.md` with a plan for next steps (not a full plan as in the `developer:planning` skill, but similar details).
+The thinking skill should always run in a subagent, to have fresh context. The skill should get a summary of the situation at the time of the error, with no editorialization. The thinking skill must not edit or run code, but it may use `research:` tasks. The subagent should prepare a file in `docs/developer/YYYY-MM-DD-A-<topic>/thinking/<problem>.md` with a plan for next steps (not a full plan as in the `developer:planning` skill, but similar details).
 
 Notes on how to read an error message?
 

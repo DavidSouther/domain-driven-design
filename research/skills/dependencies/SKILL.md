@@ -49,7 +49,7 @@ Follow this order — stop as soon as the question is answered:
 
 ## Output Format
 
-Find `docs/research/YYYY-MM-DD-AA-<topic>/` and write findings to `dependencies.md` inside it.
+Find `docs/research/YYYY-MM-DD-A-<topic>/` and write findings to `dependencies.md` inside it.
 
 Include a `**Sources**` section listing every config file path and URL consulted.
 

@@ -95,7 +95,7 @@ Use it to name the session folder: `docs/developer/YYYY-MM-DD-<topic>/`.
 
 ## Session Artifacts
 
-All artifacts for a session live under `docs/developer/YYYY-MM-DD-AA-<topic>/`.
+All artifacts for a session live under `docs/developer/YYYY-MM-DD-A-<topic>/`.
 
 - `design.md` is the overal design doc for a topic.
 - `feature-test.md` is a specific plan for the feature test for this topic.
@@ -104,4 +104,4 @@ All artifacts for a session live under `docs/developer/YYYY-MM-DD-AA-<topic>/`.
 
 ## Next Task
 
-When finishing a session, append the next step to `docs/developer/NEXT`. When calling run, compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from NEXT.
+When finishing a session, append the next step to `docs/developer/TASKS.md`. When calling run, compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`.

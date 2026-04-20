@@ -40,7 +40,7 @@ Create a task for each of these items and complete them in order:
 4. **Ask clarifying questions** one at a time, to understand purpose, constraints, success criteria, and other salient details.
 5. **Propose 2-3 approaches** with trade-offs and your recommendation.
 6. **Present design** in sections scaled to their complexity, getting user approval after each section.
-7. **Write design doc** saved to `docs/developer/design/YYYY-MM-DD-AA-<topic>.md`.
+7. **Write design doc** saved to `docs/developer/design/YYYY-MM-DD-A-<topic>.md`.
 8. **Review** that design doc, using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
 9. **User reviews draft** — refer the user to the design, ask them to provide their edits, and tell them how to begin the next phase in a new session. Stop at this point.
 
@@ -87,7 +87,7 @@ digraph brainstorming {
 - Check out the current project state first (files, docs, recent commits).
 - Perform web searches to fill in additional context. Perhaps the requested API has a known missing feature that would increase the complexity of the design. Or there's a library that already does this feature, and it would be faster to pull that instead.
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't do research or spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into smaller components: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first component through the normal design flow. Each further component gets its own spec → plan → implementation cycle, record this in `docs/developer/YYYY-MM-DD-AA-/TODO.md`.
+- If the project is too large for a single spec, help the user decompose into smaller components: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first component through the normal design flow. Each further component gets its own spec → plan → implementation cycle, record this in `docs/developer/YYYY-MM-DD-A-/TODO.md`.
 - For appropriately-scoped projects, ask questions one at a time to refine the idea
 - Present summaries of research results with links to sources to justify options
 - Prefer multiple choice questions when possible, but open-ended is fine too
@@ -127,7 +127,7 @@ digraph brainstorming {
 
 **Documentation:**
 
-Write the validated design to `docs/developer/YYYY-MM-DD-AA-<topic>/design.md`. Include `*DRAFT YYYY-MM-DD*` at the beginning of the document, after the title. A human will remove the `*DRAFT*` mark when the design is ready.
+Write the validated design to `docs/developer/YYYY-MM-DD-A-<topic>/design.md`. Include `*DRAFT YYYY-MM-DD*` at the beginning of the document, after the title. A human will remove the `*DRAFT*` mark when the design is ready.
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:

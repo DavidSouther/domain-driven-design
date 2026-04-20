@@ -51,7 +51,7 @@ Use Jeopardy! search variants across all artifact locations before concluding a 
 
 # Output Format
 
-Write findings to `docs/research/YYYY-MM-DD-AA-<topic>/domain.md`.
+Write findings to `docs/research/YYYY-MM-DD-A-<topic>/domain.md`.
 
 Structure:
 

@@ -28,7 +28,7 @@ At each iteration, choose which frontier to extend based on which side currently
 
 Each step must be written down as it is generated, not held in working memory. The value of the method comes from accumulating a map, not from tracking a single candidate path. For an LLM agent, this means externalizing steps to a file or scratchpad before continuing. A step held only in context can drift or be silently dropped; a written step can be read back and evaluated precisely.
 
-> Follow project conventions for where to put this map. In projects using the developer: skills, it should go in `docs/developer/YYYY-MM-DD-AA-<topic>/maps/<path>.md`.
+> Follow project conventions for where to put this map. In projects using the developer: skills, it should go in `docs/developer/YYYY-MM-DD-A-<topic>/maps/<path>.md`.
 
 ## Convergence and Failure Modes
 

@@ -51,7 +51,7 @@ Run all variants. Union the result sets before deciding which URLs to fetch.
 
 # Output Format
 
-Write findings to `docs/research/YYYY-MM-DD-AA-<topic>/public.md`.
+Write findings to `docs/research/YYYY-MM-DD-A-<topic>/public.md`.
 
 ```
 # Public: <question>
