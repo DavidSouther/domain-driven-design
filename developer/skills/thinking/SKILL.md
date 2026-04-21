@@ -27,9 +27,9 @@ The invoking skill must pass:
 
 1. Read the inputs without editorializing.
 2. Use `research:` skills to investigate the problem if needed (e.g., API docs, similar patterns in the codebase, error message semantics).
-  * If the error or problem has no obvious fix after research, apply the forward-backward method: work backward from the desired green (passing) outcome and forward from the current red (failing) state. See `developer/references/forward_backward.md`. Note: for thinking skills, the map can be part of the file in the `thinking/<problem-slug>.md` file, rather than in the `maps/` directory.
-3. Produce a thinking doc.
-4. Return control to `developer:red-green-refactor` with a pointer to the thinking doc.
+3. apply the forward-backward method: work backward from the desired green (passing) outcome and forward from the current red (failing) state. See `developer/references/forward_backward.md`. Note: for thinking skills, the map can be part of the file in the `thinking/<problem-slug>.md` file, rather than in the `maps/` directory.
+4. Produce a thinking doc.
+5. Return control to `developer:red-green-refactor` with a pointer to the thinking doc.
 
 ## Thinking Doc Format
 
@@ -68,7 +68,8 @@ The next steps must be concrete and ordered. "Try X" without a predicted outcome
 - May read files using the Read, Grep, and Glob tools
 - May use `research:` skills (research:codebase, research:public, research:dependencies)
 - May read documentation and external sources with WebFetch
-- May NOT edit files, run code, or invoke implementation skills
+- May use codemode or equivalent to explore APIs, creating scripts in a `tmp` folder and executing them or sending scripts to a repl.
+- May NOT edit project files, run project scripts, or invoke implementation skills
 
 ## Return
 

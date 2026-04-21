@@ -31,8 +31,7 @@ digraph rgr {
     "Already tried thinking for this error?" [shape=diamond];
     "ABORT" [shape=doublecircle];
     "Commit" [shape=box];
-    "developer:refactoring" [shape=box];
-    "developer:code-review" [shape=box];
+    "developer:refactor" [shape=box];
     "Done" [shape=doublecircle];
 
     "Plan step" -> "Type-first: write signatures";
@@ -53,9 +52,8 @@ digraph rgr {
     "Already tried thinking for this error?" -> "Invoke developer:thinking" [label="no"];
     "Invoke developer:thinking" -> "Implement (replace stubs)" [label="follow thinking plan"];
     "All pass?" -> "Commit" [label="yes"];
-    "Commit" -> "developer:refactoring";
-    "developer:refactoring" -> "developer:code-review";
-    "developer:code-review" -> "Done";
+    "Commit" -> "developer:refactor";
+    "developer:refactor" -> "Done";
 }
 ```
 
@@ -106,5 +104,5 @@ Do not loop. Do not try a different approach on your own. Abort and report.
 When all tests are green:
 1. `git add` only the files changed in this step.
 2. Commit with a message describing what the step implemented.
-3. Invoke `developer:refactoring`.
-4. After refactoring, invoke `developer:code-review`.
+3. Invoke `developer:refactor`.
+4. Commit with a message describing the refactorings.

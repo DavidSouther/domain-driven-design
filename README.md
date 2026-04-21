@@ -60,13 +60,12 @@ A strict three-loop development lifecycle: design → feature test → TDD imple
 |-------|-------------|
 | `developer:using-developer` | Bootstrap — establishes which developer skill to invoke for the current situation |
 | `developer:brainstorming` | Exploring a new idea or clarifying requirements before writing a design doc |
-| `developer:code-review` | Verifying a change is correct and spec-conformant |
 | `developer:design-doc` | Formatting or structuring a design doc |
 | `developer:feature-test` | Writing the feature test after design is approved |
 | `developer:initialize` | Setting up a new project or language environment |
 | `developer:planning` | Breaking a failing feature test into implementation steps |
 | `developer:red-green-refactor` | Implementing a plan step with TDD |
-| `developer:refactoring` | Tests are green; cleaning up code before finishing |
+| `developer:refactor` | Tests are green; cleaning up code before continuing |
 | `developer:run` | Starting or resuming a feature development session |
 | `developer:thinking` | Stuck on a compiler error or test failure during TDD |
 | `developer:writing-plans` | Converting a spec or requirements into a general implementation plan |

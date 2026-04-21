@@ -42,7 +42,6 @@ digraph loops {
 | Implementing a plan step with TDD | `developer:red-green-refactor` |
 | Stuck on a compiler error or test failure during TDD | `developer:thinking` |
 | Tests are green; cleaning up code before finishing | `developer:refactoring` |
-| Verifying a change is correct and spec-conformant | `developer:code-review` |
 | Setting up a new project or language environment | `developer:initialize` |
 | Converting a spec into a general implementation plan | `developer:writing-plans` |
 

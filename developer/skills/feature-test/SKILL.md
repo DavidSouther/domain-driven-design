@@ -21,7 +21,8 @@ Writes a single executable feature test that encodes a user story end-to-end. Th
 2. Write a user story in plain language (Given/When/Then or narrative form).
 3. Write one executable feature test that runs end-to-end through the user story.
 4. Save both artifacts and mark the feature test file as a draft.
-5. Stop. Decline to implement any code that makes the test pass.
+5. Add a TASK to perform a final refactoring and review once the entire feature is completed.
+6. Stop. Decline to implement any code that makes the test pass.
 
 ## User Story Format
 
