@@ -33,36 +33,36 @@ A file has its draft cleared when it no longer contains the `*Draft` marker.
 
 ```dot
 digraph run {
-    "Session start" [shape=doublecircle];
-    "Determine resume point" [shape=box];
-    "Outer loop:\ndeveloper:design-doc" [shape=box];
-    "Draft gate:\ndesign" [shape=diamond];
-    "Middle loop:\ndeveloper:feature-test" [shape=box];
-    "Draft gate:\nfeature-test" [shape=diamond];
-    "Middle loop:\ndeveloper:planning" [shape=box];
-    "Draft gate:\nplan" [shape=diamond];
-    "Inner loop:\ndeveloper:red-green-refactor" [shape=box];
-    "Stop session" [shape=doublecircle];
+    start [shape=doublecircle label="Session start"];
+    resume [shape=box label="Determine resume point"];
+    design_doc [shape=box label="Outer loop:\ndeveloper:design-doc"];
+    gate_design [shape=diamond label="Draft gate:\ndesign"];
+    feature_test [shape=box label="Middle loop:\ndeveloper:feature-test"];
+    gate_feature [shape=diamond label="Draft gate:\nfeature-test"];
+    planning [shape=box label="Middle loop:\ndeveloper:planning"];
+    gate_plan [shape=diamond label="Draft gate:\nplan"];
+    rgr [shape=box label="Inner loop:\ndeveloper:red-green-refactor"];
+    stop [shape=doublecircle label="Stop session"];
 
-    "Session start" -> "Determine resume point";
-    "Determine resume point" -> "Outer loop:\ndeveloper:design-doc";
-    "Determine resume point" -> "Middle loop:\ndeveloper:feature-test";
-    "Determine resume point" -> "Middle loop:\ndeveloper:planning";
-    "Determine resume point" -> "Inner loop:\ndeveloper:red-green-refactor";
+    start -> resume;
+    resume -> design_doc;
+    resume -> feature_test;
+    resume -> planning;
+    resume -> rgr;
 
-    "Outer loop:\ndeveloper:design-doc" -> "Draft gate:\ndesign";
-    "Draft gate:\ndesign" -> "Stop session" [label="not cleared"];
-    "Draft gate:\ndesign" -> "Middle loop:\ndeveloper:feature-test" [label="cleared"];
+    design_doc -> gate_design;
+    gate_design -> stop [label="not cleared"];
+    gate_design -> feature_test [label="cleared"];
 
-    "Middle loop:\ndeveloper:feature-test" -> "Draft gate:\nfeature-test";
-    "Draft gate:\nfeature-test" -> "Stop session" [label="not cleared"];
-    "Draft gate:\nfeature-test" -> "Middle loop:\ndeveloper:planning" [label="cleared"];
+    feature_test -> gate_feature;
+    gate_feature -> stop [label="not cleared"];
+    gate_feature -> planning [label="cleared"];
 
-    "Middle loop:\ndeveloper:planning" -> "Draft gate:\nplan";
-    "Draft gate:\nplan" -> "Stop session" [label="not cleared"];
-    "Draft gate:\nplan" -> "Inner loop:\ndeveloper:red-green-refactor" [label="cleared"];
+    planning -> gate_plan;
+    gate_plan -> stop [label="not cleared"];
+    gate_plan -> rgr [label="cleared"];
 
-    "Inner loop:\ndeveloper:red-green-refactor" -> "Stop session" [label="feature test passes"];
+    rgr -> stop [label="feature test passes"];
 }
 ```
 

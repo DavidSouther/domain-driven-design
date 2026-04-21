@@ -15,45 +15,45 @@ The innermost development loop. Type-first TDD: write signatures before tests, t
 
 ```dot
 digraph rgr {
-    "Plan step" [shape=doublecircle];
-    "Type-first: write signatures" [shape=box];
-    "Run check" [shape=box];
-    "Type errors?" [shape=diamond];
-    "Fix type errors" [shape=box];
-    "Write one test (arrange-act-assert)" [shape=box];
-    "Run check + test" [shape=box];
-    "Test fails as expected?" [shape=diamond];
-    "Implement (replace stubs)" [shape=box];
-    "Run check + tests" [shape=box];
-    "All pass?" [shape=diamond];
-    "Same error after fix?" [shape=diamond];
-    "Invoke developer:thinking" [shape=box];
-    "Already tried thinking for this error?" [shape=diamond];
-    "ABORT" [shape=doublecircle];
-    "Commit" [shape=box];
-    "developer:refactor" [shape=box];
-    "Done" [shape=doublecircle];
+    plan_step [shape=doublecircle label="Plan step"];
+    write_sigs [shape=box label="Type-first: write signatures"];
+    run_check [shape=box label="Run check"];
+    type_errors [shape=diamond label="Type errors?"];
+    fix_types [shape=box label="Fix type errors"];
+    write_test [shape=box label="Write one test (arrange-act-assert)"];
+    run_check_test [shape=box label="Run check + test"];
+    test_fails [shape=diamond label="Test fails as expected?"];
+    implement [shape=box label="Implement (replace stubs)"];
+    run_checks [shape=box label="Run check + tests"];
+    all_pass [shape=diamond label="All pass?"];
+    same_error [shape=diamond label="Same error after fix?"];
+    invoke_thinking [shape=box label="Invoke developer:thinking"];
+    tried_thinking [shape=diamond label="Already tried thinking for this error?"];
+    abort [shape=doublecircle label="ABORT"];
+    commit [shape=box label="Commit"];
+    refactor [shape=box label="developer:refactor"];
+    done [shape=doublecircle label="Done"];
 
-    "Plan step" -> "Type-first: write signatures";
-    "Type-first: write signatures" -> "Run check";
-    "Run check" -> "Type errors?" ;
-    "Type errors?" -> "Fix type errors" [label="yes"];
-    "Fix type errors" -> "Run check";
-    "Type errors?" -> "Write one test (arrange-act-assert)" [label="no"];
-    "Write one test (arrange-act-assert)" -> "Run check + test";
-    "Run check + test" -> "Test fails as expected?" ;
-    "Test fails as expected?" -> "Implement (replace stubs)" [label="yes"];
-    "Test fails as expected?" -> "Write one test (arrange-act-assert)" [label="no — fix test"];
-    "Implement (replace stubs)" -> "Run check + tests";
-    "Run check + tests" -> "All pass?" ;
-    "All pass?" -> "Same error after fix?" [label="no"];
-    "Same error after fix?" -> "Already tried thinking for this error?" [label="yes"];
-    "Already tried thinking for this error?" -> "ABORT" [label="yes"];
-    "Already tried thinking for this error?" -> "Invoke developer:thinking" [label="no"];
-    "Invoke developer:thinking" -> "Implement (replace stubs)" [label="follow thinking plan"];
-    "All pass?" -> "Commit" [label="yes"];
-    "Commit" -> "developer:refactor";
-    "developer:refactor" -> "Done";
+    plan_step -> write_sigs;
+    write_sigs -> run_check;
+    run_check -> type_errors;
+    type_errors -> fix_types [label="yes"];
+    fix_types -> run_check;
+    type_errors -> write_test [label="no"];
+    write_test -> run_check_test;
+    run_check_test -> test_fails;
+    test_fails -> implement [label="yes"];
+    test_fails -> write_test [label="no — fix test"];
+    implement -> run_checks;
+    run_checks -> all_pass;
+    all_pass -> same_error [label="no"];
+    same_error -> tried_thinking [label="yes"];
+    tried_thinking -> abort [label="yes"];
+    tried_thinking -> invoke_thinking [label="no"];
+    invoke_thinking -> implement [label="follow thinking plan"];
+    all_pass -> commit [label="yes"];
+    commit -> refactor;
+    refactor -> done;
 }
 ```
 

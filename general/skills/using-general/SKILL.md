@@ -19,31 +19,31 @@ Invoke relevant skills before any response or action. If a skill might apply, lo
 
 ```dot
 digraph skill_flow {
-    "User message received" [shape=doublecircle];
-    "About to EnterPlanMode?" [shape=doublecircle];
-    "Already brainstormed?" [shape=diamond];
-    "Invoke brainstorming skill" [shape=box];
-    "Might any skill apply?" [shape=diamond];
-    "Invoke Skill tool" [shape=box];
-    "Announce: 'Using [skill] to [purpose]'" [shape=box];
-    "Has checklist?" [shape=diamond];
-    "Create TodoWrite todo per item" [shape=box];
-    "Follow skill exactly" [shape=box];
-    "Respond (including clarifications)" [shape=doublecircle];
+    msg [shape=doublecircle label="User message received"];
+    plan_mode [shape=doublecircle label="About to EnterPlanMode?"];
+    brainstormed [shape=diamond label="Already brainstormed?"];
+    invoke_bs [shape=box label="Invoke brainstorming skill"];
+    might_apply [shape=diamond label="Might any skill apply?"];
+    invoke_skill [shape=box label="Invoke Skill tool"];
+    announce [shape=box label="Announce: 'Using [skill] to [purpose]'"];
+    has_checklist [shape=diamond label="Has checklist?"];
+    create_todos [shape=box label="Create TodoWrite todo per item"];
+    follow [shape=box label="Follow skill exactly"];
+    respond [shape=doublecircle label="Respond (including clarifications)"];
 
-    "About to EnterPlanMode?" -> "Already brainstormed?";
-    "Already brainstormed?" -> "Invoke brainstorming skill" [label="no"];
-    "Already brainstormed?" -> "Might any skill apply?" [label="yes"];
-    "Invoke brainstorming skill" -> "Might any skill apply?";
+    plan_mode -> brainstormed;
+    brainstormed -> invoke_bs [label="no"];
+    brainstormed -> might_apply [label="yes"];
+    invoke_bs -> might_apply;
 
-    "User message received" -> "Might any skill apply?";
-    "Might any skill apply?" -> "Invoke Skill tool" [label="yes"];
-    "Might any skill apply?" -> "Respond (including clarifications)" [label="definitely not"];
-    "Invoke Skill tool" -> "Announce: 'Using [skill] to [purpose]'";
-    "Announce: 'Using [skill] to [purpose]'" -> "Has checklist?";
-    "Has checklist?" -> "Create TodoWrite todo per item" [label="yes"];
-    "Has checklist?" -> "Follow skill exactly" [label="no"];
-    "Create TodoWrite todo per item" -> "Follow skill exactly";
+    msg -> might_apply;
+    might_apply -> invoke_skill [label="yes"];
+    might_apply -> respond [label="definitely not"];
+    invoke_skill -> announce;
+    announce -> has_checklist;
+    has_checklist -> create_todos [label="yes"];
+    has_checklist -> follow [label="no"];
+    create_todos -> follow;
 }
 ```
 

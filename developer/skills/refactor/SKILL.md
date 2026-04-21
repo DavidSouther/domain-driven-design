@@ -71,38 +71,38 @@ Code smells are patterns for applying refactoring.
 
 ```dot
 digraph refactor {
-    "Start (working dir clean, tests green)" [shape=doublecircle];
-    "Identify smells in touched files + neighbors" [shape=box];
-    "Smells found?" [shape=diamond];
-    "Apply one refactoring" [shape=box];
-    "Run check + tests" [shape=box];
-    "Pass?" [shape=diamond];
-    "Fix attempt causes same or new error?" [shape=diamond];
-    "Already tried thinking for this error?" [shape=diamond];
-    "Invoke developer:thinking" [shape=box];
-    "ABORT" [shape=doublecircle];
-    "Fix the error" [shape=box];
-    "More smells?" [shape=diamond];
-    "Record deferred smells (optional)" [shape=box];
-    "Done" [shape=doublecircle];
+    start [shape=doublecircle label="Start (working dir clean, tests green)"];
+    identify [shape=box label="Identify smells in touched files + neighbors"];
+    smells_found [shape=diamond label="Smells found?"];
+    apply [shape=box label="Apply one refactoring"];
+    run_checks [shape=box label="Run check + tests"];
+    pass [shape=diamond label="Pass?"];
+    fix_causes_error [shape=diamond label="Fix attempt causes same or new error?"];
+    tried_thinking [shape=diamond label="Already tried thinking for this error?"];
+    invoke_thinking [shape=box label="Invoke developer:thinking"];
+    abort [shape=doublecircle label="ABORT"];
+    fix_error [shape=box label="Fix the error"];
+    more_smells [shape=diamond label="More smells?"];
+    record_deferred [shape=box label="Record deferred smells (optional)"];
+    done [shape=doublecircle label="Done"];
 
-    "Start (working dir clean, tests green)" -> "Identify smells in touched files + neighbors";
-    "Identify smells in touched files + neighbors" -> "Smells found?";
-    "Smells found?" -> "Apply one refactoring" [label="yes"];
-    "Smells found?" -> "Done" [label="no"];
-    "Apply one refactoring" -> "Run check + tests";
-    "Run check + tests" -> "Pass?";
-    "Pass?" -> "More smells?" [label="yes"];
-    "Pass?" -> "Fix attempt causes same or new error?" [label="no — fix error first"];
-    "Fix attempt causes same or new error?" -> "Already tried thinking for this error?" [label="yes"];
-    "Fix attempt causes same or new error?" -> "Fix the error" [label="no"];
-    "Already tried thinking for this error?" -> "ABORT" [label="yes"];
-    "Already tried thinking for this error?" -> "Invoke developer:thinking" [label="no"];
-    "Invoke developer:thinking" -> "Fix the error" [label="follow thinking plan"];
-    "Fix the error" -> "Run check + tests";
-    "More smells?" -> "Apply one refactoring" [label="yes"];
-    "More smells?" -> "Record deferred smells (optional)" [label="no"];
-    "Record deferred smells (optional)" -> "Done";
+    start -> identify;
+    identify -> smells_found;
+    smells_found -> apply [label="yes"];
+    smells_found -> done [label="no"];
+    apply -> run_checks;
+    run_checks -> pass;
+    pass -> more_smells [label="yes"];
+    pass -> fix_causes_error [label="no — fix error first"];
+    fix_causes_error -> tried_thinking [label="yes"];
+    fix_causes_error -> fix_error [label="no"];
+    tried_thinking -> abort [label="yes"];
+    tried_thinking -> invoke_thinking [label="no"];
+    invoke_thinking -> fix_error [label="follow thinking plan"];
+    fix_error -> run_checks;
+    more_smells -> apply [label="yes"];
+    more_smells -> record_deferred [label="no"];
+    record_deferred -> done;
 }
 ```
 

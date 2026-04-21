@@ -48,33 +48,33 @@ Create a task for each of these items and complete them in order:
 
 ```dot
 digraph brainstorming {
-    "Explore project context" [shape=box];
-    "Research additional context" [shape=box];
-    "Visual questions ahead?" [shape=diamond];
-    "Offer Visual Companion\n(own message, no other content)" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
-    "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
-    "Write design doc" [shape=box];
-    "Spec self-review\n(fix inline)" [shape=box];
-    "User reviews spec?" [shape=diamond];
-    "Invoke writing-plans skill in a new session" [shape=doublecircle];
+    explore [shape=box label="Explore project context"];
+    research [shape=box label="Research additional context"];
+    visual_q [shape=diamond label="Visual questions ahead?"];
+    visual [shape=box label="Offer Visual Companion\n(own message, no other content)"];
+    clarify [shape=box label="Ask clarifying questions"];
+    propose [shape=box label="Propose 2-3 approaches"];
+    present [shape=box label="Present design sections"];
+    user_ok [shape=diamond label="User approves design?"];
+    write [shape=box label="Write design doc"];
+    review [shape=box label="Spec self-review\n(fix inline)"];
+    user_review [shape=diamond label="User reviews spec?"];
+    done [shape=doublecircle label="Invoke writing-plans skill in a new session"];
 
-    "Explore project context" -> "Research additional context";
-    "Research additional context" -> "Visual questions ahead?";
-    "Visual questions ahead?" -> "Offer Visual Companion\n(own message, no other content)" [label="yes"];
-    "Visual questions ahead?" -> "Ask clarifying questions" [label="no"];
-    "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill in a new session" [label="approved"];
+    explore -> research;
+    research -> visual_q;
+    visual_q -> visual [label="yes"];
+    visual_q -> clarify [label="no"];
+    visual -> clarify;
+    clarify -> propose;
+    propose -> present;
+    present -> user_ok;
+    user_ok -> present [label="no, revise"];
+    user_ok -> write [label="yes"];
+    write -> review;
+    review -> user_review;
+    user_review -> write [label="changes requested"];
+    user_review -> done [label="approved"];
 }
 ```
 

@@ -237,14 +237,14 @@ Avoid `@` link syntax — it force-loads files immediately, consuming context be
 
 ```dot
 digraph when_flowchart {
-    "Need to show information?" [shape=diamond];
-    "Decision where I might go wrong?" [shape=diamond];
-    "Use markdown" [shape=box];
-    "Small inline flowchart" [shape=box];
+    info [shape=diamond label="Need to show information?"];
+    wrong_decision [shape=diamond label="Decision where I might go wrong?"];
+    use_markdown [shape=box label="Use markdown"];
+    flowchart [shape=box label="Small inline flowchart"];
 
-    "Need to show information?" -> "Decision where I might go wrong?" [label="yes"];
-    "Decision where I might go wrong?" -> "Small inline flowchart" [label="yes"];
-    "Decision where I might go wrong?" -> "Use markdown" [label="no"];
+    info -> wrong_decision [label="yes"];
+    wrong_decision -> flowchart [label="yes"];
+    wrong_decision -> use_markdown [label="no"];
 }
 ```
 

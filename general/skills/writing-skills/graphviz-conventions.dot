@@ -1,169 +1,173 @@
 digraph STYLE_GUIDE {
     // The style guide for our process DSL, written in the DSL itself
+    // Node IDs are short identifiers; display text goes in label=""
 
     // Node type examples with their shapes
     subgraph cluster_node_types {
         label="NODE TYPES AND SHAPES";
 
         // Questions are diamonds
-        "Is this a question?" [shape=diamond];
+        is_question [shape=diamond label="Is this a question?"];
 
         // Actions are boxes (default)
-        "Take an action" [shape=box];
+        take_action [shape=box label="Take an action"];
 
         // Commands are plaintext
-        "git commit -m 'msg'" [shape=plaintext];
+        git_commit [shape=plaintext label="git commit -m 'msg'"];
 
         // States are ellipses
-        "Current state" [shape=ellipse];
+        current_state [shape=ellipse label="Current state"];
 
         // Warnings are octagons
-        "STOP: Critical warning" [shape=octagon, style=filled, fillcolor=red, fontcolor=white];
+        stop_warning [shape=octagon style=filled fillcolor=red fontcolor=white label="STOP: Critical warning"];
 
         // Entry/exit are double circles
-        "Process starts" [shape=doublecircle];
-        "Process complete" [shape=doublecircle];
+        process_starts [shape=doublecircle label="Process starts"];
+        process_complete [shape=doublecircle label="Process complete"];
 
         // Examples of each
-        "Is test passing?" [shape=diamond];
-        "Write test first" [shape=box];
-        "npm test" [shape=plaintext];
-        "I am stuck" [shape=ellipse];
-        "NEVER use git add -A" [shape=octagon, style=filled, fillcolor=red, fontcolor=white];
+        test_passing [shape=diamond label="Is test passing?"];
+        write_test [shape=box label="Write test first"];
+        npm_test [shape=plaintext label="npm test"];
+        i_am_stuck [shape=ellipse label="I am stuck"];
+        never_add_a [shape=octagon style=filled fillcolor=red fontcolor=white label="NEVER use git add -A"];
     }
 
     // Edge naming conventions
     subgraph cluster_edge_types {
         label="EDGE LABELS";
 
-        "Binary decision?" [shape=diamond];
-        "Yes path" [shape=box];
-        "No path" [shape=box];
+        binary [shape=diamond label="Binary decision?"];
+        yes_path [shape=box label="Yes path"];
+        no_path [shape=box label="No path"];
 
-        "Binary decision?" -> "Yes path" [label="yes"];
-        "Binary decision?" -> "No path" [label="no"];
+        binary -> yes_path [label="yes"];
+        binary -> no_path [label="no"];
 
-        "Multiple choice?" [shape=diamond];
-        "Option A" [shape=box];
-        "Option B" [shape=box];
-        "Option C" [shape=box];
+        multi [shape=diamond label="Multiple choice?"];
+        opt_a [shape=box label="Option A"];
+        opt_b [shape=box label="Option B"];
+        opt_c [shape=box label="Option C"];
 
-        "Multiple choice?" -> "Option A" [label="condition A"];
-        "Multiple choice?" -> "Option B" [label="condition B"];
-        "Multiple choice?" -> "Option C" [label="otherwise"];
+        multi -> opt_a [label="condition A"];
+        multi -> opt_b [label="condition B"];
+        multi -> opt_c [label="otherwise"];
 
-        "Process A done" [shape=doublecircle];
-        "Process B starts" [shape=doublecircle];
+        proc_a_done [shape=doublecircle label="Process A done"];
+        proc_b_starts [shape=doublecircle label="Process B starts"];
 
-        "Process A done" -> "Process B starts" [label="triggers", style=dotted];
+        proc_a_done -> proc_b_starts [label="triggers" style=dotted];
     }
 
     // Naming patterns
     subgraph cluster_naming_patterns {
         label="NAMING PATTERNS";
 
+        // Node IDs: short snake_case identifiers
+        // Labels: full descriptive text matching the node's role
+
         // Questions end with ?
-        "Should I do X?";
-        "Can this be Y?";
-        "Is Z true?";
-        "Have I done W?";
+        should_do_x [label="Should I do X?"];
+        can_be_y [label="Can this be Y?"];
+        is_z_true [label="Is Z true?"];
+        have_done_w [label="Have I done W?"];
 
         // Actions start with verb
-        "Write the test";
-        "Search for patterns";
-        "Commit changes";
-        "Ask for help";
+        write_the_test [label="Write the test"];
+        search_patterns [label="Search for patterns"];
+        commit_changes [label="Commit changes"];
+        ask_for_help [label="Ask for help"];
 
         // Commands are literal
-        "grep -r 'pattern' .";
-        "git status";
-        "npm run build";
+        grep_cmd [shape=plaintext label="grep -r 'pattern' ."];
+        git_status [shape=plaintext label="git status"];
+        npm_build [shape=plaintext label="npm run build"];
 
         // States describe situation
-        "Test is failing";
-        "Build complete";
-        "Stuck on error";
+        test_failing [shape=ellipse label="Test is failing"];
+        build_complete [shape=ellipse label="Build complete"];
+        stuck_on_error [shape=ellipse label="Stuck on error"];
     }
 
     // Process structure template
     subgraph cluster_structure {
         label="PROCESS STRUCTURE TEMPLATE";
 
-        "Trigger: Something happens" [shape=ellipse];
-        "Initial check?" [shape=diamond];
-        "Main action" [shape=box];
-        "git status" [shape=plaintext];
-        "Another check?" [shape=diamond];
-        "Alternative action" [shape=box];
-        "STOP: Don't do this" [shape=octagon, style=filled, fillcolor=red, fontcolor=white];
-        "Process complete" [shape=doublecircle];
+        trigger [shape=ellipse label="Trigger: Something happens"];
+        initial_check [shape=diamond label="Initial check?"];
+        main_action [shape=box label="Main action"];
+        git_status_cmd [shape=plaintext label="git status"];
+        another_check [shape=diamond label="Another check?"];
+        alt_action [shape=box label="Alternative action"];
+        stop_dont [shape=octagon style=filled fillcolor=red fontcolor=white label="STOP: Don't do this"];
+        done [shape=doublecircle label="Process complete"];
 
-        "Trigger: Something happens" -> "Initial check?";
-        "Initial check?" -> "Main action" [label="yes"];
-        "Initial check?" -> "Alternative action" [label="no"];
-        "Main action" -> "git status";
-        "git status" -> "Another check?";
-        "Another check?" -> "Process complete" [label="ok"];
-        "Another check?" -> "STOP: Don't do this" [label="problem"];
-        "Alternative action" -> "Process complete";
+        trigger -> initial_check;
+        initial_check -> main_action [label="yes"];
+        initial_check -> alt_action [label="no"];
+        main_action -> git_status_cmd;
+        git_status_cmd -> another_check;
+        another_check -> done [label="ok"];
+        another_check -> stop_dont [label="problem"];
+        alt_action -> done;
     }
 
     // When to use which shape
     subgraph cluster_shape_rules {
         label="WHEN TO USE EACH SHAPE";
 
-        "Choosing a shape" [shape=ellipse];
+        choosing [shape=ellipse label="Choosing a shape"];
 
-        "Is it a decision?" [shape=diamond];
-        "Use diamond" [shape=diamond, style=filled, fillcolor=lightblue];
+        is_decision [shape=diamond label="Is it a decision?"];
+        use_diamond [shape=diamond style=filled fillcolor=lightblue label="Use diamond"];
 
-        "Is it a command?" [shape=diamond];
-        "Use plaintext" [shape=plaintext, style=filled, fillcolor=lightgray];
+        is_command [shape=diamond label="Is it a command?"];
+        use_plaintext [shape=plaintext style=filled fillcolor=lightgray label="Use plaintext"];
 
-        "Is it a warning?" [shape=diamond];
-        "Use octagon" [shape=octagon, style=filled, fillcolor=pink];
+        is_warning [shape=diamond label="Is it a warning?"];
+        use_octagon [shape=octagon style=filled fillcolor=pink label="Use octagon"];
 
-        "Is it entry/exit?" [shape=diamond];
-        "Use doublecircle" [shape=doublecircle, style=filled, fillcolor=lightgreen];
+        is_entry_exit [shape=diamond label="Is it entry/exit?"];
+        use_doublecircle [shape=doublecircle style=filled fillcolor=lightgreen label="Use doublecircle"];
 
-        "Is it a state?" [shape=diamond];
-        "Use ellipse" [shape=ellipse, style=filled, fillcolor=lightyellow];
+        is_state [shape=diamond label="Is it a state?"];
+        use_ellipse [shape=ellipse style=filled fillcolor=lightyellow label="Use ellipse"];
 
-        "Default: use box" [shape=box, style=filled, fillcolor=lightcyan];
+        use_box [shape=box style=filled fillcolor=lightcyan label="Default: use box"];
 
-        "Choosing a shape" -> "Is it a decision?";
-        "Is it a decision?" -> "Use diamond" [label="yes"];
-        "Is it a decision?" -> "Is it a command?" [label="no"];
-        "Is it a command?" -> "Use plaintext" [label="yes"];
-        "Is it a command?" -> "Is it a warning?" [label="no"];
-        "Is it a warning?" -> "Use octagon" [label="yes"];
-        "Is it a warning?" -> "Is it entry/exit?" [label="no"];
-        "Is it entry/exit?" -> "Use doublecircle" [label="yes"];
-        "Is it entry/exit?" -> "Is it a state?" [label="no"];
-        "Is it a state?" -> "Use ellipse" [label="yes"];
-        "Is it a state?" -> "Default: use box" [label="no"];
+        choosing -> is_decision;
+        is_decision -> use_diamond [label="yes"];
+        is_decision -> is_command [label="no"];
+        is_command -> use_plaintext [label="yes"];
+        is_command -> is_warning [label="no"];
+        is_warning -> use_octagon [label="yes"];
+        is_warning -> is_entry_exit [label="no"];
+        is_entry_exit -> use_doublecircle [label="yes"];
+        is_entry_exit -> is_state [label="no"];
+        is_state -> use_ellipse [label="yes"];
+        is_state -> use_box [label="no"];
     }
 
     // Good vs bad examples
     subgraph cluster_examples {
         label="GOOD VS BAD EXAMPLES";
 
-        // Good: specific and shaped correctly
-        "Test failed" [shape=ellipse];
-        "Read error message" [shape=box];
-        "Can reproduce?" [shape=diamond];
-        "git diff HEAD~1" [shape=plaintext];
-        "NEVER ignore errors" [shape=octagon, style=filled, fillcolor=red, fontcolor=white];
+        // Good: short IDs, descriptive labels, correct shapes
+        test_failed [shape=ellipse label="Test failed"];
+        read_error [shape=box label="Read error message"];
+        can_reproduce [shape=diamond label="Can reproduce?"];
+        git_diff_cmd [shape=plaintext label="git diff HEAD~1"];
+        never_ignore [shape=octagon style=filled fillcolor=red fontcolor=white label="NEVER ignore errors"];
 
-        "Test failed" -> "Read error message";
-        "Read error message" -> "Can reproduce?";
-        "Can reproduce?" -> "git diff HEAD~1" [label="yes"];
+        test_failed -> read_error;
+        read_error -> can_reproduce;
+        can_reproduce -> git_diff_cmd [label="yes"];
 
-        // Bad: vague and wrong shapes
-        bad_1 [label="Something wrong", shape=box];  // Should be ellipse (state)
-        bad_2 [label="Fix it", shape=box];  // Too vague
-        bad_3 [label="Check", shape=box];  // Should be diamond
-        bad_4 [label="Run command", shape=box];  // Should be plaintext with actual command
+        // Bad: vague labels, wrong shapes
+        bad_1 [label="Something wrong" shape=box];  // Should be ellipse (state)
+        bad_2 [label="Fix it" shape=box];  // Too vague
+        bad_3 [label="Check" shape=box];  // Should be diamond
+        bad_4 [label="Run command" shape=box];  // Should be plaintext with actual command
 
         bad_1 -> bad_2;
         bad_2 -> bad_3;

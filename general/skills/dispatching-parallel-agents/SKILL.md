@@ -17,19 +17,18 @@ When multiple unrelated failures appear across different test files or subsystem
 
 ```dot
 digraph when_to_use {
-    "Multiple failures?" [shape=diamond];
-    "Are they independent?" [shape=diamond];
-    "Single agent investigates all" [shape=box];
-    "One agent per problem domain" [shape=box];
-    "Can they work in parallel?" [shape=diamond];
-    "Sequential agents" [shape=box];
-    "Parallel dispatch" [shape=box];
+    multiple [shape=diamond label="Multiple failures?"];
+    independent [shape=diamond label="Are they independent?"];
+    single [shape=box label="Single agent investigates all"];
+    parallel_ok [shape=diamond label="Can they work in parallel?"];
+    sequential [shape=box label="Sequential agents"];
+    parallel [shape=box label="Parallel dispatch"];
 
-    "Multiple failures?" -> "Are they independent?" [label="yes"];
-    "Are they independent?" -> "Single agent investigates all" [label="no - related"];
-    "Are they independent?" -> "Can they work in parallel?" [label="yes"];
-    "Can they work in parallel?" -> "Parallel dispatch" [label="yes"];
-    "Can they work in parallel?" -> "Sequential agents" [label="no - shared state"];
+    multiple -> independent [label="yes"];
+    independent -> single [label="no - related"];
+    independent -> parallel_ok [label="yes"];
+    parallel_ok -> parallel [label="yes"];
+    parallel_ok -> sequential [label="no - shared state"];
 }
 ```
 

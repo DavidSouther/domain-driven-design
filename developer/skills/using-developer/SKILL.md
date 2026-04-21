@@ -11,22 +11,22 @@ Developer work is organized into three nested loops. Each loop has its own skill
 
 ```dot
 digraph loops {
-    "New feature idea" [shape=doublecircle];
-    "Outer loop:\ndesign" [shape=box];
-    "Design approved" [shape=diamond];
-    "Middle loop:\nfeature test + plan" [shape=box];
-    "Plan approved" [shape=diamond];
-    "Inner loop:\nred-green-refactor" [shape=box];
-    "Feature test passes" [shape=doublecircle];
+    start [shape=doublecircle label="New feature idea"];
+    outer [shape=box label="Outer loop:\ndesign"];
+    design_ok [shape=diamond label="Design approved"];
+    middle [shape=box label="Middle loop:\nfeature test + plan"];
+    plan_ok [shape=diamond label="Plan approved"];
+    inner [shape=box label="Inner loop:\nred-green-refactor"];
+    done [shape=doublecircle label="Feature test passes"];
 
-    "New feature idea" -> "Outer loop:\ndesign";
-    "Outer loop:\ndesign" -> "Design approved";
-    "Design approved" -> "Middle loop:\nfeature test + plan" [label="yes"];
-    "Design approved" -> "Outer loop:\ndesign" [label="revise"];
-    "Middle loop:\nfeature test + plan" -> "Plan approved";
-    "Plan approved" -> "Inner loop:\nred-green-refactor" [label="yes"];
-    "Plan approved" -> "Middle loop:\nfeature test + plan" [label="revise"];
-    "Inner loop:\nred-green-refactor" -> "Feature test passes";
+    start -> outer;
+    outer -> design_ok;
+    design_ok -> middle [label="yes"];
+    design_ok -> outer [label="revise"];
+    middle -> plan_ok;
+    plan_ok -> inner [label="yes"];
+    plan_ok -> middle [label="revise"];
+    inner -> done;
 }
 ```
 
