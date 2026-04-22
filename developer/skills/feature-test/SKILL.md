@@ -75,7 +75,7 @@ Save to the session folder (`docs/developer/YYYY-MM-DD-A-<topic>/`):
 - `feature-test.md` — user story in plain language plus a copy of the test file path
 - Test code in the appropriate project location (per project layout conventions)
 
-Mark `feature-test.md` with `*Draft YYYY-MM-DD*` at the top.
+Mark `feature-test.md` with `*Draft YYYY-MM-DD*` after the title.
 
 ## Stop Condition
 
