@@ -55,6 +55,10 @@ Each step must:
 
 **Feature test:** `<test-file-path>`
 **User story:** Summarize in one sentence.
+**Steps:**
+- [ ] Step 0: Domain model
+- [ ] Step 1: <Name>
+- [ ] Step 2: <Name>
 
 ## Step 0: Domain model (if needed)
 
