@@ -4,6 +4,35 @@ A [Claude Code](https://claude.ai/code) plugin providing structured workflows fo
 
 ## Skills
 
+### General (`general:*`)
+
+Utilities for skill authoring, parallel agent dispatch, and git worktree isolation.
+
+| Skill | When to use |
+|-------|-------------|
+| `general:using-general` | Bootstrap — load before any action to find the most relevant skills |
+| `general:using-git-worktrees` | Starting feature work that needs isolation from the current workspace |
+| `general:dispatching-parallel-agents` | Multiple independent tasks with no shared state or sequential dependencies |
+| `general:writing-skills` | Creating, editing, or verifying skills before deployment |
+
+### Developer (`developer:*`)
+
+A strict three-loop development lifecycle: design → feature test → TDD implementation.
+
+| Skill | When to use |
+|-------|-------------|
+| `developer:ailly` | Starting or resuming a feature development session. The main driver for development. Running `/ailly` in Claude will get it going on the next thing. |
+| `developer:using-developer` | Bootstrap skill that guides which developer skill to invoke for the current situation |
+| `developer:initialize` | Setting up a new project or language environment |
+| `developer:design` | Formatting or structuring a design doc |
+| `developer:feature-test` | Writing the feature test after design is approved |
+| `developer:plan` | Breaking a failing feature test into implementation steps |
+| `developer:red-green-refactor` | Implementing a plan step with TDD |
+| `developer:refactor` | Tests are green; cleaning up code before continuing |
+| `developer:think` | Stuck on a compiler error or test failure during TDD |
+
+The developer lifecycle uses draft gates: each artifact (design doc, feature test, plan) must be human-reviewed and cleared before the next loop begins.
+
 ### Domain-Driven Design (`domain:*`)
 
 Guides architectural decisions and domain modeling through the full DDD lifecycle.
@@ -52,36 +81,6 @@ Selects the right research strategy based on what kind of question is being aske
 | `research:internal` | What do internal documents (Slack, Confluence, Linear, Notion) say about this? |
 | `research:public` | What does the public internet say? What do official docs or forums say? |
 
-### Developer (`developer:*`)
-
-A strict three-loop development lifecycle: design → feature test → TDD implementation.
-
-| Skill | When to use |
-|-------|-------------|
-| `developer:using-developer` | Bootstrap — establishes which developer skill to invoke for the current situation |
-| `developer:brainstorming` | Exploring a new idea or clarifying requirements before writing a design doc |
-| `developer:design-doc` | Formatting or structuring a design doc |
-| `developer:feature-test` | Writing the feature test after design is approved |
-| `developer:initialize` | Setting up a new project or language environment |
-| `developer:planning` | Breaking a failing feature test into implementation steps |
-| `developer:red-green-refactor` | Implementing a plan step with TDD |
-| `developer:refactor` | Tests are green; cleaning up code before continuing |
-| `developer:run` | Starting or resuming a feature development session |
-| `developer:thinking` | Stuck on a compiler error or test failure during TDD |
-| `developer:writing-plans` | Converting a spec or requirements into a general implementation plan |
-
-The developer lifecycle uses draft gates: each artifact (design doc, feature test, plan) must be human-reviewed and cleared before the next loop begins.
-
-### General (`general:*`)
-
-Utilities for skill authoring, parallel agent dispatch, and git worktree isolation.
-
-| Skill | When to use |
-|-------|-------------|
-| `general:using-general` | Bootstrap — load before any action to find the most relevant skills |
-| `general:using-git-worktrees` | Starting feature work that needs isolation from the current workspace |
-| `general:dispatching-parallel-agents` | Multiple independent tasks with no shared state or sequential dependencies |
-| `general:writing-skills` | Creating, editing, or verifying skills before deployment |
 
 ## Installation
 

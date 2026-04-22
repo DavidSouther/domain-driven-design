@@ -1,6 +1,6 @@
 ---
 name: using-developer
-description: Use when starting any developer task — establishes which developer skill to invoke for design, feature testing, planning, implementation, or project setup
+description: Bootstrap skill to describe developer tasks. Directs which developer skill to invoke for design, feature testing, planning, implementation, or project setup.
 ---
 
 # Using Developer Skills
@@ -34,7 +34,7 @@ digraph loops {
 
 | Situation | Invoke |
 |---|---|
-| Starting a session for a new or in-progress feature | `developer:run` |
+| Starting a session for a new or in-progress feature | `developer:ailly` |
 | Exploring a new idea, clarifying requirements, producing a design doc | `developer:brainstorming` |
 | Formatting or structuring a design doc | `developer:design-doc` |
 | Writing the feature test (design approved, no test yet) | `developer:feature-test` |
