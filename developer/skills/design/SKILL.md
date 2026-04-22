@@ -1,5 +1,5 @@
 ---
-name: design-doc 
+name: design
 description: "Use when starting any creative work — building features, components, or modifying system behavior. Explores alternatives and produces a formal design document before implementation."
 ---
 

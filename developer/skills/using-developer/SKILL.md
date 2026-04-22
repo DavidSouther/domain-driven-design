@@ -35,19 +35,18 @@ digraph loops {
 | Situation | Invoke |
 |---|---|
 | Starting a session for a new or in-progress feature | `developer:ailly` |
-| Exploring a new idea, clarifying requirements, producing a design doc | `developer:brainstorming` |
-| Formatting or structuring a design doc | `developer:design-doc` |
+| Exploring a new idea, clarifying requirements, and producing a formal design doc | `developer:design` |
 | Writing the feature test (design approved, no test yet) | `developer:feature-test` |
-| Breaking a failing feature test into implementation steps | `developer:planning` |
+| Breaking a failing feature test into implementation steps | `developer:plan` |
 | Implementing a plan step with TDD | `developer:red-green-refactor` |
-| Stuck on a compiler error or test failure during TDD | `developer:thinking` |
-| Tests are green; cleaning up code before finishing | `developer:refactoring` |
+| Debugging a compiler error or test failure during TDD | `developer:thinking` |
+| Cleaning up code after tests pass, before finishing | `developer:refactor` |
 | Setting up a new project or language environment | `developer:initialize` |
 | Converting a spec into a general implementation plan | `developer:writing-plans` |
 
 ## Draft Gates
 
-The outer and middle loops produce `*Draft YYYY-MM-DD*` artifacts. A human must review and clear the draft marker before the next loop begins. `developer:run` enforces this — it will not proceed past a draft gate in the same session.
+The outer and middle loops produce `*Draft YYYY-MM-DD*` artifacts. A human must review and clear the draft marker before the next loop begins. `developer:ailly` enforces this. It will not proceed past a draft gate in the same session.
 
 | Artifact | Location | Clears to enter |
 |---|---|---|

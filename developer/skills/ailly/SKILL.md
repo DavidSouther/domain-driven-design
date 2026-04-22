@@ -9,7 +9,7 @@ description: Use when starting or resuming software development tasks.
 
 Session coordinator for a development loop. Creates and manages the session folder, passes it to each skill, enforces draft gates, and determines where to resume when re-entering an existing session.
 
-**Announce at start:** "Using developer:run to coordinate this session."
+**Announce at start:** "Using developer:ailly to coordinate this session."
 
 ## Session Folder
 
@@ -70,7 +70,7 @@ digraph run {
 
 After any outer or middle loop skill (design-doc, feature-test, planning) produces output, stop the session and tell the user:
 
-> "This step is complete. Review `<path>`, make any changes, then remove the `*Draft YYYY-MM-DD*` marker from the top of the file. Start a new session and run `developer:run` to continue."
+> "This step is complete. Review `<path>`, make any changes, then remove the `*Draft YYYY-MM-DD*` marker from the top of the file. Start a new session and run `developer:ailly` to continue."
 
 **Do not proceed past a draft gate in the same session under any circumstances.** If the user asks to continue anyway, decline:
 
@@ -104,7 +104,7 @@ All artifacts for a session live under `docs/developer/YYYY-MM-DD-A-<topic>/`.
 
 ## Next Task
 
-When finishing a session, append the next step to `docs/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments.
+When finishing a session, append the next step to `docs/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments. When substantial context is needed for a task, create a `TASK-NOTES-<task>.md` file with the details, and include just a short overview to that in the TASKS file. Review NOTES when the task is selected.
 
 ## Attribution
 

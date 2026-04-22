@@ -1,5 +1,5 @@
 ---
-name: planning
+name: plan
 description: Use when a feature test has been reviewed and cleared and is currently failing — breaks passing it into 3-7 incremental plan steps
 ---
 
@@ -87,6 +87,6 @@ Save `plan.md` to the session folder (`docs/developer/YYYY-MM-DD-A-<topic>/plan.
 
 After saving, tell the user:
 
-> "Plan saved to `docs/developer/YYYY-MM-DD-A-<topic>/plan.md`. Review it and make any adjustments. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:run` (or `developer:red-green-refactor`) to begin implementation."
+> "Plan saved to `docs/developer/YYYY-MM-DD-A-<topic>/plan.md`. Review it and make any adjustments. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:ailly` (or `developer:red-green-refactor`) to begin implementation."
 
 Do not implement any step. Do not run the feature test. Do not invoke `developer:red-green-refactor`.
