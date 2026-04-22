@@ -89,11 +89,11 @@ Install via the Claude Code marketplace using the plugin manifest:
 
 ```json
 {
-  "source": "https://github.com/davidsouther/ddd_skill"
+  "source": "https://github.com/davidsouther/domain_driven_design"
 }
 ```
 
-Or reference the local `ddd` or `domain` directories directly in your marketplace config.
+Or clone and install locally with `claude /plugin install ./`.
 
 ## License
 
