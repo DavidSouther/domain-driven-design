@@ -3,7 +3,7 @@ name: review
 description: Used when an agent is finishing a work product, before claiming a task is complete, or after completing an editing pass.
 ---
 
-Review work before declaring it done by building a task-specific rubric, evaluating against it, and editing to address gaps — one pass each, evaluation before editing.
+Review work before declaring it done by building a task-specific rubric, evaluating against it, and editing to address gaps.
 
 ## Checklist
 
@@ -20,6 +20,6 @@ Review work before declaring it done by building a task-specific rubric, evaluat
 
 ## Common Mistakes
 
-- Skipping the rubric and reviewing by feel
-- Combining evaluation and editing into one pass
-- Claiming the task is complete before the review cycle finishes
+- Skipping the rubric and reviewing without any criteria.
+- Combining evaluation and editing into one pass. These should happen in separate agents, to reduce context bloat.
+- Claiming the task is complete before the review cycle finishes.
