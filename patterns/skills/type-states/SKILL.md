@@ -28,7 +28,7 @@ Three sub-patterns, each making a different class of illegal state unrepresentab
 
 **Protocols / interfaces** — define narrow interfaces per capability so callers only access what their context permits. A function that accepts `Readable` cannot accidentally call `write`.
 
-For complete examples in TypeScript, Python, and Rust, see `references/type-states.md`.
+For complete examples, see [`references/typescript.md`](references/typescript.md), [`references/python.md`](references/python.md), and [`references/rust.md`](references/rust.md).
 
 ## Quick Reference
 

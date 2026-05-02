@@ -24,7 +24,7 @@ Not all domain objects are the same kind of thing. Treating identity-bearing obj
 - **Value Object** (`OrderLine`) — no identity; replace it with another `OrderLine` carrying identical data and the domain doesn't care. "Mutation" returns a new instance.
 - **Domain Service Function** (`allocate`) — spans multiple `Batch` entities, is stateless itself, and does not belong to any single entity.
 
-For complete examples in TypeScript, Python, and Rust, see `references/entities-value-objects-services.md`.
+For complete examples, see [`references/typescript.md`](references/typescript.md), [`references/python.md`](references/python.md), and [`references/rust.md`](references/rust.md).
 
 ## Quick Reference
 

@@ -40,7 +40,7 @@ class SqlProductRepository(AbstractProductRepository): ...
 def allocate(order_line, repo: AbstractProductRepository) -> str: ...
 ```
 
-For complete examples in TypeScript, Python, and Rust, see `references/repository.md`.
+For complete examples, see [`references/typescript.md`](references/typescript.md), [`references/python.md`](references/python.md), and [`references/rust.md`](references/rust.md).
 
 ## Quick Reference
 

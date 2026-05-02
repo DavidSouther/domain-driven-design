@@ -31,7 +31,7 @@ def allocate(cmd, uow: AbstractUnitOfWork) -> str:
     return batch_id                           # 5. respond (outside UoW scope)
 ```
 
-For complete examples in TypeScript, Python, and Rust, see `references/unit-of-work.md`.
+For complete examples, see [`references/typescript.md`](references/typescript.md), [`references/python.md`](references/python.md), and [`references/rust.md`](references/rust.md).
 
 ## Quick Reference
 

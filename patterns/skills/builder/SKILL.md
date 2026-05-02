@@ -38,7 +38,7 @@ Key rules:
 - Copy mutable fields (headers, lists) in `build()` so re-using the builder does not alias state.
 - The product constructor is private — every instance was validated by the builder.
 
-For complete examples in TypeScript, Python, and Rust, see `references/builder.md`.
+For complete examples, see [`references/typescript.md`](references/typescript.md), [`references/python.md`](references/python.md), and [`references/rust.md`](references/rust.md).
 
 ## Common Mistakes
 

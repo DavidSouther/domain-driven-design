@@ -36,7 +36,7 @@ const orderService = new OrderService(repo);
 app.post("/orders", handlePlaceOrder);
 ```
 
-For complete examples in TypeScript, Python, and Rust, see `references/bootstrap-and-service.md`.
+For complete examples, see [`references/typescript.md`](references/typescript.md), [`references/python.md`](references/python.md), and [`references/rust.md`](references/rust.md).
 
 ## Quick Reference
 

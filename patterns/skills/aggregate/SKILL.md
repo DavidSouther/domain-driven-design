@@ -30,7 +30,7 @@ await orderRepository.save(order);
 // Cross-aggregate side effects go via domain events after commit, not direct calls
 ```
 
-For complete examples in TypeScript, Python, and Rust, see `references/aggregate.md`.
+For complete examples, see [`references/typescript.md`](references/typescript.md), [`references/python.md`](references/python.md), and [`references/rust.md`](references/rust.md).
 
 ## Quick Reference
 

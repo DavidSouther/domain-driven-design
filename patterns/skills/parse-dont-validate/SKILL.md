@@ -33,7 +33,7 @@ sendWelcome(email);  // no guard inside — the type guarantees validity
 
 Errors must be specific to the failure mode. The caller of the parser must be able to understand the error and correct it.
 
-For complete examples in TypeScript, Python, and Rust, see `references/parse-dont-validate.md`.
+For complete examples, see [`references/typescript.md`](references/typescript.md), [`references/python.md`](references/python.md), and [`references/rust.md`](references/rust.md).
 
 ## Quick Reference
 

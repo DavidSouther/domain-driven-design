@@ -32,7 +32,7 @@ transfer("acc-123", "acc-456", 5000);
 transfer(makeAccountId("acc-123"), makeAccountId("acc-456"), makeCents(5000));
 ```
 
-For complete examples in TypeScript, Python, and Rust, see `references/newtype.md`.
+For complete examples, see [`references/typescript.md`](references/typescript.md), [`references/python.md`](references/python.md), and [`references/rust.md`](references/rust.md).
 
 ## Quick Reference
 
