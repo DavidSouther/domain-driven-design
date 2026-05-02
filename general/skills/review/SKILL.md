@@ -8,8 +8,8 @@ Review work before declaring it done by building a task-specific rubric, evaluat
 ## Checklist
 
 - [ ] Prepare an evaluation rubric for the review. Include the criteria below plus any task-specific concerns (e.g., code correctness, citation accuracy, format requirements).
-- [ ] In a subagent, evaluate the work against the rubric. Describe what does not meet each criterion and why. Do not suggest edits in the subagent's output. If everything passes, write exactly: "Evaluation complete. All criteria passed."
-- [ ] If the evaluation found gaps, edit in a second subagent to address them. If the evaluation passed, skip this step.
+- [ ] In a subagent, evaluate the work against the rubric. Describe what does not meet each criterion and why. Do not suggest edits in the subagent's output.
+- [ ] In a second subagent, address any issues identified by the reviewer.
 
 ## Review Criteria
 
@@ -23,3 +23,4 @@ Review work before declaring it done by building a task-specific rubric, evaluat
 - Skipping the rubric and reviewing without any criteria.
 - Combining evaluation and editing into one pass. These should happen in separate agents, to reduce context bloat.
 - Claiming the task is complete before the review cycle finishes.
+
