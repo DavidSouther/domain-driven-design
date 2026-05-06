@@ -25,7 +25,7 @@ Middle-loop planning skill. Given a failing feature test, breaks the path to mak
   - If it seems a plan would require more than a few steps, encourage the user to go back to the design and simplify the size of the step.
   - If it seems a plan would require more than 7 steps, insist that the user go back to the design.
 3a. If the path from the failing test to a passing test isn't obvious, apply the forward-backward method. Work backward from the passing test state (what must be true just before the failing assertion passes?) and forward from the current code (what can be derived or added without breaking anything?) until the two sides connect into a complete sequence of steps. Write each candidate step to a map file as it is generated — do not hold steps only in context. See `developer/references/forward_backward.md`.
-4. For each step: name it, describe what it implements, and identify which assertion in the feature test it enables.
+4. For each step: name it, describe what it implements, and identify which assertion in the feature test it enables. Do not write code implementations, only write API definitions and their documentation. Comments should state what the item is intended for, why it is needed, and which invariants must be maintained.
 5. Save the plan as a draft and stop.
 
 ## Step 0: Domain Object Design
@@ -33,7 +33,7 @@ Middle-loop planning skill. Given a failing feature test, breaks the path to mak
 Before implementation steps, consider whether the feature test introduces new domain objects. If it does, make step 0 a domain design step:
 
 - Introduce new entities, value objects, or services needed
-- Lean on `patterns:entities-value-objects-services`, `patterns:newtype`, `patterns:type-states` for guidance
+- Lean on `patterns:entities-value-objects-services`, `patterns:newtype`, `patterns:type-states` for guidance.
 - Show type signatures (not implementations) for the new objects
 - Keep this step focused on the domain model, not persistence or UI
 

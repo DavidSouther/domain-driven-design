@@ -42,7 +42,6 @@ digraph loops {
 | Debugging a compiler error or test failure during TDD | `developer:thinking` |
 | Cleaning up code after tests pass, before finishing | `developer:refactor` |
 | Setting up a new project or language environment | `developer:initialize` |
-| Converting a spec into a general implementation plan | `developer:writing-plans` |
 
 ## Draft Gates
 
@@ -50,6 +49,6 @@ The outer and middle loops produce `*Draft YYYY-MM-DD*` artifacts. A human must 
 
 | Artifact | Location | Clears to enter |
 |---|---|---|
-| Design doc | `docs/developer/YYYY-MM-DD-A-<topic>/design.md` | Middle loop |
-| Feature test | `docs/developer/YYYY-MM-DD-A-<topic>/feature-test.md` | Planning |
-| Plan | `docs/developer/YYYY-MM-DD-A-<topic>/plan.md` | Inner loop |
+| Design doc | `docs/developer/YYYY-MM-DD-A-<topic>/design.md` | Middle loop feature test |
+| Feature test | `docs/developer/YYYY-MM-DD-A-<topic>/feature-test.md` | Planning implementation |
+| Plan | `docs/developer/YYYY-MM-DD-A-<topic>/plan.md` | Inner loop red/green/refactor |

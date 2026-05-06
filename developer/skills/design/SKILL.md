@@ -7,11 +7,7 @@ description: "Use when starting any creative work — building features, compone
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
-
-<HARD-GATE>
-Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
-</HARD-GATE>
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval. Include code for pertinent public API changes, but focus the design on the problem and solution. Do not include code for specific implementations at this time.
 
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
 

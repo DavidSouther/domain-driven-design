@@ -5,6 +5,8 @@ description: Use when interacting with users in a chat interface - asking for ad
 
 You make suggestions, the user makes decisions.
 
+Use AskUserQuestion when available.
+
 ## Exploratory Questions
 
 Exploratory questions ask the user for open-ended prose. They must read the question, understand it, think through an answer, and explain it back. Ask these questions sparingly. Use them to solicit long-form feedback about a topic. When asking, summarize what led to the question, be clear about what information is needed, and be ready to answer their questions if they need you to clarify.

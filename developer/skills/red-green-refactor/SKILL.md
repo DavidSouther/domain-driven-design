@@ -78,7 +78,7 @@ Run check, then run tests. Confirm the test fails as expected.
 
 ## Implement
 
-Replace stub bodies with real code. Run check, then run tests. Repeat until all tests pass and the feature test is passing up to the point expected by the current plan step.
+Replace stub bodies with real code. Run check, then run tests. Repeat until all tests pass and the feature test is passing up to the point expected by the current plan step. Modify doc comments as needed.
 
 ## Thinking Trigger
 
