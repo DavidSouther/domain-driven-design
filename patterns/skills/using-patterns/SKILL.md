@@ -22,6 +22,8 @@ You are working in a project that uses structured design patterns. During a plan
 | Writing or reviewing a test — ensuring setup, action, and assertions are clearly separated | `patterns:arrange-act-assert` |
 | Fake implementation passes the first test and the correct generalization is not yet obvious | `patterns:triangulate` |
 | Converting one domain type to another, especially when `as` casts, extract-and-rewrap, or duplicated `to_X`/`from_X` pairs appear | `patterns:type-conversion` |
+| Bootstrapping a logging pipeline at process start — subscriber, formatter, filter, resource attributes, W3C trace propagator, exporter, sampling, redaction, graceful shutdown | `patterns:configuring-logging` |
+| Writing a log call site — choosing a severity, attaching fields under OpenTelemetry semantic conventions, scoping spans to units of work, naming business events, logging an error chain once at the boundary | `patterns:emitting-logs` |
 
 ## Pattern Composition
 
@@ -31,5 +33,6 @@ Patterns compose in predictable ways — recognise these combinations:
 - **`repository` + `aggregate`** — persistence-ignorant domain model with clean consistency boundaries. Add `unit-of-work` when the operation must be atomic and durable.
 - **`bootstrap-and-service`** — the outer shell that wires `repository`, `unit-of-work`, and protocol adapters together at startup. Apply last.
 - **`type-conversion` + `newtype`** — newtype constructors *are* the canonical conversions; total constructors implement `From`, partial constructors implement `TryFrom`/`parse`, and call sites stop reaching into `.0` to rewrap.
+- **`configuring-logging` + `emitting-logs`** — the two halves of structured logging. Configuration sets the envelope and the exporter once; emission attaches the per-event fields under the semantic conventions the configuration enforces. Run them together; one without the other produces structured logs that aren't queryable, or queryable logs that aren't centralized.
 
 Do not apply all patterns upfront. Start with the one that addresses the immediate design pressure.
