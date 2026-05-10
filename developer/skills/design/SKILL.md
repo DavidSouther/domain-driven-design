@@ -83,11 +83,11 @@ digraph brainstorming {
 - Check out the current project state first (files, docs, recent commits).
 - Perform web searches to fill in additional context. Perhaps the requested API has a known missing feature that would increase the complexity of the design. Or there's a library that already does this feature, and it would be faster to pull that instead.
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't do research or spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into smaller components: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first component through the normal design flow. Each further component gets its own spec → plan → implementation cycle, record this in `docs/developer/YYYY-MM-DD-A-/TODO.md`.
+- If the project is too large for a single spec, help the user decompose into smaller components: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first component through the normal design flow. Each further component gets its own spec → plan → implementation cycle, record this in `docs/developer/YYYY-MM-DD-A-<topic>/TODO.md`.
 - For appropriately-scoped projects, ask questions one at a time to refine the idea
 - Present summaries of research results with links to sources to justify options
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
+- Prefer multiple choice questions when possible, with room for open ended responses 
+- Only one question per message. If a topic needs more exploration, break it into multiple questions
 - Focus on understanding: purpose, constraints, success criteria
 
 **Exploring approaches:**
@@ -105,19 +105,13 @@ digraph brainstorming {
 - Ask after each section whether it looks right so far
 - Cover: architecture, components, data flow, error handling, testing
 - Be ready to go back and clarify if something doesn't make sense
-
-**Design for isolation and clarity:**
-
-- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
-- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
-- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
-- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
+- When the design is ready, write it. The user can read and edit it at their convenience.
 
 **Working in existing codebases:**
 
-- Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design — the way a good developer improves code they're working in.
+- Explore the current structure before proposing changes. Follow existing patterns. Use LSP connections to follow code references.
 - Don't propose unrelated refactoring. Stay focused on what serves the current goal.
+- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), suggest these refactorings as follow up tasks.
 
 ## After the Design
 
@@ -129,16 +123,3 @@ After the spec review loop passes, ask the user to review the written spec befor
 > "The spec for this design is at `<path>`. Please make any further modifications you find appropriate. When you're satisfied, end this session. Remove the `*DRAFT*` tag, and use the writing-specs skill in a new session to continue."
 
 Wait for the user's response. If they request changes, make them and re-run the spec review loop. Stop once the user approves. Do not continue to any implementation skill in this prompt. Politely decline any such requests.
-
-**Implementation:**
-
-- Do NOT invoke any other skill.
-- writing-plans is the next step.
-- The user will invoke that in a new session.
-
-## Key Principles
-
-- **YAGNI ruthlessly** — Remove unnecessary features from all designs
-- **Explore alternatives** — Always propose 2-3 approaches before settling
-- **Incremental validation** — Present design sections, get approval before moving on
-- **Be flexible** — Go back and clarify when something doesn't make sense

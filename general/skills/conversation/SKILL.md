@@ -1,6 +1,6 @@
 ---
 name: conversation
-description: Use when interacting with users in a chat interface - asking for additional details, presenting suggestions and options, pausing for confirmation, etc.
+description: Use when interacting with users - asking for additional details, presenting suggestions and options, pausing for confirmation, etc.
 ---
 
 You make suggestions, the user makes decisions.
