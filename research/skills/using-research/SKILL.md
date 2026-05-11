@@ -19,10 +19,16 @@ You are working in a project with structured research skills. When asked a resea
 | What does this concept mean in the domain? How are domain terms defined? | `research:domain` |
 | What do internal documents (Slack, Confluence, Linear, Notion) say about this? | `research:internal` |
 | What does the public internet say? What do official docs or forums say? | `research:public` |
+| What book covers this topic? Find an ISBN? Quote from a book? | `research:books` |
+| What paper says X? Cite this DOI? What cites this paper? | `research:papers` |
 
 ## Jeopardy! Search (all skills)
 
 Every research skill applies Jeopardy! search: before issuing any query, generate 3–5 variants (synonyms, different phrasings, casing variants, related concepts) and run each. See `research/references/jeopardy.md` for background.
+
+## Falsification (oppositional research)
+
+When a claim is load-bearing, when the user asks "are you sure?", or when the evidence so far is entirely confirming, run a falsification pass before reporting a conclusion. Restate the claim as a universal, negate it into 3 to 5 concrete falsifiable hypotheses, and dispatch a subagent per hypothesis to search specifically for the negation. A single counterexample refutes the original; absence of counterexamples only fails to refute it. See `research/references/falsify.md` for procedure and limits.
 
 ## Research Notes Convention
 
