@@ -56,6 +56,7 @@ digraph skill_flow {
 | `review` | After finishing a work product, before claiming a task complete, or after an editing pass |
 | `writing-skills` | When creating or improving skill documents |
 | `writing-pattern-skills` | When authoring or revising a skill in the patterns plugin |
+| `writing-paired-skills` | When two skills cover the same topic at different cadences (wiring once, practice often) |
 | `dispatching-parallel-agents` | When facing multiple independent tasks that can proceed without shared state |
 | `using-git-worktrees` | When starting feature work that needs isolation from the current workspace |
 | `research:using-research` or `development:run`| to move from general skills to specifics for a task. |
