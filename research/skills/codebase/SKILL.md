@@ -66,3 +66,4 @@ Write findings to `docs/research/YYYY-MM-DD-A-<topic>/codebase.md`.
 - **Grep instead of LSP** — LSP follows type aliases, generics, and macros; grep matches text only.
 - **Using git for context** — blame and log are archaeology tools; avoid them here.
 - **Stopping at first match** — a symbol may have multiple definitions (overloads, feature flags); collect all before concluding.
+- **Asserting a universal without searching its negation** — claims like "no caller does X" or "every write path does Y" are easy to state and easy to be wrong about. Before reporting a universal, search for its counterexample. See `research/references/falsify.md`.

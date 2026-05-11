@@ -71,3 +71,4 @@ Write findings to `docs/research/YYYY-MM-DD-A-<topic>/public.md`.
 - **Stopping at snippets** — search result snippets are often too short; fetch the full page for precise answers.
 - **Treating blogs as authoritative** — verify blog claims against official docs before including them as findings.
 - **Ignoring version specifics** — API behavior often differs across versions; include the version in at least one query variant.
+- **Reporting only confirming hits** — web search ranks confirming results highly and buries contradictions. When a claim is load-bearing, run a falsification pass: search specifically for the negation. See `research/references/falsify.md`.
