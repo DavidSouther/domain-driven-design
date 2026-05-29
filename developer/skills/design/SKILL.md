@@ -100,10 +100,10 @@ digraph brainstorming {
 
 **Presenting the design:**
 
-- Once you believe you understand what you're building, present the design
+- Once you believe you understand what you're building, present the design.
+- At this stage, the design covers the user-visible side, without proposing any code changes.
 - Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
-- Cover: architecture, components, data flow, error handling, testing
+- Cover user workflows, failure modes, and automated & manual verification steps
 - Be ready to go back and clarify if something doesn't make sense
 - When the design is ready, write it. The user can read and edit it at their convenience.
 
