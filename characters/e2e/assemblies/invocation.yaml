@@ -1,0 +1,21 @@
+name: invocation
+model: claude-sonnet-4-6
+
+matrix:
+  skill:
+    - voice-jefri
+    - voice-jacki
+    - voice-rupert
+    - voice-david
+
+prefix:
+  - { kind: file,   path: ../../e2e/AGENTS.md,                           cache: true }
+  - { kind: file,   path: ./profile.md,                                  cache: true }
+  - { kind: system, path: ../skills/using-characters/SKILL.md,           cache: true }
+  - kind: system
+    path: "../skills/{{ skill }}/SKILL.md"
+    cache: true
+
+conversation:
+  - { role: user, path: "prompts/invocation/{{ skill }}.md" }
+  - { role: assistant }
