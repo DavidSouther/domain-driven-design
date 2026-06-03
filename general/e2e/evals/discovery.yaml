@@ -1,0 +1,58 @@
+name: discovery
+cases:
+  - name: writing-skills-vs-writing-pattern-skills
+    assertions:
+      - { type: text_contains, value: "general:writing-pattern-skills" }
+      - { type: text_not_contains, value: "general:writing-skills" }
+      - type: judge
+        prompt: |
+          The answer selects general:writing-pattern-skills because the prompt
+          asks for a SKILL.md in the patterns plugin following that plugin's
+          Alexandrian template (Quick Reference, Before / After, Composes With).
+          It does not recommend general:writing-skills (the generalist) as the
+          right skill.
+
+  - name: writing-skills-vs-writing-paired-skills
+    assertions:
+      - { type: text_contains, value: "general:writing-paired-skills" }
+      - { type: text_not_contains, value: "general:writing-skills" }
+      - type: judge
+        prompt: |
+          The answer selects general:writing-paired-skills because the prompt
+          describes two skills at different cadences (configure-once vs every
+          call site), an implicit contract between them, and the "before you
+          start, make sure you have…" drift signal. It does not recommend
+          general:writing-skills as the right skill.
+
+  - name: writing-paired-skills-vs-writing-pattern-skills
+    assertions:
+      - { type: text_contains, value: "general:writing-pattern-skills" }
+      - { type: text_not_contains, value: "general:writing-paired-skills" }
+      - type: judge
+        prompt: |
+          The answer selects general:writing-pattern-skills because the prompt
+          asks for a single patterns-plugin pattern skill (Quick Reference,
+          Composes With) with exactly one cadence. It explicitly rules out
+          general:writing-paired-skills because there is no wiring/practice
+          cadence asymmetry to split.
+
+  - name: review-trigger
+    assertions:
+      - { type: text_contains, value: "general:review" }
+      - { type: text_not_contains, value: "general:conversation" }
+      - type: judge
+        prompt: |
+          The answer selects general:review because the user is finishing a
+          work product (a branch ready to merge) and wants a final rubric-based
+          pass before claiming it done. It does not route to general:conversation.
+
+  - name: conversation-vs-review
+    assertions:
+      - { type: text_contains, value: "general:conversation" }
+      - { type: text_not_contains, value: "general:review" }
+      - type: judge
+        prompt: |
+          The answer selects general:conversation because the user is mid-work
+          and wants to talk through an open question (whether to split a module)
+          before deciding — an exploratory discussion, not a final-pass critique
+          of finished work. It does not route to general:review.

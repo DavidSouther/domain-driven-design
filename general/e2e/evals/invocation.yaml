@@ -1,0 +1,66 @@
+name: invocation
+cases:
+  - name: writing-skills
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_writing_skills.py } }
+      - type: judge
+        prompt: |
+          The output is a single SKILL.md with YAML frontmatter carrying name and
+          description fields. The description begins with "Use when" and states
+          triggering conditions only — it does not summarize the skill's steps or
+          workflow. The body has a recognizable section structure (e.g. Overview,
+          When to Use, Common Mistakes).
+      - { type: tokens, metric: output, op: "<", value: 6000 }
+
+  - name: writing-paired-skills
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_writing_paired_skills.py } }
+      - type: judge
+        prompt: |
+          The output is two SKILL.md files split from the mixed-cadence original:
+          a wiring skill (the configure-once half) and a practice skill (the
+          per-new-check half). Each description carries a cadence clause. The
+          wiring skill publishes a short contract and the practice skill cites it
+          rather than re-teaching the setup. The two skills cross-reference each
+          other by name under a "When NOT to use" line.
+      - { type: tokens, metric: output, op: "<", value: 8000 }
+
+  - name: writing-pattern-skills
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_writing_pattern_skills.py } }
+      - type: judge
+        prompt: |
+          The output is a value-object pattern SKILL.md following the patterns
+          plugin template — Overview, When to Use, Core Pattern with Before/After
+          framing, Quick Reference, Common Mistakes, Composes With — plus a
+          references/python.md with a complete runnable example. The description
+          names the design pressure (piecewise field comparison / reference
+          equality), not the steps.
+      - { type: tokens, metric: output, op: "<", value: 12000 }
+
+  - name: review
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_review.py } }
+      - type: judge
+        prompt: |
+          The review builds a task-specific rubric covering correctness,
+          completeness, clarity, and conciseness, and evaluates the diff against
+          it. It identifies real issues in THIS diff — at minimum the unrelated
+          rename of format_timestamp to fmt_ts (scope creep), the removed
+          test_format_timestamp test, and the missing test or the breaking
+          required-field addition of is_admin (which breaks existing User(...)
+          construction). It evaluates only; it does not rewrite the code inline.
+      - { type: tokens, metric: output, op: "<", value: 5000 }
+
+  - name: conversation
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_conversation.py } }
+      - type: judge
+        prompt: |
+          The response engages the user to make the decision rather than starting
+          to implement. It asks one clarifying question at a time — the most
+          blocking one — offering a small set of options to choose from, or it
+          makes a single clear recommendation the user can accept. It does not ask
+          several unrelated questions at once, and it does not substitute a long
+          analysis for asking. It leaves the decision to the user.
+      - { type: tokens, metric: output, op: "<", value: 3000 }

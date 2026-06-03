@@ -1,0 +1,22 @@
+name: invocation
+model: claude-sonnet-4-6
+
+matrix:
+  skill:
+    - writing-skills
+    - writing-paired-skills
+    - writing-pattern-skills
+    - review
+    - conversation
+
+prefix:
+  - { kind: file,   path: context/AGENTS.md,                       cache: true }
+  - { kind: file,   path: profile.md,                              cache: true }
+  - { kind: system, path: context/skills/using-general/SKILL.md,   cache: true }
+  - kind: system
+    path: "context/skills/{{ skill }}/SKILL.md"
+    cache: true
+
+conversation:
+  - { role: user, path: "prompts/invocation/{{ skill }}.md" }
+  - { role: assistant }

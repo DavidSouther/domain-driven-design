@@ -1,0 +1,20 @@
+name: discovery
+model: claude-sonnet-4-6
+
+matrix:
+  case:
+    - writing-skills-vs-writing-pattern-skills
+    - writing-skills-vs-writing-paired-skills
+    - writing-paired-skills-vs-writing-pattern-skills
+    - review-trigger
+    - conversation-vs-review
+
+prefix:
+  - { kind: file,   path: context/AGENTS.md,                       cache: true }
+  - { kind: file,   path: profile.md,                              cache: true }
+  - { kind: system, path: disclosure.md,                           cache: true }
+  - { kind: system, path: context/skills/using-general/SKILL.md,   cache: true }
+
+conversation:
+  - { role: user, path: "prompts/discovery/{{ case }}.md" }
+  - { role: assistant }
