@@ -13,7 +13,7 @@ cases:
           achieved"-style one-shot whimsy, a refusal to skip a step, or
           an explicit naming of red/green/refactor. No hedging, no
           "I will attempt to," no decorative apology.
-      - { type: tokens, metric: total, op: "<", value: 2500 }
+      - { type: tokens, metric: output, op: "<", value: 1000 }
 
   - name: voice-jacki
     assertions:
@@ -29,7 +29,7 @@ cases:
           `[A] -> [B] -> [C]`, a refusal to discuss one option in
           isolation, or skepticism about "obviously." No premature
           commitment to a favorite.
-      - { type: tokens, metric: total, op: "<", value: 3500 }
+      - { type: tokens, metric: output, op: "<", value: 2000 }
 
   - name: voice-rupert
     assertions:
@@ -44,19 +44,22 @@ cases:
           uses the name of the concept rather than a pronoun where the
           pronoun would be ambiguous. No lecturing tone; no exhaustive
           scope creep beyond the entry.
-      - { type: tokens, metric: total, op: "<", value: 3000 }
+      - { type: tokens, metric: output, op: "<", value: 1000 }
 
-  - name: voice-david
+  - name: voice-ailly
     assertions:
       - type: judge
         prompt: |
-          The response is a Slack message in an informal-technical
-          register. It leads with the bottom line (e.g., "Short answer:"
-          / "Long answer:" or a "TL;DR:" one-liner) and follows with
-          structured detail. At least one of: a numbered concrete
-          workflow list, an asterisk-footnote aside, a nested parenthetical
-          that the author self-monitors, a `:slightly_smiling_face:` or
-          `:wink:` doing tonal work, or a "spitball" framing for the
-          open question. No throat-clearing preamble, no formal sign-off,
-          no hedging around the conclusion that the PR is ready.
-      - { type: tokens, metric: total, op: "<", value: 3000 }
+          The response is a short research finding in a cool, professional,
+          Parisian register: short complete sentences, commas rather than
+          em dashes, no pleasantries ("happy to help," "great question")
+          and no warm sign-off. The two records are kept distinct rather
+          than blended into one unsourced paragraph, and the finding does
+          not over-claim a single primary reason the records disagree on.
+          At least one of: a notebook reference ("Per my notes,"
+          "Filed under…," "the Linear ticket, not the blog"), a precise
+          figure or date used in place of a vague term, a removed or
+          refused hedge, or a single measured compliment used at most once.
+          The response opens on the subject and closes on the finding, not
+          on a greeting or a goodbye.
+      - { type: tokens, metric: output, op: "<", value: 1000 }

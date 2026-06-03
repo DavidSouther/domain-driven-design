@@ -1,42 +1,53 @@
 #!/usr/bin/env bash
-# CI driver for the characters/e2e harness.
+# CI driver / feature test for the characters/e2e regression harness.
 #
-# Exercises the Invocation + baseline profile (no discovery axis):
-#   1. Falsification grep on AGENTS.md and profile.md.
-#   2. `ailly assemble <suite>` for baseline + invocation; asserts N
-#      conversation files land under runs/<id>/.
-#   3. `ailly run runs/<id>/` when ANTHROPIC_API_KEY is present;
-#      asserts every conversation file's trailing blank assistant slot
-#      has been filled. Skipped otherwise so contributors without API
-#      access still see the assemble half pass.
-#   4. `ailly eval <suite> --over runs/<id>/`; asserts the per-run
-#      report file landed at evals/reports/<run-id>.json and prints a
-#      deferred-tolerance summary line.
-#   5. `ailly report <baseline-id> <invocation-id>`; produces the
-#      improved/regressed/unchanged_pass/unchanged_fail summary the
-#      falsification gap is read from.
+# Exercises the Invocation + baseline profile (no discovery axis) against the
+# live ../skills/<name>/SKILL.md tree, reached through the in-root symlinks
+# `base -> ../../e2e` and `skills -> ../skills` (ailly clamps `..` to the
+# project root but follows a symlink inside it):
+#   0. falsification grep -- asserts the two baseline-arm files (base/AGENTS.md,
+#      profile.md) leak no `characters:voice-*` identifier, so the baseline arm
+#      cannot pass by reading the answer out of its own prefix.
+#   1. `ailly assemble <suite>` -- asserts 4 conversation files land under
+#      runs/<id>/ for each suite (baseline, invocation).
+#   2. `ailly run runs/<id>/`   -- requires a live model. Asserts every
+#      conversation's trailing blank assistant slot has been filled. With
+#      neither ANTHROPIC_API_KEY nor a project .env the script hard-fails:
+#      there is no assemble-only success path.
+#   3. `ailly eval <suite> --over runs/<id>/` -- asserts the per-run report
+#      landed and prints a tolerance summary per suite.
+#   4. `ailly report <baseline-id> <invocation-id>` -- the comparison report,
+#      gated on improved>0 && regressed==0 (the falsification gap).
+#
+# `ailly` is taken from $AILLY (defaults to `ailly` on $PATH). The built binary
+# in this environment is named `ailly_two`; point $AILLY at it, e.g.
+#   AILLY=/path/to/ailly_two/target/release/ailly_two ./ci.sh
 
 set -euo pipefail
-set -x
 
 project_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${project_dir}/../.." && pwd)"
+AILLY="${AILLY:-ailly}"
 
 cd "${repo_root}"
 
 rm -rf "${project_dir}/runs" "${project_dir}/evals/reports"
 
-# --- Falsification grep -----------------------------------------------------
-#
-# Neither AGENTS.md nor profile.md may name a skill under test by its
-# plugin-prefixed identifier.
-
-if grep -Eq 'characters:voice-(jefri|jacki|rupert|david)' \
-     "${repo_root}/e2e/AGENTS.md" "${project_dir}/profile.md"; then
-  echo "FAIL: falsification leak — skill identifier present in AGENTS.md or profile.md" >&2
-  exit 1
-fi
-echo "OK: falsification grep clean."
+# --- CUJ 0: falsification grep ----------------------------------------------
+# Neither baseline-arm file may name a skill under test by its plugin-prefixed
+# identifier, or the baseline arm would be reading the answer out of its prefix.
+grep_leak() {
+  local rel="$1"
+  local abs="${project_dir}/${rel}"
+  if [[ -f "${abs}" ]] && grep -Eq 'characters:voice-(jefri|jacki|rupert|ailly)' "${abs}"; then
+    echo "FAIL: ${rel} leaks a 'characters:voice-*' identifier; the baseline arm leaks the answer." >&2
+    grep -nE 'characters:voice-(jefri|jacki|rupert|ailly)' "${abs}" >&2
+    exit 1
+  fi
+}
+grep_leak "base/AGENTS.md"
+grep_leak "profile.md"
+echo "OK: no 'characters:voice-*' identifier leaks into the baseline-arm files."
 
 expected_count() {
   case "$1" in
@@ -66,7 +77,7 @@ get_run_dir() {
 
 assemble_suite() {
   local suite="$1"
-  ailly -p "${project_dir}" assemble "${suite}"
+  ${AILLY} -p "${project_dir}" assemble "${suite}"
 
   shopt -s nullglob
   local files=("${project_dir}/runs"/*-"${suite}"/*.yaml)
@@ -101,10 +112,13 @@ assemble_suite invocation
 # --- CUJ 2: run (both suites, gated on credentials) -------------------------
 
 if [[ -z "${ANTHROPIC_API_KEY:-}" && ! -f "${project_dir}/.env" ]]; then
-  echo "SKIP: ailly run requires ANTHROPIC_API_KEY in the shell or ${project_dir#"${repo_root}/"}/.env; assemble half passed."
-  exit 0
+  echo "FAIL: ailly run requires a live model. Set ANTHROPIC_API_KEY in the shell or drop a ${project_dir#"${repo_root}/"}/.env file." >&2
+  echo "      The live half exercises the model and the falsification gate; there is no assemble-only success path." >&2
+  exit 1
 fi
 
+# Asserts that every assembled conversation file under the suite's
+# run_dir has a filled assistant turn.
 assert_filled() {
   local suite="$1"
   local run_dir
@@ -149,7 +163,7 @@ run_suite() {
   local suite="$1"
   local run_dir
   run_dir="$(get_run_dir "${suite}")"
-  ailly -p "${project_dir}" run "${run_dir}"
+  ${AILLY} -p "${project_dir}" run "${run_dir}"
   assert_filled "${suite}"
 }
 
@@ -166,7 +180,8 @@ eval_suite() {
   run_id="$(basename "${run_dir}")"
   local report="${project_dir}/evals/reports/${run_id}.json"
 
-  ailly -p "${project_dir}" eval "${suite}" --over "${run_dir}" || true
+  # Allow assertion failures without aborting; the report step aggregates results.
+  ${AILLY} -p "${project_dir}" eval "${suite}" --over "${run_dir}" || true
 
   if [[ ! -f "${report}" ]]; then
     echo "FAIL: ailly eval ${suite} did not write a report at ${report#"${repo_root}/"}" >&2
@@ -186,7 +201,8 @@ print(
     f"passed={totals['passed']} "
     f"failed={totals['failed']} "
     f"deferred={totals['deferred']} "
-    f"malformed={totals['malformed']}"
+    f"malformed={totals['malformed']} "
+    f"errored={totals.get('errored', 0)}"
 )
 PY
 
@@ -196,13 +212,14 @@ PY
 eval_suite baseline
 eval_suite invocation
 
-# --- CUJ 4: comparison report (falsification gap) ---------------------------
+# --- CUJ 4: comparison report (falsification gate) --------------------------
 
+# Comparison report: baseline (arm-a) vs invocation (arm-b).
 report_comparison() {
   local run_id_a run_id_b
   run_id_a="$(basename "${baseline_run_dir}")"
   run_id_b="$(basename "${invocation_run_dir}")"
-  ailly -p "${project_dir}" report "${run_id_a}" "${run_id_b}"
+  ${AILLY} -p "${project_dir}" report "${run_id_a}" "${run_id_b}"
 
   local stem="${run_id_a}-vs-${run_id_b}"
   local comparison_json="${project_dir}/evals/reports/${stem}.json"
@@ -217,6 +234,9 @@ report_comparison() {
     exit 1
   fi
 
+  # Falsification gate: the invocation arm (skill loaded) must pass assertions
+  # the baseline arm (no skill) fails -- improved > 0 -- and the skill must never
+  # make a passing baseline case fail -- regressed == 0.
   python3 - "${run_id_a}" "${run_id_b}" "${comparison_json}" <<'PY'
 import json, sys
 id_a, id_b, path = sys.argv[1], sys.argv[2], sys.argv[3]
@@ -230,9 +250,25 @@ print(
     f"unchanged_pass={t['unchanged_pass']} "
     f"unchanged_fail={t['unchanged_fail']}"
 )
+errors = []
+if t["improved"] <= 0:
+    errors.append(
+        f"improved={t['improved']} (expected > 0): the invocation arm passed no "
+        "assertion the baseline arm failed; the judges are too lenient to "
+        "falsify un-voiced output, so the falsification claim is vacuous"
+    )
+if t["regressed"] != 0:
+    errors.append(
+        f"regressed={t['regressed']} (expected 0): loading the voice skill made a "
+        "passing baseline case fail"
+    )
+if errors:
+    for e in errors:
+        print(f"FAIL: {e}", file=sys.stderr)
+    sys.exit(1)
 PY
 
-  echo "OK: ailly report wrote ${comparison_json#"${repo_root}/"} and ${comparison_md#"${repo_root}/"}"
+  echo "OK: ailly report wrote ${comparison_json#"${repo_root}/"} and ${comparison_md#"${repo_root}/"} (improved>0, regressed==0)"
 }
 
 report_comparison

@@ -6,11 +6,11 @@ matrix:
     - voice-jefri
     - voice-jacki
     - voice-rupert
-    - voice-david
+    - voice-ailly
 
 prefix:
-  - { kind: file, path: ../../e2e/AGENTS.md, cache: true }
-  - { kind: file, path: ./profile.md,        cache: true }
+  - { kind: file, path: base/AGENTS.md,  cache: true }
+  - { kind: file, path: ./profile.md,    cache: true }
 
 conversation:
   - { role: user, path: "prompts/invocation/{{ skill }}.md" }
