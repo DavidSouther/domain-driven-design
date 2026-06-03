@@ -1,0 +1,74 @@
+name: baseline
+# Mechanically identical to invocation.yaml: same case names (the baseline run's
+# conversation filenames match the invocation run's), same script + judge +
+# tokens assertions, same token budgets. The only difference between the arms is
+# the assembly prefix — baseline loads no skill body — so any difference in the
+# results is attributable to the skill.
+cases:
+  - name: glossary
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_glossary.py } }
+      - type: judge
+        prompt: |
+          The output is a single glossary entry: a level-2 heading naming the
+          term `OrderManifest`, followed by labelled fields for Definition,
+          Context, and Source, each carrying a real value rather than a
+          `<placeholder>`. A Synonyms field is present and lists both "manifest"
+          and "shipment list". The entry is marked `[DRAFT]`.
+      - { type: tokens, metric: total, op: "<", value: 5000 }
+
+  - name: ubiquitous-language
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_ubiquitous_language.py } }
+      - type: judge
+        prompt: |
+          The output has two distinct deliverables: (1) a candidate-terms list
+          where each term carries a draft definition and a recorded source, and
+          (2) a categorized question list that groups questions for domain
+          experts under two headings — "Ask a domain expert" and "Confirm with a
+          domain expert". All generated terms are marked `[DRAFT]`.
+      - { type: tokens, metric: total, op: "<", value: 7000 }
+
+  - name: domain-model
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_domain_model.py } }
+      - type: judge
+        prompt: |
+          The output is a domain map: a Subdomains table where each row carries a
+          Core / Generic / Supporting classification and a named bounded context;
+          a "Boundary Map" section describing what flows between context pairs
+          (events, data contracts, or API calls); and at least one per-bounded-
+          context block giving its responsibilities. The artifact is marked
+          `[DRAFT]`.
+      - { type: tokens, metric: total, op: "<", value: 9000 }
+
+  - name: contracts-and-invariants
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_contracts_and_invariants.py } }
+      - type: judge
+        prompt: |
+          The output is the full content of `order-management.md` after an
+          append. The original `# Order Management` block (its classification,
+          responsibilities, consumes, produces) is preserved verbatim at the top.
+          Below it a new operation block headed `### place_order` (or equivalent)
+          contains an input contract, an output contract with error cases, and an
+          Invariants list with at least one invariant (e.g. an order must have at
+          least one line item). The appended content is marked `[DRAFT]`.
+      - { type: tokens, metric: total, op: "<", value: 6000 }
+
+  - name: arrow-of-maturity
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_arrow_of_maturity.py } }
+      - type: judge
+        prompt: |
+          The output is an architectural-stage assessment with three parts: the
+          current stage the codebase is at with evidence; the signal or friction
+          that justifies advancing (or staying); and a next concrete step. The
+          assessment is framed in the Arrow of Maturity's staged vocabulary — it
+          names a specific stage (e.g. a straight-through handler, a domain
+          model, an extracted repository, or a stage code like 2a/2b) rather than
+          offering generic architecture advice. For this scenario it should place
+          the code around the straight-through-handler stage and point toward a
+          domain model and/or an extracted repository, justified by accumulating
+          business logic and database-coupled tests rather than scaling pressure.
+      - { type: tokens, metric: total, op: "<", value: 6000 }

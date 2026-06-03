@@ -1,0 +1,24 @@
+name: discovery
+model: claude-sonnet-4-6
+
+# Prefix files are referenced through in-jail symlinks because ailly roots the
+# project VFS at -p and forbids `..` from escaping it: `AGENTS.md` -> the shared
+# repo-root e2e/AGENTS.md, `skills` -> the live (unmodified) plugin skills dir.
+# Single source of truth, no vended copies.
+
+matrix:
+  case:
+    - glossary-vs-ubiquitous-language
+    - domain-model-trigger
+    - contracts-and-invariants-trigger
+    - glossary-gate-trigger
+    - arrow-of-maturity-trigger
+
+prefix:
+  - { kind: file,   path: ./AGENTS.md,                    cache: true }
+  - { kind: file,   path: ./profile.md,                   cache: true }
+  - { kind: system, path: ./skills/using-domain/SKILL.md, cache: true }
+
+conversation:
+  - { role: user, path: "prompts/discovery/{{ case }}.md" }
+  - { role: assistant }

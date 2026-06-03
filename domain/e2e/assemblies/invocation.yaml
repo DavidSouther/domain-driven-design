@@ -1,0 +1,25 @@
+name: invocation
+model: claude-sonnet-4-6
+
+# See discovery.yaml for why prefix files are reached through in-jail symlinks
+# (`AGENTS.md` -> shared constitution, `skills` -> live plugin skills).
+
+matrix:
+  skill:
+    - glossary
+    - ubiquitous-language
+    - domain-model
+    - contracts-and-invariants
+    - arrow-of-maturity
+
+prefix:
+  - { kind: file,   path: ./AGENTS.md,                    cache: true }
+  - { kind: file,   path: ./profile.md,                   cache: true }
+  - { kind: system, path: ./skills/using-domain/SKILL.md, cache: true }
+  - kind: system
+    path: "./skills/{{ skill }}/SKILL.md"
+    cache: true
+
+conversation:
+  - { role: user, path: "prompts/invocation/{{ skill }}.md" }
+  - { role: assistant }

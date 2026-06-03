@@ -1,0 +1,46 @@
+name: discovery
+# Routing is asserted against the identifier the model actually emits. The
+# discovery prefix loads only using-domain/SKILL.md, whose situation->skill
+# table is written in the `ddd:` prefix, so the model reproduces `ddd:<skill>`;
+# the plugin manifest uses `domain:<skill>`. Positive routing therefore matches
+# either prefix (text_matches), and foil exclusion forbids both spellings
+# (paired text_not_contains), so a case fails on a routing error, never on the
+# prefix-namespace mismatch.
+cases:
+  - name: glossary-vs-ubiquitous-language
+    assertions:
+      - { type: text_matches, pattern: "(ddd|domain):glossary" }
+      - { type: text_not_contains, value: "ddd:ubiquitous-language" }
+      - { type: text_not_contains, value: "domain:ubiquitous-language" }
+
+  - name: domain-model-trigger
+    assertions:
+      - { type: text_matches, pattern: "(ddd|domain):domain-model" }
+      - { type: text_not_contains, value: "ddd:contracts-and-invariants" }
+      - { type: text_not_contains, value: "domain:contracts-and-invariants" }
+
+  - name: contracts-and-invariants-trigger
+    assertions:
+      - { type: text_matches, pattern: "(ddd|domain):contracts-and-invariants" }
+      - { type: text_not_contains, value: "ddd:domain-model" }
+      - { type: text_not_contains, value: "domain:domain-model" }
+
+  - name: glossary-gate-trigger
+    assertions:
+      - { type: text_matches, pattern: "(ddd|domain):glossary" }
+      - type: judge
+        prompt: |
+          The answer says to invoke the glossary skill FIRST, before any other
+          domain skill, because a new term (`OrderManifest`) is being introduced
+          and the glossary gate must be passed before modelling proceeds. The
+          answer does NOT route directly to the domain-model skill as the first
+          action. Naming the domain-model skill as a later follow-up step that
+          happens after the glossary check is acceptable, as long as the glossary
+          skill is named as the first action. Reject answers that treat the
+          glossary as a secondary or parallel step.
+
+  - name: arrow-of-maturity-trigger
+    assertions:
+      - { type: text_matches, pattern: "(ddd|domain):arrow-of-maturity" }
+      - { type: text_not_contains, value: "ddd:domain-model" }
+      - { type: text_not_contains, value: "domain:domain-model" }

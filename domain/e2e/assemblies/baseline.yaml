@@ -1,0 +1,24 @@
+name: baseline
+model: claude-sonnet-4-6
+
+# Falsification arm: mechanically identical to invocation.yaml with every
+# `kind: system` SKILL.md prefix dropped (no using-domain, no skill body). Only
+# the coding-agent constitution and the harness purpose remain. Same matrix,
+# same prompts, same eval assertions as invocation, so any difference is the
+# skill's contribution.
+
+matrix:
+  skill:
+    - glossary
+    - ubiquitous-language
+    - domain-model
+    - contracts-and-invariants
+    - arrow-of-maturity
+
+prefix:
+  - { kind: file, path: ./AGENTS.md,  cache: true }
+  - { kind: file, path: ./profile.md, cache: true }
+
+conversation:
+  - { role: user, path: "prompts/invocation/{{ skill }}.md" }
+  - { role: assistant }

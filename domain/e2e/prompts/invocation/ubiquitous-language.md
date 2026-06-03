@@ -1,0 +1,3 @@
+We are starting work on a new logistics bounded context. From the requirements doc, the following candidate terms have surfaced: `OrderManifest`, `Carrier`, `Waybill`, `Consignee`, `LinearFeet`. Some are universal logistics terms that any freight system would recognize; some may be specific to how this organization handles its cross-dock operations. We have a requirements document and access to standard logistics literature, but no glossary yet and no domain expert sign-off.
+
+Produce the candidate-term list and the categorized question list for the domain experts the way the `domain:ubiquitous-language` skill prescribes.
