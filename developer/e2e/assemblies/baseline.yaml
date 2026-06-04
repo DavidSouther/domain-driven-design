@@ -1,0 +1,26 @@
+name: baseline
+model: claude-sonnet-4-6
+
+# Falsification arm: mechanically identical to invocation.yaml with the two
+# kind:system SKILL.md entries dropped. AGENTS.md and profile.md stay, so the
+# only difference between the arms is the loaded skill — any behaviour gap is
+# attributable to it. Same prompts, same matrix.
+prefix:
+  - { kind: file, path: context/AGENTS.md, cache: true }
+  - { kind: file, path: profile.md,        cache: true }
+
+matrix:
+  skill:
+    - design
+    - feature-test
+    - plan
+    - red-green-refactor
+    - thinking
+    - refactor
+    - initialize
+    - cleanup
+    - ailly
+
+conversation:
+  - { role: user, path: "prompts/invocation/{{ skill }}.md" }
+  - { role: assistant }

@@ -1,0 +1,110 @@
+name: invocation
+cases:
+  - name: design
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_design.py } }
+      - type: judge
+        prompt: |
+          The response is a formal design document with the sections Problem
+          Statement, Prior Art, Metrics, Specification, Alternatives, and
+          Summary, and it is presented as a draft for human review. It focuses
+          on the problem and the solution rather than a full implementation.
+      - { type: tokens, metric: output, op: "<", value: 7000 }
+
+  - name: feature-test
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_feature_test.py } }
+      - type: judge
+        prompt: |
+          The response is a feature test: a plain-language user story (Given/
+          When/Then or narrative) followed by exactly one executable test that
+          exercises the user story end-to-end, marked as a draft. It is one
+          test rather than a suite of unit tests, and it does not include the
+          implementation code that would make the test pass.
+      - { type: tokens, metric: output, op: "<", value: 6000 }
+
+  - name: plan
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_plan.py } }
+      - type: judge
+        prompt: |
+          The response is an incremental implementation plan of between three
+          and seven steps, presented as a draft. Each implementation step
+          indicates which part of the feature test it moves toward passing. The
+          steps describe what to build — names, intent, and type/API signatures
+          — without the filled-in implementation logic (function bodies) for the
+          steps.
+      - { type: tokens, metric: output, op: "<", value: 6000 }
+
+  - name: red-green-refactor
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_red_green_refactor.py } }
+      - type: judge
+        prompt: |
+          The response executes a single type-first TDD cycle for Step 1 only.
+          It writes the function/type signatures with stub bodies first, then
+          one arrange-act-assert test that fails for the right reason, then the
+          implementation that makes that single test pass. It does not start
+          Step 2 and does not write more than one test.
+      - { type: tokens, metric: output, op: "<", value: 7000 }
+
+  - name: thinking
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_thinking.py } }
+      - type: judge
+        prompt: |
+          The response is a debugging analysis, not a fix applied to files. It
+          states the root cause specifically (the parser rule is left-recursive,
+          so parse_expr calls itself with no base case and recurses forever), and
+          gives an ordered list of concrete next steps where each step names the
+          outcome it should produce. It does not say "try X and see" and does not
+          just rewrite the file for the user.
+      - { type: tokens, metric: output, op: "<", value: 5000 }
+
+  - name: refactor
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_refactor.py } }
+      - type: judge
+        prompt: |
+          The response improves the given code as a post-green refactoring. It
+          identifies specific named code smells (the duplicated Bearer-token
+          parsing, the "Bearer " magic constant, the long handler) and resolves
+          them one at a time without changing behaviour and without adding new
+          features or tests. It treats the work as cleanup of existing green
+          code, not new development.
+      - { type: tokens, metric: output, op: "<", value: 6000 }
+
+  - name: initialize
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_initialize.py } }
+      - type: judge
+        prompt: |
+          The response sets up the project by scaffolding/validating the layout
+          for the chosen toolchain and configuring the four development hooks —
+          Format (after editing a file), Check (before running tests), Test
+          (after every change), and Lint (after a task completes) — and confirms
+          a clean build. It is a project-setup procedure, not application code.
+      - { type: tokens, metric: output, op: "<", value: 5000 }
+
+  - name: cleanup
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_cleanup.py } }
+      - type: judge
+        prompt: |
+          The response is a topic-closeout procedure that does the cleanup
+          skill's specific steps: a final refactoring and review pass (including
+          lint/formatters), extracting the deferred decisions into a TASKS file,
+          removing the topic's docs/developer session folder, and opening a PR or
+          preparing a squash merge. It is workspace tidy-up, not new feature work.
+      - { type: tokens, metric: output, op: "<", value: 5000 }
+
+  - name: ailly
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_ailly.py } }
+      - type: judge
+        prompt: |
+          The response recognises that the design draft marker has not been
+          cleared and therefore refuses to proceed to the next phase. It tells
+          the user to review and remove the *Draft* marker before continuing,
+          and does NOT write the feature test in this session.
+      - { type: tokens, metric: output, op: "<", value: 5000 }

@@ -1,0 +1,69 @@
+name: discovery
+cases:
+  # Vague idea, nothing written yet → design, not the test-first neighbour.
+  - name: design-vs-feature-test
+    assertions:
+      - { type: text_contains, value: "developer:design" }
+      - { type: text_not_contains, value: "developer:feature-test" }
+
+  # Design cleared, no test yet → feature-test, not plan (both middle-loop).
+  - name: feature-test-vs-plan
+    assertions:
+      - { type: text_contains, value: "developer:feature-test" }
+      - { type: text_not_contains, value: "developer:plan" }
+
+  # Feature test failing as expected, no steps yet → plan, not the impl loop.
+  - name: plan-vs-rgr
+    assertions:
+      - { type: text_contains, value: "developer:plan" }
+      - { type: text_not_contains, value: "developer:red-green-refactor" }
+
+  # Same error after a fix during a TDD cycle → thinking, not loop back to RGR.
+  - name: rgr-vs-thinking
+    assertions:
+      - { type: text_contains, value: "developer:thinking" }
+      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - type: judge
+        prompt: |
+          The answer routes to developer:thinking because the same error
+          recurred after a change intended to fix it — a stuck-debugging
+          situation. It does not recommend continuing or restarting the
+          red-green-refactor loop as the fix for the recurring error.
+
+  # Green code, smells to clean before merge → refactor, not a new RGR step.
+  - name: refactor-vs-rgr
+    assertions:
+      - { type: text_contains, value: "developer:refactor" }
+      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - type: judge
+        prompt: |
+          The answer routes to developer:refactor because the tests are
+          already green and the goal is to improve the code without changing
+          behaviour. It does not propose starting another red-green-refactor
+          implementation step.
+
+  # Paired check-vs-action: (a) → is-clean, (b) → cleanup.
+  - name: is-clean-vs-cleanup
+    assertions:
+      - { type: text_contains, value: "developer:is-clean" }
+      - { type: text_contains, value: "developer:cleanup" }
+      - type: judge
+        prompt: |
+          The answer maps question (a) — confirming the branch is in a clean
+          state to build on, a check — to developer:is-clean, and question
+          (b) — tearing down the topic folder after the feature ships, an
+          action — to developer:cleanup. The two are not swapped.
+
+  # Empty folder, toolchain/layout/hooks to install → initialize, not the
+  # session coordinator.
+  - name: initialize-vs-ailly
+    assertions:
+      - { type: text_contains, value: "developer:initialize" }
+      - { type: text_not_contains, value: "developer:ailly" }
+
+  # Project already set up; start the gated workflow for a new feature → the
+  # session coordinator, not project setup.
+  - name: ailly-vs-initialize
+    assertions:
+      - { type: text_contains, value: "developer:ailly" }
+      - { type: text_not_contains, value: "developer:initialize" }

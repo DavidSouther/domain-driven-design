@@ -1,0 +1,7 @@
+I'm in the middle of a TDD cycle on the predicate parser. I wrote the type
+signatures, the type checker rejected my generic bound, I rewrote the bound, and
+the type checker rejected it again with the same error message. The plan step
+itself looks fine to me — it's this one error that won't clear.
+
+Name the single `developer:*` skill I should invoke right now, and one sentence
+on why.

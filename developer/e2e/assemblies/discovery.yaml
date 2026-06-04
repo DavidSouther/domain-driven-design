@@ -1,0 +1,26 @@
+name: discovery
+model: claude-sonnet-4-6
+
+# Prefix paths are project-rooted: ailly jails the VFS to the project dir, so
+# AGENTS.md and the skill bodies are vended into ./context/ by vendor.sh (run by
+# ci.sh before assemble). profile.md lives in the project root directly.
+prefix:
+  - { kind: file,   path: context/AGENTS.md,                  cache: true }
+  - { kind: file,   path: profile.md,                         cache: true }
+  - { kind: system, path: context/skills/disclosure.md,       cache: true }
+  - { kind: system, path: context/skills/using-developer/SKILL.md, cache: true }
+
+matrix:
+  case:
+    - design-vs-feature-test
+    - feature-test-vs-plan
+    - plan-vs-rgr
+    - rgr-vs-thinking
+    - refactor-vs-rgr
+    - is-clean-vs-cleanup
+    - initialize-vs-ailly
+    - ailly-vs-initialize
+
+conversation:
+  - { role: user, path: "prompts/discovery/{{ case }}.md" }
+  - { role: assistant }
