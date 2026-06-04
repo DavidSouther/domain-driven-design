@@ -1,0 +1,197 @@
+name: invocation
+# Token budgets use `metric: output`, not `total`. The invocation arm loads the
+# skill body into the prefix, so its INPUT tokens are inherently larger than the
+# baseline's; a `total` budget would therefore penalise the very arm that loads the
+# skill and read as a false `regressed` (observed: emitting-logs total 7358 vs
+# baseline 2377). `output` isolates generated tokens — the size the budget is meant
+# to bound (a skill must not pass by padding) — and is identical across both arms.
+# Budgets sit above each skill's larger-arm output with headroom; equal across arms.
+cases:
+  - name: newtype
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_newtype.py } }
+      - type: judge
+        prompt: |
+          The code introduces a UserId type that wraps a string, exposes
+          construction as the only sanctioned entry point, and makes a plain
+          string unassignable where UserId is required. There are no `as`
+          casts at call sites; validation lives once in the constructor.
+      - { type: tokens, metric: output, op: "<", value: 3000 }
+
+  - name: configuring-logging
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_configuring_logging.py } }
+      - type: judge
+        prompt: |
+          The bootstrap installs a single subscriber registry in main with
+          Format, Filter, Enrich, and Export layers, attaches `service.*`
+          resource attributes, installs the W3C `traceparent` propagator,
+          and registers a shutdown flush with a hard timeout. No `init` is
+          called from library code.
+      # Headroom for the full five-layer pipeline; equal to baseline.yaml so a size
+      # difference between arms is an Improved/Regressed signal, not a budget artifact.
+      - { type: tokens, metric: output, op: "<", value: 12000 }
+
+  - name: emitting-logs
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_emitting_logs.py } }
+      - type: judge
+        prompt: |
+          The call site emits a structured log record with `EventName` set
+          to `order.placed` and attaches fields under OpenTelemetry
+          semantic-convention keys (`http.response.status_code`, `order.id`,
+          `user.id`). The message body is a stable string; no values are
+          interpolated into it.
+      - { type: tokens, metric: output, op: "<", value: 3500 }
+
+  - name: aggregate
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_aggregate.py } }
+      - type: judge
+        prompt: |
+          The code defines a single aggregate-root type (`Order`) whose public
+          surface is the only entry point for mutations. The internal collection
+          of line items is not exposed by a public getter that returns a mutable
+          handle. Adding a line item is expressed as a named method on the root
+          that keeps the total in sync, not field assignment from the call site.
+      - { type: tokens, metric: output, op: "<", value: 6000 }
+
+  - name: parse-dont-validate
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_parse_dont_validate.py } }
+      - type: judge
+        prompt: |
+          A single parser function at the boundary returns a parsed domain
+          `Order` (not a boolean, not a nullable/Optional value). It signals
+          each failure mode with a specific, actionable error. Downstream code
+          that takes an `Order` does not re-check any field the parser proved.
+      - { type: tokens, metric: output, op: "<", value: 3500 }
+
+  - name: repository
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_repository.py } }
+      - type: judge
+        prompt: |
+          The repository interface is defined in the domain layer. Two concrete
+          implementations are provided (in-memory and SQL). The domain service
+          signature names only the abstract interface — no SQL session, ORM
+          type, query builder, or driver appears anywhere on the domain-side
+          surface (the interface body or the service signature).
+      - { type: tokens, metric: output, op: "<", value: 6000 }
+
+  - name: arrange-act-assert
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_arrange_act_assert.py } }
+      - type: judge
+        prompt: |
+          The test is structured in three visually separated phases: Arrange
+          (setup, with no assertions), a single Act (one call to the system
+          under test), and Assert (only checks). The act is not collapsed into
+          an assertion, and if two behaviours are checked they are split into
+          separate tests.
+      - { type: tokens, metric: output, op: "<", value: 3500 }
+
+  - name: bootstrap-and-service
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_bootstrap_and_service.py } }
+      - type: judge
+        prompt: |
+          The code separates a thin HTTP adapter (only protocol translation, no
+          business rules), an application service whose signature carries no HTTP
+          types (no Request/Response/status), and a single composition root that
+          constructs the concrete repository and injects it into the service.
+          Business logic is not in the handler.
+      - { type: tokens, metric: output, op: "<", value: 7000 }
+
+  - name: builder
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_builder.py } }
+      - type: judge
+        prompt: |
+          Construction goes through a builder: required fields are supplied at
+          the builder entry point, optional fields via chainable with-methods,
+          validation runs in build(), and the product's constructor is private
+          so callers cannot bypass it.
+      - { type: tokens, metric: output, op: "<", value: 4500 }
+
+  - name: domain-objects
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_domain_objects.py } }
+      - type: judge
+        prompt: |
+          The code distinguishes an Entity (Batch) with an id and identity-based
+          equality, a Value Object (Money) with no id, equal by its fields and
+          immutable, and a Domain Service Function (allocate) that spans multiple
+          batches as a free function rather than a method on one entity.
+      - { type: tokens, metric: output, op: "<", value: 5500 }
+
+  - name: errors-typed-untyped
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_errors_typed_untyped.py } }
+      - type: judge
+        prompt: |
+          The library exposes a tagged/discriminated union of failure variants
+          (e.g. Network, NotFound, Parse) the caller can exhaustively match — not
+          a single stringly-typed Error. The application boundary translates the
+          typed error into a human-readable message and does not dispatch on
+          message text.
+      - { type: tokens, metric: output, op: "<", value: 4500 }
+
+  - name: triangulate
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_triangulate.py } }
+      - type: judge
+        prompt: |
+          The answer shows a first test with a faked/hardcoded implementation
+          that passes it, a second test with different inputs the fake cannot
+          satisfy, then the real generalized implementation passing both. The two
+          examples are non-degenerate (the second would fail the fake).
+      - { type: tokens, metric: output, op: "<", value: 3500 }
+
+  - name: type-conversion
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_type_conversion.py } }
+      - type: judge
+        prompt: |
+          Conversions are explicit named operations defined once (a static
+          from/tryFrom on the target, or equivalent), not ad-hoc `as` casts or
+          primitive extract-and-rewrap at call sites. A total and a partial
+          conversion do not share a name. Call sites invoke the named conversion.
+      - { type: tokens, metric: output, op: "<", value: 4500 }
+
+  - name: type-states
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_type_states.py } }
+      - type: judge
+        prompt: |
+          Each lifecycle phase is its own type (e.g. OpenConnection /
+          ClosedConnection, or Connection<Open> / Connection<Closed>); an
+          operation valid only in one phase exists only on that phase's type, so
+          misuse is a compile error. A transition consumes the old state and
+          returns the new one. There is no flat type with an isOpen boolean plus
+          runtime guards.
+      - { type: tokens, metric: output, op: "<", value: 4500 }
+
+  - name: unit-of-work
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_unit_of_work.py } }
+      - type: judge
+        prompt: |
+          A Unit of Work abstraction exposes a repository plus commit() and
+          rollback(); the handler loads the aggregate, calls one domain method,
+          and commits inside a scope that guarantees rollback on any error. A
+          database-free test double (FakeUnitOfWork) is provided. The session is
+          not leaked into the domain.
+      - { type: tokens, metric: output, op: "<", value: 6500 }
+
+  - name: visibility
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_visibility.py } }
+      - type: judge
+        prompt: |
+          The Order's fields are private; reads return immutable/read-only views
+          (not the live collection); state changes are named methods that check
+          invariants (not field assignment or setters); construction is through a
+          private constructor plus a builder/factory. Callers cannot establish an
+          illegal state by assignment.
+      - { type: tokens, metric: output, op: "<", value: 5500 }

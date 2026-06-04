@@ -1,0 +1,115 @@
+name: discovery
+cases:
+  - name: newtype-mixed-ids
+    assertions:
+      - { type: text_contains, value: "patterns:newtype" }
+      - { type: text_not_contains, value: "patterns:domain-objects" }
+
+  # Asserts the real skill name on disk (`patterns:domain-objects`). The routing
+  # table in using-patterns/SKILL.md still names the stale
+  # `patterns:entities-value-objects-services`, so this case is EXPECTED to fail
+  # until that entry is corrected. It tests the correct property (route an
+  # OrderLine-with-behaviour question to the value-object skill that ships); the
+  # failure is a faithful regression signal, not a harness defect.
+  - name: newtype-vs-evs-order-line
+    assertions:
+      - { type: text_not_contains, value: "patterns:newtype" }
+      - { type: text_contains, value: "patterns:domain-objects" }
+
+  - name: configuring-first-log-line
+    assertions:
+      - { type: text_contains, value: "patterns:configuring-logging" }
+      - { type: text_not_contains, value: "patterns:emitting-logs" }
+
+  - name: emitting-order-placed
+    assertions:
+      - { type: text_contains, value: "patterns:emitting-logs" }
+      - { type: text_not_contains, value: "patterns:configuring-logging" }
+
+  - name: paired-add-propagator
+    assertions:
+      - { type: text_contains, value: "patterns:configuring-logging" }
+      - { type: text_not_contains, value: "patterns:emitting-logs" }
+      - type: judge
+        prompt: |
+          The answer selects patterns:configuring-logging because the W3C
+          propagator is installed once at process bootstrap. It does not
+          recommend patterns:emitting-logs.
+
+  - name: paired-log-handler-success
+    assertions:
+      - { type: text_contains, value: "patterns:emitting-logs" }
+      - { type: text_not_contains, value: "patterns:configuring-logging" }
+      - type: judge
+        prompt: |
+          The answer selects patterns:emitting-logs because the success
+          occurs inside an already-bootstrapped handler. It does not
+          recommend re-running patterns:configuring-logging.
+
+  - name: aggregate-vs-unit-of-work
+    assertions:
+      - { type: text_contains, value: "patterns:aggregate" }
+      - { type: text_not_contains, value: "patterns:unit-of-work" }
+      - type: judge
+        prompt: |
+          The answer selects patterns:aggregate because the rule keeping the
+          order and its line items consistent is an invariant across multiple
+          objects, protected by a single root. It does not select
+          patterns:unit-of-work, which is the atomic, durable flush that wraps
+          the aggregate operation at commit time.
+
+  - name: parse-vs-type-states
+    assertions:
+      - { type: text_contains, value: "patterns:type-states" }
+      - { type: text_not_contains, value: "patterns:parse-dont-validate" }
+      - type: judge
+        prompt: |
+          The answer selects patterns:type-states because a shippingAddress that
+          is only present after the cart is confirmed is a distinct lifecycle
+          phase that should be encoded as its own type. It does not select
+          patterns:parse-dont-validate, which is about untrusted data crossing a
+          boundary, not a field that appears only in a later lifecycle phase.
+
+  - name: aax-interleaved-test
+    assertions:
+      - { type: text_contains, value: "patterns:arrange-act-assert" }
+      - { type: text_not_contains, value: "patterns:triangulate" }
+
+  - name: bootstrap-thin-adapter
+    assertions:
+      - { type: text_contains, value: "patterns:bootstrap-and-service" }
+      - { type: text_not_contains, value: "patterns:repository" }
+
+  - name: builder-many-fields
+    assertions:
+      - { type: text_contains, value: "patterns:builder" }
+      - { type: text_not_contains, value: "patterns:parse-dont-validate" }
+
+  # errors-typed-untyped is absent from the using-patterns routing table, so this
+  # case is expected to fail text_contains until that table gains a row for it — a
+  # faithful finding (a discoverable skill with no routing entry), recorded as a
+  # follow-up, not a harness defect.
+  - name: errors-library-failure
+    assertions:
+      - { type: text_contains, value: "patterns:errors-typed-untyped" }
+      - { type: text_not_contains, value: "patterns:parse-dont-validate" }
+
+  - name: triangulate-fake-passes
+    assertions:
+      - { type: text_contains, value: "patterns:triangulate" }
+      - { type: text_not_contains, value: "patterns:arrange-act-assert" }
+
+  - name: type-conversion-extract-rewrap
+    assertions:
+      - { type: text_contains, value: "patterns:type-conversion" }
+      - { type: text_not_contains, value: "patterns:newtype" }
+
+  - name: unit-of-work-atomic-handler
+    assertions:
+      - { type: text_contains, value: "patterns:unit-of-work" }
+      - { type: text_not_contains, value: "patterns:aggregate" }
+
+  - name: visibility-public-fields
+    assertions:
+      - { type: text_contains, value: "patterns:visibility" }
+      - { type: text_not_contains, value: "patterns:domain-objects" }

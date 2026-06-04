@@ -10,10 +10,11 @@ You are working in a project that uses structured design patterns. During a plan
 | Situation | Invoke |
 |-----------|--------|
 | A primitive type (string, number, UUID) represents a distinct domain concept | `patterns:newtype` |
-| Modeling domain objects — deciding what has identity, what is a value, what is a function | `patterns:entities-value-objects-services` |
+| Modeling domain objects — deciding what has identity, what is a value, what is a function | `patterns:domain-objects` |
 | Constructing an object with many fields, required vs. optional distinction, or partial-init risk | `patterns:builder` |
 | A domain object exposes public fields, leaks mutable collections, or allows state changes via assignment | `patterns:visibility` |
 | Data arrives from an external boundary (HTTP, user input, file, message queue) | `patterns:parse-dont-validate` |
+| Designing how an API signals failure — a typed error hierarchy the caller can match on vs. a stringly-typed message for a human reader | `patterns:errors-typed-untyped` |
 | Modeling a state machine, lifecycle stages, or finite set of mutually-exclusive states | `patterns:type-states` |
 | Decoupling domain logic from a specific storage technology | `patterns:repository` |
 | Defining an operation that must transition the domain from one legal state to another atomically | `patterns:aggregate` |
