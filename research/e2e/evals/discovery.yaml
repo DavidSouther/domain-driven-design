@@ -1,0 +1,111 @@
+name: discovery
+cases:
+  - name: papers-question
+    assertions:
+      - { type: text_contains, value: "research:papers" }
+      - { type: text_not_contains, value: "research:public" }
+      - type: judge
+        prompt: |
+          The answer selects research:papers as the skill to invoke, because the
+          question targets a citable academic paper that must be located by
+          title, with its abstract and citation graph. It does not select
+          research:public (open-web docs) as the skill to use.
+
+  - name: books-question
+    assertions:
+      - { type: text_contains, value: "research:books" }
+      - { type: text_not_contains, value: "research:public" }
+      - type: judge
+        prompt: |
+          The answer selects research:books as the skill to invoke, because the
+          question targets a citable book — its ISBN-13, edition, publisher, and
+          year. It does not select research:public as the skill to use.
+
+  - name: codebase-question
+    assertions:
+      - { type: text_contains, value: "research:codebase" }
+      - { type: text_not_contains, value: "research:archaeology" }
+      - type: judge
+        prompt: |
+          The answer selects research:codebase as the skill to invoke, because
+          the question is about the current state of the code — where a symbol
+          is defined now and what implements it — not how it changed over time.
+          It does not select research:archaeology.
+
+  - name: archaeology-question
+    assertions:
+      - { type: text_contains, value: "research:archaeology" }
+      - { type: text_not_contains, value: "research:codebase" }
+      - type: judge
+        prompt: |
+          The answer selects research:archaeology as the skill to invoke,
+          because the question asks why code was removed and what motivated the
+          change — historical rationale from git history, not current state. It
+          does not select research:codebase.
+
+  - name: configuring-papers-trigger
+    assertions:
+      - { type: text_contains, value: "research:configuring-papers" }
+      - type: judge
+        prompt: |
+          The answer selects research:configuring-papers as the skill to invoke,
+          because the task is one-time bootstrapping of the paper sources on a
+          fresh checkout — probing servers, setting keys and contact emails,
+          smoke-testing. It does NOT recommend research:papers (the per-query
+          practice skill) as the skill to use for this setup task.
+
+  - name: configuring-books-trigger
+    assertions:
+      - { type: text_contains, value: "research:configuring-books" }
+      - type: judge
+        prompt: |
+          The answer selects research:configuring-books as the skill to invoke,
+          because the task is one-time wiring of the book sources on a fresh
+          checkout — probing servers, setting the User-Agent and keys,
+          smoke-testing. It does NOT recommend research:books (the per-query
+          practice skill) as the skill to use for this setup task.
+
+  - name: papers-vs-public
+    assertions:
+      - { type: text_contains, value: "research:public" }
+      - type: judge
+        prompt: |
+          The answer selects research:public as the skill to invoke, because the
+          question asks for a general operating-systems concept explained from
+          open-web knowledge, with no specific citable paper named. It does NOT
+          select research:papers as the skill to use; routing a generic concept
+          question to the academic-paper skill would be the wrong choice.
+
+  - name: internal-vs-codebase
+    assertions:
+      - { type: text_contains, value: "research:internal" }
+      - type: judge
+        prompt: |
+          The answer selects research:internal as the skill to invoke, because
+          the decision rationale lives in internal docs and ticket threads
+          (ADRs, Linear/Notion/Confluence), not in the source tree. It does NOT
+          select research:codebase as the skill to use for the decision
+          rationale.
+
+  - name: dependencies-question
+    assertions:
+      - { type: text_contains, value: "research:dependencies" }
+      - { type: text_not_contains, value: "research:codebase" }
+      - type: judge
+        prompt: |
+          The answer selects research:dependencies as the skill to invoke,
+          because the question is about a declared dependency's version and
+          purpose from the project's manifest. It does NOT select
+          research:codebase (which is for how a symbol is used in the code).
+
+  - name: domain-question
+    assertions:
+      - { type: text_contains, value: "research:domain" }
+      - { type: text_not_contains, value: "research:codebase" }
+      - type: judge
+        prompt: |
+          The answer selects research:domain as the skill to invoke, because the
+          question is about the conceptual model — what "Aggregate" means, its
+          boundaries and invariants — not how it is implemented. It does NOT
+          select research:codebase as the skill to use for the conceptual
+          definition.

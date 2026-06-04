@@ -1,0 +1,24 @@
+name: discovery
+model: claude-sonnet-4-6
+
+matrix:
+  case:
+    - papers-question
+    - books-question
+    - codebase-question
+    - archaeology-question
+    - configuring-papers-trigger
+    - configuring-books-trigger
+    - papers-vs-public
+    - internal-vs-codebase
+    - dependencies-question
+    - domain-question
+
+prefix:
+  - { kind: file,   path: ./AGENTS.md,                                  cache: true }
+  - { kind: system, path: ./context/skills/disclosure.md,              cache: true }
+  - { kind: system, path: ./context/skills/using-research/SKILL.md,    cache: true }
+
+conversation:
+  - { role: user, path: "prompts/discovery/{{ case }}.md" }
+  - { role: assistant }

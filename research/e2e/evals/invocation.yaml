@@ -1,0 +1,161 @@
+name: invocation
+cases:
+  - name: codebase
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_codebase.py } }
+      - type: judge
+        prompt: |
+          The answer is a codebase research note written to a path of the form
+          docs/research/YYYY-MM-DD-A-<topic>/codebase.md. It has a Findings
+          section and a Sources section; the Sources cite specific repository
+          files by path with a commit SHA (or #UNCOMMITTED). It reports the
+          current state of the code only and does not rely on git history (no
+          git log / blame / show / diff). PASS only if it is recognizably this
+          codebase note with that path and that structure.
+      - { type: tokens, metric: output, op: "<", value: 3000 }
+
+  - name: archaeology
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_archaeology.py } }
+      - type: judge
+        prompt: |
+          The answer is an archaeology research note written to a path of the
+          form docs/research/YYYY-MM-DD-A-<topic>/archaeology.md. It has a
+          Findings section, a Timeline section ordering the relevant commits by
+          hash and date, and a Sources section listing the commits consulted
+          and the git commands run. It explains the historical rationale from
+          git history, not the file's current contents. PASS only if it is
+          recognizably this archaeology note with that path and that structure.
+      - { type: tokens, metric: output, op: "<", value: 3000 }
+
+  - name: configuring-papers
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_configuring_papers.py } }
+      - type: judge
+        prompt: |
+          The answer is a configuration plan for standing up academic-paper
+          sources on a fresh checkout. It enumerates the default sources
+          (Crossref, Unpaywall, OpenAlex, Semantic Scholar, ArXiv) and walks
+          each through the wiring the skill teaches: probe for an MCP server
+          where one exists, fall back to HTTP (some sources, such as Crossref
+          and Unpaywall, are HTTP-only and legitimately have no MCP step), set
+          the credential / contact env var the source needs, and smoke-test the
+          capability. It names the typed Not-Available result that an
+          unconfigured optional source returns and frames it as a routing
+          signal for the practice skill. PASS if the per-source wiring pattern
+          and the Not-Available routing are both present; do not require an MCP
+          probe for a source the plan correctly treats as HTTP-only.
+      - { type: tokens, metric: output, op: "<", value: 5000 }
+
+  - name: configuring-books
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_configuring_books.py } }
+      - type: judge
+        prompt: |
+          The answer is a configuration plan for standing up book sources on a
+          fresh checkout. It enumerates the default sources (Open Library,
+          Gutendex / Project Gutenberg, Internet Archive, Google Books) and
+          walks each through the wiring the skill teaches: probe for an MCP
+          server where one exists, fall back to HTTP (Internet Archive and
+          Google Books are HTTP-only and legitimately have no MCP step), set
+          credentials where needed, and smoke-test. It correctly identifies the
+          keyless sources (Gutendex, Internet Archive) and names the Open
+          Library polite User-Agent. It names the typed Not-Available routing
+          signal for unconfigured optional sources. PASS if the per-source
+          wiring pattern, the keyless distinction, and the Not-Available routing
+          are present; do not require an MCP probe for a source the plan
+          correctly treats as HTTP-only.
+      - { type: tokens, metric: output, op: "<", value: 5000 }
+
+  - name: papers
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_papers.py } }
+      - type: judge
+        prompt: |
+          The answer is a papers research note written to a path of the form
+          docs/research/YYYY-MM-DD-A-<topic>/papers.md. It has a Findings
+          section with inline [N] citations and a Sources section in loose IEEE
+          style ([N] Author/Org. "Title." Date. [Online]. Available: URL). It
+          reports the paper's canonical metadata and includes no setup or wiring
+          preface (no "first install...", no "make sure you have configured...").
+          PASS only if it is recognizably this papers note with that path and
+          IEEE Sources, and is free of wiring leakage.
+      - { type: tokens, metric: output, op: "<", value: 3000 }
+
+  - name: books
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_books.py } }
+      - type: judge
+        prompt: |
+          The answer is a books research note written to a path of the form
+          docs/research/YYYY-MM-DD-A-<topic>/books.md. It has a Findings section
+          with inline [N] citations and a Sources section in loose IEEE style.
+          It reports the canonical ISBN-13, the original edition's publisher and
+          year, and a table-of-contents pointer, and includes no setup or wiring
+          preface. PASS only if it is recognizably this books note with that
+          path and IEEE Sources, and is free of wiring leakage.
+      - { type: tokens, metric: output, op: "<", value: 3000 }
+
+  - name: dependencies
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_dependencies.py } }
+      - type: judge
+        prompt: |
+          The answer is a dependencies research note written to a path of the
+          form docs/research/YYYY-MM-DD-A-<topic>/dependencies.md. It centers the
+          project's declared dependency manifest (package.json, Cargo.toml,
+          pyproject.toml, go.mod, etc.), keeps the declared manifest distinct
+          from lock files (which it treats as out of scope, not as the source),
+          and has a Sources section listing the manifest file(s) consulted. The
+          harness runs no tools and the project context tells the model to reason
+          about a plausible repository, so reasoning about a plausible manifest
+          for a repo of this kind is acceptable — judge the convention (the note
+          path, the manifest-vs-lockfile distinction, the Sources structure), not
+          whether a real file was read. PASS if it is recognizably this
+          dependencies note at that path, centers a declared manifest, and treats
+          lock files as out of scope.
+      - { type: tokens, metric: output, op: "<", value: 3000 }
+
+  - name: domain
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_domain.py } }
+      - type: judge
+        prompt: |
+          The answer is a domain research note written to a path of the form
+          docs/research/YYYY-MM-DD-A-<topic>/domain.md. It has a Findings
+          section, a Key Concepts section defining the term(s) and their
+          relationships, and a Sources section listing the domain artifacts or
+          DDD concepts consulted. It answers from the conceptual model, not from
+          implementation code. PASS only if it is recognizably this domain note
+          with that path and the Key Concepts structure.
+      - { type: tokens, metric: output, op: "<", value: 3000 }
+
+  - name: internal
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_internal.py } }
+      - type: judge
+        prompt: |
+          The answer is an internal-research note written to a path of the form
+          docs/research/YYYY-MM-DD-A-<topic>/internal.md. Before searching, it
+          discovers which MCP servers are available (e.g. via
+          ListMcpResourcesTool) rather than assuming integrations, names which
+          internal sources it would query (Slack, Confluence, Notion, Linear,
+          GitHub, Google Drive), and has a Sources section naming the servers
+          queried and the documents / threads / tickets consulted. PASS only if
+          it is recognizably this internal note with that path, the
+          discover-before-search step, and the server-named Sources.
+      - { type: tokens, metric: output, op: "<", value: 3000 }
+
+  - name: public
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_public.py } }
+      - type: judge
+        prompt: |
+          The answer is a public research note written to a path of the form
+          docs/research/YYYY-MM-DD-A-<topic>/public.md. It has a Findings
+          section with inline citations rendered as markdown links and a Sources
+          section listing titled URL links with the reason each was consulted.
+          It draws on public, open-internet sources (official docs, specs,
+          reputable references). PASS only if it is recognizably this public
+          note with that path and markdown-link Sources.
+      - { type: tokens, metric: output, op: "<", value: 3000 }

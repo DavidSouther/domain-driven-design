@@ -1,0 +1,5 @@
+runs/
+evals/reports/
+.env
+__pycache__/
+evals/judges/

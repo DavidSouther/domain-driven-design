@@ -1,0 +1,27 @@
+name: invocation
+model: claude-sonnet-4-6
+
+matrix:
+  skill:
+    - codebase
+    - archaeology
+    - configuring-papers
+    - configuring-books
+    - papers
+    - books
+    - dependencies
+    - domain
+    - internal
+    - public
+
+prefix:
+  - { kind: file,   path: ./AGENTS.md,                                cache: true }
+  - { kind: file,   path: ./context/AGENTS.md,                        cache: true }
+  - { kind: system, path: ./context/skills/using-research/SKILL.md,   cache: true }
+  - kind: system
+    path: "context/skills/{{ skill }}/SKILL.md"
+    cache: true
+
+conversation:
+  - { role: user, path: "prompts/invocation/{{ skill }}.md" }
+  - { role: assistant }
