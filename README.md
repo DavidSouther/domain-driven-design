@@ -2,6 +2,27 @@
 
 A [Claude Code](https://claude.ai/code) plugin providing structured workflows for Domain-Driven Design, software design patterns, research, and a strict test-driven developer lifecycle.
 
+## Installation & Getting Started
+
+1. Clone the repository locally.
+2. Add the marketplace: in Claude Code, run `/plugin marketplace add <path-to-clone>`, where `<path-to-clone>` is the cloned repository directory.
+   * You can also run `/plugin` to open the interactive browser and add it from the **Marketplaces** tab.
+3. Install the skills with `/plugin install <name>@ailly` — install `general`, `developer`, `patterns`, and `research` (`domain` is optional). Browse and toggle them anytime from the **Installed** tab of `/plugin`.
+4. Start a project in a new folder - `/ailly /initialize a project called [name] for [design goal] using [TypeScript, Python, or Rust] (including initializing git)`.
+5. Start work on new feature in that folder - `/ailly start a new feature for [user need]`.
+6. Continue work on whatever you did last - `/ailly continue`
+7. Tell Ailly to do research herself - after Ailly asks you a question, `/using-research to perform a deep dive; pay attention especially to [area of interest]`.
+8. Tell Ailly to fix a bug - `/ailly quick loop fix [the bug]`.
+
+To update Ailly, simply pull the latest sources in the git repo, and reload the coding agent.
+
+### Useful Patterns
+
+- Develop a complex prompt in `./docs/prompts/big-prompt.md`, then run it with `run ./docs/prompts/big-prompt.md`.
+- Check if Ailly has what she needs for research - `/ailly check if internal, books, and papers research are set up right`
+- Figure out really anything about Ailly - ask her! `/ailly what skills are available?` `/ailly how do I update a git repo?`
+- Change the `docs/` folder by adding `For developer: tools, .agents/ instead of .docs` to CLAUDE.md (or AGENTS.md if CLAUDE.md includes it).
+
 ## Skills
 
 ### General (`general:*`)
@@ -81,18 +102,6 @@ Selects the right research strategy based on what kind of question is being aske
 | `research:internal` | What do internal documents (Slack, Confluence, Linear, Notion) say about this? |
 | `research:public` | What does the public internet say? What do official docs or forums say? |
 
-
-## Installation
-
-Install via the Claude Code marketplace using the plugin manifest:
-
-```json
-{
-  "source": "https://github.com/davidsouther/domain_driven_design"
-}
-```
-
-Or clone and install locally with `claude /plugin install ./`.
 
 ## License
 
