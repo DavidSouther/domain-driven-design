@@ -1,5 +1,7 @@
 # LSP Reference: Rust (rust-analyzer)
 
+> Priming rules (`cargo check` so the crate graph resolves) live in [`lsp-setup.md`](lsp-setup.md).
+
 ## Configuration
 
 rust-analyzer is the standard LSP for Rust. It activates automatically when a `Cargo.toml` is present. Ensure the project has been built at least once (`cargo check` or `cargo build`) so rust-analyzer can resolve the crate graph.
@@ -47,6 +49,8 @@ Returns every reference in the workspace. For a trait method, this returns all c
 Point `references` at the trait definition itself (the `trait Foo` line). rust-analyzer returns every `impl Foo for ...` block in the workspace.
 
 ### Errors in a file
+
+> **Note:** `diagnostics` is *not* on the current `LSP` tool surface (which exposes `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, `outgoingCalls`). To check whether a module compiles, run `cargo check` via Bash rather than reaching for an LSP diagnostics call.
 
 ```
 LSP diagnostics

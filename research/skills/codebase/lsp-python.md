@@ -1,5 +1,7 @@
 # LSP Reference: Python (pylsp / pyright)
 
+> Priming rules (venv activation, pyright config) live in [`lsp-setup.md`](lsp-setup.md).
+
 ## Configuration
 
 Two common Python LSPs:
@@ -7,7 +9,9 @@ Two common Python LSPs:
 - **pylsp** (python-lsp-server): installed via `pip install python-lsp-server`. Wraps multiple analysis backends (pyflakes, rope, jedi).
 - **pyright**: installed via `npm install -g pyright` or `pip install pyright`. Stronger type inference; preferred for typed codebases.
 
-Claude Code uses whichever LSP the project has configured. For research purposes both expose the same operations (`hover`, `definition`, `references`, `completions`, `diagnostics`).
+Claude Code uses whichever LSP the project has configured. For research purposes both expose the same operations (`hover`, `definition`, `references`).
+
+> **Note:** `completions` and `diagnostics` are *not* on the current `LSP` tool surface (which exposes `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, `outgoingCalls`). Where they appear below they describe a server-specific path not reachable through the `LSP` tool; use Bash search or a typed-symbol `hover` instead.
 
 For pyright to resolve types fully, a `pyrightconfig.json` or `pyproject.toml` with `[tool.pyright]` should be present and `venvPath` or `pythonPath` should point to the active virtual environment.
 

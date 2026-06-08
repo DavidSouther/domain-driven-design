@@ -1,5 +1,9 @@
 # LSP Reference: TypeScript (tsserver)
 
+> Priming rules (`npm install` to populate `node_modules`, `tsc --build` for project references) live in [`lsp-setup.md`](lsp-setup.md).
+>
+> **Note:** `completions` and `diagnostics` are *not* on the current `LSP` tool surface (which exposes `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, `outgoingCalls`). Where they appear below they describe a server-specific path not reachable through the `LSP` tool: to enumerate members use `hover` on the value, and to check type-correctness run `tsc` via Bash.
+
 ## Configuration
 
 tsserver is bundled with TypeScript. It activates automatically when a `tsconfig.json` is present. No separate installation is required beyond `npm install` (or equivalent) to populate `node_modules`.
