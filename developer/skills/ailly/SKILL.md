@@ -102,6 +102,10 @@ All artifacts for a session live under `docs/developer/YYYY-MM-DD-A-<topic>/`.
 - `maps/<path>.md` contains the maps found during any forward/backward planning. 
 - `thinking/` is a scratch pad area for the `thinking` skill to share its findings with the calling agent.
 
+## Quick Loop
+
+Generally, be persistent in enforcing the draft structure. However, when first starting an Ailly task, the user may ask for a "quick loop". In these cases, follow the loop but skip draft gates. Use subagents for each step of the loop to maintain session isolation.
+
 ## Next Task
 
 When finishing a session, append the next step to `docs/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments. When substantial context is needed for a task, create a `TASK-NOTES-<task>.md` file with the details, and include just a short overview to that in the TASKS file. Review NOTES when the task is selected.
