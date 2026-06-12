@@ -1,15 +1,15 @@
 ---
 name: plan
-description: Use when a feature test has been reviewed and cleared and is currently failing — breaks passing it into 3-7 incremental plan steps
+description: Use when the design draft is cleared and its recorded feature test is currently failing. Breaks passing that test into 3 to 7 incremental plan steps.
 ---
 
-# developer:planning
+# developer:plan
 
 ## Overview
 
 Middle-loop planning skill. Given a failing feature test, breaks the path to making it pass into 3–7 incremental steps. Each step must leave the codebase in a runnable state and advance the feature test measurably.
 
-**Announce at start:** "Using developer:planning to create the implementation plan for [summary of feature]."
+**Announce at start:** "Using developer:plan to create the implementation plan for [summary of feature]."
 
 **Trigger:** The design draft marker has been cleared by a human. The design records the project feature test, which is currently failing.
 

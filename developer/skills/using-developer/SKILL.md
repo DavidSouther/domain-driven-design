@@ -5,28 +5,35 @@ description: Bootstrap skill to describe developer tasks. Directs which develope
 
 # Using Developer Skills
 
-## Three-Loop Architecture
+## Five-Phase Lifecycle
 
-Developer work is organized into three nested loops. Each loop has its own skill. Invoke the skill for the loop you are currently in.
+Developer work runs through five phases: Research, Design, Plan, Build, Cleanup. Each of the first three is separated from the next by a human-review draft gate, and red-green-refactor is the Build loop. Invoke the skill for the phase you are in.
 
 ```dot
-digraph loops {
-    start [shape=doublecircle label="New feature idea"];
-    outer [shape=box label="Outer loop:\ndesign"];
-    design_ok [shape=diamond label="Design approved"];
-    middle [shape=box label="Middle loop:\nfeature test + plan"];
-    plan_ok [shape=diamond label="Plan approved"];
-    inner [shape=box label="Inner loop:\nred-green-refactor"];
-    done [shape=doublecircle label="Feature test passes"];
+digraph phases {
+    start [shape=doublecircle label="New topic"];
+    research [shape=box label="Research:\ndeveloper:research"];
+    rg [shape=diamond label="Research cleared"];
+    design [shape=box label="Design (+ feature test):\ndeveloper:design"];
+    dg [shape=diamond label="Design cleared"];
+    plan [shape=box label="Plan:\ndeveloper:plan"];
+    pg [shape=diamond label="Plan cleared"];
+    build [shape=box label="Build:\ndeveloper:red-green-refactor"];
+    cleanup [shape=box label="Cleanup:\ndeveloper:cleanup"];
+    done [shape=doublecircle label="Approved + squash-merged"];
 
-    start -> outer;
-    outer -> design_ok;
-    design_ok -> middle [label="yes"];
-    design_ok -> outer [label="revise"];
-    middle -> plan_ok;
-    plan_ok -> inner [label="yes"];
-    plan_ok -> middle [label="revise"];
-    inner -> done;
+    start -> research;
+    research -> rg;
+    rg -> design [label="yes"];
+    rg -> research [label="revise"];
+    design -> dg;
+    dg -> plan [label="yes"];
+    dg -> design [label="revise"];
+    plan -> pg;
+    pg -> build [label="yes"];
+    pg -> plan [label="revise"];
+    build -> cleanup [label="feature test passes"];
+    cleanup -> done [label="human approval"];
 }
 ```
 
@@ -46,10 +53,11 @@ digraph loops {
 
 ## Draft Gates
 
-The outer and middle loops produce `*Draft YYYY-MM-DD*` artifacts. A human must review and clear the draft marker before the next loop begins. `developer:ailly` enforces this. It will not proceed past a draft gate in the same session.
+The research, design, and plan phases each produce a `*Draft YYYY-MM-DD*` artifact. A human must review and clear the draft marker before the next phase begins. `developer:ailly` enforces this and will not proceed past a draft gate in the same session. Cleanup adds a final human-approval gate before the squash-merge.
 
-| Artifact | Location | Clears to enter |
+| Gate | Location | Clears to enter |
 |---|---|---|
 | Research notes | `docs/developer/YYYY-MM-DD-A-<topic>/research.md` | Design phase |
 | Design doc (with feature test) | `docs/developer/YYYY-MM-DD-A-<topic>/design.md` | Plan phase |
 | Plan | `docs/developer/YYYY-MM-DD-A-<topic>/plan.md` | Build (red/green/refactor) |
+| Cleanup approval (human sign-off, not a draft file) | — | Squash-merge or PR |

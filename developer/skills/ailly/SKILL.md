@@ -90,8 +90,9 @@ Pass the session folder path to each skill. The session folder is the single sou
 
 - Research phase: invoke `developer:research`
 - Design phase: invoke `developer:design`
-- Middle loop planning: invoke `developer:plan`
-- Inner loop: invoke `developer:red-green-refactor`
+- Plan phase: invoke `developer:plan`
+- Build phase: invoke `developer:red-green-refactor` per plan step until the feature test is green
+- Cleanup phase: invoke `developer:cleanup`
 
 ## Topic Slug
 
@@ -110,9 +111,22 @@ All artifacts for a session live under `docs/developer/YYYY-MM-DD-A-<topic>/`.
 - `maps/<path>.md` contains the maps found during any forward/backward planning. 
 - `thinking/` is a scratch pad area for the `thinking` skill to share its findings with the calling agent.
 
-## Quick Loop
+## Quick-loop Mode
 
-Generally, be persistent in enforcing the draft structure. However, when first starting an Ailly task, the user may ask for a "quick loop". In these cases, follow the loop but skip draft gates. Use subagents for each step of the loop to maintain session isolation.
+Generally, be persistent in enforcing the draft structure. However, when first starting an Ailly task, the user may ask for a "quick loop". The same five phases (Research, Design, Plan, Build, Cleanup) still run, compressed:
+
+- The draft gates **auto-clear**: each phase produces its artifact and the next phase begins in the same flow, without stopping for human review between them.
+- Artifacts are **minimal**: just enough research, design, plan, and feature test to drive the work, not the full documents.
+- The loop **churns straight to a green feature test**, then Cleanup.
+- Use subagents for each phase of the loop to maintain session isolation.
+
+**When it fits:** a small, unambiguous task with a narrow surface, where the cost of a wrong turn is low.
+
+**What it trades away:** the human review beats. Skipping the gates means no chance to catch a wrong assumption before the next phase builds on it. Do not use quick-loop for ambiguous, high-blast-radius, or security-sensitive work.
+
+## Bugfix Shape
+
+When the research refine pass reclassifies the task as a bug rather than a feature, consult `developer/references/bugfix.md`. The same five phases run; the design content uses observed / expected / unchanged language, and the feature test is a failing **reproduction** test that fills the same slot the design's feature test fills. Not a separate skill.
 
 ## Next Task
 
