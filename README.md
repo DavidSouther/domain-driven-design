@@ -4,24 +4,43 @@ A [Claude Code](https://claude.ai/code) plugin providing structured workflows fo
 
 ## Installation & Getting Started
 
-1. Clone the repository locally.
-2. Add the marketplace: in Claude Code, run `/plugin marketplace add <path-to-clone>`, where `<path-to-clone>` is the cloned repository directory.
+1. Add the marketplace from GitHub: in Claude Code, run `/plugin marketplace add davidsouther/domain-driven-design`.
    * You can also run `/plugin` to open the interactive browser and add it from the **Marketplaces** tab.
-3. Install the skills with `/plugin install <name>@ailly` — install `general`, `developer`, `patterns`, and `research` (`domain` is optional). Browse and toggle them anytime from the **Installed** tab of `/plugin`.
-4. Start a project in a new folder - `/ailly /initialize a project called [name] for [design goal] using [TypeScript, Python, or Rust] (including initializing git)`.
-5. Start work on new feature in that folder - `/ailly start a new feature for [user need]`.
-6. Continue work on whatever you did last - `/ailly continue`
-7. Tell Ailly to do research herself - after Ailly asks you a question, `/using-research to perform a deep dive; pay attention especially to [area of interest]`.
-8. Tell Ailly to fix a bug - `/ailly quick loop fix [the bug]`.
+2. Install the skills with `/plugin install <name>@ailly` — install `general`, `developer`, `patterns`, and `research` (`domain` is optional). Browse and toggle them anytime from the **Installed** tab of `/plugin`.
+3. Start a project in a new folder - `/ailly initialize a project called [name] for [design goal] using [TypeScript, Python, or Rust] (including initializing git)`.
+4. Start work on a new feature - `/ailly start work on [description]`.
+5. Start a feature in an isolated worktree - `/ailly in a worktree start work on [description]`.
+6. Continue work on a specific phase - `/ailly continue [phase] [task-slug]`.
+7. Fast-track a simple change - `/ailly finish [task] with a quick loop`.
+8. Tell Ailly to do research herself - after Ailly asks you a question, `/using-research to perform a deep dive; pay attention especially to [area of interest]`.
+9. When finished with a task, `/ailly cleanup [task] with a PR`. Or use `with a squash merge` for local development.
 
-To update Ailly, simply pull the latest sources in the git repo, and reload the coding agent.
+> **Updating:** Ailly does not auto-update when new versions are pushed. Run `/plugin marketplace update ailly` to pull the latest skills.
+> **Local development:** To work from a local clone instead, run `/plugin marketplace add <path-to-clone>`.
+
+### How Ailly Works
+
+Ailly structures development as five sequential phases, each running in its own session to prevent context bloat:
+
+| Phase | What happens |
+|-------|-------------|
+| **Research** | Gathers reference material, produces a refined report with user review |
+| **Design** | Produces a design doc with purpose, user journey, spec, and alternatives; outputs a failing feature test |
+| **Plan** | Details type-first, TDD implementation steps; user reviews before build begins |
+| **Build** | Executes each plan step, runs checks, commits; targets a passing feature test |
+| **Cleanup** | Removes session artifacts, squash-merges the branch |
+
+Each phase produces a draft artifact. A human must review and clear the draft marker before the next phase begins — this keeps architectural decisions collaborative rather than delegated entirely to the agent.
+
+The **quick loop** option skips the full phase structure for simple, unambiguous tasks.
 
 ### Useful Patterns
 
-- Develop a complex prompt in `./docs/prompts/big-prompt.md`, then run it with `run ./docs/prompts/big-prompt.md`.
-- Check if Ailly has what she needs for research - `/ailly check if internal, books, and papers research are set up right`
-- Figure out really anything about Ailly - ask her! `/ailly what skills are available?` `/ailly how do I update a git repo?`
-- Change the `docs/` folder by adding `For developer: tools, .agents/ instead of .docs` to CLAUDE.md (or AGENTS.md if CLAUDE.md includes it).
+- Write a complex task description to `.ailly/prompts/[topic].md`, then run it with `/ailly run .ailly/prompts/[topic].md`.
+- Work on multiple independent features at the same time using worktrees: `/ailly in a worktree start work on [feature-a]` in one terminal, the same for feature-b in another.
+- Check if Ailly has what she needs for research - `/ailly check if internal, books, and papers research are set up right`.
+- Ask Ailly about herself - `/ailly what skills are available?` or `/ailly how do I update a git repo?`
+- Change the `.ailly/` folder by adding `For developer: tools, use .agents/ instead of .ailly/` to your AGENTS.md or equivalent.
 
 ## Skills
 
