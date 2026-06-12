@@ -67,5 +67,5 @@ every paired assertion into `improved` / `regressed` / `unchanged_pass` /
 `unchanged_fail`. A null result (an assertion that fails on both arms) is a true
 statement about the model, not a defect — do not weaken a checker to manufacture
 a pass. See the design doc at
-`docs/developer/2026-05-29-G-research-e2e/design.md` for the build
+`.ailly/developer/2026-05-29-G-research-e2e/design.md` for the build
 reconciliation and the committed results.

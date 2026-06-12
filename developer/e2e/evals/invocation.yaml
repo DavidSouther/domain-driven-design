@@ -99,7 +99,7 @@ cases:
           The response is a topic-closeout procedure that does the cleanup
           skill's specific steps: a final refactoring and review pass (including
           lint/formatters), extracting the deferred decisions into a TASKS file,
-          removing the topic's docs/developer session folder, and opening a PR or
+          removing the topic's .ailly/developer session folder, and opening a PR or
           preparing a squash merge. It is workspace tidy-up, not new feature work.
       - { type: tokens, metric: output, op: "<", value: 5000 }
 

@@ -7,7 +7,7 @@ tests run under `pytest`.
 Produce the implementation plan. Write everything inline as your reply: do not
 call any tools or emit tool-call JSON.
 
-Cleared design — `docs/developer/2026-06-03-A-jq-lite/design.md`:
+Cleared design — `.ailly/developer/2026-06-03-A-jq-lite/design.md`:
 
 ```markdown
 # jq-lite — JSON-Lines Predicate Filter

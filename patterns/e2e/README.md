@@ -11,8 +11,8 @@ independent failure surfaces:
 Built with the method in
 [`ailly_two/skills/ailly-skill-eval`](https://github.com/) and shaped after the
 worked example `ailly_two/e2e/patterns-eval` (which this harness does not modify).
-The design lives in `docs/developer/2026-05-29-C-patterns-e2e/design.md`; the shared
-blueprint is `docs/developer/2026-05-29-A-skill-evals/design.md`.
+The design lives in `.ailly/developer/2026-05-29-C-patterns-e2e/design.md`; the shared
+blueprint is `.ailly/developer/2026-05-29-A-skill-evals/design.md`.
 
 ## Cross-section under test (6 skills)
 

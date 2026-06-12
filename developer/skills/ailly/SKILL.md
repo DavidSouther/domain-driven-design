@@ -13,7 +13,7 @@ Session coordinator for a development loop. Creates and manages the session fold
 
 ## Session Folder
 
-If it does not exist, create `docs/developer/YYYY-MM-DD-A-<topic>` where `A` is `A`, `B`, `C`, etc to manage multiple features started in the same day. If not already on a branch of the same name, suggest moving to that branch, and let the user make the switch. When the branch needs upstream changes, prefer a rebase and push with `--force-with-lease` rather than a plain force push.
+If it does not exist, create `.ailly/developer/YYYY-MM-DD-A-<topic>` where `A` is `A`, `B`, `C`, etc to manage multiple features started in the same day. If not already on a branch of the same name, suggest moving to that branch, and let the user make the switch. When the branch needs upstream changes, prefer a rebase and push with `--force-with-lease` rather than a plain force push.
 
 If the folder already exists for the current topic, determine resume point:
 
@@ -30,7 +30,7 @@ If the folder already exists for the current topic, determine resume point:
 
 A file has its draft cleared when it no longer contains the `*Draft` marker.
 
-Cleanup is the terminal phase: it runs the final review, extracts deferred decisions to `docs/developer/TASKS.md`, and **pauses for human approval before the squash-merge** or PR.
+Cleanup is the terminal phase: it runs the final review, extracts deferred decisions to `.ailly/developer/TASKS.md`, and **pauses for human approval before the squash-merge** or PR.
 
 ## Loop Structure
 
@@ -100,11 +100,11 @@ If the user's prompt doesn't make the topic slug obvious, ask for one before cre
 
 > "What's a short slug for this session? (e.g., `user-auth`, `csv-export`)"
 
-Use it to name the session folder: `docs/developer/YYYY-MM-DD-<topic>/`.
+Use it to name the session folder: `.ailly/developer/YYYY-MM-DD-<topic>/`.
 
 ## Session Artifacts
 
-All artifacts for a session live under `docs/developer/YYYY-MM-DD-A-<topic>/`.
+All artifacts for a session live under `.ailly/developer/YYYY-MM-DD-A-<topic>/`.
 
 - `research.md` is the gathered and refined context for a topic.
 - `design.md` is the overall design doc for a topic, including the path of its one feature test.
@@ -130,7 +130,7 @@ When the research refine pass reclassifies the task as a bug rather than a featu
 
 ## Next Task
 
-When finishing a session, append the next step to `docs/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments. When substantial context is needed for a task, create a `TASK-NOTES-<task>.md` file with the details, and include just a short overview to that in the TASKS file. Review NOTES when the task is selected.
+When finishing a session, append the next step to `.ailly/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments. When substantial context is needed for a task, create a `TASK-NOTES-<task>.md` file with the details, and include just a short overview to that in the TASKS file. Review NOTES when the task is selected.
 
 When a topic is finished, use `developer:cleanup` to leave things tidy.
 

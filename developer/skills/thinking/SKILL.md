@@ -33,7 +33,7 @@ The invoking skill must pass:
 
 ## Thinking Doc Format
 
-Save to `docs/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`:
+Save to `.ailly/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`:
 
 ```markdown
 # Thinking: <problem-slug>
@@ -75,4 +75,4 @@ The next steps must be concrete and ordered. "Try X" without a predicted outcome
 
 After writing the thinking doc, return to the caller with:
 
-> "Thinking complete. Root cause: `<one sentence>`. Next steps in `docs/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`."
+> "Thinking complete. Root cause: `<one sentence>`. Next steps in `.ailly/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`."

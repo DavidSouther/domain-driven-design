@@ -18,7 +18,7 @@ Post-green cleanup. Runs only when tests are green and the working directory is 
 ## Behavior
 
 1. Identify code smells in files touched in this loop and their logical neighbors. Use `git diff --name-only HEAD` to enumerate files changed since the last commit.
-2. Write a refactoring plan to `docs/developer/YYYY-MM-DD-A-<topic>/refactor-plan.md`. Include one checkbox per refactoring: smell name, file and line range, intended resolution. Cross out each item as it is completed.
+2. Write a refactoring plan to `.ailly/developer/YYYY-MM-DD-A-<topic>/refactor-plan.md`. Include one checkbox per refactoring: smell name, file and line range, intended resolution. Cross out each item as it is completed.
 3. Apply each refactoring one at a time. After each: run check, run tests. Abort on repeated errors (see below).
 4. If after refactoring the tests pass, but the smell lingers, that's OK. It will still be there the next time someone has time to refactor.
 5. Record deferred smells if any remain (optional).
@@ -116,7 +116,7 @@ If `developer:thinking` has already been invoked for this error and the same err
 
 If smells remain that are too risky to address now (e.g., would require changing multiple modules, or encountered repeated failures while fixing), record them:
 
-Save to `docs/developer/YYYY-MM-DD-A-<topic>/deferred-refactoring.md`:
+Save to `.ailly/developer/YYYY-MM-DD-A-<topic>/deferred-refactoring.md`:
 
 ```markdown
 # Deferred Refactoring

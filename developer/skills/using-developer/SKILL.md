@@ -57,7 +57,7 @@ The research, design, and plan phases each produce a `*Draft YYYY-MM-DD*` artifa
 
 | Gate | Location | Clears to enter |
 |---|---|---|
-| Research notes | `docs/developer/YYYY-MM-DD-A-<topic>/research.md` | Design phase |
-| Design doc (with feature test) | `docs/developer/YYYY-MM-DD-A-<topic>/design.md` | Plan phase |
-| Plan | `docs/developer/YYYY-MM-DD-A-<topic>/plan.md` | Build (red/green/refactor) |
+| Research notes | `.ailly/developer/YYYY-MM-DD-A-<topic>/research.md` | Design phase |
+| Design doc (with feature test) | `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md` | Plan phase |
+| Plan | `.ailly/developer/YYYY-MM-DD-A-<topic>/plan.md` | Build (red/green/refactor) |
 | Cleanup approval (human sign-off, not a draft file) | — | Squash-merge or PR |

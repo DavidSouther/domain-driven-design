@@ -8,7 +8,7 @@ write one arrange-act-assert test that fails for the right reason, then implemen
 until that single test passes. Do not start Step 2. Show the code you write at
 each part of the cycle.
 
-Cleared design — `docs/developer/2026-06-03-A-jq-lite/design.md`:
+Cleared design — `.ailly/developer/2026-06-03-A-jq-lite/design.md`:
 
 ```markdown
 # jq-lite — JSON-Lines Predicate Filter
@@ -23,7 +23,7 @@ boolean connectives (`and` `or` `not`), and parentheses. Literals: numbers,
 quoted strings, `true`/`false`/`null`. Standard library only.
 ```
 
-Cleared feature test — `docs/developer/2026-06-03-A-jq-lite/feature-test.md`:
+Cleared feature test — `.ailly/developer/2026-06-03-A-jq-lite/feature-test.md`:
 
 ```markdown
 # Feature Test — jq-lite
@@ -37,7 +37,7 @@ a field comparison with a boolean connective, captures stdout, and asserts the
 survivors match in order. It fails at the start because no implementation exists.
 ```
 
-Cleared plan — `docs/developer/2026-06-03-A-jq-lite/plan.md`:
+Cleared plan — `.ailly/developer/2026-06-03-A-jq-lite/plan.md`:
 
 ```markdown
 # Implementation Plan: jq-lite

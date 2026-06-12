@@ -85,12 +85,12 @@ Describe what this step builds. The feature test will still fail but `<specific 
 
 ## Output Artifacts
 
-Save `plan.md` to the session folder (`docs/developer/YYYY-MM-DD-A-<topic>/plan.md`) with `*Draft YYYY-MM-DD*` at the top.
+Save `plan.md` to the session folder (`.ailly/developer/YYYY-MM-DD-A-<topic>/plan.md`) with `*Draft YYYY-MM-DD*` at the top.
 
 ## Stop Condition
 
 After saving, tell the user:
 
-> "Plan saved to `docs/developer/YYYY-MM-DD-A-<topic>/plan.md`. Review it and make any adjustments. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:ailly` (or `developer:red-green-refactor`) to begin implementation."
+> "Plan saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/plan.md`. Review it and make any adjustments. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:ailly` (or `developer:red-green-refactor`) to begin implementation."
 
 Do not implement any step. Do not run the feature test. Do not invoke `developer:red-green-refactor`.

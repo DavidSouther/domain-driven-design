@@ -61,7 +61,7 @@ Create a task for each of these items and complete them in order:
 4. **Ask clarifying questions** one at a time, to understand purpose, constraints, success criteria, and other salient details.
 5. **Propose 2-3 approaches** with trade-offs and your recommendation.
 6. **Present design** in sections scaled to their complexity, getting user approval after each section.
-7. **Write design doc** saved to `docs/developer/YYYY-MM-DD-A-<topic>/design.md`.
+7. **Write design doc** saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`.
 8. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
 9. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
 10. **User reviews draft** — refer the user to the design and the test, ask them to provide their edits, and tell them how to begin the next phase in a new session. Stop at this point.
@@ -111,7 +111,7 @@ digraph brainstorming {
 - Check out the current project state first (files, docs, recent commits) and the cleared `research.md`.
 - Fill in only the context `research.md` did not already settle. If the requested API has a known missing feature, or a library already does this, surface it now.
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into smaller components: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first component through the normal design flow. Each further component gets its own design → plan → implementation cycle; record this in `docs/developer/YYYY-MM-DD-A-<topic>/TODO.md`.
+- If the project is too large for a single spec, help the user decompose into smaller components: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first component through the normal design flow. Each further component gets its own design → plan → implementation cycle; record this in `.ailly/developer/YYYY-MM-DD-A-<topic>/TODO.md`.
 - For appropriately-scoped projects, ask questions one at a time to refine the idea.
 - Present summaries of research results with links to sources to justify options.
 - Prefer multiple choice questions when possible, with room for open ended responses.
@@ -145,7 +145,7 @@ When the research refine pass reclassified the task as a bug rather than a featu
 
 ## After the Design
 
-Write the validated design to `docs/developer/YYYY-MM-DD-A-<topic>/design.md`. Include `*Draft YYYY-MM-DD*` at the beginning of the document, after the title. A human will remove the `*Draft*` mark when the design and its feature test are ready. Write the feature test to the project test tree and record its path in `design.md`. Invoke the `general:review` skill on both.
+Write the validated design to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`. Include `*Draft YYYY-MM-DD*` at the beginning of the document, after the title. A human will remove the `*Draft*` mark when the design and its feature test are ready. Write the feature test to the project test tree and record its path in `design.md`. Invoke the `general:review` skill on both.
 
 **User Review Gate:**
 After the review loop passes, ask the user to review the written design and feature test before proceeding.

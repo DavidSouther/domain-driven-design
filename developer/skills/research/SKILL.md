@@ -24,7 +24,7 @@ The expand brief leans on the general lens. The refine brief leans on the specif
 
 ## Behavior
 
-1. **Open or continue the session folder** (`docs/developer/YYYY-MM-DD-A-<topic>/`). If a topic slug is not obvious from the prompt, ask for a short one before creating the folder.
+1. **Open or continue the session folder** (`.ailly/developer/YYYY-MM-DD-A-<topic>/`). If a topic slug is not obvious from the prompt, ask for a short one before creating the folder.
 2. **Expand** — drive `research:using-research` with an explicit expand brief on the general lens: supporting complaints and complementary work, feature requests, user complaints, adjacent internal libraries and docs, public projects doing the same thing, and field research. A deep topic may spin off several ancillary supporting docs.
 3. **Refine** — drive `research:using-research` with a refine brief on the specific lens to narrow the task as far as it will go. Select the refinements that fit the expand findings; this list is neither exhaustive nor mandatory: is this a bug fix rather than a feature, can an off-the-shelf tool already do it, should another team be collaborating on it, what is the smallest version that still meets the intent?
 4. **Write `research.md`** with the sections below, marked `*Draft YYYY-MM-DD*`. Then review it for clarity, consistency, and conciseness, and collaborate with the user on the questions research did not resolve. Per-skill findings land under `docs/research/YYYY-MM-DD-A-<topic>/<skill>.md` with IEEE-style Sources, following the `research:using-research` Research Notes Convention.
@@ -46,7 +46,7 @@ The `research.md` produced by this very session folder is the working template.
 
 ## Output Artifacts
 
-Save to the session folder (`docs/developer/YYYY-MM-DD-A-<topic>/`):
+Save to the session folder (`.ailly/developer/YYYY-MM-DD-A-<topic>/`):
 
 - `research.md` — the six sections above, marked `*Draft YYYY-MM-DD*` after the title.
 - Per-skill findings under `docs/research/YYYY-MM-DD-A-<topic>/<skill>.md` (the `research:using-research` convention).
@@ -55,6 +55,6 @@ Save to the session folder (`docs/developer/YYYY-MM-DD-A-<topic>/`):
 
 After saving, tell the user:
 
-> "Research gathered and refined, saved to `docs/developer/YYYY-MM-DD-A-<topic>/research.md`. Review it, resolve the open questions, and make any changes. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:ailly` (or `developer:design`) to continue."
+> "Research gathered and refined, saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/research.md`. Review it, resolve the open questions, and make any changes. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:ailly` (or `developer:design`) to continue."
 
 Do not write a design or a feature test. Do not invoke `developer:design`. Stop at the gate.

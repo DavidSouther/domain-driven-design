@@ -8,7 +8,7 @@ generic advice and does not name these specific steps.
 Rules (at least three of the four closeout actions must be present):
 - A: final refactoring AND review pass (incl. lint/formatters).
 - B: extract deferred decisions into a TASKS file.
-- C: remove the topic's docs/developer folder.
+- C: remove the topic's .ailly/developer folder.
 - D: open a PR or prepare a squash merge.
 """
 
@@ -26,10 +26,10 @@ ACTIONS = {
     ),
     "C remove topic folder": lambda t: (
         re.search(
-            r"(remove|delete|tear down|tear-down).{0,40}(folder|docs/developer|topic|director)",
+            r"(remove|delete|tear down|tear-down).{0,40}(folder|.ailly/developer|topic|director)",
             t,
         )
-        or re.search(r"(folder|docs/developer|topic|director).{0,40}(remove|delete)", t)
+        or re.search(r"(folder|.ailly/developer|topic|director).{0,40}(remove|delete)", t)
     ),
     "D PR or squash merge": lambda t: re.search(r"pull request|\bpr\b|squash|merge", t),
 }
