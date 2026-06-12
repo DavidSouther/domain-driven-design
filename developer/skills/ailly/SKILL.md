@@ -13,21 +13,24 @@ Session coordinator for a development loop. Creates and manages the session fold
 
 ## Session Folder
 
-If it does not exist, create `docs/developer/YYYY-MM-DD-A-<topic>` where `A` is `A`, `B`, `C`, etc to manage multiple features started in the same day. If not already on a branch of the same name, use `developer:git-workflow` to suggest moving to that branch.
+If it does not exist, create `docs/developer/YYYY-MM-DD-A-<topic>` where `A` is `A`, `B`, `C`, etc to manage multiple features started in the same day. If not already on a branch of the same name, suggest moving to that branch, and let the user make the switch. When the branch needs upstream changes, prefer a rebase and push with `--force-with-lease` rather than a plain force push.
 
 If the folder already exists for the current topic, determine resume point:
 
 | Files present | Draft marker cleared? | Resume at |
 |---|---|---|
-| No files | — | Outer loop (design-doc) |
-| `design.md` | No | Wait — ask user to clear the draft |
-| `design.md` | Yes | Middle loop (feature-test) |
-| `feature-test.md` | No | Wait — ask user to clear the draft |
-| `feature-test.md` | Yes | Middle loop (planning) |
-| `plan.md` | No | Wait — ask user to clear the draft |
-| `plan.md` | Yes | Inner loop (red-green-refactor) |
+| No files | — | Research phase (`developer:research`) |
+| `research.md` | No | Wait, ask user to clear the draft |
+| `research.md` | Yes | Design phase (`developer:design`) |
+| `design.md` | No | Wait, ask user to clear the draft |
+| `design.md` | Yes | Plan phase (`developer:plan`) |
+| `plan.md` | No | Wait, ask user to clear the draft |
+| `plan.md` | Yes | Build (`developer:red-green-refactor`) |
+| `plan.md` cleared, all steps done, feature test green | — | Cleanup phase (`developer:cleanup`) |
 
 A file has its draft cleared when it no longer contains the `*Draft` marker.
+
+Cleanup is the terminal phase: it runs the final review, extracts deferred decisions to `docs/developer/TASKS.md`, and **pauses for human approval before the squash-merge** or PR.
 
 ## Loop Structure
 
@@ -35,40 +38,45 @@ A file has its draft cleared when it no longer contains the `*Draft` marker.
 digraph run {
     start [shape=doublecircle label="Session start"];
     resume [shape=box label="Determine resume point"];
-    design_doc [shape=box label="Outer loop:\ndeveloper:design-doc"];
+    research [shape=box label="Research:\ndeveloper:research"];
+    gate_research [shape=diamond label="Draft gate:\nresearch"];
+    design [shape=box label="Design (+ feature test):\ndeveloper:design"];
     gate_design [shape=diamond label="Draft gate:\ndesign"];
-    feature_test [shape=box label="Middle loop:\ndeveloper:feature-test"];
-    gate_feature [shape=diamond label="Draft gate:\nfeature-test"];
-    planning [shape=box label="Middle loop:\ndeveloper:planning"];
+    planning [shape=box label="Plan:\ndeveloper:plan"];
     gate_plan [shape=diamond label="Draft gate:\nplan"];
-    rgr [shape=box label="Inner loop:\ndeveloper:red-green-refactor"];
+    rgr [shape=box label="Build:\ndeveloper:red-green-refactor"];
+    cleanup [shape=box label="Cleanup:\ndeveloper:cleanup"];
+    gate_merge [shape=diamond label="Human approval:\nbefore squash-merge"];
     stop [shape=doublecircle label="Stop session"];
 
     start -> resume;
-    resume -> design_doc;
-    resume -> feature_test;
+    resume -> research;
+    resume -> design;
     resume -> planning;
     resume -> rgr;
+    resume -> cleanup;
 
-    design_doc -> gate_design;
+    research -> gate_research;
+    gate_research -> stop [label="not cleared"];
+    gate_research -> design [label="cleared"];
+
+    design -> gate_design;
     gate_design -> stop [label="not cleared"];
-    gate_design -> feature_test [label="cleared"];
-
-    feature_test -> gate_feature;
-    gate_feature -> stop [label="not cleared"];
-    gate_feature -> planning [label="cleared"];
+    gate_design -> planning [label="cleared"];
 
     planning -> gate_plan;
     gate_plan -> stop [label="not cleared"];
     gate_plan -> rgr [label="cleared"];
 
-    rgr -> stop [label="feature test passes"];
+    rgr -> cleanup [label="feature test passes"];
+    cleanup -> gate_merge;
+    gate_merge -> stop [label="approved: squash-merge"];
 }
 ```
 
 ## Draft Gate Enforcement
 
-After any outer or middle loop skill (design-doc, feature-test, planning) produces output, stop the session and tell the user:
+After any research, design, or plan skill produces a draft, stop the session and tell the user:
 
 > "This step is complete. Review `<path>`, make any changes, then remove the `*Draft YYYY-MM-DD*` marker from the top of the file. Start a new session and run `developer:ailly` to continue."
 
@@ -80,10 +88,11 @@ After any outer or middle loop skill (design-doc, feature-test, planning) produc
 
 Pass the session folder path to each skill. The session folder is the single source of truth for all session artifacts.
 
-- Outer loop: invoke `developer:brainstorming` or `developer:design-doc`
-- Middle loop entry: invoke `developer:feature-test`
-- Middle loop planning: invoke `developer:planning`
-- Inner loop: invoke `developer:red-green-refactor`
+- Research phase: invoke `developer:research`
+- Design phase: invoke `developer:design`
+- Plan phase: invoke `developer:plan`
+- Build phase: invoke `developer:red-green-refactor` per plan step until the feature test is green
+- Cleanup phase: invoke `developer:cleanup`
 
 ## Topic Slug
 
@@ -97,14 +106,27 @@ Use it to name the session folder: `docs/developer/YYYY-MM-DD-<topic>/`.
 
 All artifacts for a session live under `docs/developer/YYYY-MM-DD-A-<topic>/`.
 
-- `design.md` is the overal design doc for a topic.
-- `feature-test.md` is a specific plan for the feature test for this topic.
+- `research.md` is the gathered and refined context for a topic.
+- `design.md` is the overall design doc for a topic, including the path of its one feature test.
 - `maps/<path>.md` contains the maps found during any forward/backward planning. 
 - `thinking/` is a scratch pad area for the `thinking` skill to share its findings with the calling agent.
 
-## Quick Loop
+## Quick-loop Mode
 
-Generally, be persistent in enforcing the draft structure. However, when first starting an Ailly task, the user may ask for a "quick loop". In these cases, follow the loop but skip draft gates. Use subagents for each step of the loop to maintain session isolation.
+Generally, be persistent in enforcing the draft structure. However, when first starting an Ailly task, the user may ask for a "quick loop". The same five phases (Research, Design, Plan, Build, Cleanup) still run, compressed:
+
+- The draft gates **auto-clear**: each phase produces its artifact and the next phase begins in the same flow, without stopping for human review between them.
+- Artifacts are **minimal**: just enough research, design, plan, and feature test to drive the work, not the full documents.
+- The loop **churns straight to a green feature test**, then Cleanup.
+- Use subagents for each phase of the loop to maintain session isolation.
+
+**When it fits:** a small, unambiguous task with a narrow surface, where the cost of a wrong turn is low.
+
+**What it trades away:** the human review beats. Skipping the gates means no chance to catch a wrong assumption before the next phase builds on it. Do not use quick-loop for ambiguous, high-blast-radius, or security-sensitive work.
+
+## Bugfix Shape
+
+When the research refine pass reclassifies the task as a bug rather than a feature, consult `developer/references/bugfix.md`. The same five phases run; the design content uses observed / expected / unchanged language, and the feature test is a failing **reproduction** test that fills the same slot the design's feature test fills. Not a separate skill.
 
 ## Next Task
 
