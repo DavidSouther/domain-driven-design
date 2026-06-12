@@ -1,6 +1,6 @@
 # Bugfix Shape
 
-When the research refine pass reclassifies a topic as a bug rather than a feature, the five-phase lifecycle still runs unchanged. Only the design content and the role of the feature test differ. This reference, modeled on Kiro's Bugfix Spec, gives the vocabulary. `developer:ailly` and `developer:design` consult it when the task is bug-shaped.
+When the research refine pass identifies a topic as a bug rather than a feature, the five-phase lifecycle still runs unchanged. Only the design content and the role of the feature test differ. This reference provides the vocabulary for bugfixes instead of features. `developer:ailly` and `developer:design` consult it when the task is bug-shaped.
 
 ## The Three Statements
 
@@ -14,7 +14,7 @@ Write all three before proposing a change. A fix that cannot name its Unchanged 
 
 ## The Reproduction Test
 
-The bug's feature test is a failing **reproduction** test. It fills the exact slot the design's feature test fills in the feature flow: one executable test, placed in the project test tree, recorded in `design.md`, written behind the same hard gate (write only the test, no fix).
+The bug's feature test is a failing **reproduction** test. It fills the exact slot the design's feature test fills in the feature flow: one executable test, placed in the project test tree, linked from `design.md`, written behind the same hard gate (write only the test, no fix).
 
 - It encodes the **Observed** behavior as a failing assertion: run the trigger, assert the **Expected** result, and watch it fail because the bug is present.
 - It must fail for the right reason (the bug), not a typo or a missing import.
@@ -29,7 +29,7 @@ The design doc keeps its six sections, read through the bug lens:
 - **Purpose** states the bug as Observed and Expected.
 - **Prior Art** notes prior occurrences, related fixes, or the commit that introduced the regression (use `research:archaeology` to find it).
 - **User Journey and Metrics** describes the user path that hits the bug and how you will know it is fixed (the reproduction test passing, plus any monitoring).
-- **Specification** is the fix, scoped against the Unchanged set, with the root cause named.
+- **Specification** is the fix, scoped against the Unchanged set, with the root cause named. Contains the Observed, Expected, and Unchanged portions.
 - **Alternatives** weighs targeted fix versus broader refactor; prefer the smallest change that makes the reproduction test pass without breaking the Unchanged set.
 - **Summary** records anything deferred.
 
