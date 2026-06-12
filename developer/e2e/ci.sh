@@ -3,10 +3,8 @@
 #
 # Drives the full operator journey across three suites (discovery, invocation,
 # baseline):
-#   0. vendor.sh        -- copy the live AGENTS.md + skill bodies into ./context/
-#      and regenerate the disclosure table, so the SCORED text is current HEAD.
-#      ailly's VFS is project-rooted; a `../`-escaping prefix path will not
-#      resolve, so the inputs must live inside the project.
+#   0. vendor.py        -- copy the live AGENTS.md and regenerate the disclosure
+#      table so the SCORED text is current HEAD.
 #   1. ailly assemble <suite>     -- always runs; asserts N conversation files
 #      land under runs/<id>/ for each suite.
 #   2. ailly run runs/<id>/       -- requires a live model. Asserts every
@@ -31,9 +29,12 @@ cd "${repo_root}"
 
 rm -rf "${project_dir}/runs" "${project_dir}/evals/reports"
 
-# --- CUJ 0: vendor live inputs into ./context/ ------------------------------
+# --- CUJ 0: vendor AGENTS.md + disclosure into ./context/ ------------------
+# Skill bodies are loaded via `kind: external` (../skills/<name>/SKILL.md) and
+# do not need to be copied. Only AGENTS.md and the generated disclosure table
+# are vendored.
 
-bash "${project_dir}/vendor.sh"
+python3 "${project_dir}/vendor.py"
 
 # --- Falsification hygiene: the baseline-prefix files must not leak an answer.
 # Neither the shared AGENTS.md nor profile.md may name a `developer:<skill>`

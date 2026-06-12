@@ -8,16 +8,16 @@ prefix:
   - { kind: file,   path: context/AGENTS.md,                  cache: true }
   - { kind: file,   path: profile.md,                         cache: true }
   - { kind: system, path: context/skills/disclosure.md,       cache: true }
-  - { kind: system, path: context/skills/using-developer/SKILL.md, cache: true }
+  - { kind: external, path: ../skills/using-developer/SKILL.md, cache: true }
 
 matrix:
   case:
-    - design-vs-feature-test
-    - feature-test-vs-plan
+    - research-vs-design
+    - design-vs-plan
     - plan-vs-rgr
     - rgr-vs-thinking
     - refactor-vs-rgr
-    - is-clean-vs-cleanup
+    - cleanup-vs-refactor
     - initialize-vs-ailly
     - ailly-vs-initialize
 

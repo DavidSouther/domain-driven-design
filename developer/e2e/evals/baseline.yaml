@@ -5,23 +5,28 @@ cases:
       - { type: script, runtime: python, script: { path: evals/scripts/check_design.py } }
       - type: judge
         prompt: |
-          The response is a formal design document with the sections Problem
-          Statement, Prior Art, Metrics, Specification, Alternatives, and
-          Summary, and it is presented as a draft for human review. It focuses
-          on the problem and the solution rather than a full implementation.
+          The response is a formal design document with the sections Purpose,
+          Prior Art, User Journey and Metrics, Specification, Alternatives, and
+          Summary, presented as a draft for human review. Alongside the design it
+          embeds exactly one executable feature test that encodes the primary
+          user story end-to-end, marked as a draft, and it does NOT include the
+          implementation code that would make that test pass.
       - { type: tokens, metric: output, op: "<", value: 7000 }
 
-  - name: feature-test
+  - name: research
     assertions:
-      - { type: script, runtime: python, script: { path: evals/scripts/check_feature_test.py } }
+      - { type: script, runtime: python, script: { path: evals/scripts/check_research.py } }
       - type: judge
         prompt: |
-          The response is a feature test: a plain-language user story (Given/
-          When/Then or narrative) followed by exactly one executable test that
-          exercises the user story end-to-end, marked as a draft. It is one
-          test rather than a suite of unit tests, and it does not include the
-          implementation code that would make the test pass.
-      - { type: tokens, metric: output, op: "<", value: 6000 }
+          The response is a research draft that delegates the search and
+          falsification work: an expand pass that gathers supporting context and
+          prior art, and a refine pass that narrows the task (is this a bug not a
+          feature, can an off-the-shelf tool do it, what is the smallest
+          version). It has the sections Topic and Intent, Search/Expand,
+          Falsification/Refine, Scope, Resolved Decisions, and Sources, and it is
+          marked as a draft for human review. It is not a design doc or a feature
+          test.
+      - { type: tokens, metric: output, op: "<", value: 7000 }
 
   - name: plan
     assertions:

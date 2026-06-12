@@ -18,10 +18,19 @@ import sys
 from _checker_utils import fail, read_stdin
 
 ACTIONS = {
-    "A refactor+review pass": lambda t: re.search(r"refactor", t) and re.search(r"review", t),
-    "B deferred decisions -> TASKS": lambda t: re.search(r"defer", t) and re.search(r"\btasks?\b", t),
-    "C remove topic folder": lambda t: re.search(r"(remove|delete|tear down|tear-down).{0,40}(folder|docs/developer|topic|director)", t)
-        or re.search(r"(folder|docs/developer|topic|director).{0,40}(remove|delete)", t),
+    "A refactor+review pass": lambda t: (
+        re.search(r"refactor", t) and re.search(r"review", t)
+    ),
+    "B deferred decisions -> TASKS": lambda t: (
+        re.search(r"defer", t) and re.search(r"\btasks?\b", t)
+    ),
+    "C remove topic folder": lambda t: (
+        re.search(
+            r"(remove|delete|tear down|tear-down).{0,40}(folder|docs/developer|topic|director)",
+            t,
+        )
+        or re.search(r"(folder|docs/developer|topic|director).{0,40}(remove|delete)", t)
+    ),
     "D PR or squash merge": lambda t: re.search(r"pull request|\bpr\b|squash|merge", t),
 }
 
