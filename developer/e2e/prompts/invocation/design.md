@@ -7,6 +7,12 @@ expression is a small subset of jq: field access, the comparison operators
 (`==`, `!=`, `<`, `<=`, `>`, `>=`), the boolean connectives `and`/`or`/`not`,
 and parentheses. Tests will use `pytest`.
 
-The requirements above are settled and complete. Produce the finished design
-document now as your entire reply — do not ask clarifying questions and do not
-stop for approval before writing it.
+The requirements above are settled and complete; treat the research as already
+cleared. Produce the finished design document now as your entire reply, with the
+sections Purpose, Prior Art, User Journey and Metrics, Specification,
+Alternatives, and Summary. Alongside it, embed exactly one executable feature
+test (a `pytest` test function) that encodes the primary user story end-to-end
+and would fail until the tool exists; note the path the test would live at. Mark
+the whole reply as a draft. Do not write the implementation that makes the test
+pass. Write everything inline as your reply: do not call any tools or emit
+tool-call JSON, do not ask clarifying questions, and do not stop for approval.

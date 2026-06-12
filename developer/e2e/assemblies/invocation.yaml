@@ -6,15 +6,15 @@ model: claude-sonnet-4-6
 prefix:
   - { kind: file,   path: context/AGENTS.md,                       cache: true }
   - { kind: file,   path: profile.md,                              cache: true }
-  - { kind: system, path: context/skills/using-developer/SKILL.md, cache: true }
-  - kind: system
-    path: "context/skills/{{ skill }}/SKILL.md"
+  - { kind: external, path: ../skills/using-developer/SKILL.md, cache: true }
+  - kind: external
+    path: "../skills/{{ skill }}/SKILL.md"
     cache: true
 
 matrix:
   skill:
+    - research
     - design
-    - feature-test
     - plan
     - red-green-refactor
     - thinking
