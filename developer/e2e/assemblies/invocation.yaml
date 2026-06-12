@@ -13,8 +13,8 @@ prefix:
 
 matrix:
   skill:
+    - research
     - design
-    - feature-test
     - plan
     - red-green-refactor
     - thinking

@@ -19,7 +19,9 @@ If the folder already exists for the current topic, determine resume point:
 
 | Files present | Draft marker cleared? | Resume at |
 |---|---|---|
-| No files | — | Outer loop (design-doc) |
+| No files | — | Research phase (`developer:research`) |
+| `research.md` | No | Wait, ask user to clear the draft |
+| `research.md` | Yes | Design phase (`developer:design`) |
 | `design.md` | No | Wait — ask user to clear the draft |
 | `design.md` | Yes | Middle loop (feature-test) |
 | `feature-test.md` | No | Wait — ask user to clear the draft |
@@ -80,9 +82,9 @@ After any outer or middle loop skill (design-doc, feature-test, planning) produc
 
 Pass the session folder path to each skill. The session folder is the single source of truth for all session artifacts.
 
-- Outer loop: invoke `developer:brainstorming` or `developer:design-doc`
-- Middle loop entry: invoke `developer:feature-test`
-- Middle loop planning: invoke `developer:planning`
+- Research phase: invoke `developer:research`
+- Design phase: invoke `developer:design`
+- Middle loop planning: invoke `developer:plan`
 - Inner loop: invoke `developer:red-green-refactor`
 
 ## Topic Slug

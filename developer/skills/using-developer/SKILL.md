@@ -35,6 +35,7 @@ digraph loops {
 | Situation | Invoke |
 |---|---|
 | Starting a session for a new or in-progress feature | `developer:ailly` |
+| Gathering and refining context for a vague new topic, with nothing written yet | `developer:research` |
 | Exploring a new idea, clarifying requirements, and producing a formal design doc | `developer:design` |
 | Writing the feature test (design approved, no test yet) | `developer:feature-test` |
 | Breaking a failing feature test into implementation steps | `developer:plan` |
@@ -49,6 +50,7 @@ The outer and middle loops produce `*Draft YYYY-MM-DD*` artifacts. A human must 
 
 | Artifact | Location | Clears to enter |
 |---|---|---|
+| Research notes | `docs/developer/YYYY-MM-DD-A-<topic>/research.md` | Design phase |
 | Design doc | `docs/developer/YYYY-MM-DD-A-<topic>/design.md` | Middle loop feature test |
 | Feature test | `docs/developer/YYYY-MM-DD-A-<topic>/feature-test.md` | Planning implementation |
 | Plan | `docs/developer/YYYY-MM-DD-A-<topic>/plan.md` | Inner loop red/green/refactor |
