@@ -42,9 +42,10 @@ Step 0 contains code (type stubs and signatures), but no function bodies. Everyt
 ## Step Criteria
 
 Each step must:
-- Leave the codebase in a runnable state (check and tests pass, even if feature test still fails)
-- Make measurable progress toward the feature test passing
-- Be implementable in one `developer:red-green-refactor` session
+- Leave the codebase in a runnable state (check and tests pass, even if feature test still fails).
+- Make measurable progress toward the feature test passing.
+- Include a suggested unit test for the happy path, and a list of expected edge cases to test.
+- Write an outline of the main implementation (no error handling, bounds checking, etc) to get a feel of where it should go.
 
 3 steps minimum (too few = steps are too large). 7 steps maximum (too many = over-engineering). Encourage the user to go back to the design in those cases.
 
@@ -77,6 +78,34 @@ New types and function signatures (stubs only, no bodies):
 Describe what this step builds. The feature test will still fail but `<specific assertion>` will no longer throw.
 
 [Optional: API sketch or note on a critical interface — re-derive during build.]
+
+**Tests**
+
+Describe the main test for this step.
+
+```<lang>
+test "happy path":
+  systemUnderTest <- new System(configuration)
+
+  result <- systemUnderTest.doAction(parameter)
+
+  assert result hasSomeProperty()
+```
+
+- Edge case 1
+- Edge case 2
+
+**Implementation Outline**
+
+Describe the overall algorithm or code to implement this step.
+
+```<lang>
+struct SystemUnderTest:
+  method doAction with parameter:
+    for property in parameter.details
+      aggregate property
+    return aggregate 
+```
 
 ## Step 2: <Name>
 

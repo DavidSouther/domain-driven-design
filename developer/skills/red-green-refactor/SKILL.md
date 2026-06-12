@@ -76,6 +76,10 @@ Add one test per iteration using `patterns:arrange-act-assert`. The test should:
 
 Run check, then run tests. Confirm the test fails as expected.
 
+The plan includes happy path tests. While they has been reviewed and approved by the user, do not treat those as sacrosanct, but do treat them as informative. It can be modified to better fit the realities of your implementation.
+
+Similarly, the implementation sketch has been reviewed by the user as a reasonable direction for the feature. Start from there, but be flexible in iterating out both for initial correctness and a hardened, safe implementation.
+
 ## Implement
 
 Replace stub bodies with real code. Run check, then run tests. Repeat until all tests pass and the feature test is passing up to the point expected by the current plan step. Modify doc comments as needed.
@@ -83,7 +87,7 @@ Replace stub bodies with real code. Run check, then run tests. Repeat until all 
 ## Thinking Trigger
 
 Invoke `developer:thinking` when:
-- The same error (or substantially the same) appears after a change intended to fix it
+- The same error (or substantially the same) appears after a change was intended to fix it.
 - An error appears that is unrelated to the code added or changed in this step
 
 Pass to the thinking subagent:
