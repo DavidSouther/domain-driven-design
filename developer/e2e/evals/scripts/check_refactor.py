@@ -24,7 +24,7 @@ from _checker_utils import fail, read_stdin
 # The skill's catalog of smells (case-insensitive substrings / patterns).
 SMELLS = [
     r"three[- ]strikes",
-    r"duplicat",            # duplicated / duplication
+    r"duplicat",  # duplicated / duplication
     r"conditional complexity",
     r"combinatorial explosion",
     r"temporary field",

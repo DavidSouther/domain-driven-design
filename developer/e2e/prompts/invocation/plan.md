@@ -4,7 +4,8 @@ feature test, `tests/test_jq_lite.py`, which lives in the project test tree and
 is currently failing because no implementation exists. The project is Python and
 tests run under `pytest`.
 
-Produce the implementation plan that drives the failing feature test to passing.
+Produce the implementation plan. Write everything inline as your reply: do not
+call any tools or emit tool-call JSON.
 
 Cleared design — `docs/developer/2026-06-03-A-jq-lite/design.md`:
 

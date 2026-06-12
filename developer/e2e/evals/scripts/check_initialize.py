@@ -41,7 +41,10 @@ def main() -> int:
         )
 
     # R3 — validation / clean-build verification.
-    if not re.search(r"validat|verif|clean build|builds? (?:cleanly|clean)|zero (?:errors|warnings)", low):
+    if not re.search(
+        r"validat|verif|clean build|builds? (?:cleanly|clean)|zero (?:errors|warnings)",
+        low,
+    ):
         return fail(
             "R3 validation required: no layout validation or clean-build "
             "verification; the initialize skill validates the layout and confirms "

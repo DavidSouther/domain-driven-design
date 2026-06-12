@@ -11,8 +11,8 @@ Rules:
   Journey and Metrics, Specification, Alternatives, Summary).
 - R2 the draft marker is present (the artifact is offered as a draft for human
   review, not as a finished doc).
-- R3 exactly one executable test function is embedded (the merged design writes
-  the single end-to-end feature test, not zero and not a suite of unit tests).
+- R3 exactly one executable test function is embedded (the design writes the
+  single end-to-end feature test, not zero and not a suite of unit tests).
 """
 
 import re
@@ -58,7 +58,7 @@ def main() -> int:
     if n == 0:
         return fail(
             "R3 one feature test required: found no `def test...` function; the "
-            "merged design skill embeds one executable feature test that runs the "
+            "design skill embeds one executable feature test that runs the "
             "user story end-to-end"
         )
     if n > 1:

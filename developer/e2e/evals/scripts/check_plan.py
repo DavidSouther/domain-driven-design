@@ -7,8 +7,9 @@ each step naming "which assertion in the feature test it enables" via the
 ("Output Artifacts").
 
 Rules:
-- R1 between 3 and 7 step headings (`## Step N`). An optional Step 0 (domain
-  model) is allowed on top, so the accepted range is 3..8 headings.
+- R1 between 3 and 7 implementation step headings (`## Step N`, N >= 1). An
+  optional Step 0 (API surface area) is allowed on top, so the accepted range
+  of total headings is 3..8.
 - R2 every implementation step (number >= 1) carries an `Enables:` line tying it
   to the feature test.
 - R3 the draft marker is present.
@@ -30,7 +31,6 @@ def main() -> int:
     numbers = [int(m.group(1)) for m in matches]
 
     # R1 — 3..7 implementation steps, plus an optional Step 0 (so 3..8 headings).
-    n = len(matches)
     impl_steps = [x for x in numbers if x >= 1]
     if len(impl_steps) < 3:
         return fail(
@@ -46,7 +46,7 @@ def main() -> int:
     # R2 — every implementation step has an Enables line.
     for idx, m in enumerate(matches):
         if numbers[idx] < 1:
-            continue  # Step 0 (domain model) need not name an enabled assertion.
+            continue  # Step 0 (API surface area) need not name an enabled assertion.
         start = m.end()
         end = matches[idx + 1].start() if idx + 1 < len(matches) else len(text)
         if not ENABLES.search(text[start:end]):

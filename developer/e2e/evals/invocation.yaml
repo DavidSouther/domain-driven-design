@@ -34,11 +34,11 @@ cases:
       - type: judge
         prompt: |
           The response is an incremental implementation plan of between three
-          and seven steps, presented as a draft. Each implementation step
-          indicates which part of the feature test it moves toward passing. The
-          steps describe what to build — names, intent, and type/API signatures
-          — without the filled-in implementation logic (function bodies) for the
-          steps.
+          and seven steps, presented as a draft. Step 0 defines the API surface
+          area as type stubs and function signatures (no bodies). Each
+          implementation step (1+) describes what to build and names which part
+          of the feature test it advances. Steps describe the work — names,
+          intent, API sketches — without implementation code or unit tests.
       - { type: tokens, metric: output, op: "<", value: 6000 }
 
   - name: red-green-refactor
