@@ -40,7 +40,8 @@ digraph loops {
 | Breaking a failing feature test into implementation steps | `developer:plan` |
 | Implementing a plan step with TDD | `developer:red-green-refactor` |
 | Debugging a compiler error or test failure during TDD | `developer:thinking` |
-| Cleaning up code after tests pass, before finishing | `developer:refactor` |
+| Cleaning up green code mid-build, without changing behavior | `developer:refactor` |
+| Finishing the topic: final review, extract deferred tasks, prepare the squash-merge | `developer:cleanup` |
 | Setting up a new project or language environment | `developer:initialize` |
 
 ## Draft Gates

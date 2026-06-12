@@ -6,9 +6,7 @@ These are the skills you can invoke. Each line is one skill's identifier and the
 - `developer:clean-comments-review` — Use when reviewing the comments and DocBlocks in code for their audience and longevity, not the code's correctness. Applies when a public DocBlock enumerates current callers or describes how a symbol is used today (detail that rots when usage changes) instead of why the symbol exists, when a comment's audience is unclear (an external-reader DocBlock versus an internal line comment), or when over-documentation should be cut back to intent. Produces a critique document, not edits to the code.
 - `developer:cleanup` — Used when finished with an Ailly development topic to tidy up the workspace.
 - `developer:design` — Use when starting creative work such as building features, components, or modifying system behavior, and the research is cleared. Explores alternatives, produces a formal design document, and writes the one executable feature test that defines done, before any implementation.
-- `developer:git-workflow` — Use when performing source code tasks that change the working tree.
 - `developer:initialize` — Use when starting a new project or setting up a language environment — validates and scaffolds project layout, tooling, and development hooks.
-- `developer:is-clean` — Use when validating that a project is in a clean state for development.
 - `developer:plan` — Use when a feature test has been reviewed and cleared and is currently failing — breaks passing it into 3-7 incremental plan steps.
 - `developer:red-green-refactor` — Use when implementing a plan step — type-first TDD cycle with a thinking trigger for stuck moments and an explicit abort condition.
 - `developer:refactor` — Use only when code is currently green (passing static checks and unit tests) to improve the codebase before finalizing a development task.

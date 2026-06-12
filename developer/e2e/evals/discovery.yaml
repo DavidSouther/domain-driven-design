@@ -43,17 +43,20 @@ cases:
           behaviour. It does not propose starting another red-green-refactor
           implementation step.
 
-  # Paired check-vs-action: (a) → is-clean, (b) → cleanup.
-  - name: is-clean-vs-cleanup
+  # Paired tidy-vs-finish: (a) → refactor (green mid-build), (b) → cleanup
+  # (terminal phase). Restores the cleanup routing coverage the removed
+  # is-clean-vs-cleanup pair provided.
+  - name: cleanup-vs-refactor
     assertions:
-      - { type: text_contains, value: "developer:is-clean" }
+      - { type: text_contains, value: "developer:refactor" }
       - { type: text_contains, value: "developer:cleanup" }
       - type: judge
         prompt: |
-          The answer maps question (a) — confirming the branch is in a clean
-          state to build on, a check — to developer:is-clean, and question
-          (b) — tearing down the topic folder after the feature ships, an
-          action — to developer:cleanup. The two are not swapped.
+          The answer maps question (a) — cleaning up green code mid-build without
+          changing behavior — to developer:refactor, and question (b) — finishing
+          the whole topic with a final review, extracting the deferred decisions
+          into the TASKS file, and preparing the squash merge — to
+          developer:cleanup. The two are not swapped.
 
   # Empty folder, toolchain/layout/hooks to install → initialize, not the
   # session coordinator.

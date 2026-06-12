@@ -17,7 +17,7 @@ matrix:
     - plan-vs-rgr
     - rgr-vs-thinking
     - refactor-vs-rgr
-    - is-clean-vs-cleanup
+    - cleanup-vs-refactor
     - initialize-vs-ailly
     - ailly-vs-initialize
 

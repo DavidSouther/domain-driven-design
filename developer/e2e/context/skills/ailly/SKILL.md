@@ -13,7 +13,7 @@ Session coordinator for a development loop. Creates and manages the session fold
 
 ## Session Folder
 
-If it does not exist, create `docs/developer/YYYY-MM-DD-A-<topic>` where `A` is `A`, `B`, `C`, etc to manage multiple features started in the same day. If not already on a branch of the same name, use `developer:git-workflow` to suggest moving to that branch.
+If it does not exist, create `docs/developer/YYYY-MM-DD-A-<topic>` where `A` is `A`, `B`, `C`, etc to manage multiple features started in the same day. If not already on a branch of the same name, suggest moving to that branch, and let the user make the switch. When the branch needs upstream changes, prefer a rebase and push with `--force-with-lease` rather than a plain force push.
 
 If the folder already exists for the current topic, determine resume point:
 
@@ -25,9 +25,12 @@ If the folder already exists for the current topic, determine resume point:
 | `design.md` | No | Wait, ask user to clear the draft |
 | `design.md` | Yes | Plan phase (`developer:plan`) |
 | `plan.md` | No | Wait, ask user to clear the draft |
-| `plan.md` | Yes | Inner loop (red-green-refactor) |
+| `plan.md` | Yes | Build (`developer:red-green-refactor`) |
+| `plan.md` cleared, all steps done, feature test green | — | Cleanup phase (`developer:cleanup`) |
 
 A file has its draft cleared when it no longer contains the `*Draft` marker.
+
+Cleanup is the terminal phase: it runs the final review, extracts deferred decisions to `docs/developer/TASKS.md`, and **pauses for human approval before the squash-merge** or PR.
 
 ## Loop Structure
 
@@ -42,6 +45,8 @@ digraph run {
     planning [shape=box label="Plan:\ndeveloper:plan"];
     gate_plan [shape=diamond label="Draft gate:\nplan"];
     rgr [shape=box label="Build:\ndeveloper:red-green-refactor"];
+    cleanup [shape=box label="Cleanup:\ndeveloper:cleanup"];
+    gate_merge [shape=diamond label="Human approval:\nbefore squash-merge"];
     stop [shape=doublecircle label="Stop session"];
 
     start -> resume;
@@ -49,6 +54,7 @@ digraph run {
     resume -> design;
     resume -> planning;
     resume -> rgr;
+    resume -> cleanup;
 
     research -> gate_research;
     gate_research -> stop [label="not cleared"];
@@ -62,7 +68,9 @@ digraph run {
     gate_plan -> stop [label="not cleared"];
     gate_plan -> rgr [label="cleared"];
 
-    rgr -> stop [label="feature test passes"];
+    rgr -> cleanup [label="feature test passes"];
+    cleanup -> gate_merge;
+    gate_merge -> stop [label="approved: squash-merge"];
 }
 ```
 
