@@ -1,16 +1,17 @@
 name: discovery
 cases:
-  # Vague idea, nothing written yet → design, not the test-first neighbour.
-  - name: design-vs-feature-test
+  # Vague idea, nothing gathered yet → research, not design (research owns the
+  # nothing-gathered niche; design starts once research is cleared).
+  - name: research-vs-design
     assertions:
-      - { type: text_contains, value: "developer:design" }
-      - { type: text_not_contains, value: "developer:feature-test" }
+      - { type: text_contains, value: "developer:research" }
+      - { type: text_not_contains, value: "developer:design" }
 
-  # Design cleared, no test yet → feature-test, not plan (both middle-loop).
-  - name: feature-test-vs-plan
+  # Design cleared and its feature test recorded → plan, not the impl loop.
+  - name: design-vs-plan
     assertions:
-      - { type: text_contains, value: "developer:feature-test" }
-      - { type: text_not_contains, value: "developer:plan" }
+      - { type: text_contains, value: "developer:plan" }
+      - { type: text_not_contains, value: "developer:red-green-refactor" }
 
   # Feature test failing as expected, no steps yet → plan, not the impl loop.
   - name: plan-vs-rgr

@@ -22,11 +22,9 @@ If the folder already exists for the current topic, determine resume point:
 | No files | — | Research phase (`developer:research`) |
 | `research.md` | No | Wait, ask user to clear the draft |
 | `research.md` | Yes | Design phase (`developer:design`) |
-| `design.md` | No | Wait — ask user to clear the draft |
-| `design.md` | Yes | Middle loop (feature-test) |
-| `feature-test.md` | No | Wait — ask user to clear the draft |
-| `feature-test.md` | Yes | Middle loop (planning) |
-| `plan.md` | No | Wait — ask user to clear the draft |
+| `design.md` | No | Wait, ask user to clear the draft |
+| `design.md` | Yes | Plan phase (`developer:plan`) |
+| `plan.md` | No | Wait, ask user to clear the draft |
 | `plan.md` | Yes | Inner loop (red-green-refactor) |
 
 A file has its draft cleared when it no longer contains the `*Draft` marker.
@@ -37,28 +35,28 @@ A file has its draft cleared when it no longer contains the `*Draft` marker.
 digraph run {
     start [shape=doublecircle label="Session start"];
     resume [shape=box label="Determine resume point"];
-    design_doc [shape=box label="Outer loop:\ndeveloper:design-doc"];
+    research [shape=box label="Research:\ndeveloper:research"];
+    gate_research [shape=diamond label="Draft gate:\nresearch"];
+    design [shape=box label="Design (+ feature test):\ndeveloper:design"];
     gate_design [shape=diamond label="Draft gate:\ndesign"];
-    feature_test [shape=box label="Middle loop:\ndeveloper:feature-test"];
-    gate_feature [shape=diamond label="Draft gate:\nfeature-test"];
-    planning [shape=box label="Middle loop:\ndeveloper:planning"];
+    planning [shape=box label="Plan:\ndeveloper:plan"];
     gate_plan [shape=diamond label="Draft gate:\nplan"];
-    rgr [shape=box label="Inner loop:\ndeveloper:red-green-refactor"];
+    rgr [shape=box label="Build:\ndeveloper:red-green-refactor"];
     stop [shape=doublecircle label="Stop session"];
 
     start -> resume;
-    resume -> design_doc;
-    resume -> feature_test;
+    resume -> research;
+    resume -> design;
     resume -> planning;
     resume -> rgr;
 
-    design_doc -> gate_design;
-    gate_design -> stop [label="not cleared"];
-    gate_design -> feature_test [label="cleared"];
+    research -> gate_research;
+    gate_research -> stop [label="not cleared"];
+    gate_research -> design [label="cleared"];
 
-    feature_test -> gate_feature;
-    gate_feature -> stop [label="not cleared"];
-    gate_feature -> planning [label="cleared"];
+    design -> gate_design;
+    gate_design -> stop [label="not cleared"];
+    gate_design -> planning [label="cleared"];
 
     planning -> gate_plan;
     gate_plan -> stop [label="not cleared"];
@@ -70,7 +68,7 @@ digraph run {
 
 ## Draft Gate Enforcement
 
-After any outer or middle loop skill (design-doc, feature-test, planning) produces output, stop the session and tell the user:
+After any research, design, or plan skill produces a draft, stop the session and tell the user:
 
 > "This step is complete. Review `<path>`, make any changes, then remove the `*Draft YYYY-MM-DD*` marker from the top of the file. Start a new session and run `developer:ailly` to continue."
 
@@ -99,8 +97,8 @@ Use it to name the session folder: `docs/developer/YYYY-MM-DD-<topic>/`.
 
 All artifacts for a session live under `docs/developer/YYYY-MM-DD-A-<topic>/`.
 
-- `design.md` is the overal design doc for a topic.
-- `feature-test.md` is a specific plan for the feature test for this topic.
+- `research.md` is the gathered and refined context for a topic.
+- `design.md` is the overall design doc for a topic, including the path of its one feature test.
 - `maps/<path>.md` contains the maps found during any forward/backward planning. 
 - `thinking/` is a scratch pad area for the `thinking` skill to share its findings with the calling agent.
 

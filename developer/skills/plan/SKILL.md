@@ -11,7 +11,7 @@ Middle-loop planning skill. Given a failing feature test, breaks the path to mak
 
 **Announce at start:** "Using developer:planning to create the implementation plan for [summary of feature]."
 
-**Trigger:** Feature test draft marker has been cleared by a human. The test is currently failing.
+**Trigger:** The design draft marker has been cleared by a human. The design records the project feature test, which is currently failing.
 
 **Hard gate:** Do not implement any step. Do not write any code beyond type stubs shown in the plan. Decline any request to do so in this session.
 
@@ -19,7 +19,7 @@ Middle-loop planning skill. Given a failing feature test, breaks the path to mak
 
 ## Behavior
 
-1. Read the feature test and user story from the session folder.
+1. Read the cleared design and its recorded feature test (and user story) from the session folder.
 2. Consider whether domain objects are needed (step 0 — see below).
 3. Break the path to a passing feature test into several (no more than 7) incremental steps.
   - If it seems a plan would require more than a few steps, encourage the user to go back to the design and simplify the size of the step.

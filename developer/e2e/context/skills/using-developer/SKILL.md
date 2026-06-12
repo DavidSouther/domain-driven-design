@@ -36,8 +36,7 @@ digraph loops {
 |---|---|
 | Starting a session for a new or in-progress feature | `developer:ailly` |
 | Gathering and refining context for a vague new topic, with nothing written yet | `developer:research` |
-| Exploring a new idea, clarifying requirements, and producing a formal design doc | `developer:design` |
-| Writing the feature test (design approved, no test yet) | `developer:feature-test` |
+| Exploring a new idea, clarifying requirements, and producing a formal design doc plus its one feature test | `developer:design` |
 | Breaking a failing feature test into implementation steps | `developer:plan` |
 | Implementing a plan step with TDD | `developer:red-green-refactor` |
 | Debugging a compiler error or test failure during TDD | `developer:thinking` |
@@ -51,6 +50,5 @@ The outer and middle loops produce `*Draft YYYY-MM-DD*` artifacts. A human must 
 | Artifact | Location | Clears to enter |
 |---|---|---|
 | Research notes | `docs/developer/YYYY-MM-DD-A-<topic>/research.md` | Design phase |
-| Design doc | `docs/developer/YYYY-MM-DD-A-<topic>/design.md` | Middle loop feature test |
-| Feature test | `docs/developer/YYYY-MM-DD-A-<topic>/feature-test.md` | Planning implementation |
-| Plan | `docs/developer/YYYY-MM-DD-A-<topic>/plan.md` | Inner loop red/green/refactor |
+| Design doc (with feature test) | `docs/developer/YYYY-MM-DD-A-<topic>/design.md` | Plan phase |
+| Plan | `docs/developer/YYYY-MM-DD-A-<topic>/plan.md` | Build (red/green/refactor) |

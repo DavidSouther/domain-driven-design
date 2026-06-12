@@ -12,8 +12,8 @@ prefix:
 
 matrix:
   case:
-    - design-vs-feature-test
-    - feature-test-vs-plan
+    - research-vs-design
+    - design-vs-plan
     - plan-vs-rgr
     - rgr-vs-thinking
     - refactor-vs-rgr

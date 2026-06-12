@@ -5,10 +5,12 @@ cases:
       - { type: script, runtime: python, script: { path: evals/scripts/check_design.py } }
       - type: judge
         prompt: |
-          The response is a formal design document with the sections Problem
-          Statement, Prior Art, Metrics, Specification, Alternatives, and
-          Summary, and it is presented as a draft for human review. It focuses
-          on the problem and the solution rather than a full implementation.
+          The response is a formal design document with the sections Purpose,
+          Prior Art, User Journey and Metrics, Specification, Alternatives, and
+          Summary, presented as a draft for human review. Alongside the design it
+          embeds exactly one executable feature test that encodes the primary
+          user story end-to-end, marked as a draft, and it does NOT include the
+          implementation code that would make that test pass.
       - { type: tokens, metric: output, op: "<", value: 7000 }
 
   - name: research
