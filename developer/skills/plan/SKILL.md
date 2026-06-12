@@ -1,41 +1,43 @@
 ---
 name: plan
-description: Use when the design draft is cleared and its recorded feature test is currently failing. Breaks passing that test into 3 to 7 incremental plan steps.
+description: Use when the design draft is cleared and its recorded feature test is currently failing. Defines the API surface area and breaks down the design for passing the feature test into 3 to 7 descriptive implementation steps.
 ---
 
 # developer:plan
 
 ## Overview
 
-Middle-loop planning skill. Given a failing feature test, breaks the path to making it pass into 3–7 incremental steps. Each step must leave the codebase in a runnable state and advance the feature test measurably.
+Middle-loop planning skill. Given a cleared design and its failing feature test, defines the API surface area and breaks the path to making that test pass into 3–7 incremental steps. Each step must leave the codebase in a runnable state and advance the feature test measurably.
 
 **Announce at start:** "Using developer:plan to create the implementation plan for [summary of feature]."
 
 **Trigger:** The design draft marker has been cleared by a human. The design records the project feature test, which is currently failing.
 
-**Hard gate:** Do not implement any step. Do not write any code beyond type stubs shown in the plan. Decline any request to do so in this session.
+**Hard gate:** Do not implement any step. Do not write unit tests or implementation code. Step 0 defines API signatures as stubs; later steps describe what to build and may sketch critical interfaces, but all code in steps 1+ is orientation for the builder and must be re-derived during build. Decline any request to implement in this session.
 
 **Distinction from `developer:writing-plans`:** This is focused on making piecemeal progress toward one specific failing test. It is not a general spec-to-plan conversion tool.
 
 ## Behavior
 
 1. Read the cleared design and its recorded feature test (and user story) from the session folder.
-2. Consider whether domain objects are needed (step 0 — see below).
+2. Consider the API surface area changes needed (step 0 — see below).
 3. Break the path to a passing feature test into several (no more than 7) incremental steps.
   - If it seems a plan would require more than a few steps, encourage the user to go back to the design and simplify the size of the step.
   - If it seems a plan would require more than 7 steps, insist that the user go back to the design.
 3a. If the path from the failing test to a passing test isn't obvious, apply the forward-backward method. Work backward from the passing test state (what must be true just before the failing assertion passes?) and forward from the current code (what can be derived or added without breaking anything?) until the two sides connect into a complete sequence of steps. Write each candidate step to a map file as it is generated — do not hold steps only in context. See `developer/references/forward_backward.md`.
-4. For each step: name it, describe what it implements, and identify which assertion in the feature test it enables. Do not write code implementations, only write API definitions and their documentation. Comments should state what the item is intended for, why it is needed, and which invariants must be maintained.
+4. For each step: name it, describe what it builds, and identify which assertion in the feature test it enables. Steps may include type/API sketches and notes on critical areas as orientation for the builder, but no implementation code — each step is a description of what to build, not how to build it.
 5. Save the plan as a draft and stop.
 
-## Step 0: Domain Object Design
+## Step 0: API Surface Area
 
-Before implementation steps, consider whether the feature test introduces new domain objects. If it does, make step 0 a domain design step:
+Before implementation steps, define the type and API surface area the feature test requires. Step 0 is where all new types and public function signatures are established as stubs:
 
 - Introduce new entities, value objects, or services needed
-- Lean on `patterns:entities-value-objects-services`, `patterns:newtype`, `patterns:type-states` for guidance.
-- Show type signatures (not implementations) for the new objects
-- Keep this step focused on the domain model, not persistence or UI
+- Lean on `patterns:entities-value-objects-services`, `patterns:newtype`, `patterns:type-states` for guidance
+- Show type signatures and function signatures (not implementations) for new objects
+- Keep this focused on the domain model, not persistence or UI
+
+Step 0 contains code (type stubs and signatures), but no function bodies. Everything in step 0 is tested by the feature test from the design.
 
 ## Step Criteria
 
@@ -56,23 +58,25 @@ Each step must:
 **Feature test:** `<test-file-path>`
 **User story:** Summarize in one sentence.
 **Steps:**
-- [ ] Step 0: Domain model
+- [ ] Step 0: API surface area
 - [ ] Step 1: <Name>
 - [ ] Step 2: <Name>
 
-## Step 0: Domain model (if needed)
+## Step 0: API surface area
 
-Introduce `<Type>` as a value object / entity / service.
+New types and function signatures (stubs only, no bodies):
 
-Types:
-- `UserId(uuid)` — newtype wrapping UUID, prevents mixing with other IDs
-- `UserEmail(string)` — validated email address
+```<lang>
+// type stubs and function signatures
+```
 
 ## Step 1: <Name>
 
 **Enables:** `<which assertion or part of the feature test>`
 
-Implement `<what>`. The feature test will still fail but `<specific assertion>` will no longer throw.
+Describe what this step builds. The feature test will still fail but `<specific assertion>` will no longer throw.
+
+[Optional: API sketch or note on a critical interface — re-derive during build.]
 
 ## Step 2: <Name>
 

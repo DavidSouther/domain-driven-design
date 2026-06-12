@@ -1,19 +1,29 @@
 ---
 name: design
-description: "Use when starting creative work such as building features, components, or modifying system behavior, and the research is cleared. Explores alternatives, produces a formal design document, and writes the one executable feature test that defines done, before any implementation."
+description: "Use when starting creative work such as building features, components, or modifying system behavior, and the research is cleared. Explores alternatives, produces a formal design document, and writes the one executable feature test that defines done."
 ---
 
-# Brainstorming Ideas Into Designs
+# developer:design
+
+## Overview
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue, then capture the one feature test that defines "done" for the design.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval. Include code for pertinent public API changes, but focus the design on the problem and solution. Do not include code for specific implementations at this time. The single exception is the feature test, which the design phase now writes (see "The Feature Test").
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval. Focus the design on the problem and solution, stated from outside the code. Describe what the system does from the user's perspective; leave what it is made of for the plan. API designs may describe call shapes from the user's perspective in prose or pseudocode as the exception, but not implementation code. The single exception to the no-code rule is the feature test, which the design phase writes (see "The Feature Test").
 
 **Trigger:** A cleared `research.md` in the session folder (or a topic clear enough that research added nothing to gather).
 
-## Anti-Pattern: "This Is Too Simple To Need A Design"
+**Announce at start:** "Designing a feature to [summary of the prompt]"
+
+## Anti-Patterns
+
+**"This Is Too Simple To Need A Design"**
 
 Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+
+**""I can just write a little code to explore"**
+
+Code must go through test driven development during the red-green-refactor skill. The design is only for preparing the user visible surface of the feature or task. Reading code is allowed to orient and clarify what features are already available, but you must not write new feature or implementation code at this step. The feature test is a narrow exception, but it's only runnable to show the journey hasn't landed yet, and involves no implementation of the feature itself.
 
 ## Design Docs
 
@@ -53,7 +63,7 @@ Create a task for each of these items and complete them in order:
 6. **Present design** in sections scaled to their complexity, getting user approval after each section.
 7. **Write design doc** saved to `docs/developer/YYYY-MM-DD-A-<topic>/design.md`.
 8. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
-9. **Review** the design doc and the feature test, using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
+9. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
 10. **User reviews draft** — refer the user to the design and the test, ask them to provide their edits, and tell them how to begin the next phase in a new session. Stop at this point.
 
 ## Process Flow
