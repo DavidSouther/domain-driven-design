@@ -25,6 +25,8 @@ You are working in a project that uses structured design patterns. During a plan
 | Converting one domain type to another, especially when `as` casts, extract-and-rewrap, or duplicated `to_X`/`from_X` pairs appear | `patterns:type-conversion` |
 | Bootstrapping a logging pipeline at process start — subscriber, formatter, filter, resource attributes, W3C trace propagator, exporter, sampling, redaction, graceful shutdown | `patterns:configuring-logging` |
 | Writing a log call site — choosing a severity, attaching fields under OpenTelemetry semantic conventions, scoping spans to units of work, naming business events, logging an error chain once at the boundary | `patterns:emitting-logs` |
+| Standing up a project's feature-flag system — a provider behind a vendor-neutral interface (OpenFeature or a port), fail-safe defaults, naming and ownership, environment resolution, a kill switch, and stale-flag CI | `patterns:configuring-feature-flags` |
+| Putting one feature behind a flag — its category, a name with owner and expiry, a default equal to current behavior, a single toggle point kept separate from the decision logic, both states tested, and a removal plan | `patterns:using-feature-flags` |
 
 ## Pattern Composition
 
@@ -35,5 +37,6 @@ Patterns compose in predictable ways — recognise these combinations:
 - **`bootstrap-and-service`** — the outer shell that wires `repository`, `unit-of-work`, and protocol adapters together at startup. Apply last.
 - **`type-conversion` + `newtype`** — newtype constructors *are* the canonical conversions; total constructors implement `From`, partial constructors implement `TryFrom`/`parse`, and call sites stop reaching into `.0` to rewrap.
 - **`configuring-logging` + `emitting-logs`** — the two halves of structured logging. Configuration sets the envelope and the exporter once; emission attaches the per-event fields under the semantic conventions the configuration enforces. Run them together; one without the other produces structured logs that aren't queryable, or queryable logs that aren't centralized.
+- **`configuring-feature-flags` + `using-feature-flags`** — the two halves of feature flagging. Configuration installs one vendor-neutral evaluation entry point with fail-safe defaults and naming, ownership, and expiry conventions. Usage puts one feature behind one flag at a single toggle point. Run them together. A flag without the harness scatters vendor SDKs across call sites, and a harness with no disciplined usage fills with stale flags.
 
 Do not apply all patterns upfront. Start with the one that addresses the immediate design pressure.

@@ -29,6 +29,18 @@ The `research:configuring-*` family is now complete: `configuring-internal`, `co
 - **Decide on the `internal` routing-description framing.** During the session a subagent rewrote `research:internal`'s frontmatter `description` to lead with "private/authenticated" rather than "internal organizational," and edited the `using-research` row to "private documents (Email, Slack, …)". Both were reverted to keep routing and the e2e assertions stable. If the authenticated-source framing is wanted in the routing surface, make it deliberately (mind the e2e discovery assertions and the avoid-em-dash/hyphen preference) — `configuring-internal`'s own description already carries the "authenticated sources" framing.
 - **`lsp-*.md` reconciliation done, not the practice e2e.** `lsp-python.md` / `lsp-rust.md` / `lsp-typescript.md` were footnoted to drop `completions`/`diagnostics` (not on the current `LSP` tool surface), and `codebase/SKILL.md`'s Search Strategy was aligned to the real operation names. No eval covers this; verify against the live `LSP` tool surface if it changes.
 
+## Follow-ups: `patterns/*-feature-flags` — permission category and ACL/RBAC
+
+The `permission` category in `configuring-feature-flags/references/categories.md` and the quick-reference row in `using-feature-flags/SKILL.md` treat entitlements as long-lived flags. This is the right model when no formal authorization system exists, but many projects have a dedicated ACL or RBAC layer (e.g., Casbin, Open Policy Agent, AWS IAM, OIDC scopes). When one is present, a `permission.` flag is at best a thin read-through of that system and at worst a parallel, inconsistent copy.
+
+Review and revise `patterns/skills/configuring-feature-flags/references/categories.md` (the `permission` section and the "Choosing a Category" heuristics) and `patterns/skills/using-feature-flags/SKILL.md` (the category table, Common Mistakes, and Composes With) to:
+
+- Note that `permission` flags are appropriate only when no dedicated authorization system exists.
+- When a project has a rigorous ACL/RBAC layer, call out that entitlement decisions belong there; a flag that reads through it is still an `ops` flag (a kill switch over the capability), not a `permission` flag.
+- Add a "Composes With" or "See Also" entry for `patterns:domain-objects` or a future `patterns:authorization` pattern (to be authored separately).
+
+One `developer:ailly` session. Likely quick-loop shape.
+
 ### Cleanup hygiene (small, independent)
 
 Ruff findings that predate the refactor, in files it never touched (do not bundle them into the refactor history): `developer/e2e/evals/scripts/check_plan.py` has an unused `n = len(matches)` (F841); `check_cleanup.py`, `check_initialize.py`, and `check_refactor.py` are not `ruff format` clean. One pass of `ruff check --fix` plus `ruff format` over `developer/e2e/evals/scripts/` clears all four.

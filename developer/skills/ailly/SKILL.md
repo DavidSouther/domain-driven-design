@@ -126,11 +126,15 @@ Generally, be persistent in enforcing the draft structure. However, when first s
 
 ## Bugfix Shape
 
-When the research refine pass reclassifies the task as a bug rather than a feature, consult `developer/references/bugfix.md`. The same five phases run; the design content uses observed / expected / unchanged language, and the feature test is a failing **reproduction** test that fills the same slot the design's feature test fills. Not a separate skill.
+When requested, or when the research refine pass reclassifies the task as a bug, consult `developer/references/bugfix.md`. The same five phases run, but the design specification uses "observed", "expected", and "unchanged" language, and the feature test is a failing **reproduction** test that fills the same slot the design's feature test fills. Bugfixes can usually be done with a quick loop.
+
+## Project Shape
+
+When the topic is too large for one feature, needing several features that only deliver value as a unified whole, consult `developer/references/project-cycle.md`. The same five phases run at a larger scale. Each plan step has a dedicated development cycle. Sequential and parallel steps are marked explicitly. The exit criterion is a Closing Bell usability study rather than one executable feature test, and the documents are long-lived (replicated to the organization's document repository on acceptance, and marked `completed: date` rather than deleted at cleanup).
 
 ## Next Task
 
-When finishing a session, append the next step to `.ailly/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments. When substantial context is needed for a task, create a `TASK-NOTES-<task>.md` file with the details, and include just a short overview to that in the TASKS file. Review NOTES when the task is selected.
+When finishing a session, add the next step to `.ailly/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments. When substantial context is needed for a task, create a `TASK-NOTES-<task>.md` file with the details, and include just a short overview to that in the TASKS file. Review NOTES when the task is selected.
 
 When a topic is finished, use `developer:cleanup` to leave things tidy.
 
