@@ -45,3 +45,22 @@ if [[ ${#changed[@]} -eq 0 ]]; then
   echo "No changes since last release, skipping."
   exit 0
 fi
+
+# --- Version computation ------------------------------------------------------
+
+ym="${RELEASE_DATE:-$(date +%Y.%m)}"
+micro=$(git -C "${REPO}" tag -l "release/${ym}.*" | wc -l | tr -d ' ')
+VERSION="${ym}.${micro}"
+
+# --- Plugin version bump ------------------------------------------------------
+
+for plugin in "${changed[@]}"; do
+  json="${REPO}/${plugin}/.claude-plugin/plugin.json"
+  python3 - "${json}" "${VERSION}" <<'PY'
+import json, sys
+path, ver = sys.argv[1], sys.argv[2]
+with open(path) as f: d = json.load(f)
+d["version"] = ver
+with open(path, "w") as f: json.dump(d, f, indent=2); f.write("\n")
+PY
+done
