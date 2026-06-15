@@ -2,3 +2,5 @@
 # Add the CI key public key here after provisioning. See RELEASING.md.
 # Example:
 # davidsouther@gmail.com namespaces="git" ssh-ed25519 AAAA...
+
+davidsouther@gmail.com namespaces="git" ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKK5t5Qb2Vt8AW9aApQ+vsHWJNiOlj5w/PGR3GeRev+x releases@ailly
