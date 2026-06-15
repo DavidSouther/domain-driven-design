@@ -14,6 +14,7 @@ You are working in a project that uses Domain-Driven Design practices. Invoke th
 | An ambiguous or potentially synonymous term appears | `ddd:glossary` |
 | Designing any API boundary, service interface, or domain operation | `ddd:contracts-and-invariants` |
 | Evaluating architecture, adding persistence, or feeling scaling pressure | `ddd:arrow-of-maturity` |
+| Reviewing changes to entities, value objects, aggregates, or bounded contexts | `ddd:domain-review` |
 
 ## Change Cadence Gate
 
