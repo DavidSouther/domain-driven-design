@@ -10,7 +10,7 @@ Use a plugin name as the scope so each plugin's history stays readable:
 | `feat` | Features | `feat(developer): add bugfix skill shape` |
 | `fix` | Bug Fixes | `fix(general): correct dispatching agent prompt` |
 | `docs` | Documentation | `docs(patterns): clarify newtype vs domain-objects` |
-| `feat!` or `BREAKING CHANGE` body | Breaking Changes | `feat!(research)!: rename configuring-public` |
+| `feat!` or `BREAKING CHANGE` body | Breaking Changes | `feat(research)!: rename configuring-public` |
 | `chore`, `refactor`, `test`, `perf`, `style` | (skipped) | internal bookkeeping |
 
 ## CalVer scheme
@@ -29,7 +29,7 @@ A nightly workflow (`.github/workflows/nightly-release.yml`) runs at 02:00 UTC e
 - If no plugin has new commits since the last `release/*` tag the workflow exits 0 with "No changes since last release, skipping."
 - Otherwise it bumps versions, generates `CHANGELOG.md`, creates a signed commit and umbrella tag, and publishes a GitHub Release.
 - Trigger on demand via **Actions → Nightly Release → Run workflow**.
-- Logs are in the Actions tab; re-trigger the run if the push step fails due to a transient network error.
+- Logs are in the Actions tab; investigate and re-trigger if a push step fails.
 
 ## Optional developer SSH signing
 
@@ -39,6 +39,7 @@ To sign your own commits locally:
 git config --global gpg.format ssh
 git config --global user.signingkey ~/.ssh/id_ed25519.pub
 git config --global commit.gpgsign true
+git config --global tag.gpgsign true
 ```
 
 Register your public key on GitHub under **Settings → SSH and GPG keys → New SSH key → Signing Key**.
@@ -51,7 +52,7 @@ Register your public key on GitHub under **Settings → SSH and GPG keys → New
    ```
 2. Append the public key to `signing/allowed_signers`:
    ```
-   releases@ailly namespaces="git" ssh-ed25519 AAAA...
+   davidsouther@gmail.com namespaces="git" ssh-ed25519 AAAA...
    ```
 3. Store the **private key** in the repository secret `SSH_SIGNING_KEY`.
 4. Register the public key on GitHub under **Settings → SSH and GPG keys → New SSH key → Signing Key**.

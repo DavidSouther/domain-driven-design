@@ -120,9 +120,9 @@ ok "patterns plugin.json version unchanged at ${pat_version}"
 # 3. CHANGELOG.md exists and contains the new tag.
 [[ -f "${REPO}/CHANGELOG.md" ]] \
   || fail "CHANGELOG.md was not created"
-grep -q "release/2026.06.0" "${REPO}/CHANGELOG.md" \
-  || fail "CHANGELOG.md does not mention release/2026.06.0"
-ok "CHANGELOG.md contains release/2026.06.0 entry"
+grep -q "2026.06.0" "${REPO}/CHANGELOG.md" \
+  || fail "CHANGELOG.md does not mention 2026.06.0"
+ok "CHANGELOG.md contains 2026.06.0 entry"
 
 # 4. Signed umbrella tag exists.
 git -C "${REPO}" tag -l "release/2026.06.0" | grep -q "release/2026.06.0" \

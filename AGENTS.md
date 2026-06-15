@@ -20,6 +20,8 @@ type(scope): description
 | `test` | Adding or updating evals / e2e tests |
 | `chore` | Tooling, CI, version bumps, generated files |
 | `feat!` | Breaking change to a skill's interface or routing |
+| `perf` | Performance improvement with no behavior change |
+| `style` | Formatting or whitespace changes only |
 
 Scope is the plugin name: `developer`, `general`, `patterns`, `domain`, `research`, `characters`.
 
