@@ -28,3 +28,20 @@ while [[ $# -gt 0 ]]; do
 done
 
 PLUGINS=(developer general patterns domain research characters)
+
+# --- Change detection ---------------------------------------------------------
+
+last_tag=$(git -C "${REPO}" describe --tags --match 'release/*' --abbrev=0 2>/dev/null \
+  || git -C "${REPO}" rev-list --max-parents=0 HEAD)
+
+changed=()
+for plugin in "${PLUGINS[@]}"; do
+  if [[ -n "$(git -C "${REPO}" log "${last_tag}..HEAD" -- "${plugin}/" 2>/dev/null)" ]]; then
+    changed+=("${plugin}")
+  fi
+done
+
+if [[ ${#changed[@]} -eq 0 ]]; then
+  echo "No changes since last release, skipping."
+  exit 0
+fi
