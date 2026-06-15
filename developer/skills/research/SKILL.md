@@ -1,6 +1,6 @@
 ---
 name: research
-description: "Use when a development topic is vague and nothing has been gathered or researched yet. Drives research:using-research with a dual lens (software-engineering practice generally, plus this exact task and codebase): an expand pass for supporting complaints and complementary work, then a refine pass that asks whether this is a bug rather than a feature, whether an off-the-shelf tool already does it, and what the smallest version is. Writes research.md as a draft and stops at the gate."
+description: "Use when a development topic is vague and nothing has been gathered or researched yet. Drives research:using-research with a dual lens (software-engineering practice generally, plus this exact task and codebase): an expand pass for supporting complaints and complementary work, then a refine pass that sizes the work (a project, a feature, or a bug), asks whether an off-the-shelf tool already does it, and what the smallest version is. Writes research.md as a draft and stops at the gate."
 ---
 
 # developer:research
@@ -26,7 +26,7 @@ The expand brief leans on the general lens. The refine brief leans on the specif
 
 1. **Open or continue the session folder** (`.ailly/developer/YYYY-MM-DD-A-<topic>/`). If a topic slug is not obvious from the prompt, ask for a short one before creating the folder.
 2. **Expand** — drive `research:using-research` with an explicit expand brief on the general lens: supporting complaints and complementary work, feature requests, user complaints, adjacent internal libraries and docs, public projects doing the same thing, and field research. A deep topic may spin off several ancillary supporting docs.
-3. **Refine** — drive `research:using-research` with a refine brief on the specific lens to narrow the task as far as it will go. Select the refinements that fit the expand findings; this list is neither exhaustive nor mandatory: is this a bug fix rather than a feature, can an off-the-shelf tool already do it, should another team be collaborating on it, what is the smallest version that still meets the intent?
+3. **Refine** — drive `research:using-research` with a refine brief on the specific lens to right-size the task and narrow it as far as it honestly will go. Select the refinements that fit the expand findings; this list is neither exhaustive nor mandatory: how large is this — a project of several features, a single feature, or a bug fix — can an off-the-shelf tool already do it, should another team be collaborating on it, what is the smallest version that still meets the intent?
 4. **Write `research.md`** with the sections below, marked `*Draft YYYY-MM-DD*`. Then review it for clarity, consistency, and conciseness, and collaborate with the user on the questions research did not resolve. Per-skill findings land under `docs/research/YYYY-MM-DD-A-<topic>/<skill>.md` with IEEE-style Sources, following the `research:using-research` Research Notes Convention.
 5. **Cite the wiring contract** — point at the `research:configuring-*` family for source setup rather than re-teaching it. If the MCP research sources are insufficient (unavailable, or returning less than expected), raise a warning and suggest troubleshooting the connectors or refining the task.
 6. **Stop at the draft gate.**
@@ -37,7 +37,7 @@ Write `research.md` with exactly these headings:
 
 - **Topic and Intent** — the loosely-stated goal in the user's own framing.
 - **Search/Expand** — what the expand pass surfaced under the general lens.
-- **Falsification/Refine** — what the refine pass narrowed under the specific lens (bug-not-feature, off-the-shelf, smallest version).
+- **Falsification/Refine** — how the refine pass right-sized the task under the specific lens (size: project / feature / bug, off-the-shelf, smallest version).
 - **Scope** — what is in and out for the design phase that follows.
 - **Resolved Decisions** — questions research answered, and the ones still open for the human.
 - **Sources** — IEEE-style citations for every external claim.

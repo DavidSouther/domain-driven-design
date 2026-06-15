@@ -6,8 +6,8 @@ exists yet.
 
 Open the research phase for this topic. Gather supporting context (an expand
 pass over how this class of problem is usually solved and what already exists),
-then a refine pass that narrows it (is this really a bug in one service rather
-than a feature, could an off-the-shelf library do it, what is the smallest
-version that meets the need). Produce the `research.md` document now as your
+then a refine pass that sizes it (is this a project of several features, a
+single feature, or really just a bug in one service, could an off-the-shelf
+library do it, what is the smallest version that meets the need). Produce the `research.md` document now as your
 entire reply: write it inline, do not call any tools or emit tool-call JSON, do
 not ask clarifying questions first, and mark it as a draft for me to review.

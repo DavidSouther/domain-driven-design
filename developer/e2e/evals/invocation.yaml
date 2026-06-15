@@ -20,9 +20,9 @@ cases:
         prompt: |
           The response is a research draft that delegates the search and
           falsification work: an expand pass that gathers supporting context and
-          prior art, and a refine pass that narrows the task (is this a bug not a
-          feature, can an off-the-shelf tool do it, what is the smallest
-          version). It has the sections Topic and Intent, Search/Expand,
+          prior art, and a refine pass that sizes the task (is it a project, a
+          feature, or a bug, can an off-the-shelf tool do it, what is the
+          smallest version). It has the sections Topic and Intent, Search/Expand,
           Falsification/Refine, Scope, Resolved Decisions, and Sources, and it is
           marked as a draft for human review. It is not a design doc or a feature
           test.

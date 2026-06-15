@@ -9,7 +9,7 @@ description: "Use when starting creative work such as building features, compone
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue, then capture the one feature test that defines "done" for the design.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval. Focus the design on the problem and solution, stated from outside the code. Describe what the system does from the user's perspective; leave what it is made of for the plan. API designs may describe call shapes from the user's perspective in prose or pseudocode as the exception, but not implementation code. The single exception to the no-code rule is the feature test, which the design phase writes (see "The Feature Test").
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, write the design draft, then collaborate with the user on the written draft. Focus the design on the problem and solution, stated from outside the code. Describe what the system does from the user's perspective; leave what it is made of for the plan. API designs may describe call shapes from the user's perspective in prose or pseudocode as the exception, but not implementation code. The single exception to the no-code rule is the feature test, which the design phase writes (see "The Feature Test").
 
 **Trigger:** A cleared `research.md` in the session folder (or a topic clear enough that research added nothing to gather).
 
@@ -60,11 +60,10 @@ Create a task for each of these items and complete them in order:
 3. **Offer visual companion** (if the topic will involve visual questions) separately from clarifying questions, via `developer:visual-design`.
 4. **Ask clarifying questions** one at a time, to understand purpose, constraints, success criteria, and other salient details.
 5. **Propose 2-3 approaches** with trade-offs and your recommendation.
-6. **Present design** in sections scaled to their complexity, getting user approval after each section.
-7. **Write design doc** saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`.
-8. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
-9. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
-10. **User reviews draft** — refer the user to the design and the test, ask them to provide their edits, and tell them how to begin the next phase in a new session. Stop at this point.
+6. **Write the design doc draft** directly, scaling each section to its complexity, saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`. Write the whole draft; do not read it out section by section for approval first.
+7. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
+8. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
+9. **Collaborate on the written draft** — refer the user to the design and the test, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
 
 ## Process Flow
 
@@ -76,12 +75,10 @@ digraph brainstorming {
     visual [shape=box label="Offer Visual Companion\n(own message, no other content)"];
     clarify [shape=box label="Ask clarifying questions"];
     propose [shape=box label="Propose 2-3 approaches"];
-    present [shape=box label="Present design sections"];
-    user_ok [shape=diamond label="User approves design?"];
-    write [shape=box label="Write design doc"];
+    write [shape=box label="Write design doc draft"];
     test [shape=box label="Write the one feature test\n(record path in design.md)"];
     review [shape=box label="Self-review design + test\n(fix inline)"];
-    user_review [shape=diamond label="User reviews draft?"];
+    user_review [shape=diamond label="User reviews written draft?"];
     done [shape=doublecircle label="Invoke developer:plan in a new session"];
 
     explore -> research;
@@ -90,10 +87,7 @@ digraph brainstorming {
     visual_q -> clarify [label="no"];
     visual -> clarify;
     clarify -> propose;
-    propose -> present;
-    present -> user_ok;
-    user_ok -> present [label="no, revise"];
-    user_ok -> write [label="yes"];
+    propose -> write;
     write -> test;
     test -> review;
     review -> user_review;
@@ -124,14 +118,14 @@ digraph brainstorming {
 - Present options directly with your recommendation and reasoning. Lead with your recommended option and explain why. Include pros and cons of each.
 - For each approach, use forward-backward planning to map the path from the current state to the proposed end state. Work backward from where the approach lands and forward from where the codebase is now, meeting in the middle. This surfaces whether an approach is feasibly reachable and where the hard steps are before committing to it. See `developer/references/forward_backward.md`.
 
-**Presenting the design:**
+**Writing the design:**
 
-- Once you believe you understand what you're building, present the design.
-- At this stage, the design covers the user-visible side, without proposing implementation code (the feature test is the one exception, written after the design is approved).
+- Once you believe you understand what you're building, write the full design draft directly. Do not read it out section by section for approval before writing it.
+- At this stage, the design covers the user-visible side, without proposing implementation code (the feature test is the one exception, written right after the design draft).
 - Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced.
 - Cover user workflows, failure modes, and automated & manual verification steps.
-- Be ready to go back and clarify if something doesn't make sense.
-- When the design is ready, write it. Then write the feature test that encodes its primary user story.
+- Write the whole draft, then write the feature test that encodes its primary user story.
+- Then collaborate with the user on the written draft, revising it in place from their feedback rather than gating each section before it is written.
 
 **Working in existing codebases:**
 
@@ -141,7 +135,7 @@ digraph brainstorming {
 
 ## Bugfix Shape
 
-When the research refine pass reclassified the task as a bug rather than a feature, consult `developer/references/bugfix.md`. The design content uses observed / expected / unchanged language, and the feature test is a failing **reproduction** test that fills the same slot the feature test otherwise fills.
+When the research refine pass sized the task as a bug, smaller than a feature or a project, consult `developer/references/bugfix.md`. The design content uses observed / expected / unchanged language, and the feature test is a failing **reproduction** test that fills the same slot the feature test otherwise fills.
 
 ## After the Design
 
