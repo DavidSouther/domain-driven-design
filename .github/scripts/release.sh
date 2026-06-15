@@ -75,3 +75,14 @@ git cliff \
   --repository "${REPO}" \
   --tag "release/${VERSION}" \
   --output "${REPO}/CHANGELOG.md"
+
+# --- Signed commit + signed umbrella tag -------------------------------------
+
+git -C "${REPO}" add .
+git -C "${REPO}" commit -m "chore: release ${VERSION}"
+
+git -C "${REPO}" tag -a "release/${VERSION}" -m "Release ${VERSION}"
+
+for plugin in "${changed[@]}"; do
+  git -C "${REPO}" tag -a "${plugin}/${VERSION}" -m "Release ${plugin} ${VERSION}"
+done
