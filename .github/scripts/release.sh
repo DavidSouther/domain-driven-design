@@ -86,3 +86,21 @@ git -C "${REPO}" tag -a "release/${VERSION}" -m "Release ${VERSION}"
 for plugin in "${changed[@]}"; do
   git -C "${REPO}" tag -a "${plugin}/${VERSION}" -m "Release ${plugin} ${VERSION}"
 done
+
+# --- Push + GitHub Release ----------------------------------------------------
+
+if [[ "${SKIP_PUSH}" == false ]]; then
+  git -C "${REPO}" push origin main
+  git -C "${REPO}" push origin --tags
+fi
+
+if [[ "${SKIP_GH}" == false ]]; then
+  tmpfile=$(mktemp "${TMPDIR:-/tmp}/release-notes.XXXXXX")
+  git cliff \
+    --config "${CLIFF_CONFIG}" \
+    --repository "${REPO}" \
+    --latest \
+    > "${tmpfile}"
+  gh release create "release/${VERSION}" --notes-file "${tmpfile}"
+  rm -f "${tmpfile}"
+fi
