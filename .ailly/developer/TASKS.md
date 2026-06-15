@@ -16,6 +16,7 @@ The invocation cross-section now covers all ten non-bootstrap research skills. R
 - **Skill bug (out of harness scope): `ddd:` vs `domain:` prefix mismatch.** Skill bodies and the `using-domain` routing table use `ddd:<skill>`; the plugin manifest namespace is `domain:<skill>`. The domain discovery evals accept both prefixes to stay faithful. Decide whether to reconcile the skill bodies to `domain:` (a skill edit, deliberately not done here).
 - **Skill finding (out of harness scope): the glossary gate is not enforced at the discovery surface.** A modelling-shaped, term-introducing prompt routes to `domain-model`, not `glossary` first, because `using-domain`'s table only sends "ambiguous/synonymous" terms to `glossary`. `domain/e2e` reports this as `glossary-gate finding: NOT ENFORCED`. Decide whether to strengthen `using-domain`'s routing row for new-term introduction.
 - **Blueprint deferreds still open:** per-repo CI workflow (GitHub Actions matrix over each `ci.sh`); model-version sweep once baselines are stable.
+
 ## Findings / follow-ups
 
 ## Follow-ups: `patterns/e2e/`

@@ -1,0 +1,4 @@
+# Format: <email> namespaces="git" <keytype> <pubkey>
+# Add the CI key public key here after provisioning. See RELEASING.md.
+# Example:
+# davidsouther@gmail.com namespaces="git" ssh-ed25519 AAAA...
