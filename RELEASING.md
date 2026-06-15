@@ -33,7 +33,9 @@ A nightly workflow (`.github/workflows/nightly-release.yml`) runs at 02:00 UTC e
 
 ## Optional developer SSH signing
 
-To sign your own commits locally:
+Register your public key on GitHub under **Settings → SSH and GPG keys → New SSH key → Signing Key**.
+
+To sign your own commits locally with an approved signing key:
 
 ```bash
 git config --global gpg.format ssh
@@ -42,22 +44,17 @@ git config --global commit.gpgsign true
 git config --global tag.gpgsign true
 ```
 
-Register your public key on GitHub under **Settings → SSH and GPG keys → New SSH key → Signing Key**.
-
 ## CI key provisioning (one-time, admin only)
 
-1. Generate an Ed25519 key pair (no passphrase):
-   ```bash
-   ssh-keygen -t ed25519 -f ci_signing_key -N "" -C "releases@ailly"
-   ```
-2. Append the public key to `signing/allowed_signers`:
-   ```
-   davidsouther@gmail.com namespaces="git" ssh-ed25519 AAAA...
-   ```
-3. Store the **private key** in the repository secret `SSH_SIGNING_KEY`.
-4. Register the public key on GitHub under **Settings → SSH and GPG keys → New SSH key → Signing Key**.
-5. Commit and push the updated `signing/allowed_signers`.
+```bash
+ssh-keygen -t ed25519 -f ci_signing_key -N "" -C "releases@ailly"
+echo "davidsouther@gmail.com namespaces=\"git\" $(cat ci_signing_key.pub)" >> signing/allowed_signers
+gh secret set SSH_SIGNING_KEY < ci_signing_key
+rm ci_signing_key ci_signing_key.pub
+```
+
+Then register the public key on GitHub under **Profile Settings → SSH and GPG keys → New SSH key → Signing Key** (copy it from `signing/allowed_signers`), and commit and push `signing/allowed_signers`. (note: profile settings, not project settings.)
 
 ## SLSA statement
 
-This repository targets **SLSA Source Level 1** with signed-tag provenance: every release commit and umbrella tag is SSH-signed by the CI bot key, and the tag can be verified locally with `git verify-tag <tag>` once `signing/allowed_signers` is configured.
+This repository targets **SLSA Source Level 1** with signed-tag provenance: every release commit and umbrella tag is SSH-signed by the CI bot key, and the tag can be verified locally with `git verify-tag <tag>`.
