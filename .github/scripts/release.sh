@@ -64,3 +64,14 @@ d["version"] = ver
 with open(path, "w") as f: json.dump(d, f, indent=2); f.write("\n")
 PY
 done
+
+# --- Changelog generation -----------------------------------------------------
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CLIFF_CONFIG="${SCRIPT_DIR}/../../cliff.toml"
+
+git cliff \
+  --config "${CLIFF_CONFIG}" \
+  --repository "${REPO}" \
+  --tag "release/${VERSION}" \
+  --output "${REPO}/CHANGELOG.md"
