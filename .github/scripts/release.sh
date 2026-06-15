@@ -29,8 +29,6 @@ done
 
 PLUGINS=(developer general patterns domain research characters)
 
-# --- Change detection ---------------------------------------------------------
-
 last_tag=$(git -C "${REPO}" describe --tags --match 'release/*' --abbrev=0 2>/dev/null \
   || git -C "${REPO}" rev-list --max-parents=0 HEAD)
 
@@ -46,13 +44,9 @@ if [[ ${#changed[@]} -eq 0 ]]; then
   exit 0
 fi
 
-# --- Version computation ------------------------------------------------------
-
 ym="${RELEASE_DATE:-$(date +%Y.%m)}"
 micro=$(git -C "${REPO}" tag -l "release/${ym}.*" | wc -l | tr -d ' ')
 VERSION="${ym}.${micro}"
-
-# --- Plugin version bump ------------------------------------------------------
 
 for plugin in "${changed[@]}"; do
   json="${REPO}/${plugin}/.claude-plugin/plugin.json"
@@ -65,8 +59,6 @@ with open(path, "w") as f: json.dump(d, f, indent=2); f.write("\n")
 PY
 done
 
-# --- Changelog generation -----------------------------------------------------
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CLIFF_CONFIG="${SCRIPT_DIR}/../../cliff.toml"
 
@@ -75,8 +67,6 @@ git cliff \
   --repository "${REPO}" \
   --tag "release/${VERSION}" \
   --output "${REPO}/CHANGELOG.md"
-
-# --- Signed commit + signed umbrella tag -------------------------------------
 
 git -C "${REPO}" add .
 git -C "${REPO}" commit -m "chore: release ${VERSION}"
@@ -87,8 +77,6 @@ for plugin in "${changed[@]}"; do
   git -C "${REPO}" tag -a "${plugin}/${VERSION}" -m "Release ${plugin} ${VERSION}"
 done
 
-# --- Push + GitHub Release ----------------------------------------------------
-
 if [[ "${SKIP_PUSH}" == false ]]; then
   git -C "${REPO}" push origin main
   git -C "${REPO}" push origin --tags
@@ -96,11 +84,11 @@ fi
 
 if [[ "${SKIP_GH}" == false ]]; then
   tmpfile=$(mktemp "${TMPDIR:-/tmp}/release-notes.XXXXXX")
+  trap 'rm -f "${tmpfile}"' EXIT
   git cliff \
     --config "${CLIFF_CONFIG}" \
     --repository "${REPO}" \
     --latest \
     > "${tmpfile}"
   gh release create "release/${VERSION}" --notes-file "${tmpfile}"
-  rm -f "${tmpfile}"
 fi
