@@ -43,14 +43,20 @@ cases:
       - { type: script, runtime: python, script: { path: evals/scripts/check_review.py } }
       - type: judge
         prompt: |
-          The review builds a task-specific rubric covering correctness,
-          completeness, clarity, and conciseness, and evaluates the diff against
-          it. It identifies real issues in THIS diff — at minimum the unrelated
-          rename of format_timestamp to fmt_ts (scope creep), the removed
-          test_format_timestamp test, and the missing test or the breaking
+          The review fans out more than one reviewer for this multi-domain
+          artifact: the always-on base reviewer (correctness, completeness,
+          clarity, conciseness) AND a comment-longevity reviewer for the new
+          User docstring that enumerates its callers and the "fast path" comment.
+          The findings then pass through a convergence stage that verifies each
+          candidate against the diff, deduplicates, and ranks by severity before
+          any fix, not a flat list. It identifies real issues in THIS diff: at
+          minimum the unrelated rename of format_timestamp to fmt_ts (scope
+          creep), the removed test_format_timestamp test, the breaking
           required-field addition of is_admin (which breaks existing User(...)
-          construction). It evaluates only; it does not rewrite the code inline.
-      - { type: tokens, metric: output, op: "<", value: 5000 }
+          construction), and the docstring that enumerates current call sites
+          (rots when usage changes). It evaluates only; it does not rewrite the
+          code inline.
+      - { type: tokens, metric: output, op: "<", value: 6000 }
 
   - name: conversation
     assertions:

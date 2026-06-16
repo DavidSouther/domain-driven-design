@@ -2,6 +2,9 @@ You are about to claim the following change complete. Run a review pass
 first, and produce the review output directly in your reply. This environment
 has no file system and no tools — do not call tools; write your review inline.
 
+The change carries concerns in more than one domain: code correctness and the
+longevity of its comments. Review it accordingly.
+
 Task: "Add an `is_admin: bool` field to the `User` struct and surface it on
 the `/users/:id` JSON response."
 
@@ -10,9 +13,15 @@ Diff:
 ```diff
 --- a/app/models.py
 +++ b/app/models.py
-@@ -8,10 +8,11 @@ from datetime import datetime
+@@ -8,12 +8,16 @@ from datetime import datetime
+
  @dataclass
  class User:
++    """A user record.
++
++    Constructed by routes.get_user and by tests.test_models. Update both
++    call sites when adding a field.
++    """
      id: int
      name: str
      email: str
@@ -21,6 +30,7 @@ Diff:
 -def format_timestamp(ts: int) -> str:
 -    return datetime.utcfromtimestamp(ts).isoformat()
 +def fmt_ts(ts: int) -> str:
++    # fast path: assume ts is always UTC seconds
 +    return datetime.utcfromtimestamp(ts).isoformat()
 
 --- a/app/routes.py

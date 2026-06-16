@@ -1,5 +1,30 @@
 # Next Tasks
 
+- Remove the Visual Design completely
+- Introduce a modular "use your own design tool" during the design phase that does Superpowers:Visual Design or Figma or Claude Designer.
+- Always run /review after editing research.md and design.md.
+
+## Follow-ups: modular review composer (`general:review`, 2026-06-16)
+
+`general:review` was rewritten from a single rubric into a composer (compose →
+dispatch → converge → fix → re-evaluate) in session
+`2026-06-15-A-reviewers`. Deferred from that session:
+
+- **Run the live-model green gate.** The offline structural checker
+  (`check_review.py`) discriminates red→green, but the full feature test
+  (`general/e2e/ci.sh`) needs `ANTHROPIC_API_KEY` (or a project `.env`), absent
+  in the authoring environment. Run `ci.sh` once credentials are available to
+  confirm the invocation `review` case passes against the rewritten skill and
+  the baseline-vs-invocation falsification gate still holds.
+- **Dynamic-workflow (six+ reviewers) dispatch path is unexercised.** Only the
+  base reviewer plus `developer:clean-comments-review` exist to compose today, so
+  the static path is the only reachable one. Revisit the dynamic path when a
+  third specialist review skill lands.
+- **Discovery/baseline eval coverage for the composer.** Whether to update the
+  `discovery`/`baseline` evals or add a dynamic-dispatch eval case was left to a
+  separate session (research scope kept harness changes out; only the one
+  invocation case was updated in place).
+
 ## Follow-ups: `research/e2e/`
 
 The invocation cross-section now covers all ten non-bootstrap research skills. Remaining enhancements (not blockers):
