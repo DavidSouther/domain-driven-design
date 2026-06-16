@@ -9,7 +9,7 @@ description: "Use when a development topic is vague and nothing has been gathere
 
 The first phase of the development lifecycle. A thin **delegating coordinator** that opens a topic by gathering and then narrowing context before any design exists. It owns the `research.md` artifact and the draft gate; `research:using-research` owns the search and falsification internals (the Jeopardy! expand and the oppositional falsify). This skill does not re-implement search; it briefs and frames it.
 
-**Announce at start:** "Using developer:research to gather and refine context for [summary of topic]."
+**Announce at start:** "Using developer:research to gather and refine context for [summary of topic]. Recommended model for research is Haiku 4.5 (thinking). Switch with `/model` (press `s` for session-only) if you want. I'll continue on the current model otherwise. See developer/references/model-per-phase.md."
 
 **Trigger:** A new or vague development topic with nothing gathered yet. The intent is known loosely, but the supporting context, prior art, and scope are not.
 

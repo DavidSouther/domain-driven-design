@@ -13,7 +13,7 @@ Start by understanding the current project context, then ask questions one at a 
 
 **Trigger:** A cleared `research.md` in the session folder (or a topic clear enough that research added nothing to gather).
 
-**Announce at start:** "Designing a feature to [summary of the prompt]"
+**Announce at start:** "Designing a feature to [summary of the prompt]. Recommended model for design is Opus 4.8 (max effort). Switch with `/model` (press `s` for session-only) if you want. I'll continue on the current model otherwise. See developer/references/model-per-phase.md."
 
 ## Anti-Patterns
 
