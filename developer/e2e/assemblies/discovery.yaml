@@ -20,6 +20,7 @@ matrix:
     - cleanup-vs-refactor
     - initialize-vs-ailly
     - ailly-vs-initialize
+    - program-management-config-vs-use
 
 conversation:
   - { role: user, path: "prompts/discovery/{{ case }}.md" }
