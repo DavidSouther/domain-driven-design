@@ -48,6 +48,7 @@ ym="${RELEASE_DATE:-$(date +%Y.%m)}"
 micro=$(git -C "${REPO}" tag -l "release/${ym}.*" | wc -l | tr -d ' ')
 VERSION="${ym}.${micro}"
 
+MARKETPLACE="${REPO}/.claude-plugin/marketplace.json"
 for plugin in "${changed[@]}"; do
   json="${REPO}/${plugin}/.claude-plugin/plugin.json"
   python3 - "${json}" "${VERSION}" <<'PY'
@@ -55,6 +56,20 @@ import json, sys
 path, ver = sys.argv[1], sys.argv[2]
 with open(path) as f: d = json.load(f)
 d["version"] = ver
+with open(path, "w") as f: json.dump(d, f, indent=2); f.write("\n")
+PY
+
+  # Keep the marketplace manifest's per-plugin version in lockstep with plugin.json.
+  python3 - "${MARKETPLACE}" "${plugin}" "${VERSION}" <<'PY'
+import json, sys
+path, name, ver = sys.argv[1], sys.argv[2], sys.argv[3]
+with open(path) as f: d = json.load(f)
+for entry in d.get("plugins", []):
+    if entry.get("name") == name:
+        entry["version"] = ver
+        break
+else:
+    sys.exit(f"marketplace.json has no plugin entry named {name!r}")
 with open(path, "w") as f: json.dump(d, f, indent=2); f.write("\n")
 PY
 done
