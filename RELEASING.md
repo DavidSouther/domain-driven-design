@@ -44,6 +44,19 @@ git config --global commit.gpgsign true
 git config --global tag.gpgsign true
 ```
 
+Swap `--global` for `--local` to scope signing to this repository only (the
+setting is then shared across its worktrees but does not affect other repos).
+
+This config is not stored in the repository, so it does not travel with a clone.
+On every new machine or fresh checkout, confirm it is set before committing:
+
+```bash
+git config --get commit.gpgsign   # expect: true
+```
+
+If it prints nothing, commits will be unsigned and show as unverified on GitHub.
+Re-run the block above to fix.
+
 ## CI key provisioning (one-time, admin only)
 
 ```bash
