@@ -17,14 +17,16 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - uses: photostructure/git-ssh-signing-action@v1
+      - uses: photostructure/git-ssh-signing-action@v2
         with:
           ssh-signing-key: ${{ secrets.SSH_SIGNING_KEY }}
+          git-user-name: ${{ secrets.GIT_USER_NAME }}
+          git-user-email: ${{ secrets.GIT_USER_EMAIL }}
 
       - name: Set git identity
         run: |
-          git config user.name "Ailly Release Bot"
-          git config user.email "davidsouther@gmail.com"
+          git config user.name "${{ secrets.GIT_USER_NAME }}"
+          git config user.email "${{ secrets.GIT_USER_EMAIL }}"
 
       - name: Configure allowed signers
         run: git config gpg.ssh.allowedSignersFile signing/allowed_signers
