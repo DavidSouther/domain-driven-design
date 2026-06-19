@@ -1,0 +1,11 @@
+[project]
+name = "release-scripts"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = []
+
+[dependency-groups]
+dev = ["ruff>=0.9"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]

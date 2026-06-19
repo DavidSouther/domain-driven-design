@@ -1,0 +1,8 @@
+*
+!.gitignore
+!release.py
+!pyproject.toml
+!pyrightconfig.json
+!uv.lock
+!tests/
+!tests/*
