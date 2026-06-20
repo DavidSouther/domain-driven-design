@@ -9,7 +9,7 @@
     {
       "name": "developer",
       "description": "Skills for a software developer agent to follow a strict Domain- and Test-Driven Development lifecycle.",
-      "version": "1.2.0",
+      "version": "2026.06.1",
       "source": "./developer",
       "owner": {
         "name": "David Souther",
@@ -19,7 +19,7 @@
     {
       "name": "domain",
       "description": "Domain driven design skills library for Claude Code: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
-      "version": "1.0.1",
+      "version": "2026.06.1",
       "source": "./domain",
       "author": {
         "name": "David Souther",
@@ -29,7 +29,7 @@
     {
       "name": "general",
       "description": "General skills library for Claude Code: subagents, skill development, and git worktrees. From obra/superpowers.",
-      "version": "1.0.1",
+      "version": "2026.06.1",
       "source": "./general",
       "author": {
         "name": "David Souther",
@@ -39,7 +39,7 @@
     {
       "name": "patterns",
       "description": "Design patterns to ensure high-quality, idiomatic domain driven design.",
-      "version": "1.0.1",
+      "version": "2026.06.1",
       "source": "./patterns",
       "author": {
         "name": "David Souther",
@@ -49,7 +49,7 @@
     {
       "name": "research",
       "description": "Research skills library for Claude Code: public internet, internal documents, domain model, local codebase, and project dependencies.",
-      "version": "1.0.1",
+      "version": "2026.06.1",
       "source": "./research",
       "author": {
         "name": "David Souther",
@@ -59,7 +59,7 @@
     {
       "name": "characters",
       "description": "Character voices that color human-facing output for other plugins. Each character corresponds to one or more plugins and adds a stable persona, tone, and small whimsy to responses.",
-      "version": "1.0.0",
+      "version": "2026.06.1",
       "source": "./characters",
       "author": {
         "name": "David Souther",

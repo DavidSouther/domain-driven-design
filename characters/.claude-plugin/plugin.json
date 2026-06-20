@@ -1,7 +1,7 @@
 {
   "name": "characters",
   "description": "Character voices that color the response style of other plugins. Each character corresponds to one or more plugins, and tailors human-facing output with a distinct personality, methodology, and quirks.",
-  "version": "1.0.0",
+  "version": "2026.06.1",
   "owner": {
     "name": "David Souther",
     "email": "davidsouther@gmail.com"
