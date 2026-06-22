@@ -52,3 +52,9 @@ One `developer:ailly` session. Likely quick-loop shape.
 ### Cleanup hygiene (small, independent)
 
 Ruff findings that predate the refactor, in files it never touched (do not bundle them into the refactor history): `developer/e2e/evals/scripts/check_plan.py` has an unused `n = len(matches)` (F841); `check_cleanup.py`, `check_initialize.py`, and `check_refactor.py` are not `ruff format` clean. One pass of `ruff check --fix` plus `ruff format` over `developer/e2e/evals/scripts/` clears all four.
+
+## Follow-ups: long-loop mode
+
+The long-loop coordination mode was authored 2026-06-17 (session `.ailly/developer/2026-06-17-B-long-loop/`, source prompt `.ailly/prompts/dynamic-workflow.md`): a `## Long-loop Mode` section in `developer/skills/ailly/SKILL.md` plus `developer/references/long-loop.md`. One follow-up was deferred at design time (decision 5):
+
+- **Add a `developer/e2e/` invocation case asserting long-loop behavior.** The existing `developer/e2e/evals/scripts/check_ailly.py` asserts the coordinator does NOT cross a draft gate (R1/R2). Add a long-loop case (and checker assertions) for the opted-in mode: a research-and-decide reviewer is dispatched at the gate, a decision is recorded with rationale in the artifact's `Resolved by the long-loop reviewer` block, the `*Draft*` marker is cleared by the reviewer, and the human merge gate and Closing Bell are preserved (never auto-cleared). Deferred from the authoring session because the checkable surface (the SKILL.md section, the reference doc, the recorded-decision format) did not exist until authored. The dry-run trace preserved at `.ailly/developer/TASK-NOTES-long-loop-e2e.md` (assertions A1-A7, copied from the now-removed session folder) is the spec for the case. Precedent: the reviewers session shipped `check_review.py` as an eval-as-feature-test.

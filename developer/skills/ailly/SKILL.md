@@ -30,7 +30,7 @@ If the folder already exists for the current topic, determine resume point:
 
 A file has its draft cleared when it no longer contains the `*Draft` marker.
 
-Cleanup is the terminal phase: it runs the final review, extracts deferred decisions to `.ailly/developer/TASKS.md`, and **pauses for human approval before the squash-merge** or PR.
+Cleanup is the terminal phase: it runs the final review and extracts deferred decisions to `.ailly/developer/TASKS.md`. The coordinator, not cleanup, then **pauses for human approval before the squash-merge** or PR.
 
 ## Loop Structure
 
@@ -123,6 +123,15 @@ Generally, be persistent in enforcing the draft structure. However, when first s
 **When it fits:** a small, unambiguous task with a narrow surface, where the cost of a wrong turn is low.
 
 **What it trades away:** the human review beats. Skipping the gates means no chance to catch a wrong assumption before the next phase builds on it. Do not use quick-loop for ambiguous, high-blast-radius, or security-sensitive work.
+
+## Long-loop Mode
+
+When first starting an Ailly task, the user may ask to "run a long loop", a "dynamic workflow", or to "run \<project\> to completion". The same five phases (Research, Design, Plan, Build, Cleanup) still run, each in a subagent, but at each draft gate the coordinator does not stop for the human. Instead it dispatches a research-and-decide reviewer subagent that reads the artifact cold, decides its open questions, records each decision with rationale in place, and clears the `*Draft*` marker, so the run proceeds without the human wait while the deliberation those gates exist for is kept.
+
+- Unlike quick-loop, the long loop does **not** inherit the forbidden list; it is the intended substitute precisely where quick-loop is forbidden (ambiguous, high-blast-radius, or security-sensitive work), keeping full-fidelity artifacts and deliberation.
+- The human merge gate and the Closing Bell are **never** auto-cleared by any reviewer.
+
+For the reviewer contract, the recording format, the escalation rule, the project-cycle interaction, and the end-of-run report, consult `developer/references/long-loop.md`.
 
 ## Bugfix Shape
 

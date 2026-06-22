@@ -55,7 +55,7 @@ digraph phases {
 
 ## Draft Gates
 
-The research, design, and plan phases each produce a `*Draft YYYY-MM-DD*` artifact. A human must review and clear the draft marker before the next phase begins. `developer:ailly` enforces this and will not proceed past a draft gate in the same session. Cleanup adds a final human-approval gate before the squash-merge.
+The research, design, and plan phases each produce a `*Draft YYYY-MM-DD*` artifact. A human must review and clear the draft marker before the next phase begins. `developer:ailly` enforces this and will not proceed past a draft gate in the same session. After cleanup, the coordinator pauses for human approval before the squash-merge.
 
 | Gate | Location | Clears to enter |
 |---|---|---|
