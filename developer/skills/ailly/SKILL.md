@@ -134,6 +134,8 @@ When the topic is too large for one feature, needing several features that only 
 
 ## Next Task
 
+Read `DEVELOPMENT.md` for a `## Program Management` section. When an active tracker is recorded there, defer next-task selection and deferred-work writing to `developer:using-program-management`; the tracker is the source of truth for the task tier. When no tracker is configured (the section is absent, or the active tracker is `none`), fall back to `TASKS.md` with today's behavior below unchanged. Session artifacts remain **notes** in `.ailly/developer/<date>-<topic>/` either way.
+
 When finishing a session, add the next step to `.ailly/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments. When substantial context is needed for a task, create a `TASK-NOTES-<task>.md` file with the details, and include just a short overview to that in the TASKS file. Review NOTES when the task is selected.
 
 When a topic is finished, use `developer:cleanup` to leave things tidy.
