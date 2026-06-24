@@ -1,5 +1,12 @@
 # Next Tasks
 
+## Follow-ups: program-management skills (`developer:configuring-program-management` / `using-program-management`)
+
+Merged to `main` via PR (built on `issue_tracking`, feature `943fd6f` + refactor `d004979`). All five plan steps verified **offline** (vendor.py regenerates `disclosure.md` with both skills; routing rows in `using-developer`; integration edits in `ailly`/`cleanup`). Open:
+
+- **Confirm the feature test live.** The discovery routing case `program-management-config-vs-use` (`developer/e2e/evals/discovery.yaml`) was never run against a model — no `ailly` binary on PATH and `ANTHROPIC_API_KEY` unset at build time. Run `AILLY_BIN=<binary> bash developer/e2e/ci.sh` (or scope to the discovery suite) with a key/`.env` present, and confirm both skills route correctly (config→`configuring-program-management`, session→`using-program-management`, not swapped, not `initialize`/`ailly`). Until then the feature test is structurally green only.
+- **Deferred from design (not blockers):** invocation-suite coverage for the new pair; per-tracker `references/` split if the practice body grows; widening Note→Doc promotion beyond Project shape; auto per-phase status transitions / subtask-per-plan-step; a standalone `developer:authorization` concern; the `AGENTS.md`/`README.md` one-line pointer to the `DEVELOPMENT.md` contract.
+
 ## Follow-ups: `research/e2e/`
 
 The invocation cross-section now covers all ten non-bootstrap research skills. Remaining enhancements (not blockers):
