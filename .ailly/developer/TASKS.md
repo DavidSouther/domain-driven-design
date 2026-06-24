@@ -52,3 +52,9 @@ One `developer:ailly` session. Likely quick-loop shape.
 ### Cleanup hygiene (small, independent)
 
 Ruff findings that predate the refactor, in files it never touched (do not bundle them into the refactor history): `developer/e2e/evals/scripts/check_plan.py` has an unused `n = len(matches)` (F841); `check_cleanup.py`, `check_initialize.py`, and `check_refactor.py` are not `ruff format` clean. One pass of `ruff check --fix` plus `ruff format` over `developer/e2e/evals/scripts/` clears all four.
+
+## Follow-ups: long-loop mode
+
+The long-loop coordination mode was authored 2026-06-17 (source prompt `.ailly/prompts/dynamic-workflow.md`): a `## Long-loop Mode` section in `developer/skills/ailly/SKILL.md` plus `developer/references/long-loop.md`. The `developer/e2e/` feature-test case for it was added 2026-06-24 (the `long-loop` / `long-loop-baseline` assembly pair, `evals/scripts/check_long_loop.py` asserting L1-L4, and the second falsification comparison in `ci.sh`). One residual is deferred:
+
+- **Confirm the long-loop eval live (needs the `ailly` binary + a model key).** The case is authored and the structural checker is unit-verified against synthetic good/baseline turns, but the live run (`developer/e2e/ci.sh`) was not executed here because the `ailly` binary is not installed and no model key was available. Run `bash developer/e2e/ci.sh` once both are present and confirm the long-loop comparison reports `improved>0, regressed==0`. Same deferral as the program-management discovery-eval follow-up. The dry-run trace at `.ailly/developer/TASK-NOTES-long-loop-e2e.md` (assertions A1-A7) is the spec the checker encodes.
