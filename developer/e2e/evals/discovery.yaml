@@ -71,3 +71,20 @@ cases:
     assertions:
       - { type: text_contains, value: "developer:ailly" }
       - { type: text_not_contains, value: "developer:initialize" }
+
+  # Paired bootstrap-vs-per-use: (a) one-time wiring of the team's tracker and
+  # docs → configuring-program-management; (b) everyday next-task / write-back →
+  # using-program-management. The configure/practice cadence split, not swapped.
+  - name: program-management-config-vs-use
+    assertions:
+      - { type: text_contains, value: "developer:configuring-program-management" }
+      - { type: text_contains, value: "developer:using-program-management" }
+      - type: judge
+        prompt: |
+          The answer maps question (a) — the one-time setup that records the
+          active tracker, the Epic/feature/bug term mapping, and the doc-system
+          target — to developer:configuring-program-management, and question (b)
+          — the everyday session work of pulling the next task and writing
+          deferred work back to the tracker — to developer:using-program-management.
+          The two are not swapped, and it does not route either to
+          developer:initialize or developer:ailly.

@@ -49,7 +49,7 @@ echo "OK: baseline-prefix files (AGENTS.md, profile.md) leak no developer:<skill
 
 expected_count() {
   case "$1" in
-    discovery)  echo 8 ;;
+    discovery)  echo 9 ;;
     invocation) echo 9 ;;
     baseline)   echo 9 ;;
     *) echo "FAIL: unknown suite $1" >&2; exit 1 ;;

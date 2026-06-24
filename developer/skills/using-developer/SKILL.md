@@ -50,6 +50,8 @@ digraph phases {
 | Cleaning up green code mid-build, without changing behavior | `developer:refactor` |
 | Finishing the topic: final review, extract deferred tasks, prepare the squash-merge | `developer:cleanup` |
 | Setting up a new project or language environment | `developer:initialize` |
+| Wiring Ailly to the team's issue tracker and document system (once per project) | `developer:configuring-program-management` |
+| Reading the next task from the tracker or writing deferred work back during a session | `developer:using-program-management` |
 
 ## Draft Gates
 
