@@ -1,6 +1,6 @@
 # Per-Phase Model Selection
 
-Each phase of the Ailly developer loop has a different cost and capability profile. Research gathers and filters broadly. Design synthesizes and judges. Planning and implementation follow structure over long context. Cleanup tidies. The strongest reasoner is wasted on cleanup, and the cheapest model is a liability for design. This reference holds the full phase by provider mapping and the shared switch protocol, so each phase skill carries only a one-line pointer. A skill cannot change the model itself. It announces the recommended model on entry, invites a `/model` switch, and continues on the current model either way.
+Each phase of the Ailly developer loop has a different cost and capability profile. Research gathers and filters broadly. Design synthesizes and judges. Planning and implementation follow structure over long context. Cleanup tidies. The strongest reasoner is wasted on cleanup, and the cheapest model is a liability for design. This reference holds the full phase by provider mapping and the shared switch protocol, so each phase skill carries only a one-line pointer. The preferred path is to switch the model directly: if the harness exposes a way for the skill to change the active model, it does so on phase entry. The announce line is the **fallback** for when it cannot — it names the recommended model, flags any mismatch, and invites a `/model` switch. Either way the loop continues on the current model; the check never gates.
 
 ## Phase by Provider table
 
@@ -26,9 +26,15 @@ The running model identity is stated in the skill's environment context, which t
 
 If no identity is present or the model is unrecognized, the skill falls back to the **Anthropic** column and says so. The developer can confirm the active model with `/model`.
 
+## Phase-entry check
+
+The recommendation is not a blanket line emitted blindly. On entering a phase the skill performs an active check: it detects the running model (above), maps it to the recommended model for the phase, and **compares the two**. When they differ, it names the mismatch explicitly rather than offering a generic recommendation — for example, "you are on Opus 4.8; research recommends Haiku 4.5 (thinking)" — so the developer sees the gap and can decide. When the running model already matches the recommendation, the skill says so briefly and moves on with no prompt to switch.
+
+This is a check, not a gate. Flagging a mismatch never stalls the loop (see the switch protocol below); it only makes the recommendation specific to where the developer actually is.
+
 ## Switch protocol
 
-The skill announces the recommended model for the detected provider and the current phase, then invites a switch:
+When the harness does not let the skill change the model directly, this is the fallback. The skill announces the recommended model for the detected provider and the current phase, then invites a switch:
 
 - Switch with `/model`. Press `s` in the picker to switch for the current session only, leaving the saved default unchanged.
 - The phase continues on the current model if the developer does not switch. There is no gate. The loop never stalls waiting for a model switch.

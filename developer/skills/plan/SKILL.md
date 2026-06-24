@@ -9,7 +9,7 @@ description: Use when the design draft is cleared and its recorded feature test 
 
 Middle-loop planning skill. Given a cleared design and its failing feature test, defines the API surface area and breaks the path to making that test pass into 3–7 incremental steps. Each step must leave the codebase in a runnable state and advance the feature test measurably.
 
-**Announce at start:** "Using developer:plan to create the implementation plan for [summary of feature]. Recommended model for planning is Sonnet 4.6 (high effort). Switch with `/model` (press `s` for session-only) if you want. I'll continue on the current model otherwise. See developer/references/model-per-phase.md."
+**Announce at start:** "Using developer:plan to create the implementation plan for [summary of feature]. Name the recommended model for planning from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
 
 **Trigger:** The design draft marker has been cleared by a human. The design records the project feature test, which is currently failing.
 

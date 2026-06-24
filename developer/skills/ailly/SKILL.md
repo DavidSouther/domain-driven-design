@@ -94,6 +94,13 @@ Pass the session folder path to each skill. The session folder is the single sou
 - Build phase: invoke `developer:red-green-refactor` per plan step until the feature test is green
 - Cleanup phase: invoke `developer:cleanup`
 
+## Phase-Entry Checks
+
+Before invoking each phase skill, the coordinator checks before it proceeds and escalates to the human rather than silently working around a problem. Two checks share this discipline:
+
+- **Model check.** Detect the running model and compare it to the model recommended for the phase. On a mismatch, say so explicitly and invite a `/model` switch; continue on the current model either way. This is a check, not a gate — the loop never stalls. Consult `developer/references/model-per-phase.md` for the phase×provider table, the detection rules, and the switch protocol.
+- **Tool readiness.** When a tool *declared for the project* fails, do not silently substitute another tool or work around it by hand. Consult `developer/references/tool-failure.md`: first check `developer:initialize` for a local fix (e.g. `mise trust`, `npm install`), then escalate to the user with what failed, a suggested remediation, and why it is correct, and retry after the user remediates or grants permission.
+
 ## Topic Slug
 
 If the user's prompt doesn't make the topic slug obvious, ask for one before creating the session folder:

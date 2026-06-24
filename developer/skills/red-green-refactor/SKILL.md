@@ -9,7 +9,7 @@ description: Use when implementing a plan step — type-first TDD cycle with a t
 
 The innermost development loop. Type-first TDD: write signatures before tests, tests before implementation, commit before refactoring. Has an explicit abort condition to prevent infinite loops.
 
-**Announce at start:** "[Summary of the plan step.] Using developer:red-green-refactor for this step of the plan. Recommended model for implementation is Sonnet 4.6 (high effort, 1M context). Switch with `/model` (press `s` for session-only) if you want. I'll continue on the current model otherwise. See developer/references/model-per-phase.md."
+**Announce at start:** "[Summary of the plan step.] Using developer:red-green-refactor for this step of the plan. Name the recommended model for implementation from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort or context qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
 
 ## The Loop
 
