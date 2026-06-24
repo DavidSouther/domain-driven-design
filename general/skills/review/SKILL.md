@@ -3,16 +3,21 @@ name: review
 description: Used when an agent is finishing a work product, before claiming a task is complete, or after completing an editing pass.
 ---
 
-Review work before declaring it done by building a task-specific rubric, evaluating against it, and editing to address gaps.
+A review is not one rubric. It is a composition of independent review skills, assembled to fit the artifact in front of it. Compose the applicable reviewers, dispatch them in parallel, converge their findings, fix, and re-evaluate. This skill ships the always-present base reviewer; specialists are discovered and composed in when the artifact matches them.
 
-## Checklist
+## Journey
 
-- [ ] Prepare an evaluation rubric for the review. Include the criteria below, lifting each criterion's diagnostic into concrete checks, plus any task-specific concerns (e.g., code correctness, citation accuracy, format requirements).
-- [ ] In a subagent, evaluate the work against the rubric. For each criterion, describe what fails and why, with the line and a quote. Do not suggest edits in the subagent's output.
-- [ ] In a second subagent, address the issues the reviewer identified.
-- [ ] Re-evaluate after fixing, and flag any further issues to the user for their review. Repeated LLM editing risks entering attractor states, so asking the user to take over mitigates that risk.
+1. **Compose.** Read the artifact and the available review skills, and assemble the set of reviewers that apply. The base four-criterion reviewer (below) is always in the set. Add a specialist when the artifact matches that specialist's `description` — for example `developer:clean-comments-review` when reviewing code with DocBlocks or inline comments, or `domain:domain-review` when a domain model, its objects, or its ubiquitous language changed. Selection is model-decided from the available skills, not a maintained table, so a newly installed specialist is composed in with no edit here.
+2. **Dispatch.** Run each composed reviewer in parallel, each in its own subagent with isolated context so the lenses do not cross-contaminate (see `general:dispatching-parallel-agents`). The base reviewer writes its rubric from the criteria below and evaluates against it. A specialist produces its own critique document; that document is its findings — do not prompt a specialist to write a rubric first. Below six reviewers, dispatch with static parallel `Agent` calls. At six or more, use a dynamic workflow that pipelines the assembled list.
+3. **Converge (mandatory).** One subagent collects every reviewer's findings and performs three steps in order: **verify** each candidate against the actual artifact (read the code, trace the claim) and drop what does not hold; **deduplicate** findings that more than one reviewer raised; **severity-rank** the survivors. The fix pass receives a verified, deduplicated, ranked list, never a flat dump.
+4. **Fix.** A separate subagent addresses the ranked findings. Evaluation never emits edits; fixing is always a different agent.
+5. **Re-evaluate** and flag any remaining issues to the user. Repeated LLM editing risks attractor states, so handing the residue to the user mitigates that.
 
-## Review Criteria
+When the environment has no tools or file system (a self-contained review prompt), perform this inline: build the rubric from the base criteria, evaluate the artifact against it, list the verified findings ranked by severity, and stop short of editing.
+
+## Base Reviewer
+
+The four criteria below are the always-present member of every composed set. They are the floor of every review, regardless of which specialists compose in. The base rubric lifts each criterion's diagnostic into concrete checks.
 
 - **Correctness** ensures claims match the sources, citations, and evidence available. Flag fabricated or unsupported assertions for review. Treat every concrete statement as a claim to verify rather than trust: file paths, identifiers, environment variables, API and function signatures, URLs, version numbers, and quoted values are the details most often invented to look plausible. Trace each load-bearing statement to its source by reading the code, running the command, or citing the document, and flag any that cannot be traced. A confident tone is not evidence. Words like "should" or "probably" often stand in for a check that was never run.
 - **Completeness** ensures the work fully addresses what was requested. Nothing important is missing or glossed over. Check both directions. Map each requirement in the request to the place the work satisfies it, and flag any requirement with no matching artifact. Flag the reverse too. Work that answers no requirement is unrequested scope. Gaps often hide in unhappy paths: error handling, empty or boundary inputs, and failure modes the happy path skips. A gap acknowledged and deferred with a note is acceptable. A gap left silent is not.
@@ -21,8 +26,11 @@ Review work before declaring it done by building a task-specific rubric, evaluat
 
 ## Common Mistakes
 
-- Skipping the rubric and reviewing without any criteria.
-- Combining evaluation and editing into one pass. These should happen in separate agents, to reduce context bloat.
+- Skipping convergence: handing the fix pass a flat, unverified, unranked list. Verify against the artifact, deduplicate, and severity-rank first.
+- Prompting a specialist to write a rubric instead of consuming its critique. The specialist's critique document is already its findings.
+- Treating the review as a single rubric instead of a composed set, so orthogonal concerns get a thinner pass than a dedicated reviewer would give them.
+- Dropping the base reviewer from the set, so the artifact ships without the four-criterion floor.
+- Running a dynamic workflow below the six-reviewer threshold where static `Agent` calls would do.
+- Combining evaluation and editing into one pass. These happen in separate agents, to reduce context bloat.
 - Claiming the task is complete before the review cycle finishes.
 - Treating a punctuation mark as the defect. Swapping a flagged em-dash for a colon or semicolon papers over the same weak structure. Restructure the sentence instead.
-
