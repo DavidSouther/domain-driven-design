@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # CI driver for the developer-plugin skill-eval harness.
 #
-# Drives the full operator journey across three suites (discovery, invocation,
-# baseline):
+# Drives the full operator journey across five suites: the discovery,
+# invocation, and baseline matrices, plus the long-loop / long-loop-baseline
+# pair (a single-conversation case for the long-loop mode of ailly, which is not
+# a matrix skill):
 #   0. vendor.py        -- copy the live AGENTS.md and regenerate the disclosure
 #      table so the SCORED text is current HEAD.
 #   1. ailly assemble <suite>     -- always runs; asserts N conversation files
@@ -12,8 +14,9 @@
 #      ANTHROPIC_API_KEY nor a project .env the script hard-fails: there is no
 #      assemble-only success path, so the falsification gate always runs.
 #   3. ailly eval <suite> --over runs/<id>/ -- asserts the per-run report landed.
-#   4. ailly report ...           -- single-run discovery summary, then the
-#      baseline-vs-invocation comparison whose four buckets the gate reads.
+#   4. ailly report ...           -- single-run discovery summary, then two
+#      comparisons (baseline-vs-invocation, long-loop-baseline-vs-long-loop)
+#      whose four buckets the falsification gate reads.
 #
 # The `ailly` binary is resolved through AILLY_BIN (default `ailly`); a source
 # checkout can point it at a built binary:
@@ -49,9 +52,11 @@ echo "OK: baseline-prefix files (AGENTS.md, profile.md) leak no developer:<skill
 
 expected_count() {
   case "$1" in
-    discovery)  echo 9 ;;
-    invocation) echo 9 ;;
-    baseline)   echo 9 ;;
+    discovery)           echo 9 ;;
+    invocation)          echo 9 ;;
+    baseline)            echo 9 ;;
+    long-loop)           echo 1 ;;
+    long-loop-baseline)  echo 1 ;;
     *) echo "FAIL: unknown suite $1" >&2; exit 1 ;;
   esac
 }
@@ -60,20 +65,26 @@ expected_count() {
 discovery_run_dir=""
 invocation_run_dir=""
 baseline_run_dir=""
+long_loop_run_dir=""
+long_loop_baseline_run_dir=""
 
 set_run_dir() {
   case "$1" in
-    discovery)  discovery_run_dir="$2" ;;
-    invocation) invocation_run_dir="$2" ;;
-    baseline)   baseline_run_dir="$2" ;;
+    discovery)           discovery_run_dir="$2" ;;
+    invocation)          invocation_run_dir="$2" ;;
+    baseline)            baseline_run_dir="$2" ;;
+    long-loop)           long_loop_run_dir="$2" ;;
+    long-loop-baseline)  long_loop_baseline_run_dir="$2" ;;
   esac
 }
 
 get_run_dir() {
   case "$1" in
-    discovery)  printf '%s\n' "${discovery_run_dir}" ;;
-    invocation) printf '%s\n' "${invocation_run_dir}" ;;
-    baseline)   printf '%s\n' "${baseline_run_dir}" ;;
+    discovery)           printf '%s\n' "${discovery_run_dir}" ;;
+    invocation)          printf '%s\n' "${invocation_run_dir}" ;;
+    baseline)            printf '%s\n' "${baseline_run_dir}" ;;
+    long-loop)           printf '%s\n' "${long_loop_run_dir}" ;;
+    long-loop-baseline)  printf '%s\n' "${long_loop_baseline_run_dir}" ;;
   esac
 }
 
@@ -106,13 +117,18 @@ assemble_suite() {
   set_run_dir "${suite}" "$(dirname "${files[0]}")"
 }
 
-# --- CUJ 1: assemble (all three suites) -------------------------------------
+# --- CUJ 1: assemble (all five suites) --------------------------------------
 
 assemble_suite discovery
 assemble_suite baseline
 assemble_suite invocation
+# long-loop is a single-conversation pair (a mode of ailly, not a matrix skill).
+# Assembled after baseline so the `*-baseline` glob never picks up the
+# `*-long-loop-baseline` dir.
+assemble_suite long-loop-baseline
+assemble_suite long-loop
 
-# --- CUJ 2: run (all three suites, gated on credentials) --------------------
+# --- CUJ 2: run (all five suites, gated on credentials) ---------------------
 
 if [[ -z "${ANTHROPIC_API_KEY:-}" && ! -f "${project_dir}/.env" ]]; then
   echo "FAIL: ailly run requires a live model. Set ANTHROPIC_API_KEY in the shell or drop a ${project_dir#"${repo_root}/"}/.env file." >&2
@@ -173,8 +189,10 @@ run_suite() {
 run_suite discovery
 run_suite baseline
 run_suite invocation
+run_suite long-loop-baseline
+run_suite long-loop
 
-# --- CUJ 3: eval (all three suites) -----------------------------------------
+# --- CUJ 3: eval (all five suites) ------------------------------------------
 
 eval_suite() {
   local suite="$1"
@@ -216,6 +234,8 @@ PY
 eval_suite discovery
 eval_suite baseline
 eval_suite invocation
+eval_suite long-loop-baseline
+eval_suite long-loop
 
 # --- CUJ 4: report ----------------------------------------------------------
 
@@ -233,13 +253,17 @@ report_discovery() {
   echo "OK: ailly report wrote ${report_md#"${repo_root}/"}"
 }
 
-# Comparison report: baseline (arm-a) vs invocation (arm-b).
+# Comparison report: arm-a (no skill) vs arm-b (skill loaded). Reused for both
+# the baseline-vs-invocation matrix and the long-loop pair, so the falsification
+# gate (improved>0, regressed==0) is defined once.
+#   report_comparison <arm_a_run_dir> <arm_b_run_dir> <label_a> <label_b>
 report_comparison() {
+  local arm_a_dir="$1" arm_b_dir="$2" label_a="$3" label_b="$4"
   local run_id_a run_id_b
-  run_id_a="$(basename "${baseline_run_dir}")"
-  run_id_b="$(basename "${invocation_run_dir}")"
+  run_id_a="$(basename "${arm_a_dir}")"
+  run_id_b="$(basename "${arm_b_dir}")"
   "${AILLY_BIN}" -p "${project_dir}" report "${run_id_a}" "${run_id_b}" \
-    --label-a baseline --label-b invocation
+    --label-a "${label_a}" --label-b "${label_b}"
 
   local stem="${run_id_a}-vs-${run_id_b}"
   local comparison_json="${project_dir}/evals/reports/${stem}.json"
@@ -293,4 +317,5 @@ PY
 }
 
 report_discovery
-report_comparison
+report_comparison "${baseline_run_dir}" "${invocation_run_dir}" baseline invocation
+report_comparison "${long_loop_baseline_run_dir}" "${long_loop_run_dir}" long-loop-baseline long-loop
