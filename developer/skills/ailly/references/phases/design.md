@@ -46,7 +46,7 @@ The design phase produces **one executable feature test** that encodes the prima
 
 - Write the user story in plain language first (Given/When/Then or a short narrative).
 - Write exactly one executable test that runs end-to-end through that story, at the integration/e2e level, asserting the user-story outcome directly. It fails at the start because no implementation exists.
-- Use the language and test framework established by `developer:initialize`, and place the test in the project test tree at that conventional location.
+- Use the language and test framework established by the initialize reference (`references/initialize.md`), and place the test in the project test tree at that conventional location.
 - Record the test's path in `design.md` so the plan phase can find it.
 
 For complex UI features, Page Object abstractions are appropriate; for simple features, keep the test direct and flat. One test, not a suite of unit tests.
@@ -57,13 +57,12 @@ Create a task for each of these items and complete them in order:
 
 1. **Explore project context** checking domain model, docs, files, and recent commits, plus the cleared `research.md`.
 2. **Research additional context** using `research` skills only if a gap remains after `research.md`.
-3. **Offer visual companion** (if the topic will involve visual questions) separately from clarifying questions, via `developer:visual-design`.
-4. **Ask clarifying questions** one at a time, to understand purpose, constraints, success criteria, and other salient details.
-5. **Propose 2-3 approaches** with trade-offs and your recommendation.
-6. **Write the design doc draft** directly, scaling each section to its complexity, saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`. Write the whole draft; do not read it out section by section for approval first.
-7. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
-8. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
-9. **Collaborate on the written draft** — refer the user to the design and the test, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
+3. **Ask clarifying questions** one at a time, to understand purpose, constraints, success criteria, and other salient details.
+4. **Propose 2-3 approaches** with trade-offs and your recommendation.
+5. **Write the design doc draft** directly, scaling each section to its complexity, saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`. Write the whole draft; do not read it out section by section for approval first.
+6. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
+7. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
+8. **Collaborate on the written draft** — refer the user to the design and the test, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
 
 ## Process Flow
 
@@ -71,8 +70,6 @@ Create a task for each of these items and complete them in order:
 digraph brainstorming {
     explore [shape=box label="Explore project context\n(+ cleared research.md)"];
     research [shape=box label="Research gap (if any)"];
-    visual_q [shape=diamond label="Visual questions ahead?"];
-    visual [shape=box label="Offer Visual Companion\n(own message, no other content)"];
     clarify [shape=box label="Ask clarifying questions"];
     propose [shape=box label="Propose 2-3 approaches"];
     write [shape=box label="Write design doc draft"];
@@ -82,10 +79,7 @@ digraph brainstorming {
     done [shape=doublecircle label="Run developer:ailly (plan phase)\nin a new session"];
 
     explore -> research;
-    research -> visual_q;
-    visual_q -> visual [label="yes"];
-    visual_q -> clarify [label="no"];
-    visual -> clarify;
+    research -> clarify;
     clarify -> propose;
     propose -> write;
     write -> test;

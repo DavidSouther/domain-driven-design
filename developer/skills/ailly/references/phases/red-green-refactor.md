@@ -27,11 +27,11 @@ digraph rgr {
     run_checks [shape=box label="Run check + tests"];
     all_pass [shape=diamond label="All pass?"];
     same_error [shape=diamond label="Same error after fix?"];
-    invoke_thinking [shape=box label="Invoke developer:thinking"];
+    invoke_thinking [shape=box label="Consult references/thinking.md"];
     tried_thinking [shape=diamond label="Already tried thinking for this error?"];
     abort [shape=doublecircle label="ABORT"];
     commit [shape=box label="Commit"];
-    refactor [shape=box label="developer:refactor"];
+    refactor [shape=box label="references/refactor.md"];
     done [shape=doublecircle label="Done"];
 
     plan_step -> write_sigs;
@@ -86,7 +86,7 @@ Replace stub bodies with real code. Run check, then run tests. Repeat until all 
 
 ## Thinking Trigger
 
-Invoke `developer:thinking` when:
+Consult `references/thinking.md` (as a subagent) when:
 - The same error (or substantially the same) appears after a change was intended to fix it.
 - An error appears that is unrelated to the code added or changed in this step
 
@@ -97,7 +97,7 @@ Pass to the thinking subagent:
 
 ## Loop Abort
 
-If `developer:thinking` has already been invoked for the current error and the same or equivalent error reappears after following its plan, do **not** invoke `developer:thinking` again. Stop immediately and report:
+If `references/thinking.md` has already been consulted for the current error and the same or equivalent error reappears after following its plan, do **not** consult it again. Stop immediately and report:
 
 > "Stuck on the same error after thinking. Error: `<error>`. Thinking doc at `.ailly/developer/YYYY-MM-DD-A-<topic>/thinking/<problem>.md`. Suggestion: review the current diff (`git diff`) or restore the working directory (`git restore .`) and try again."
 
@@ -108,5 +108,5 @@ Do not loop. Do not try a different approach on your own. Abort and report.
 When all tests are green:
 1. `git add` only the files changed in this step.
 2. Commit with a message describing what the step implemented.
-3. Invoke `developer:refactor`.
+3. Consult `references/refactor.md`.
 4. Commit with a message describing the refactorings.

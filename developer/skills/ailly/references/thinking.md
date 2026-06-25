@@ -1,15 +1,14 @@
----
-name: thinking
-description: Use when facing a compiler error, failing test, invalid lint, or other "red" response during coding implementation.
----
+# Thinking
 
-# developer:thinking
+> Coordinator reference loaded by `developer:ailly` during the Build phase when an
+> error recurs after a fix. Invoked as a subagent; there is no standalone
+> `developer:thinking` skill.
 
 ## Overview
 
 Fresh-context subagent for stuck moments during the Build phase (red-green-refactor). Always runs as a subagent. Investigates the problem, produces a concrete next-steps plan, and returns control without modifying any files.
 
-**This skill MUST be invoked as a subagent** via the Agent tool. It does not run inline.
+**This reference MUST be invoked as a subagent** via the Agent tool. It does not run inline.
 
 **Hard constraints:**
 - Do NOT edit any files

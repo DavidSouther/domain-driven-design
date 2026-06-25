@@ -45,7 +45,7 @@ A worked entry, taken from this session's own `research.md` (entry 1, "Where do 
 > `project-cycle.md`), and the contract, recording format, and gate mapping
 > together exceed a section's worth and would bloat SKILL.md.
 
-The cleanup phase already extracts deferred decisions from `design.md` into `TASKS.md` (or the configured tracker, when `developer:using-program-management` is wired), so the in-place block feeds that existing path. A separate decision log would split the audit trail.
+The cleanup phase already extracts deferred decisions from `design.md` into `TASKS.md` (or the configured tracker, when the program-management using reference `developer/skills/ailly/references/program-management/using.md` is wired), so the in-place block feeds that existing path. A separate decision log would split the audit trail.
 
 ## 4. The escalation rule (three concrete triggers)
 

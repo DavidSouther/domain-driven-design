@@ -2,15 +2,14 @@ name: long-loop
 model: claude-sonnet-4-6
 
 # Long-loop is a MODE of `developer:ailly`, not a skill of its own, so it cannot
-# ride the invocation matrix (which loads exactly one `../skills/<name>/SKILL.md`
-# body per case). Its context is the coordinator skill plus the mode's reference
-# doc, which the SKILL.md "Long-loop Mode" section points to for the reviewer
-# contract and the recording format the checker asserts. Single conversation, no
-# matrix. The baseline arm (long-loop-baseline.yaml) drops both bodies.
+# ride the invocation matrix (which loads exactly one body per case). Its context is
+# the coordinator skill (which is also the bootstrap post-consolidation) plus the
+# mode's reference doc, which the SKILL.md "Long-loop Mode" section points to for the
+# reviewer contract and the recording format the checker asserts. Single conversation,
+# no matrix. The baseline arm (long-loop-baseline.yaml) drops both bodies.
 prefix:
   - { kind: file,     path: context/AGENTS.md,                       cache: true }
   - { kind: file,     path: profile.md,                              cache: true }
-  - { kind: external, path: ../skills/using-developer/SKILL.md,      cache: true }
   - { kind: external, path: ../skills/ailly/SKILL.md,                cache: true }
   - { kind: external, path: ../references/long-loop.md,              cache: true }
 

@@ -1,13 +1,13 @@
----
-name: configuring-program-management
-description: Use when configuring a project's program-management tracking. Configuration records the team's issue-tracker, documentation-systems, term-mappings, and the phase-representation strategy as a discoverable contract in DEVELOPMENT.md. It then smoke-tests that the tracker answers. Applies only during project initialization, or when configuring or revising program-management wiring. Never used inside a development session.
----
-
 # Configuring Program Management
+
+> Coordinator reference loaded by `developer:ailly` for the **one-time** tracker
+> setup. The bootstrap-vs-per-use partner is the using reference
+> (`references/program-management/using.md`), which runs every session. There is
+> no standalone `developer:configuring-program-management` skill.
 
 ## Overview
 
-This skill creates the development details that `developer:using-program-management` checks when performing project management tasks. Development produces three kinds of artifact — **tasks** (short-lived work items that belong in the team's issue tracker), **docs** (durable research/design/plan artifacts that belong in the team's document system on acceptance), and **notes** (in-flight working files that stay local in `.ailly/developer/`). This skill configures the two *optional* homes: the active tracker for tasks and the doc-system target for docs. The notes tier always uses local files (`./ailly` folder) and only needs configuration to override that default location.
+This reference creates the development details that the [using reference](using.md) checks when performing project management tasks. Development produces three kinds of artifact — **tasks** (short-lived work items that belong in the team's issue tracker), **docs** (durable research/design/plan artifacts that belong in the team's document system on acceptance), and **notes** (in-flight working files that stay local in `.ailly/developer/`). This reference configures the two *optional* homes: the active tracker for tasks and the doc-system target for docs. The notes tier always uses local files (`./ailly` folder) and only needs configuration to override that default location.
 
 These details provide a natural language bridge between the development teams' tools and process and Ailly's internal workflows. Ailly does not build or vendor a tracker; she uses the MCP servers already reachable through the internal sources setup reference (`research:using-research`, `references/configuring/internal.md`). This skill probes each tracker and document-system MCP, has the user pick one active tracker, records the details in `DEVELOPMENT.md`, and smoke-tests that the tracker answers.
 
@@ -17,15 +17,15 @@ Re-running on a configured project confirms the contract or detects that surface
 
 **Use when:**
 
-- Standing up a fresh checkout for the first time and `developer:using-program-management` has no tracker to call.
+- Standing up a fresh checkout for the first time and the [using reference](using.md) has no tracker to call.
 - Adding or switching the active tracker, wiring a document system, completing an OAuth/SSO handshake, or recording the team's term mapping.
 - Re-verifying after a re-verification trigger (see below) fires.
 
-**Do NOT use** inside a development session. The per-session partner is [`developer:using-program-management`](../using-program-management/SKILL.md); tracker detection, MCP install, auth handshakes, and recording the term mapping happen here, once per project — not at a per-session call site.
+**Do NOT use** inside a development session. The per-session partner is the [using reference](using.md); tracker detection, MCP install, auth handshakes, and recording the term mapping happen here, once per project — not at a per-session call site.
 
 ## Details (published to `DEVELOPMENT.md`)
 
-The details lives in `DEVELOPMENT.md` **only** — a single home that is both human-facing and agent-readable. After `configuring-program-management` has run, `developer:using-program-management` may assume `DEVELOPMENT.md` contains a `## Program Management` section naming:
+The details lives in `DEVELOPMENT.md` **only** — a single home that is both human-facing and agent-readable. After the configuring reference has run, the using reference may assume `DEVELOPMENT.md` contains a `## Program Management` section naming:
 
 - **Active tracker (tasks home):** exactly one value that uniquely identifies a project management MCP. Known trackers are `{ linear, jira, github, notion, none }`, resolved at configure time even when several MCPs authenticate. When unset or `none`, the task tier degrades to `TASKS.md`.
 - **Term mapping:** the team's outward nouns for each Ailly tier.
@@ -62,7 +62,7 @@ The practice skill treats Not-Available as a routing signal, not an error.
 
 ## Configure Checklist
 
-Walk the checklist top-to-bottom. Each item probes the source's MCP through the [internal sources setup reference](../../../research/skills/using-research/references/configuring/internal.md) contract, then records its line and smoke-tests it. **Do not re-teach MCP install or OAuth** — cite that internal setup reference for transport and auth. Record in (or update) `DEVELOPMENT.md`; never recreate it.
+Walk the checklist top-to-bottom. Each item probes the source's MCP through the [internal sources setup reference](../../../../../research/skills/using-research/references/configuring/internal.md) contract, then records its line and smoke-tests it. **Do not re-teach MCP install or OAuth** — cite that internal setup reference for transport and auth. Record in (or update) `DEVELOPMENT.md`; never recreate it.
 
 **Default**
 
@@ -88,10 +88,10 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 - An API key or PAT rotates (GitHub `GH_TOKEN`, any tracker token).
 - The team switches trackers or adds a document system that should sit in the contract.
 - A label or noun is renamed, so the recorded term mapping no longer resolves.
-- `developer:using-program-management` reports drift: a tracker returned a shape the practice skill did not expect, or a smoke-test that previously passed now fails.
+- The [using reference](using.md) reports drift: a tracker returned a shape the practice reference did not expect, or a smoke-test that previously passed now fails.
 
 ## Composes With
 
-- **[`developer:using-program-management`](../using-program-management/SKILL.md)** — the per-session partner. Wiring publishes the contract; practice consumes it.
-- **[the internal sources setup reference](../../../research/skills/using-research/references/configuring/internal.md)** (`research:using-research`, `references/configuring/internal.md`) — owns the MCP transport and OAuth/SSO handshakes for the same tracker MCPs.  Cite it for install and auth; do not re-teach them here.
-- **`developer:ailly`** — the coordinator reads this contract from `DEVELOPMENT.md` to decide whether to defer task I/O to the practice skill.
+- **[the using reference](using.md)** — the per-session partner. Wiring publishes the contract; practice consumes it.
+- **[the internal sources setup reference](../../../../../research/skills/using-research/references/configuring/internal.md)** (`research:using-research`, `references/configuring/internal.md`) — owns the MCP transport and OAuth/SSO handshakes for the same tracker MCPs.  Cite it for install and auth; do not re-teach them here.
+- **`developer:ailly`** — the coordinator reads this contract from `DEVELOPMENT.md` to decide whether to defer task I/O to the practice reference.

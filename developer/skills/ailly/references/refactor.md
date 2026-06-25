@@ -1,9 +1,9 @@
----
-name: refactor
-description: Use only when code is currently green (passing static checks and unit tests) to improve the codebase before finalizing a development task.
----
+# Refactor
 
-# developer:refactor
+> Coordinator reference loaded by `developer:ailly` after a Build-phase step is
+> green, to improve the code before finishing. There is no standalone
+> `developer:refactor` skill; it is reached from the Build phase and the cleanup
+> phase.
 
 ## Overview
 
@@ -79,7 +79,7 @@ digraph refactor {
     pass [shape=diamond label="Pass?"];
     fix_causes_error [shape=diamond label="Fix attempt causes same or new error?"];
     tried_thinking [shape=diamond label="Already tried thinking for this error?"];
-    invoke_thinking [shape=box label="Invoke developer:thinking"];
+    invoke_thinking [shape=box label="Consult references/thinking.md"];
     abort [shape=doublecircle label="ABORT"];
     fix_error [shape=box label="Fix the error"];
     more_smells [shape=diamond label="More smells?"];
@@ -108,9 +108,9 @@ digraph refactor {
 
 ## Thinking Trigger
 
-Invoke `developer:thinking` when a refactoring causes a failure and a fix attempt produces the same or a new error. Pass to the subagent: the exact error message, the refactoring applied, and the smell being addressed.
+Consult `references/thinking.md` (as a subagent) when a refactoring causes a failure and a fix attempt produces the same or a new error. Pass to the subagent: the exact error message, the refactoring applied, and the smell being addressed.
 
-If `developer:thinking` has already been invoked for this error and the same error reappears after following its plan, do **not** invoke it again! Instead, revert the changes and mark this refactoring as deferred.
+If `references/thinking.md` has already been consulted for this error and the same error reappears after following its plan, do **not** consult it again! Instead, revert the changes and mark this refactoring as deferred.
 
 ## Deferred Smells
 

@@ -126,7 +126,7 @@ The two existing examples in this repository are the working models the meta-ski
 | Cross-reference | "When NOT to use" names `emitting-logs` as the call-site partner. | "When NOT to use" names `configuring-logging` as the setup home. |
 | Re-verify triggers | Library upgrade, environment change, drift. | None; defer to the partner. |
 
-The developer-plugin pair (`developer:initialize` ↔ `developer:red-green-refactor`) is the second exemplar: a project-scaffolding wiring skill and a per-step TDD-cycle practice skill. The cadence asymmetry is the same, the role names map cleanly, and the contract (a green test runner, a hook layout, a clean working tree) is the harness `red-green-refactor` consumes every cycle. A reader who has internalized the logging pair can read the developer pair as the same shape in a different domain.
+The developer-plugin program-management pair is the second exemplar: a once-per-project tracker-wiring half and an every-session task-I/O half, both reached through the `developer:ailly` coordinator as references (`references/program-management/configuring.md` ↔ `references/program-management/using.md`). The cadence asymmetry is the same, the role names map cleanly, and the contract (the `## Program Management` section the configuring half publishes to `DEVELOPMENT.md`) is what the using half consumes every session. A reader who has internalized the logging pair can read the developer pair as the same shape in a different domain.
 
 ## Quick Reference
 

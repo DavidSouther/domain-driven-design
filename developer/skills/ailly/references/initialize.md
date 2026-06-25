@@ -1,15 +1,14 @@
----
-name: initialize
-description: Use when starting a new project or setting up a language environment — validates and scaffolds project layout, tooling, and development hooks
----
+# Initialize
 
-# developer:initialize
+> Coordinator reference loaded by `developer:ailly` when setting up a new project
+> or language environment. There is no standalone `developer:initialize` skill; the
+> coordinator and the tool-failure reference route here for local environment fixes.
 
 ## Overview
 
 Prepares a project folder for development using language-agnostic orchestration with language-specific details in reference files. Validates existing layout before scaffolding.
 
-**Announce at start:** "Using developer:initialize to set up the project."
+**Announce at start:** "Using the developer:ailly initialize reference to set up the project."
 
 ## Behavior
 
@@ -24,10 +23,10 @@ Prepares a project folder for development using language-agnostic orchestration 
 
 | Language/Toolchain | Reference file |
 |---|---|
-| Rust | `developer/skills/initialize/references/rust.md` |
-| Python | `developer/skills/initialize/references/python.md` |
-| TypeScript | `developer/skills/initialize/references/typescript.md` |
-| Mise monorepo | `developer/skills/initialize/references/mise.md` |
+| Rust | `developer/skills/ailly/references/initialize-languages/rust.md` |
+| Python | `developer/skills/ailly/references/initialize-languages/python.md` |
+| TypeScript | `developer/skills/ailly/references/initialize-languages/typescript.md` |
+| Mise monorepo | `developer/skills/ailly/references/initialize-languages/mise.md` |
 
 If the target language is not in this table, ask the user which toolchain to use as the basis and adapt the closest reference file.
 

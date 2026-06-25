@@ -1,23 +1,24 @@
----
-name: using-program-management
-description: Use when reading the next task or writing work back to the team's program-management system during a development session, by selecting the next task, creating and labeling tasks, linking parent/child, recording deferred work, and replicating long-lived docs, following the contract recorded by configuring-program-management and degrading to TASKS.md when no tracker is configured. Applies every development session, never to set up the wiring.
----
-
 # Using Program Management
+
+> Coordinator reference loaded by `developer:ailly` for **per-session** task I/O
+> when a tracker is configured. The bootstrap-vs-per-use partner is the
+> configuring reference (`references/program-management/configuring.md`), which
+> sets up the wiring once. There is no standalone `developer:using-program-management`
+> skill.
 
 ## Overview
 
-The per-session partner for [`developer:configuring-program-management`](../configuring-program-management/SKILL.md).  It reads the contract that skill recorded in `DEVELOPMENT.md`, selects the next task from the configured tracker, creates and labels tasks, links parent/child, records phase progress, and writes deferred work back. On Project acceptance it replicates long-lived notes to the document system as docs.
+The per-session partner of the [configuring reference](configuring.md).  It reads the contract that reference recorded in `DEVELOPMENT.md`, selects the next task from the configured tracker, creates and labels tasks, links parent/child, records phase progress, and writes deferred work back. On Project acceptance it replicates long-lived notes to the document system as docs.
 
 Three artifact types are defined: **notes** (always-local working files in `.ailly/developer/`), **tasks** (the configured tracker; fallback `TASKS.md`), and **docs** (the configured document system; Project-shape only). The tracker and docs layer on top of the notes floor only when configured, and degrade independently to `TASKS.md` and local notes when not.
 
-Setup, MCP install, OAuth/SSO handshakes, and recording the term mapping belong to `developer:configuring-program-management`. This skill consumes the contract that skill publishes; it never re-teaches the wiring.
+Setup, MCP install, OAuth/SSO handshakes, and recording the term mapping belong to the [configuring reference](configuring.md). This reference consumes the contract that reference publishes; it never re-teaches the wiring.
 
 ## When to Use / When NOT to Use
 
 **Use when:** during a development session you need to read the next task, create or label a task, link it to its parent, record phase progress, write deferred work back, or publish an accepted Project's docs.
 
-**Do NOT use** for setup. Detecting trackers, installing an MCP, completing OAuth, or recording the term mapping is one-time wiring → [`developer:configuring-program-management`](../configuring-program-management/SKILL.md).
+**Do NOT use** for setup. Detecting trackers, installing an MCP, completing OAuth, or recording the term mapping is one-time wiring → the [configuring reference](configuring.md).
 
 ## Practice Read/Write Rules
 
@@ -34,7 +35,7 @@ Read the three types. The notes tier is always active; the task and doc tiers la
 
 ## Capability Routing
 
-The capabilities — their inputs, returns, and conditions — are the capability table published by [`developer:configuring-program-management`](../configuring-program-management/SKILL.md).  Read that table for the schema; this section covers only how to route against it. Every capability is keyed by the active tracker's MCP and is conditional on that MCP being authenticated.
+The capabilities — their inputs, returns, and conditions — are the capability table published by the [configuring reference](configuring.md).  Read that table for the schema; this section covers only how to route against it. Every capability is keyed by the active tracker's MCP and is conditional on that MCP being authenticated.
 
 MCP capabilities are asymmetric. First-class parent/child linking exists only in GitHub (`sub_issue_write`); dedicated status transitions exist only in Jira (`transitionJiraIssue`). Where no dedicated tool exists, express both as field writes on the task.
 
@@ -56,7 +57,7 @@ When `DEVELOPMENT.md` has no `## Program Management` section, or its **Active tr
 
 ## Composes With
 
-- **[`developer:configuring-program-management`](../configuring-program-management/SKILL.md)** — the wiring partner. Publishes the contract this skill consumes; owns tracker detection, MCP install, OAuth/SSO, and the term mapping.
+- **[the configuring reference](configuring.md)** — the wiring partner. Publishes the contract this reference consumes; owns tracker detection, MCP install, OAuth/SSO, and the term mapping.
 - **`developer:ailly`** — the coordinator defers next-task selection and deferred-work writing here when a tracker is configured.
-- **The cleanup phase** (`developer:ailly cleanup`, `references/phases/cleanup.md`) — defers deferred-work write-back and Project doc publication here at the end of a topic.
-- **[the internal sources setup reference](../../../research/skills/using-research/references/configuring/internal.md)** (`research:using-research`, `references/configuring/internal.md`) — owns the MCP transport and auth for the same tracker MCPs.
+- **The cleanup phase** (`references/phases/cleanup.md`) — defers deferred-work write-back and Project doc publication here at the end of a topic.
+- **[the internal sources setup reference](../../../../../research/skills/using-research/references/configuring/internal.md)** (`research:using-research`, `references/configuring/internal.md`) — owns the MCP transport and auth for the same tracker MCPs.

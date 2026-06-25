@@ -9,8 +9,9 @@ rather than silently working around a problem.
   compare it to the phase's recommended model, and flag a mismatch explicitly,
   while preserving the deliberate no-gate guarantee (the loop never stalls).
 - fail-if-no-tools: when a declared project tool fails, be adamant (do not silently
-  substitute another tool); first try local remediation via `developer:initialize`
-  (e.g. `mise trust` / `npm install`), then escalate to the user with what failed,
+  substitute another tool); first try local remediation via the initialize reference
+  (skills/ailly/references/initialize.md) (e.g. `mise trust` / `npm install`), then
+  escalate to the user with what failed,
   a suggested remediation, and why it is correct; retry after remediation/permission.
 
 Like test_model_per_phase.py this is a contract check on the source of truth (the
@@ -62,7 +63,7 @@ def main() -> int:
     if "initialize" not in tool_low:
         return fail(
             "G2 local remediation: tool-failure reference must direct a check of "
-            "`developer:initialize` for a local fix before escalating"
+            "the initialize reference for a local fix before escalating"
         )
     if not any(t in tool_low for t in ("mise", "npm", "install")):
         return fail(
@@ -147,8 +148,9 @@ def main() -> int:
     # harness allows, else `/model`. (test_model_per_phase.py covers the model name,
     # qualifier, and reference pointer; here we lock the harness-first/fallback shape.)
     announce_re = re.compile(r"\*\*Announce at start:\*\*.*", re.IGNORECASE)
+    phase_ref_dir = DEV / "skills" / "ailly" / "references" / "phases"
     for skill in ("research", "design", "plan", "red-green-refactor"):
-        body = (DEV / "skills" / skill / "SKILL.md").read_text()
+        body = (phase_ref_dir / f"{skill}.md").read_text()
         m = announce_re.search(body)
         line = m.group(0).lower() if m else ""
         if "harness" not in line:

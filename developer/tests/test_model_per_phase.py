@@ -41,8 +41,11 @@ PHASE_ROWS = {
     "Implementation": {"model": "Sonnet 4.6", "qualifiers": ["1m", "1M ctx", "1M context"]},
 }
 
-# Phase skill bodies whose announce lines must defer to the table by provider.
+# Phase reference bodies whose announce lines must defer to the table by provider.
+# Post-consolidation the phases are coordinator references, not standalone skills, so
+# their announce lines live under skills/ailly/references/phases/<phase>.md.
 PHASE_SKILLS = ["research", "design", "plan", "red-green-refactor"]
+PHASE_REF_DIR = DEV / "skills" / "ailly" / "references" / "phases"
 
 # Announce lines must not hardcode any single provider's model name.
 HARDCODED_MODELS = ["Haiku 4.5", "Opus 4.8", "Sonnet 4.6", "o4-mini", "GPT-4.1", "Llama"]
@@ -124,7 +127,7 @@ def main() -> int:
     # selects by the active provider, invites a `/model` switch, and does NOT
     # hardcode any single provider's model name.
     for skill in PHASE_SKILLS:
-        body_path = DEV / "skills" / skill / "SKILL.md"
+        body_path = PHASE_REF_DIR / f"{skill}.md"
         if not body_path.is_file():
             return fail(f"R5 {skill}: {body_path.relative_to(REPO)} not found")
         line = announce_line(body_path.read_text())
