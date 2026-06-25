@@ -1,8 +1,3 @@
----
-name: contracts-and-invariants
-description: Define contracts and invariants for API boundaries, service interfaces, and domain operations. Records output in the bounded context file.
----
-
 # Contracts and Invariants
 
 **Trigger:** Designing any API boundary, service interface, or domain operation signature.
@@ -11,7 +6,7 @@ description: Define contracts and invariants for API boundaries, service interfa
 
 ### Step 1: Check the Glossary
 
-Invoke `ddd:glossary` to ensure all field names, types, and operation names use canonical terms. If `docs/ddd/glossary.md` does not exist, invoke `ddd:glossary` to create it first before proceeding.
+Apply the glossary ability (`references/glossary.md`) to ensure all field names, types, and operation names use canonical terms. If `docs/ddd/glossary.md` does not exist, apply the glossary ability (`references/glossary.md`) to create it first before proceeding.
 
 ### Step 2: Define Contracts
 
@@ -48,6 +43,6 @@ Replace all `<...>` placeholders with actual values. Omit **Transactional note**
 
 ## Notes
 
-- If the bounded context file does not exist, invoke `ddd:domain-model` first.
+- If the bounded context file does not exist, apply the domain-model ability (`references/domain-model.md`) first.
 - All type names and field names must match glossary canonical terms.
-- New entries in context files must be marked **[DRAFT]** until human-approved (see `ddd:using-ddd`).
+- New entries in context files must be marked **[DRAFT]** until human-approved (see the Change Cadence Gate in `using-domain/SKILL.md`).

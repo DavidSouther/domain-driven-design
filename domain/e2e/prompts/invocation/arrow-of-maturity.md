@@ -1,3 +1,3 @@
 Our order service started as a thin layer over the database: the HTTP handlers read and write rows directly, with no domain types. Over the last few months we have added discount rules, tax calculation, and inventory checks, and that logic is now smeared across the handlers and copy-pasted in three places. Persistence is hardcoded to Postgres, and our tests spin up a real database, which makes them slow and flaky. Nothing is in production yet, and there is no scaling pressure — the pain is purely that the code is getting hard to change and test.
 
-Where are we architecturally, and what should we do next? Assess this the way the `domain:arrow-of-maturity` skill prescribes.
+Where are we architecturally, and what should we do next? Assess this the way the arrow-of-maturity ability prescribes.

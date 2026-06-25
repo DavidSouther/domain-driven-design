@@ -1,9 +1,4 @@
----
-name: ubiquitous-language
-description: Develop ubiquitous language for a bounded context. Research candidate terms, categorize questions for domain experts, and populate the glossary.
----
-
-# Ubiquitous Language Development
+# Ubiquitous Language
 
 **Trigger:** When entities, operations, or domain concepts are being named or discovered.
 
@@ -11,7 +6,7 @@ description: Develop ubiquitous language for a bounded context. Research candida
 
 ### Step 1: Check the Glossary First
 
-Invoke `ddd:glossary` before introducing any term. If the term already exists, use the canonical name.
+Apply the glossary ability (`references/glossary.md`) before introducing any term. If the term already exists, use the canonical name.
 
 ### Step 2: Research
 
@@ -41,7 +36,7 @@ When in doubt, use **Ask** rather than **Confirm** — over-confirming is safe; 
 
 ### Step 5: Add to Glossary
 
-For each confirmed term, invoke `ddd:glossary` to add it to `docs/ddd/glossary.md`.
+For each confirmed term, apply the glossary ability (`references/glossary.md`) to add it to `docs/ddd/glossary.md`.
 
 ## Output
 

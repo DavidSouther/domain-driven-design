@@ -1,13 +1,8 @@
----
-name: arrow-of-maturity
-description: Guide architectural stage selection using the Arrow of Maturity. Assesses current stage, identifies the signal that justifies advancing, and recommends the next concrete step.
----
-
 # Arrow of Maturity
 
 **Trigger:** Architecture reviews, adding persistence, scaling discussions, or any time the current architecture creates friction.
 
-For full stage descriptions, see `references/arrow-of-maturity-stages.md`.
+For full stage descriptions, see `../../../references/arrow-of-maturity-stages.md`.
 
 ## Stages
 

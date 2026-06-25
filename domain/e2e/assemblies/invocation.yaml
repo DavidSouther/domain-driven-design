@@ -16,8 +16,10 @@ prefix:
   - { kind: file,   path: ./AGENTS.md,                    cache: true }
   - { kind: file,   path: ./profile.md,                   cache: true }
   - { kind: system, path: ./skills/using-domain/SKILL.md, cache: true }
+  # Post-consolidation: the leaf skills are now references under using-domain. The
+  # per-ability system file is the relocated reference, not a standalone SKILL.md.
   - kind: system
-    path: "./skills/{{ skill }}/SKILL.md"
+    path: "./skills/using-domain/references/{{ skill }}.md"
     cache: true
 
 conversation:

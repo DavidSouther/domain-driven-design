@@ -1,9 +1,4 @@
----
-name: domain-model
-description: Guide domain modeling for a new project, subdomain, or bounded context. Identifies subdomains, draws bounded context boundaries, and classifies each as Core, Generic, or Supporting.
----
-
-# Domain Modeling
+# Domain Model
 
 **Trigger:** Starting a new project, subdomain, or bounded context.
 
@@ -11,7 +6,7 @@ description: Guide domain modeling for a new project, subdomain, or bounded cont
 
 ### Step 1: Check the Glossary
 
-Invoke `ddd:glossary` to review existing terminology. As you discover domain terms in Steps 2–4, validate each against the glossary before finalizing it in Step 5. Do not record a term in `docs/ddd/` until it is either found in the glossary or added to it.
+Apply the glossary ability (`references/glossary.md`) to review existing terminology. As you discover domain terms in Steps 2 through 4, validate each against the glossary before finalizing it in Step 5. Do not record a term in `docs/ddd/` until it is either found in the glossary or added to it.
 
 ### Step 2: Identify Subdomains
 
@@ -37,7 +32,7 @@ Either technique produces candidate subdomains.
 
 ### Step 5: Record the Domain Map
 
-Mark all newly created files as `**[DRAFT]**` at the top until human-approved (see `ddd:using-ddd`). Create or update `docs/ddd/domain-model.md`:
+Mark all newly created files as `**[DRAFT]**` at the top until human-approved (see the Change Cadence Gate in `using-domain/SKILL.md`). Create or update `docs/ddd/domain-model.md`:
 
 ```markdown
 # Domain Model
@@ -68,8 +63,8 @@ Create one file per bounded context at `docs/ddd/contexts/<context-name>.md` (us
 
 ## Constraints
 
-When classifying contexts and placing Core contexts in the implementation plan, consult `references/arrow-of-maturity-stages.md` to understand the current architectural stage and recommend the appropriate starting point.
+When classifying contexts and placing Core contexts in the implementation plan, consult `../../../references/arrow-of-maturity-stages.md` to understand the current architectural stage and recommend the appropriate starting point.
 
 - **Core** domain contexts MUST appear in the implementation plan.
 - **Generic** and **Supporting** contexts MUST be satisfied by existing libraries unless no suitable library exists.
-- All new files under `docs/ddd/` must be marked **[DRAFT]** until human-approved (see `ddd:using-ddd`).
+- All new files under `docs/ddd/` must be marked **[DRAFT]** until human-approved (see the Change Cadence Gate in `using-domain/SKILL.md`).

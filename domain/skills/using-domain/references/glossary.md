@@ -1,9 +1,4 @@
----
-name: glossary
-description: Manage the living DDD glossary. Check before introducing terms, add new entries, resolve synonyms and ambiguity. ALL other DDD skills must invoke this skill before introducing terminology.
----
-
-# Living Glossary
+# Glossary
 
 **Trigger:** Any time a term is undefined, ambiguous, or potentially synonymous with an existing term.
 

@@ -1,46 +1,52 @@
 name: discovery
-# Routing is asserted against the identifier the model actually emits. The
-# discovery prefix loads only using-domain/SKILL.md, whose situation->skill
-# table is written in the `ddd:` prefix, so the model reproduces `ddd:<skill>`;
-# the plugin manifest uses `domain:<skill>`. Positive routing therefore matches
-# either prefix (text_matches), and foil exclusion forbids both spellings
-# (paired text_not_contains), so a case fails on a routing error, never on the
-# prefix-namespace mismatch.
+# Post-consolidation (progressive-disclosure): the five leaf domain skills collapsed
+# into one `domain:using-domain` whose body is the routing surface. The discovery arm
+# loads only that body (see assemblies/discovery.yaml), so each case now asserts the
+# routing ANSWER the body teaches (the bare ability name AND the reference path
+# `references/<name>.md`) instead of the retired `domain:<name>`/`ddd:<name>` skill
+# identifier. Asserting both the name and the path is strictly harder to satisfy by
+# accident than the single identifier, and the baseline arm (no body loaded) cannot
+# emit the path, so the falsification gate stays sharp. Negatives use the path form
+# only: a correct answer legitimately says "this is glossary, NOT ubiquitous-language",
+# so a bare-name negative would false-fail it; the reference path is the unambiguous
+# thing a correct route never emits for the foil.
 cases:
   - name: glossary-vs-ubiquitous-language
     assertions:
-      - { type: text_matches, pattern: "(ddd|domain):glossary" }
-      - { type: text_not_contains, value: "ddd:ubiquitous-language" }
-      - { type: text_not_contains, value: "domain:ubiquitous-language" }
+      - { type: text_contains, value: "glossary" }
+      - { type: text_contains, value: "references/glossary.md" }
+      - { type: text_not_contains, value: "references/ubiquitous-language.md" }
 
   - name: domain-model-trigger
     assertions:
-      - { type: text_matches, pattern: "(ddd|domain):domain-model" }
-      - { type: text_not_contains, value: "ddd:contracts-and-invariants" }
-      - { type: text_not_contains, value: "domain:contracts-and-invariants" }
+      - { type: text_contains, value: "domain-model" }
+      - { type: text_contains, value: "references/domain-model.md" }
+      - { type: text_not_contains, value: "references/contracts-and-invariants.md" }
 
   - name: contracts-and-invariants-trigger
     assertions:
-      - { type: text_matches, pattern: "(ddd|domain):contracts-and-invariants" }
-      - { type: text_not_contains, value: "ddd:domain-model" }
-      - { type: text_not_contains, value: "domain:domain-model" }
+      - { type: text_contains, value: "contracts-and-invariants" }
+      - { type: text_contains, value: "references/contracts-and-invariants.md" }
+      - { type: text_not_contains, value: "references/domain-model.md" }
 
   - name: glossary-gate-trigger
     assertions:
-      - { type: text_matches, pattern: "(ddd|domain):glossary" }
+      - { type: text_contains, value: "glossary" }
+      - { type: text_contains, value: "references/glossary.md" }
       - type: judge
         prompt: |
-          The answer says to invoke the glossary skill FIRST, before any other
-          domain skill, because a new term (`OrderManifest`) is being introduced
-          and the glossary gate must be passed before modelling proceeds. The
-          answer does NOT route directly to the domain-model skill as the first
-          action. Naming the domain-model skill as a later follow-up step that
-          happens after the glossary check is acceptable, as long as the glossary
-          skill is named as the first action. Reject answers that treat the
-          glossary as a secondary or parallel step.
+          The answer says to apply the glossary ability
+          (references/glossary.md) FIRST, before any other domain ability,
+          because a new term (`OrderManifest`) is being introduced and the
+          glossary gate must be passed before modelling proceeds. The answer
+          does NOT route directly to the domain-model ability as the first
+          action. Naming the domain-model ability as a later follow-up step
+          that happens after the glossary check is acceptable, as long as the
+          glossary ability is named as the first action. Reject answers that
+          treat the glossary as a secondary or parallel step.
 
   - name: arrow-of-maturity-trigger
     assertions:
-      - { type: text_matches, pattern: "(ddd|domain):arrow-of-maturity" }
-      - { type: text_not_contains, value: "ddd:domain-model" }
-      - { type: text_not_contains, value: "domain:domain-model" }
+      - { type: text_contains, value: "arrow-of-maturity" }
+      - { type: text_contains, value: "references/arrow-of-maturity.md" }
+      - { type: text_not_contains, value: "references/domain-model.md" }

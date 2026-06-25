@@ -11,4 +11,4 @@ Below is the current state of `docs/ddd/contexts/order-management.md`:
 
 A new operation needs a contract: `place_order(customer_id, line_items)`. It must reject orders with zero line items, reject orders where any line item has zero or negative quantity, and emit `OrderPlaced` on success.
 
-Append the contract block for this operation the way the `domain:contracts-and-invariants` skill prescribes. Produce the full file content as it should look after the append, with the existing content preserved.
+Append the contract block for this operation the way the contracts-and-invariants ability prescribes. Produce the full file content as it should look after the append, with the existing content preserved.
