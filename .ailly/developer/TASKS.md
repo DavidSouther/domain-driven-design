@@ -7,6 +7,17 @@ Merged to `main` via PR (built on `issue_tracking`, feature `943fd6f` + refactor
 - **Confirm the feature test live.** The discovery routing case `program-management-config-vs-use` (`developer/e2e/evals/discovery.yaml`) was never run against a model — no `ailly` binary on PATH and `ANTHROPIC_API_KEY` unset at build time. Run `AILLY_BIN=<binary> bash developer/e2e/ci.sh` (or scope to the discovery suite) with a key/`.env` present, and confirm both skills route correctly (config→`configuring-program-management`, session→`using-program-management`, not swapped, not `initialize`/`ailly`). Until then the feature test is structurally green only.
 - **Deferred from design (not blockers):** invocation-suite coverage for the new pair; per-tracker `references/` split if the practice body grows; widening Note→Doc promotion beyond Project shape; auto per-phase status transitions / subtask-per-plan-step; a standalone `developer:authorization` concern; the `AGENTS.md`/`README.md` one-line pointer to the `DEVELOPMENT.md` contract.
 
+## Follow-ups: per-phase model selection (`2026-06-15-B-model-per-phase`)
+
+Implemented and green (`developer/tests/test_model_per_phase.py` passes): a new `developer/references/model-per-phase.md` reference plus a one-line announce extension in the four primary phase skills (research, design, plan, red-green-refactor). Deferred decisions from the design:
+
+- **Behavior-level e2e coverage.** Whether to later add a case in the e2e invocation harness asserting the model actually emits the recommendation on phase entry. Deferred because the harness is out of scope here, pins a single model, and is nondeterministic. The current feature test is a static contract check over the source files only.
+- **Announce lines for `developer:refactor` and `developer:cleanup`.** Whether the two support phases warrant their own announce-line edits later. For now they inherit the active model and appear in the reference table only for completeness (Cleanup row present; refactor not in scope).
+
+## `research` to use `.ailly`
+
+Research is still putting files in `docs/research`.
+
 ## Follow-ups: `research/e2e/`
 
 The invocation cross-section now covers all ten non-bootstrap research skills. Remaining enhancements (not blockers):

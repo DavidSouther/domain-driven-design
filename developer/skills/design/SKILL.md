@@ -13,7 +13,7 @@ Start by understanding the current project context, then ask questions one at a 
 
 **Trigger:** A cleared `research.md` in the session folder (or a topic clear enough that research added nothing to gather).
 
-**Announce at start:** "Designing a feature to [summary of the prompt]"
+**Announce at start:** "Designing a feature to [summary of the prompt]. Name the recommended model for design from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
 
 ## Anti-Patterns
 
