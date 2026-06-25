@@ -9,7 +9,7 @@ description: Use when configuring a project's program-management tracking. Confi
 
 This skill creates the development details that `developer:using-program-management` checks when performing project management tasks. Development produces three kinds of artifact — **tasks** (short-lived work items that belong in the team's issue tracker), **docs** (durable research/design/plan artifacts that belong in the team's document system on acceptance), and **notes** (in-flight working files that stay local in `.ailly/developer/`). This skill configures the two *optional* homes: the active tracker for tasks and the doc-system target for docs. The notes tier always uses local files (`./ailly` folder) and only needs configuration to override that default location.
 
-These details provide a natural language bridge between the development teams' tools and process and Ailly's internal workflows. Ailly does not build or vendor a tracker; she uses the MCP servers already reachable through `research:configuring-internal`. This skill probes each tracker and document-system MCP, has the user pick one active tracker, records the details in `DEVELOPMENT.md`, and smoke-tests that the tracker answers.
+These details provide a natural language bridge between the development teams' tools and process and Ailly's internal workflows. Ailly does not build or vendor a tracker; she uses the MCP servers already reachable through the internal sources setup reference (`research:using-research`, `references/configuring/internal.md`). This skill probes each tracker and document-system MCP, has the user pick one active tracker, records the details in `DEVELOPMENT.md`, and smoke-tests that the tracker answers.
 
 Re-running on a configured project confirms the contract or detects that surfaces drift — most often an expired token or a renamed label. It never destroys state: it only **records** or **updates** the details, it never recreates them from scratch.
 
@@ -62,7 +62,7 @@ The practice skill treats Not-Available as a routing signal, not an error.
 
 ## Configure Checklist
 
-Walk the checklist top-to-bottom. Each item probes the source's MCP through the [`research:configuring-internal`](../../../research/skills/configuring-internal/SKILL.md) contract, then records its line and smoke-tests it. **Do not re-teach MCP install or OAuth** — cite `research:configuring-internal` for transport and auth. Record in (or update) `DEVELOPMENT.md`; never recreate it.
+Walk the checklist top-to-bottom. Each item probes the source's MCP through the [internal sources setup reference](../../../research/skills/using-research/references/configuring/internal.md) contract, then records its line and smoke-tests it. **Do not re-teach MCP install or OAuth** — cite that internal setup reference for transport and auth. Record in (or update) `DEVELOPMENT.md`; never recreate it.
 
 **Default**
 
@@ -93,5 +93,5 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 ## Composes With
 
 - **[`developer:using-program-management`](../using-program-management/SKILL.md)** — the per-session partner. Wiring publishes the contract; practice consumes it.
-- **[`research:configuring-internal`](../../../research/skills/configuring-internal/SKILL.md)** — owns the MCP transport and OAuth/SSO handshakes for the same tracker MCPs.  Cite it for install and auth; do not re-teach them here.
+- **[the internal sources setup reference](../../../research/skills/using-research/references/configuring/internal.md)** (`research:using-research`, `references/configuring/internal.md`) — owns the MCP transport and OAuth/SSO handshakes for the same tracker MCPs.  Cite it for install and auth; do not re-teach them here.
 - **`developer:ailly`** — the coordinator reads this contract from `DEVELOPMENT.md` to decide whether to defer task I/O to the practice skill.

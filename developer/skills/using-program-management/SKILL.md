@@ -58,5 +58,5 @@ When `DEVELOPMENT.md` has no `## Program Management` section, or its **Active tr
 
 - **[`developer:configuring-program-management`](../configuring-program-management/SKILL.md)** — the wiring partner. Publishes the contract this skill consumes; owns tracker detection, MCP install, OAuth/SSO, and the term mapping.
 - **`developer:ailly`** — the coordinator defers next-task selection and deferred-work writing here when a tracker is configured.
-- **`developer:cleanup`** — defers deferred-work write-back and Project doc publication here at the end of a topic.
-- **[`research:configuring-internal`](../../../research/skills/configuring-internal/SKILL.md)** — owns the MCP transport and auth for the same tracker MCPs.
+- **The cleanup phase** (`developer:ailly cleanup`, `references/phases/cleanup.md`) — defers deferred-work write-back and Project doc publication here at the end of a topic.
+- **[the internal sources setup reference](../../../research/skills/using-research/references/configuring/internal.md)** (`research:using-research`, `references/configuring/internal.md`) — owns the MCP transport and auth for the same tracker MCPs.

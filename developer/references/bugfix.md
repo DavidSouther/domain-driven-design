@@ -1,6 +1,6 @@
 # Bugfix Shape
 
-When the research refine pass sizes a topic as a bug, smaller than a feature or a project, the five-phase lifecycle still runs unchanged. Only the design content and the role of the feature test differ. This reference provides the vocabulary for bugfixes instead of features. `developer:ailly` and `developer:design` consult it when the task is bug-shaped.
+When the research refine pass sizes a topic as a bug, smaller than a feature or a project, the five-phase lifecycle still runs unchanged. Only the design content and the role of the feature test differ. This reference provides the vocabulary for bugfixes instead of features. The coordinator `developer:ailly` and its design phase (`references/phases/design.md`) consult it when the task is bug-shaped.
 
 ## The Three Statements
 

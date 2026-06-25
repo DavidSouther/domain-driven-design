@@ -7,7 +7,7 @@ description: Use when a research question targets an academic paper, preprint, o
 
 ## Overview
 
-Per-query research against the configured papers capability contract. Pick the **capability** the question needs (DOI metadata, OA-PDF retrieval, topic search, citation graph, preprint search, biomedical search, citation-context classification), dispatch to it, write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, marketplace-plugin installs, and SSO handshakes belong in [`research:configuring-papers`](../configuring-papers/SKILL.md); this skill consumes the contract that skill publishes.
+Per-query research against the configured papers capability contract. Pick the **capability** the question needs (DOI metadata, OA-PDF retrieval, topic search, citation graph, preprint search, biomedical search, citation-context classification), dispatch to it, write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, marketplace-plugin installs, and SSO handshakes belong in [the papers setup reference](../using-research/references/configuring/papers.md); this skill consumes the contract that skill publishes.
 
 ## When to use / When NOT to use
 
@@ -23,7 +23,7 @@ Per-query research against the configured papers capability contract. Pick the *
 
 **When NOT to use:**
 
-- To configure papers sources, install an MCP, complete SSO, install a marketplace plugin, or rotate a key. Those belong in [`research:configuring-papers`](../configuring-papers/SKILL.md).
+- To configure papers sources, install an MCP, complete SSO, install a marketplace plugin, or rotate a key. Those belong in [the papers setup reference](../using-research/references/configuring/papers.md).
 - For language reference, library documentation, RFCs, or public web search — use `research:public`.
 - For internal documents (Slack, Confluence, Linear, Notion) — use `research:internal`.
 - For domain-model questions (entities, bounded contexts, ubiquitous language) — use `research:domain`.
@@ -43,7 +43,7 @@ Run the variants in the order that the routing table below dictates. Union the r
 
 ## Capability routing
 
-Capabilities are named in the contract published by [`research:configuring-papers`](../configuring-papers/SKILL.md). The routing table maps question type to the capability that answers it.
+Capabilities are named in the contract published by [the papers setup reference](../using-research/references/configuring/papers.md). The routing table maps question type to the capability that answers it.
 
 | Question intent | Primary capability | Reference |
 |---|---|---|
@@ -98,13 +98,13 @@ Excerpts only; do not stage cached PDFs or full bodies. For passages from licens
 - **Mixing capabilities.** Asking for OA-PDF when the question is about citation graph; asking ArXiv for a published-only paper that never had a preprint. The routing table is the lookup.
 - **Quoting from non-quotable sources.** Wiley snippets are display-only; Scite Smart Citations are proprietary; gated journal full text is non-redistributable. Cite-and-link with the DOI.
 - **Ignoring typed Not-Available.** A conditional capability returning Not-Available (no PubMed plugin, no Wiley SSO, no Scite subscription) is a routing signal, not a failure. Continue with the next capability in the heuristic.
-- **Re-teaching the wiring.** A "first, make sure you have installed the PubMed plugin" preface is wiring leakage. The wiring SKILL owns setup; this skill consumes the contract. If a preface is unavoidable, the contract is incomplete — widen it in [`research:configuring-papers`](../configuring-papers/SKILL.md).
+- **Re-teaching the wiring.** A "first, make sure you have installed the PubMed plugin" preface is wiring leakage. The wiring SKILL owns setup; this skill consumes the contract. If a preface is unavoidable, the contract is incomplete — widen it in [the papers setup reference](../using-research/references/configuring/papers.md).
 - **Hallucinated DOIs.** Plausible-looking DOIs that no source recognizes are common in AI-mediated work. Use the *DOI fan-out* capability when a DOI looks suspect; if no source returns a record, return Not-Available rather than fabricating a citation.
 - **Treating OpenAlex's metering as a hard block.** OpenAlex's $1/day free credit covers most individual research sessions. Above the credit, degrade to Semantic Scholar + Crossref for the topic search; do not silently skip the query.
 
 ## Composes With
 
-- **`research:configuring-papers`** — the wiring partner. Publishes the contract this skill consumes.
+- **the papers setup reference** (`research:using-research`, `references/configuring/papers.md`) — the wiring partner. Publishes the contract this skill consumes.
 - **`research:books`** — sibling practice skill for citable books.
 - **`research/references/jeopardy.md`** — query expansion technique.
 - **`research/references/citations.md`** — IEEE citation format.

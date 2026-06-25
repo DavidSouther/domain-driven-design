@@ -1,0 +1,31 @@
+name: invocation-phases
+model: claude-sonnet-4-6
+
+# Post-consolidation (Feature C): the five lifecycle phases (research, design, plan,
+# red-green-refactor, cleanup) are entered through the `developer:ailly` coordinator by
+# argument and their bodies live as references under the coordinator
+# (`../skills/ailly/references/phases/<phase>.md`), not as standalone SKILL.md bodies.
+# This suite loads the coordinator bootstrap plus exactly one phase reference (the matrix
+# value) — the same body the prior `invocation` suite scored, just at its new reference
+# path. The prompts and checkers are unchanged (prompts/invocation/<phase>.md,
+# evals/scripts/check_<phase>.py), so the invocation gate measures the same phase
+# behaviour against the same baseline arm (baseline-phases.yaml drops the phase body).
+prefix:
+  - { kind: file,   path: context/AGENTS.md,                       cache: true }
+  - { kind: file,   path: profile.md,                              cache: true }
+  - { kind: external, path: ../skills/using-developer/SKILL.md, cache: true }
+  - kind: external
+    path: "../skills/ailly/references/phases/{{ phase }}.md"
+    cache: true
+
+matrix:
+  phase:
+    - research
+    - design
+    - plan
+    - red-green-refactor
+    - cleanup
+
+conversation:
+  - { role: user, path: "prompts/invocation/{{ phase }}.md" }
+  - { role: assistant }

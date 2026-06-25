@@ -7,7 +7,7 @@ description: Use when facing a compiler error, failing test, invalid lint, or ot
 
 ## Overview
 
-Fresh-context subagent for stuck moments during `developer:red-green-refactor`. Always runs as a subagent. Investigates the problem, produces a concrete next-steps plan, and returns control without modifying any files.
+Fresh-context subagent for stuck moments during the Build phase (red-green-refactor). Always runs as a subagent. Investigates the problem, produces a concrete next-steps plan, and returns control without modifying any files.
 
 **This skill MUST be invoked as a subagent** via the Agent tool. It does not run inline.
 
@@ -29,7 +29,7 @@ The invoking skill must pass:
 2. Use `research:` skills to investigate the problem if needed (e.g., API docs, similar patterns in the codebase, error message semantics).
 3. apply the forward-backward method: work backward from the desired green (passing) outcome and forward from the current red (failing) state. See `developer/references/forward_backward.md`. Note: for thinking skills, the map can be part of the file in the `thinking/<problem-slug>.md` file, rather than in the `maps/` directory.
 4. Produce a thinking doc.
-5. Return control to `developer:red-green-refactor` with a pointer to the thinking doc.
+5. Return control to the Build phase (red-green-refactor) with a pointer to the thinking doc.
 
 ## Thinking Doc Format
 

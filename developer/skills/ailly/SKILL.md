@@ -1,15 +1,41 @@
 ---
 name: ailly
-description: Use when starting or resuming software development tasks.
+description: "Use when starting or resuming software development tasks. Session coordinator for the five-phase development loop — research, design, plan, red-green-refactor (build), cleanup — entered by phase argument (`/ailly design ...`). Creates and manages the session folder, enforces the draft gates between phases, runs the phase-entry model and tool-readiness checks, and resumes an existing session at the right phase. Also drives quick-loop, long-loop, bugfix, and project-shape variants."
 ---
 
 # developer:ailly
 
 ## Overview
 
-Session coordinator for a development loop. Creates and manages the session folder, passes it to each skill, enforces draft gates, and determines where to resume when re-entering an existing session.
+Session coordinator for a development loop. Creates and manages the session folder, drives each of the five lifecycle phases, enforces draft gates, and determines where to resume when re-entering an existing session.
+
+The five phases — **research**, **design**, **plan**, **red-green-refactor** (the Build phase), and **cleanup** — are entered by argument, not by selecting a standalone skill. `/ailly design ...` runs the design phase; `/ailly` with no phase resumes the session at the correct phase (see Phase Argument and Resume). Each phase body lives in `developer/skills/ailly/references/phases/<phase>.md`. The coordinator never inlines all five phase bodies: it selects the one reference for the current phase and hands it to an isolated phase subagent.
 
 **Announce at start:** "Using developer:ailly to coordinate this session."
+
+## Phase Argument and Resume
+
+The phase is an argument to the coordinator. Five phase arguments are valid, mapping one-to-one to a phase reference:
+
+| Phase argument | Phase reference |
+|---|---|
+| `research` | `references/phases/research.md` |
+| `design` | `references/phases/design.md` |
+| `plan` | `references/phases/plan.md` |
+| `red-green-refactor` (Build) | `references/phases/red-green-refactor.md` |
+| `cleanup` | `references/phases/cleanup.md` |
+
+When invoked as `/ailly <phase> ...`, run that phase. When invoked with no phase argument, **determine the resume point** from the session folder (table below) and run that phase. Either way, the coordinator does not read all five phase references; it selects exactly one.
+
+## Phase Subagent Isolation
+
+Run each phase in its own subagent to keep session isolation (coordinator → phase reference → phase subagent that reads one reference):
+
+1. The coordinator resolves the phase argument (or resume point) to its single `references/phases/<phase>.md`.
+2. It spawns a phase subagent and instructs that subagent to **read only that one phase reference** and execute it, passing the session folder path.
+3. The subagent runs the phase, writes its artifact, and returns control. It never reads the other four phase references.
+
+This preserves the prior per-phase subagent isolation while removing the five phase descriptions from the always-on Level-1 view: the phases are reached by argument and by reference, not as separately-described skills.
 
 ## Session Folder
 
@@ -17,16 +43,16 @@ If it does not exist, create `.ailly/developer/YYYY-MM-DD-A-<topic>` where `A` i
 
 If the folder already exists for the current topic, determine resume point:
 
-| Files present | Draft marker cleared? | Resume at |
+| Files present | Draft marker cleared? | Resume at (phase reference) |
 |---|---|---|
-| No files | — | Research phase (`developer:research`) |
+| No files | — | Research phase (`references/phases/research.md`) |
 | `research.md` | No | Wait, ask user to clear the draft |
-| `research.md` | Yes | Design phase (`developer:design`) |
+| `research.md` | Yes | Design phase (`references/phases/design.md`) |
 | `design.md` | No | Wait, ask user to clear the draft |
-| `design.md` | Yes | Plan phase (`developer:plan`) |
+| `design.md` | Yes | Plan phase (`references/phases/plan.md`) |
 | `plan.md` | No | Wait, ask user to clear the draft |
-| `plan.md` | Yes | Build (`developer:red-green-refactor`) |
-| `plan.md` cleared, all steps done, feature test green | — | Cleanup phase (`developer:cleanup`) |
+| `plan.md` | Yes | Build (`references/phases/red-green-refactor.md`) |
+| `plan.md` cleared, all steps done, feature test green | — | Cleanup phase (`references/phases/cleanup.md`) |
 
 A file has its draft cleared when it no longer contains the `*Draft` marker.
 
@@ -37,15 +63,15 @@ Cleanup is the terminal phase: it runs the final review and extracts deferred de
 ```dot
 digraph run {
     start [shape=doublecircle label="Session start"];
-    resume [shape=box label="Determine resume point"];
-    research [shape=box label="Research:\ndeveloper:research"];
+    resume [shape=box label="Resolve phase argument\nor resume point"];
+    research [shape=box label="Research:\nreferences/phases/research.md"];
     gate_research [shape=diamond label="Draft gate:\nresearch"];
-    design [shape=box label="Design (+ feature test):\ndeveloper:design"];
+    design [shape=box label="Design (+ feature test):\nreferences/phases/design.md"];
     gate_design [shape=diamond label="Draft gate:\ndesign"];
-    planning [shape=box label="Plan:\ndeveloper:plan"];
+    planning [shape=box label="Plan:\nreferences/phases/plan.md"];
     gate_plan [shape=diamond label="Draft gate:\nplan"];
-    rgr [shape=box label="Build:\ndeveloper:red-green-refactor"];
-    cleanup [shape=box label="Cleanup:\ndeveloper:cleanup"];
+    rgr [shape=box label="Build:\nreferences/phases/red-green-refactor.md"];
+    cleanup [shape=box label="Cleanup:\nreferences/phases/cleanup.md"];
     gate_merge [shape=diamond label="Human approval:\nbefore squash-merge"];
     stop [shape=doublecircle label="Stop session"];
 
@@ -76,7 +102,7 @@ digraph run {
 
 ## Draft Gate Enforcement
 
-After any research, design, or plan skill produces a draft, stop the session and tell the user:
+After any research, design, or plan phase produces a draft, stop the session and tell the user:
 
 > "This step is complete. Review `<path>`, make any changes, then remove the `*Draft YYYY-MM-DD*` marker from the top of the file. Start a new session and run `developer:ailly` to continue."
 
@@ -84,19 +110,19 @@ After any research, design, or plan skill produces a draft, stop the session and
 
 > "I can't continue past the draft gate in this session. The draft gate exists so you have a chance to review and refine before the next step builds on it."
 
-## Skill Invocations
+## Phase Invocations
 
-Pass the session folder path to each skill. The session folder is the single source of truth for all session artifacts.
+Pass the session folder path to each phase subagent. The session folder is the single source of truth for all session artifacts. For each phase, spawn an isolated subagent and have it read only the matching phase reference:
 
-- Research phase: invoke `developer:research`
-- Design phase: invoke `developer:design`
-- Plan phase: invoke `developer:plan`
-- Build phase: invoke `developer:red-green-refactor` per plan step until the feature test is green
-- Cleanup phase: invoke `developer:cleanup`
+- Research phase: `references/phases/research.md`
+- Design phase: `references/phases/design.md`
+- Plan phase: `references/phases/plan.md`
+- Build phase: `references/phases/red-green-refactor.md` per plan step until the feature test is green
+- Cleanup phase: `references/phases/cleanup.md`
 
 ## Phase-Entry Checks
 
-Before invoking each phase skill, the coordinator checks before it proceeds and escalates to the human rather than silently working around a problem. Two checks share this discipline:
+Before running each phase, the coordinator checks before it proceeds and escalates to the human rather than silently working around a problem. Two checks share this discipline:
 
 - **Model check.** Detect the running model and compare it to the model recommended for the phase. On a mismatch, say so explicitly and invite a `/model` switch; continue on the current model either way. This is a check, not a gate — the loop never stalls. Consult `developer/references/model-per-phase.md` for the phase×provider table, the detection rules, and the switch protocol.
 - **Tool readiness.** When a tool *declared for the project* fails, do not silently substitute another tool or work around it by hand. Consult `developer/references/tool-failure.md`: first check `developer:initialize` for a local fix (e.g. `mise trust`, `npm install`), then escalate to the user with what failed, a suggested remediation, and why it is correct, and retry after the user remediates or grants permission.
@@ -115,7 +141,7 @@ All artifacts for a session live under `.ailly/developer/YYYY-MM-DD-A-<topic>/`.
 
 - `research.md` is the gathered and refined context for a topic.
 - `design.md` is the overall design doc for a topic, including the path of its one feature test.
-- `maps/<path>.md` contains the maps found during any forward/backward planning. 
+- `maps/<path>.md` contains the maps found during any forward/backward planning.
 - `thinking/` is a scratch pad area for the `thinking` skill to share its findings with the calling agent.
 
 ## Quick-loop Mode
@@ -125,7 +151,7 @@ Generally, be persistent in enforcing the draft structure. However, when first s
 - The draft gates **auto-clear**: each phase produces its artifact and the next phase begins in the same flow, without stopping for human review between them.
 - Artifacts are **minimal**: just enough research, design, plan, and feature test to drive the work, not the full documents.
 - The loop **churns straight to a green feature test**, then Cleanup.
-- Use subagents for each phase of the loop to maintain session isolation.
+- Use a subagent for each phase of the loop to maintain session isolation, each reading only its one `references/phases/<phase>.md`.
 
 **When it fits:** a small, unambiguous task with a narrow surface, where the cost of a wrong turn is low.
 
@@ -133,7 +159,7 @@ Generally, be persistent in enforcing the draft structure. However, when first s
 
 ## Long-loop Mode
 
-When first starting an Ailly task, the user may ask to "run a long loop", a "dynamic workflow", or to "run \<project\> to completion". The same five phases (Research, Design, Plan, Build, Cleanup) still run, each in a subagent, but at each draft gate the coordinator does not stop for the human. Instead it dispatches a research-and-decide reviewer subagent that reads the artifact cold, decides its open questions, records each decision with rationale in place, and clears the `*Draft*` marker, so the run proceeds without the human wait while the deliberation those gates exist for is kept.
+When first starting an Ailly task, the user may ask to "run a long loop", a "dynamic workflow", or to "run \<project\> to completion". The same five phases (Research, Design, Plan, Build, Cleanup) still run, each in a subagent reading only its one phase reference, but at each draft gate the coordinator does not stop for the human. Instead it dispatches a research-and-decide reviewer subagent that reads the artifact cold, decides its open questions, records each decision with rationale in place, and clears the `*Draft*` marker, so the run proceeds without the human wait while the deliberation those gates exist for is kept.
 
 - Unlike quick-loop, the long loop does **not** inherit the forbidden list; it is the intended substitute precisely where quick-loop is forbidden (ambiguous, high-blast-radius, or security-sensitive work), keeping full-fidelity artifacts and deliberation.
 - The human merge gate and the Closing Bell are **never** auto-cleared by any reviewer.
@@ -154,7 +180,7 @@ Read `DEVELOPMENT.md` for a `## Program Management` section. When an active trac
 
 When finishing a session, add the next step to `.ailly/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments. When substantial context is needed for a task, create a `TASK-NOTES-<task>.md` file with the details, and include just a short overview to that in the TASKS file. Review NOTES when the task is selected.
 
-When a topic is finished, use `developer:cleanup` to leave things tidy.
+When a topic is finished, run the cleanup phase (`references/phases/cleanup.md`) to leave things tidy.
 
 ## Attribution
 

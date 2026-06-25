@@ -61,15 +61,11 @@ A strict three-loop development lifecycle: design → feature test → TDD imple
 
 | Skill | When to use |
 |-------|-------------|
-| `developer:ailly` | Starting or resuming a feature development session. The main driver for development. Running `/ailly` in Claude will get it going on the next thing. |
+| `developer:ailly` | Starting or resuming a feature development session. The main driver for development, and the entry point for every lifecycle phase: `/ailly research`, `/ailly design`, `/ailly plan`, `/ailly build`, `/ailly cleanup`. Each phase loads one `references/phases/<phase>.md` and runs in an isolated subagent. Running `/ailly` will get it going on the next thing. |
 | `developer:using-developer` | Bootstrap skill that guides which developer skill to invoke for the current situation |
 | `developer:initialize` | Setting up a new project or language environment |
-| `developer:design` | Formatting or structuring a design doc |
-| `developer:feature-test` | Writing the feature test after design is approved |
-| `developer:plan` | Breaking a failing feature test into implementation steps |
-| `developer:red-green-refactor` | Implementing a plan step with TDD |
 | `developer:refactor` | Tests are green; cleaning up code before continuing |
-| `developer:think` | Stuck on a compiler error or test failure during TDD |
+| `developer:thinking` | Stuck on a compiler error or test failure during TDD |
 
 The developer lifecycle uses draft gates: each artifact (design doc, feature test, plan) must be human-reviewed and cleared before the next loop begins.
 

@@ -48,15 +48,35 @@ if grep -nE 'developer:[a-z][a-z-]+' "${hygiene_targets[@]}"; then
   echo "FAIL: a baseline-prefix file names a developer:<skill> identifier (see matches above)." >&2
   exit 1
 fi
-echo "OK: baseline-prefix files (AGENTS.md, profile.md) leak no developer:<skill> identifier."
+# Post-consolidation (Feature C): the five lifecycle phases are entered by argument and
+# the discovery answer for a phase case is the `references/phases/<phase>.md` reference
+# path the coordinator loads. The phase skill identifiers are retired, so the
+# reference-path form is the post-consolidation answer token; forbid it leaking into the
+# baseline arm's context too. Bare phase names (research, design, plan, cleanup) are NOT
+# grepped (reviewer decision 2: they false-positive on ordinary prose); the falsification
+# strength is carried on the assertion side, which requires BOTH the phase argument and
+# the reference path the baseline arm cannot emit.
+if grep -nE 'references/phases/[a-z][a-z-]+' "${hygiene_targets[@]}"; then
+  echo "FAIL: a baseline-prefix file names a references/phases/<phase> path (see matches above); the baseline arm leaks the answer." >&2
+  exit 1
+fi
+echo "OK: baseline-prefix files (AGENTS.md, profile.md) leak no developer:<skill> identifier or references/phases/<phase> path."
 
+# Post-consolidation (Feature C): the single 9-skill invocation/baseline matrix split into
+# two pairs because the five lifecycle phases load their body from a different path than the
+# four surviving auxiliary skills. The auxiliary-skill pair (invocation/baseline) carries 4
+# cases; the phase pair (invocation-phases/baseline-phases) carries 5. The matrix total is
+# unchanged (4 + 5 = 9 cases); only the loaded file and the suite split changed. The
+# discovery matrix and the long-loop pair are untouched.
 expected_count() {
   case "$1" in
-    discovery)           echo 9 ;;
-    invocation)          echo 9 ;;
-    baseline)            echo 9 ;;
-    long-loop)           echo 1 ;;
-    long-loop-baseline)  echo 1 ;;
+    discovery)            echo 9 ;;
+    invocation)           echo 4 ;;
+    baseline)             echo 4 ;;
+    invocation-phases)    echo 5 ;;
+    baseline-phases)      echo 5 ;;
+    long-loop)            echo 1 ;;
+    long-loop-baseline)   echo 1 ;;
     *) echo "FAIL: unknown suite $1" >&2; exit 1 ;;
   esac
 }
@@ -65,26 +85,32 @@ expected_count() {
 discovery_run_dir=""
 invocation_run_dir=""
 baseline_run_dir=""
+invocation_phases_run_dir=""
+baseline_phases_run_dir=""
 long_loop_run_dir=""
 long_loop_baseline_run_dir=""
 
 set_run_dir() {
   case "$1" in
-    discovery)           discovery_run_dir="$2" ;;
-    invocation)          invocation_run_dir="$2" ;;
-    baseline)            baseline_run_dir="$2" ;;
-    long-loop)           long_loop_run_dir="$2" ;;
-    long-loop-baseline)  long_loop_baseline_run_dir="$2" ;;
+    discovery)            discovery_run_dir="$2" ;;
+    invocation)           invocation_run_dir="$2" ;;
+    baseline)             baseline_run_dir="$2" ;;
+    invocation-phases)    invocation_phases_run_dir="$2" ;;
+    baseline-phases)      baseline_phases_run_dir="$2" ;;
+    long-loop)            long_loop_run_dir="$2" ;;
+    long-loop-baseline)   long_loop_baseline_run_dir="$2" ;;
   esac
 }
 
 get_run_dir() {
   case "$1" in
-    discovery)           printf '%s\n' "${discovery_run_dir}" ;;
-    invocation)          printf '%s\n' "${invocation_run_dir}" ;;
-    baseline)            printf '%s\n' "${baseline_run_dir}" ;;
-    long-loop)           printf '%s\n' "${long_loop_run_dir}" ;;
-    long-loop-baseline)  printf '%s\n' "${long_loop_baseline_run_dir}" ;;
+    discovery)            printf '%s\n' "${discovery_run_dir}" ;;
+    invocation)           printf '%s\n' "${invocation_run_dir}" ;;
+    baseline)             printf '%s\n' "${baseline_run_dir}" ;;
+    invocation-phases)    printf '%s\n' "${invocation_phases_run_dir}" ;;
+    baseline-phases)      printf '%s\n' "${baseline_phases_run_dir}" ;;
+    long-loop)            printf '%s\n' "${long_loop_run_dir}" ;;
+    long-loop-baseline)   printf '%s\n' "${long_loop_baseline_run_dir}" ;;
   esac
 }
 
@@ -122,6 +148,11 @@ assemble_suite() {
 assemble_suite discovery
 assemble_suite baseline
 assemble_suite invocation
+# The phase pair (a mode of ailly entered by argument, not a matrix skill) mirrors the
+# auxiliary-skill pair. The `*-baseline`/`*-invocation` globs are suffix-anchored by the
+# trailing `/`, so they do not pick up the `*-baseline-phases`/`*-invocation-phases` dirs.
+assemble_suite baseline-phases
+assemble_suite invocation-phases
 # long-loop is a single-conversation pair (a mode of ailly, not a matrix skill).
 # Assembled after baseline so the `*-baseline` glob never picks up the
 # `*-long-loop-baseline` dir.
@@ -189,6 +220,8 @@ run_suite() {
 run_suite discovery
 run_suite baseline
 run_suite invocation
+run_suite baseline-phases
+run_suite invocation-phases
 run_suite long-loop-baseline
 run_suite long-loop
 
@@ -234,6 +267,8 @@ PY
 eval_suite discovery
 eval_suite baseline
 eval_suite invocation
+eval_suite baseline-phases
+eval_suite invocation-phases
 eval_suite long-loop-baseline
 eval_suite long-loop
 
@@ -318,4 +353,5 @@ PY
 
 report_discovery
 report_comparison "${baseline_run_dir}" "${invocation_run_dir}" baseline invocation
+report_comparison "${baseline_phases_run_dir}" "${invocation_phases_run_dir}" baseline-phases invocation-phases
 report_comparison "${long_loop_baseline_run_dir}" "${long_loop_run_dir}" long-loop-baseline long-loop

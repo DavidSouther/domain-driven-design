@@ -1,15 +1,15 @@
----
-name: red-green-refactor
-description: Use when implementing a plan step — type-first TDD cycle with a thinking trigger for stuck moments and an explicit abort condition
----
+# Build Phase (Red-Green-Refactor)
 
-# developer:red-green-refactor
+> Phase reference loaded by the coordinator (`developer:ailly`) when entered as
+> `/ailly red-green-refactor ...` (the Build phase). The coordinator hands this to
+> an isolated phase subagent that reads only this one reference. There is no
+> standalone `developer:red-green-refactor` skill; the phase is entered by argument.
 
 ## Overview
 
 The innermost development loop. Type-first TDD: write signatures before tests, tests before implementation, commit before refactoring. Has an explicit abort condition to prevent infinite loops.
 
-**Announce at start:** "[Summary of the plan step.] Using developer:red-green-refactor for this step of the plan. Name the recommended model for implementation from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort or context qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+**Announce at start:** "[Summary of the plan step.] Using the developer:ailly Build phase (red-green-refactor) for this step of the plan. Name the recommended model for implementation from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort or context qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
 
 ## The Loop
 

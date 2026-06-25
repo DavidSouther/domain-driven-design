@@ -1,12 +1,14 @@
 name: invocation
 model: claude-sonnet-4-6
 
+# Post-consolidation (Feature C): the configuring-papers / configuring-books skills were
+# deferred to references under using-research (references/configuring/<name>.md) and no
+# longer have a standalone body to load here. The matrix carries the eight research SOURCE
+# leaves only; setup-reference routing is exercised by the discovery suite instead.
 matrix:
   skill:
     - codebase
     - archaeology
-    - configuring-papers
-    - configuring-books
     - papers
     - books
     - dependencies

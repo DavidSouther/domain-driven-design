@@ -2,7 +2,7 @@
 
 The Closing Bell is the exit criterion of a project loop. It is a summative usability study that first defines what the finished project should deliver to a user, and later confirms it delivered. It plays the role a feature test plays in a feature loop, but it is not code and does not run continuously.
 
-`developer/references/project-cycle.md` summarizes the Closing Bell; this reference holds the full structure. `developer:design` consults it when the bell is written, and the final evaluation before cleanup consults it when the study is run.
+`developer/references/project-cycle.md` summarizes the Closing Bell; this reference holds the full structure. The design phase (`developer:ailly design`, `references/phases/design.md`) consults it when the bell is written, and the final evaluation before cleanup consults it when the study is run.
 
 ## Written Once, Run Once
 

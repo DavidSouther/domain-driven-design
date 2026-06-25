@@ -22,6 +22,18 @@ You are working in a project with structured research skills. When asked a resea
 | What book covers this topic? Find an ISBN? Quote from a book? | `research:books` |
 | What paper says X? Cite this DOI? What cites this paper? | `research:papers` |
 
+## Configuring Sources
+
+Source wiring is a once-per-environment setup task, not a per-query research move, so it lives as on-demand references rather than always-on skills. When bootstrapping or revising a source stack on a fresh checkout — probing MCP servers, falling back to HTTP, installing marketplace plugins, completing OAuth/SSO handshakes, setting auth env vars and contact details, and smoke-testing each capability against its published contract — read the matching setup reference and follow it. Each reference publishes the capability contract the per-query skill above consumes. Do NOT run these inside a research session.
+
+| Setting up sources for | Read |
+|---|---|
+| Books (ISBN lookup, full text, O'Reilly, personal libraries) | `references/configuring/books.md` |
+| Codebase language servers (pyright/pylsp, rust-analyzer, tsserver) | `references/configuring/codebase.md` |
+| Internal authenticated sources (Slack, Notion, Linear, GitHub, Drive) | `references/configuring/internal.md` |
+| Academic papers (Crossref, OpenAlex, ArXiv, PubMed, Wiley) | `references/configuring/papers.md` |
+| Public web (WebSearch/WebFetch policy, augmentation provider) | `references/configuring/public.md` |
+
 ## Jeopardy! Search (all skills)
 
 Every research skill applies Jeopardy! search: before issuing any query, generate 3–5 variants (synonyms, different phrasings, casing variants, related concepts) and run each. See `research/references/jeopardy.md` for background.

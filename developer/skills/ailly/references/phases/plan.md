@@ -1,15 +1,15 @@
----
-name: plan
-description: Use when the design draft is cleared and its recorded feature test is currently failing. Defines the API surface area and breaks down the design for passing the feature test into 3 to 7 descriptive implementation steps.
----
+# Plan Phase
 
-# developer:plan
+> Phase reference loaded by the coordinator (`developer:ailly`) when entered as
+> `/ailly plan ...`. The coordinator hands this to an isolated phase subagent that
+> reads only this one reference. There is no standalone `developer:plan` skill; the
+> phase is entered by argument.
 
 ## Overview
 
 Middle-loop planning skill. Given a cleared design and its failing feature test, defines the API surface area and breaks the path to making that test pass into 3–7 incremental steps. Each step must leave the codebase in a runnable state and advance the feature test measurably.
 
-**Announce at start:** "Using developer:plan to create the implementation plan for [summary of feature]. Name the recommended model for planning from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+**Announce at start:** "Using the developer:ailly plan phase to create the implementation plan for [summary of feature]. Name the recommended model for planning from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
 
 **Trigger:** The design draft marker has been cleared by a human. The design records the project feature test, which is currently failing.
 
@@ -121,6 +121,6 @@ Save `plan.md` to the session folder (`.ailly/developer/YYYY-MM-DD-A-<topic>/pla
 
 After saving, tell the user:
 
-> "Plan saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/plan.md`. Review it and make any adjustments. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:ailly` (or `developer:red-green-refactor`) to begin implementation."
+> "Plan saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/plan.md`. Review it and make any adjustments. When you're satisfied, remove the `*Draft YYYY-MM-DD*` marker. Start a new session and run `developer:ailly` (it resumes at the Build phase) to begin implementation."
 
-Do not implement any step. Do not run the feature test. Do not invoke `developer:red-green-refactor`.
+Do not implement any step. Do not run the feature test. Do not enter the Build (red-green-refactor) phase.

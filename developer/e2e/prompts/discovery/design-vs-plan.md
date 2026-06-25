@@ -3,5 +3,6 @@ marker is gone, signed off this morning. The design records its one feature test
 at `tests/test_live_cursor.py`, which is committed and currently failing because
 no implementation exists. No implementation steps have been written yet.
 
-Name the single `developer:*` skill I should invoke right now, and one sentence
-on why.
+Name the single developer phase I should enter right now through the
+`developer:ailly` coordinator (`developer:ailly <phase>`), name the
+`references/phases/<phase>.md` reference it loads, and give one sentence on why.

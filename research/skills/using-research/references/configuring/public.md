@@ -1,9 +1,9 @@
----
-name: configuring-public
-description: Use when bootstrapping or revising the public-web sources for this project — confirming the built-in WebSearch/WebFetch transport, setting a contact User-Agent and per-host rate limits, recording allowed and blocked domains, optionally installing a search-augmentation MCP or provider, and smoke-testing each capability against the published contract. Applies once per environment when bootstrapping or revising the public sources, never inside a research session.
----
-
 # Configuring Public
+
+> Setup reference for the public-web sources. Loaded on demand from
+> `research:using-research` (see its "Configuring Sources" section) when bootstrapping or
+> revising the public stack; not a standalone always-on skill. Applies once per
+> environment, never inside a research session.
 
 ## Overview
 
@@ -13,7 +13,7 @@ The harness this skill installs is the **public capability contract** below. The
 
 ## Contract
 
-After `research:configuring-public` has run, callers of `research:public` may assume:
+After the public sources have been configured (this `public.md` reference), callers of `research:public` may assume:
 
 | Capability | Inputs | Returns | Conditional |
 |---|---|---|---|
@@ -31,7 +31,7 @@ The conditional capability returns a typed Not-Available result when no provider
 
 The practice skill treats Not-Available as a routing signal, not as an error: with no augmentation configured it uses built-in `WebSearch`, which is always available.
 
-**Etiquette is applied:** requests carry a `User-Agent` containing a contact email, per-host rate limits are respected, the blocked-domain list is honored (fetches to blocked hosts are refused), and the allowed-domain list (when set) scopes search. The shared rules live in [`public/references/etiquette.md`](../public/references/etiquette.md); the per-provider reference cites that file for the rules it inherits.
+**Etiquette is applied:** requests carry a `User-Agent` containing a contact email, per-host rate limits are respected, the blocked-domain list is honored (fetches to blocked hosts are refused), and the allowed-domain list (when set) scopes search. The shared rules live in [`public/references/etiquette.md`](../../../public/references/etiquette.md); the per-provider reference cites that file for the rules it inherits.
 
 ## When to Use
 
@@ -48,19 +48,19 @@ Walk top-to-bottom on a fresh environment. The default items are **policy, not i
 
 Default (policy — no install):
 
-- [ ] **Built-in WebSearch / WebFetch** — confirm both tools are available in the environment (they are built in; no install). Set `RESEARCH_USER_AGENT` (or the environment's equivalent) to a string containing a contact email per [`public/references/etiquette.md`](../public/references/etiquette.md). Smoke-test: a web search for a known term, then a fetch of one result.
-- [ ] **Domain policy** — record the allowed-domain list (empty means unrestricted) and the blocked-domain list in [`public/references/etiquette.md`](../public/references/etiquette.md). Smoke-test: a fetch to a blocked host is refused; a fetch to an allowed host succeeds.
+- [ ] **Built-in WebSearch / WebFetch** — confirm both tools are available in the environment (they are built in; no install). Set `RESEARCH_USER_AGENT` (or the environment's equivalent) to a string containing a contact email per [`public/references/etiquette.md`](../../../public/references/etiquette.md). Smoke-test: a web search for a known term, then a fetch of one result.
+- [ ] **Domain policy** — record the allowed-domain list (empty means unrestricted) and the blocked-domain list in [`public/references/etiquette.md`](../../../public/references/etiquette.md). Smoke-test: a fetch to a blocked host is refused; a fetch to an allowed host succeeds.
 - [ ] **Rate limits** — record per-host request spacing and backoff-on-429 per the etiquette file. Smoke-test: confirm backoff behavior on a host that signals 429, or document the limit if none is hit.
 
 Priority (none). The public stack has no priority-tier installs — the default tier is complete on its own. This item is called out for parity with the sibling skills.
 
 Opt-in (configure when the user supplies access):
 
-- [ ] **Search-augmentation provider** — probe the configured search-augmentation MCP for this project (a hosted search-API connector, or a domain-scoped index the user runs); else fall back to built-in `WebSearch`. Set the provider's API key env var if it has one. Per [`public/references/augmented-search.md`](../public/references/augmented-search.md). Smoke-test: an augmented search for a known term returns provider-ranked hits. If no provider is configured, mark *augmented search* Not-Available.
+- [ ] **Search-augmentation provider** — probe the configured search-augmentation MCP for this project (a hosted search-API connector, or a domain-scoped index the user runs); else fall back to built-in `WebSearch`. Set the provider's API key env var if it has one. Per [`public/references/augmented-search.md`](../../../public/references/augmented-search.md). Smoke-test: an augmented search for a known term returns provider-ranked hits. If no provider is configured, mark *augmented search* Not-Available.
 
 **No marketplace plugins required** for the default stack; the augmentation provider, if any, installs in the `/plugin marketplace add … / /plugin install …` shape for parity with the sibling skills.
 
-**The public stack is genuinely thin.** Two of its three capabilities ship with the environment and need no configuration at all. `configuring-public` exists for three reasons only: (1) to apply etiquette so the project is a polite web citizen, (2) to record allowed/blocked domains as project policy, and (3) to wire an optional augmentation provider. There is no transport to install for the core path. This is the structural opposite of `configuring-internal`, where nothing works until an MCP authenticates.
+**The public stack is genuinely thin.** Two of its three capabilities ship with the environment and need no configuration at all. This `public.md` reference exists for three reasons only: (1) to apply etiquette so the project is a polite web citizen, (2) to record allowed/blocked domains as project policy, and (3) to wire an optional augmentation provider. There is no transport to install for the core path. This is the structural opposite of the internal setup reference (`internal.md`), where nothing works until an MCP authenticates.
 
 ## Re-Verification Triggers
 
@@ -75,8 +75,8 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 ## Composes With
 
 - **`research:public`** — the per-query partner. Wiring publishes the contract and the etiquette/domain policy; practice consumes them.
-- **`research:configuring-internal`** and **`research:configuring-codebase`** — sibling wiring for the other two stacks. Disjoint at the source level; shared cadence convention.
-- **`research:configuring-books`** and **`research:configuring-papers`** — the established sibling wiring skills in the family.
+- **the internal setup reference (`internal.md`)** and **the codebase setup reference (`codebase.md`)** — sibling wiring for the other two stacks. Disjoint at the source level; shared cadence convention.
+- **the books setup reference (`books.md`)** and **the papers setup reference (`papers.md`)** — the established sibling wiring references in the family.
 - **`research/references/citations.md`** — the IEEE `[Online]` citation form the practice skill writes against.
 - **`research/references/jeopardy.md`** — the 3-5 variant query expansion the practice skill runs before searching.
 - **`research/references/falsify.md`** — the falsification pass the practice skill runs on load-bearing claims (its Source Quality section already cites this).

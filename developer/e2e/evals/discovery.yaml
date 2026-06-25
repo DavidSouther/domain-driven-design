@@ -1,72 +1,101 @@
 name: discovery
+# Post-consolidation (progressive-disclosure Feature C): the five lifecycle phases
+# (research, design, plan, red-green-refactor, cleanup) collapsed out of the always-on
+# Level-1 view. They are no longer standalone `developer:<phase>` skills; they are
+# entered through the coordinator by argument (`developer:ailly <phase>`), which loads
+# one `references/phases/<phase>.md` and runs it in an isolated phase subagent. The
+# discovery arm loads only the `using-developer` bootstrap (see assemblies/discovery.yaml),
+# so each phase case now asserts the routing ANSWER the bootstrap teaches — the
+# `developer:ailly` coordinator with the phase argument AND the `references/phases/<phase>.md`
+# reference path — instead of the retired `developer:<phase>` skill identifier. The four
+# auxiliary skills that did NOT collapse (thinking, refactor, initialize, ailly) and the
+# program-management pair keep their `developer:<skill>` identifier assertions unchanged.
+#
+# Why this stays a sharp gate: a phase case requires BOTH the phase argument AND the
+# `references/phases/<phase>.md` path, which the no-skill baseline arm cannot emit, so the
+# falsification gap (improved>0, regressed==0) is at least as hard to satisfy by accident
+# as the single-identifier assertion it replaces. Negatives use the reference-path form
+# for retired phases (a correct answer may legitimately name the wrong phase in prose
+# while routing to the right one), and the skill-identifier form for the auxiliary skills
+# that still exist.
 cases:
-  # Vague idea, nothing gathered yet → research, not design (research owns the
-  # nothing-gathered niche; design starts once research is cleared).
+  # Vague idea, nothing gathered yet → research phase, not design (research owns the
+  # nothing-gathered niche; design starts once research is cleared). Both are retired
+  # phases, so assert the phase argument + reference path, not a `developer:<phase>` id.
   - name: research-vs-design
     assertions:
-      - { type: text_contains, value: "developer:research" }
-      - { type: text_not_contains, value: "developer:design" }
+      - { type: text_contains, value: "developer:ailly" }
+      - { type: text_contains, value: "references/phases/research.md" }
+      - { type: text_not_contains, value: "references/phases/design.md" }
 
-  # Design cleared and its feature test recorded → plan, not the impl loop.
+  # Design cleared and its feature test recorded → plan phase, not the build loop.
   - name: design-vs-plan
     assertions:
-      - { type: text_contains, value: "developer:plan" }
-      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - { type: text_contains, value: "developer:ailly" }
+      - { type: text_contains, value: "references/phases/plan.md" }
+      - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
 
-  # Feature test failing as expected, no steps yet → plan, not the impl loop.
+  # Feature test failing as expected, no steps yet → plan phase, not the build loop.
   - name: plan-vs-rgr
     assertions:
-      - { type: text_contains, value: "developer:plan" }
-      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - { type: text_contains, value: "developer:ailly" }
+      - { type: text_contains, value: "references/phases/plan.md" }
+      - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
 
-  # Same error after a fix during a TDD cycle → thinking, not loop back to RGR.
+  # Same error after a fix during a TDD cycle → thinking (a kept auxiliary skill),
+  # not back into the build (red-green-refactor) phase. The positive side asserts the
+  # surviving `developer:thinking` identifier; the negative forbids the retired build
+  # phase's reference path.
   - name: rgr-vs-thinking
     assertions:
       - { type: text_contains, value: "developer:thinking" }
-      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
       - type: judge
         prompt: |
           The answer routes to developer:thinking because the same error
           recurred after a change intended to fix it — a stuck-debugging
           situation. It does not recommend continuing or restarting the
-          red-green-refactor loop as the fix for the recurring error.
+          red-green-refactor build phase as the fix for the recurring error.
 
-  # Green code, smells to clean before merge → refactor, not a new RGR step.
+  # Green code, smells to clean before merge → refactor (a kept auxiliary skill), not a
+  # new build-phase step. Positive asserts the surviving `developer:refactor`
+  # identifier; negative forbids the retired build phase's reference path.
   - name: refactor-vs-rgr
     assertions:
       - { type: text_contains, value: "developer:refactor" }
-      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
       - type: judge
         prompt: |
           The answer routes to developer:refactor because the tests are
           already green and the goal is to improve the code without changing
           behaviour. It does not propose starting another red-green-refactor
-          implementation step.
+          build-phase step.
 
-  # Paired tidy-vs-finish: (a) → refactor (green mid-build), (b) → cleanup
-  # (terminal phase). Restores the cleanup routing coverage the removed
-  # is-clean-vs-cleanup pair provided.
+  # Paired tidy-vs-finish: (a) → refactor (a kept skill, green mid-build), (b) →
+  # cleanup phase (the terminal phase, entered by argument). Asserts the surviving
+  # `developer:refactor` identifier for (a) and the cleanup phase reference path for (b).
   - name: cleanup-vs-refactor
     assertions:
       - { type: text_contains, value: "developer:refactor" }
-      - { type: text_contains, value: "developer:cleanup" }
+      - { type: text_contains, value: "references/phases/cleanup.md" }
       - type: judge
         prompt: |
           The answer maps question (a) — cleaning up green code mid-build without
           changing behavior — to developer:refactor, and question (b) — finishing
           the whole topic with a final review, extracting the deferred decisions
-          into the TASKS file, and preparing the squash merge — to
-          developer:cleanup. The two are not swapped.
+          into the TASKS file, and preparing the squash merge — to the
+          coordinator's cleanup phase (developer:ailly cleanup,
+          references/phases/cleanup.md). The two are not swapped.
 
   # Empty folder, toolchain/layout/hooks to install → initialize, not the
-  # session coordinator.
+  # session coordinator. Both are kept skills; identifiers unchanged.
   - name: initialize-vs-ailly
     assertions:
       - { type: text_contains, value: "developer:initialize" }
       - { type: text_not_contains, value: "developer:ailly" }
 
   # Project already set up; start the gated workflow for a new feature → the
-  # session coordinator, not project setup.
+  # session coordinator, not project setup. Both are kept skills; identifiers unchanged.
   - name: ailly-vs-initialize
     assertions:
       - { type: text_contains, value: "developer:ailly" }
@@ -74,7 +103,7 @@ cases:
 
   # Paired bootstrap-vs-per-use: (a) one-time wiring of the team's tracker and
   # docs → configuring-program-management; (b) everyday next-task / write-back →
-  # using-program-management. The configure/practice cadence split, not swapped.
+  # using-program-management. Both are kept skills; identifiers unchanged.
   - name: program-management-config-vs-use
     assertions:
       - { type: text_contains, value: "developer:configuring-program-management" }

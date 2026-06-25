@@ -1,9 +1,11 @@
----
-name: cleanup
-description: Used when finished with an Ailly development topic to tidy up the workspace.
----
+# Cleanup Phase
 
-# Clean Up
+> Phase reference loaded by the coordinator (`developer:ailly`) when entered as
+> `/ailly cleanup ...`. The coordinator hands this to an isolated phase subagent
+> that reads only this one reference. There is no standalone `developer:cleanup`
+> skill; the phase is entered by argument.
+
+## Clean Up
 
 Perform final refactoring and review passes for the topic. Check for lint findings, and include them in the refactor passes. Run automated formatters and lint fixers.
 

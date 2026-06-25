@@ -1,0 +1,26 @@
+name: baseline-phases
+model: claude-sonnet-4-6
+
+# Falsification arm for the phase invocation suite: mechanically identical to
+# invocation-phases.yaml with the bootstrap + phase-reference body entries dropped.
+# AGENTS.md and profile.md stay, so the only difference between the arms is the loaded
+# phase body — any behaviour gap is attributable to it. Same prompts, same matrix.
+#
+# Post-consolidation (Feature C): pairs with `invocation-phases` (the five lifecycle
+# phases now reached by argument and loaded from their reference path). The comparison
+# matches same-named cases on each side.
+prefix:
+  - { kind: file, path: context/AGENTS.md, cache: true }
+  - { kind: file, path: profile.md,        cache: true }
+
+matrix:
+  phase:
+    - research
+    - design
+    - plan
+    - red-green-refactor
+    - cleanup
+
+conversation:
+  - { role: user, path: "prompts/invocation/{{ phase }}.md" }
+  - { role: assistant }

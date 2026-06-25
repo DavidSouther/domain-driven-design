@@ -1,4 +1,8 @@
 name: baseline
+# Post-consolidation (progressive-disclosure Feature C): mirrors evals/invocation.yaml — the
+# two configuring-* cases were removed (those skills are now references under using-research,
+# not standalone bodies), leaving the eight research SOURCE leaves so the
+# baseline-vs-invocation comparison pairs same-named cases.
 cases:
   - name: codebase
     assertions:
@@ -27,45 +31,6 @@ cases:
           git history, not the file's current contents. PASS only if it is
           recognizably this archaeology note with that path and that structure.
       - { type: tokens, metric: output, op: "<", value: 3000 }
-
-  - name: configuring-papers
-    assertions:
-      - { type: script, runtime: python, script: { path: evals/scripts/check_configuring_papers.py } }
-      - type: judge
-        prompt: |
-          The answer is a configuration plan for standing up academic-paper
-          sources on a fresh checkout. It enumerates the default sources
-          (Crossref, Unpaywall, OpenAlex, Semantic Scholar, ArXiv) and walks
-          each through the wiring the skill teaches: probe for an MCP server
-          where one exists, fall back to HTTP (some sources, such as Crossref
-          and Unpaywall, are HTTP-only and legitimately have no MCP step), set
-          the credential / contact env var the source needs, and smoke-test the
-          capability. It names the typed Not-Available result that an
-          unconfigured optional source returns and frames it as a routing
-          signal for the practice skill. PASS if the per-source wiring pattern
-          and the Not-Available routing are both present; do not require an MCP
-          probe for a source the plan correctly treats as HTTP-only.
-      - { type: tokens, metric: output, op: "<", value: 5000 }
-
-  - name: configuring-books
-    assertions:
-      - { type: script, runtime: python, script: { path: evals/scripts/check_configuring_books.py } }
-      - type: judge
-        prompt: |
-          The answer is a configuration plan for standing up book sources on a
-          fresh checkout. It enumerates the default sources (Open Library,
-          Gutendex / Project Gutenberg, Internet Archive, Google Books) and
-          walks each through the wiring the skill teaches: probe for an MCP
-          server where one exists, fall back to HTTP (Internet Archive and
-          Google Books are HTTP-only and legitimately have no MCP step), set
-          credentials where needed, and smoke-test. It correctly identifies the
-          keyless sources (Gutendex, Internet Archive) and names the Open
-          Library polite User-Agent. It names the typed Not-Available routing
-          signal for unconfigured optional sources. PASS if the per-source
-          wiring pattern, the keyless distinction, and the Not-Available routing
-          are present; do not require an MCP probe for a source the plan
-          correctly treats as HTTP-only.
-      - { type: tokens, metric: output, op: "<", value: 5000 }
 
   - name: papers
     assertions:

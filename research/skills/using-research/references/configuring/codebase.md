@@ -1,9 +1,9 @@
----
-name: configuring-codebase
-description: Use when bootstrapping or revising the language servers for this project — detecting each language in the checkout, installing and configuring its LSP (pyright/pylsp, rust-analyzer, typescript-language-server), confirming the server resolves the project, and smoke-testing each LSP operation against the published contract. Applies once per environment when bootstrapping or revising the codebase language servers, never inside a research session.
----
-
 # Configuring Codebase
+
+> Setup reference for the codebase language servers. Loaded on demand from
+> `research:using-research` (see its "Configuring Sources" section) when bootstrapping or
+> revising the LSP stack; not a standalone always-on skill. Applies once per environment,
+> never inside a research session.
 
 ## Overview
 
@@ -13,7 +13,7 @@ The harness this skill installs is the **codebase capability contract** below. T
 
 ## Contract
 
-After `research:configuring-codebase` has run, callers of `research:codebase` may assume the following LSP operations are available **for each language whose server resolved**. Operation names match the built-in `LSP` tool surface:
+After the codebase language servers have been configured (this `codebase.md` reference), callers of `research:codebase` may assume the following LSP operations are available **for each language whose server resolved**. Operation names match the built-in `LSP` tool surface:
 
 | Capability | Inputs | Returns | Conditional |
 |---|---|---|---|
@@ -37,7 +37,7 @@ The practice skill treats Not-Available as a routing signal, not as an error.
 
 **Note on operation surface.** The built-in `LSP` tool exposes `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, and `outgoingCalls`. It does **not** expose `completions` or `diagnostics`. The contract above lists only operations the tool actually exposes; the per-language `lsp-*.md` references footnote `completions`/`diagnostics` as not on the current `LSP` tool surface.
 
-**Toolchain is primed:** for each language the server resolves the project — Rust crate graph built (`cargo check` has run), Python venv activated and matching the pyright config, TypeScript `node_modules` populated and project references built. The shared rules live in [`../codebase/lsp-setup.md`](../codebase/lsp-setup.md) (the priming/configuration shared-rules file for this stack); each per-language `lsp-*.md` cites it for the priming step it inherits.
+**Toolchain is primed:** for each language the server resolves the project — Rust crate graph built (`cargo check` has run), Python venv activated and matching the pyright config, TypeScript `node_modules` populated and project references built. The shared rules live in [`../codebase/lsp-setup.md`](../../../codebase/lsp-setup.md) (the priming/configuration shared-rules file for this stack); each per-language `lsp-*.md` cites it for the priming step it inherits.
 
 ## When to Use
 
@@ -53,9 +53,9 @@ Walk the checklist top-to-bottom on a fresh environment. Each item detects wheth
 
 Default languages (detect from the checkout; configure each that is present):
 
-- [ ] **Rust** — present when `Cargo.toml` exists. rust-analyzer is the standard server and activates automatically. Prime with `cargo check` so the crate graph resolves, per the priming rules in [`../codebase/lsp-setup.md`](../codebase/lsp-setup.md). Per [`../codebase/lsp-rust.md`](../codebase/lsp-rust.md). Smoke-test: `goToDefinition` on a known `pub fn`. If `cargo check` fails, mark the Rust capabilities Not-Available and fall back to Bash.
-- [ ] **Python** — present when `pyproject.toml`, `setup.py`, or `*.py` exists. Install pyright (`pip install pyright` or `npm install -g pyright`); pylsp is the alternative. Activate the venv and point the pyright config at it, per [`../codebase/lsp-setup.md`](../codebase/lsp-setup.md). Per [`../codebase/lsp-python.md`](../codebase/lsp-python.md). Smoke-test: `hover` on a typed symbol returns a concrete type (not `Unknown`). If the venv is wrong or absent, mark the Python capabilities Not-Available.
-- [ ] **TypeScript / JavaScript** — present when `tsconfig.json` or `package.json` exists. typescript-language-server (tsserver) ships with TypeScript; run `npm install` (or equivalent) to populate `node_modules`, and `tsc --build` for monorepo project references, per [`../codebase/lsp-setup.md`](../codebase/lsp-setup.md). Per [`../codebase/lsp-typescript.md`](../codebase/lsp-typescript.md). Smoke-test: `findReferences` on an exported symbol crosses files. If resolution fails, mark the TS capabilities Not-Available.
+- [ ] **Rust** — present when `Cargo.toml` exists. rust-analyzer is the standard server and activates automatically. Prime with `cargo check` so the crate graph resolves, per the priming rules in [`../codebase/lsp-setup.md`](../../../codebase/lsp-setup.md). Per [`../codebase/lsp-rust.md`](../../../codebase/lsp-rust.md). Smoke-test: `goToDefinition` on a known `pub fn`. If `cargo check` fails, mark the Rust capabilities Not-Available and fall back to Bash.
+- [ ] **Python** — present when `pyproject.toml`, `setup.py`, or `*.py` exists. Install pyright (`pip install pyright` or `npm install -g pyright`); pylsp is the alternative. Activate the venv and point the pyright config at it, per [`../codebase/lsp-setup.md`](../../../codebase/lsp-setup.md). Per [`../codebase/lsp-python.md`](../../../codebase/lsp-python.md). Smoke-test: `hover` on a typed symbol returns a concrete type (not `Unknown`). If the venv is wrong or absent, mark the Python capabilities Not-Available.
+- [ ] **TypeScript / JavaScript** — present when `tsconfig.json` or `package.json` exists. typescript-language-server (tsserver) ships with TypeScript; run `npm install` (or equivalent) to populate `node_modules`, and `tsc --build` for monorepo project references, per [`../codebase/lsp-setup.md`](../../../codebase/lsp-setup.md). Per [`../codebase/lsp-typescript.md`](../../../codebase/lsp-typescript.md). Smoke-test: `findReferences` on an exported symbol crosses files. If resolution fails, mark the TS capabilities Not-Available.
 
 Priority languages (configure when present and the user works in them):
 
@@ -65,7 +65,7 @@ Opt-in languages (configure on demand):
 
 - [ ] **Any other language with an LSP** — same shape: detect, install the server, prime, smoke-test, add to the contract. If no server exists for the language, mark its capabilities Not-Available; the practice skill uses Bash search for that language.
 
-**No marketplace plugins and no env vars** are required for the default stack — language servers are toolchain installs, not credentialed MCPs. This item is called out for parity with the sibling skills; the codebase stack has no auth to configure, which is the structural opposite of `research:configuring-internal`.
+**No marketplace plugins and no env vars** are required for the default stack — language servers are toolchain installs, not credentialed MCPs. This item is called out for parity with the sibling skills; the codebase stack has no auth to configure, which is the structural opposite of the internal setup reference (`internal.md`).
 
 ## Re-Verification Triggers
 
@@ -80,9 +80,9 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 ## Composes With
 
 - **`research:codebase`** — the per-query partner. Wiring confirms the servers resolve; practice dispatches LSP operations and falls back to Bash where a language is Not-Available.
-- **`research:configuring-internal`** and **`research:configuring-public`** — sibling wiring for the other two stacks. Disjoint at the source level; shared cadence convention.
-- **`research:configuring-books`** and **`research:configuring-papers`** — the established sibling wiring skills in the family.
-- **`research/references/falsify.md`** — the "search the negation before asserting a universal" rule the practice skill's Common Mistakes already point at; the wiring skill names it so the pair shares the reference. See [`../../references/falsify.md`](../../references/falsify.md).
-- **`research/references/jeopardy.md`** — the identifier-variant query expansion (case variants, synonyms) the practice skill runs before searching. See [`../../references/jeopardy.md`](../../references/jeopardy.md).
+- **the internal setup reference (`internal.md`)** and **the public setup reference (`public.md`)** — sibling wiring for the other two stacks. Disjoint at the source level; shared cadence convention.
+- **the books setup reference (`books.md`)** and **the papers setup reference (`papers.md`)** — the established sibling wiring references in the family.
+- **`research/references/falsify.md`** — the "search the negation before asserting a universal" rule the practice skill's Common Mistakes already point at; the wiring skill names it so the pair shares the reference. See [`../../references/falsify.md`](../../../../references/falsify.md).
+- **`research/references/jeopardy.md`** — the identifier-variant query expansion (case variants, synonyms) the practice skill runs before searching. See [`../../references/jeopardy.md`](../../../../references/jeopardy.md).
 
 (Note: codebase composes with `falsify.md` and `jeopardy.md`, not `citations.md` — its Sources section uses the `path [CommitSha]` file-reference form, not inline IEEE numbering, matching the practice skill's existing output block.)

@@ -1,9 +1,9 @@
----
-name: configuring-internal
-description: Use when bootstrapping or revising the internal authenticated sources for this project — installing an MCP server per source, completing the OAuth/SSO handshake, setting token and API-key env vars, recording which sources are reachable, and smoke-testing each source's search and fetch against the published contract. Applies once per environment when bootstrapping or revising the internal sources, never inside a research session.
----
-
 # Configuring Internal
+
+> Setup reference for the internal authenticated sources. Loaded on demand from
+> `research:using-research` (see its "Configuring Sources" section) when bootstrapping or
+> revising the internal stack; not a standalone always-on skill. Applies once per
+> environment, never inside a research session.
 
 ## Overview
 
@@ -13,7 +13,7 @@ The practice skill's current "always call `ListMcpResourcesTool` first; assume n
 
 ## Contract
 
-After `research:configuring-internal` has run, callers of `research:internal` may assume each configured source exposes the two capabilities below, keyed by whether that source's MCP authenticated successfully:
+After the internal sources have been configured (this `internal.md` reference), callers of `research:internal` may assume each configured source exposes the two capabilities below, keyed by whether that source's MCP authenticated successfully:
 
 | Capability | Inputs | Returns | Conditional |
 |---|---|---|---|
@@ -40,7 +40,7 @@ Conditional capabilities return the typed Not-Available result reused verbatim f
 
 The practice skill treats Not-Available as a routing signal, not as an error.
 
-**Auth is applied:** every source authenticates before the contract holds. OAuth tokens and API keys are held in env vars, never committed. SSO sessions are completed at configure time and their expiry is a re-verification trigger. The shared rules live in [`internal/references/auth.md`](../internal/references/auth.md); each per-source reference cites that file for the rules it inherits. (`auth.md` is the internal-stack analog of the books/papers `etiquette.md` — for an all-authenticated stack the shared file is about credentials and handshakes rather than per-host politeness.)
+**Auth is applied:** every source authenticates before the contract holds. OAuth tokens and API keys are held in env vars, never committed. SSO sessions are completed at configure time and their expiry is a re-verification trigger. The shared rules live in [`internal/references/auth.md`](../../../internal/references/auth.md); each per-source reference cites that file for the rules it inherits. (`auth.md` is the internal-stack analog of the books/papers `etiquette.md` — for an all-authenticated stack the shared file is about credentials and handshakes rather than per-host politeness.)
 
 ## When to Use
 
@@ -56,22 +56,22 @@ Walk the checklist top-to-bottom on a fresh environment. Each item probes the so
 
 Default sources (most orgs have these):
 
-- [ ] **Slack** — probe the configured Slack MCP for this org; the Anthropic Slack connector exposes search and read tools (`slack_search_*`, `slack_read_*`). Complete the workspace OAuth install. Token/scope handling per [`internal/references/slack.md`](../internal/references/slack.md). Smoke-test: search a known term, fetch one matching thread. If OAuth is not completed, mark *Slack search* and *Slack fetch* Not-Available.
-- [ ] **Confluence / Notion** — probe the configured wiki MCP; the Notion connector exposes `notion-search` / `notion-fetch`. Complete the workspace OAuth. Per [`internal/references/wiki.md`](../internal/references/wiki.md). Smoke-test: search a known spec page, fetch it. If neither wiki MCP authenticates, mark the wiki capabilities Not-Available.
-- [ ] **GitHub** — probe the configured GitHub MCP; else CLI fallback via `gh` with `GH_TOKEN` / `GITHUB_TOKEN` set. Per [`internal/references/github.md`](../internal/references/github.md). Smoke-test: issue search in a known repo, fetch one issue. If no token is set, mark the GitHub capabilities Not-Available.
+- [ ] **Slack** — probe the configured Slack MCP for this org; the Anthropic Slack connector exposes search and read tools (`slack_search_*`, `slack_read_*`). Complete the workspace OAuth install. Token/scope handling per [`internal/references/slack.md`](../../../internal/references/slack.md). Smoke-test: search a known term, fetch one matching thread. If OAuth is not completed, mark *Slack search* and *Slack fetch* Not-Available.
+- [ ] **Confluence / Notion** — probe the configured wiki MCP; the Notion connector exposes `notion-search` / `notion-fetch`. Complete the workspace OAuth. Per [`internal/references/wiki.md`](../../../internal/references/wiki.md). Smoke-test: search a known spec page, fetch it. If neither wiki MCP authenticates, mark the wiki capabilities Not-Available.
+- [ ] **GitHub** — probe the configured GitHub MCP; else CLI fallback via `gh` with `GH_TOKEN` / `GITHUB_TOKEN` set. Per [`internal/references/github.md`](../../../internal/references/github.md). Smoke-test: issue search in a known repo, fetch one issue. If no token is set, mark the GitHub capabilities Not-Available.
 
 Priority sources (common in product orgs):
 
-- [ ] **Linear / Jira** — probe the configured tracker MCP; the Linear connector exposes `list_issues` / `get_issue` / `search_documentation`, and completes OAuth via its `authenticate` / `complete_authentication` pair. Per [`internal/references/tracker.md`](../internal/references/tracker.md). Smoke-test: issue search by team, fetch one issue. If OAuth is not completed, mark the tracker capabilities Not-Available.
-- [ ] **Google Drive** — probe the configured Drive MCP; the Google Drive connector exposes `search_files` / `read_file_content`. Complete the Google OAuth consent. Per [`internal/references/google-drive.md`](../internal/references/google-drive.md). Smoke-test: search a known doc title, read its content. If OAuth is not completed, mark the Drive capabilities Not-Available.
+- [ ] **Linear / Jira** — probe the configured tracker MCP; the Linear connector exposes `list_issues` / `get_issue` / `search_documentation`, and completes OAuth via its `authenticate` / `complete_authentication` pair. Per [`internal/references/tracker.md`](../../../internal/references/tracker.md). Smoke-test: issue search by team, fetch one issue. If OAuth is not completed, mark the tracker capabilities Not-Available.
+- [ ] **Google Drive** — probe the configured Drive MCP; the Google Drive connector exposes `search_files` / `read_file_content`. Complete the Google OAuth consent. Per [`internal/references/google-drive.md`](../../../internal/references/google-drive.md). Smoke-test: search a known doc title, read its content. If OAuth is not completed, mark the Drive capabilities Not-Available.
 
 Opt-in sources (configure when the user supplies access):
 
-- [ ] **Other authenticated connectors** — any additional org MCP the user runs (Gmail, Google Calendar, Salesforce, Datadog, incident.io, Figma, Microsoft 365, and so on). For each: probe the configured MCP for that source; complete its OAuth/SSO handshake; set its token env var; add one search + fetch row to the contract; smoke-test. If the source has no MCP and no HTTP/CLI fallback, mark its capability Not-Available. Documented per [`internal/references/other-connectors.md`](../internal/references/other-connectors.md).
+- [ ] **Other authenticated connectors** — any additional org MCP the user runs (Gmail, Google Calendar, Salesforce, Datadog, incident.io, Figma, Microsoft 365, and so on). For each: probe the configured MCP for that source; complete its OAuth/SSO handshake; set its token env var; add one search + fetch row to the contract; smoke-test. If the source has no MCP and no HTTP/CLI fallback, mark its capability Not-Available. Documented per [`internal/references/other-connectors.md`](../../../internal/references/other-connectors.md).
 
-**MCP install and OAuth.** The install shape mirrors `configuring-papers`: `/plugin marketplace add <marketplace>` then `/plugin install <connector>`, then complete the OAuth/SSO handshake when the connector prompts (the connectors above expose an `authenticate` → `complete_authentication` pair). Tokens land in env vars named per source in [`internal/references/auth.md`](../internal/references/auth.md); never commit them.
+**MCP install and OAuth.** The install shape mirrors the papers setup reference (`papers.md`): `/plugin marketplace add <marketplace>` then `/plugin install <connector>`, then complete the OAuth/SSO handshake when the connector prompts (the connectors above expose an `authenticate` → `complete_authentication` pair). Tokens land in env vars named per source in [`internal/references/auth.md`](../../../internal/references/auth.md); never commit them.
 
-**Out-of-scope sources** are documented in [`internal/references/out-of-scope.md`](../internal/references/out-of-scope.md) with the reason each is excluded (public sources belong to `research:public`; the local checkout belongs to `research:codebase`; git history belongs to `research:archaeology`).
+**Out-of-scope sources** are documented in [`internal/references/out-of-scope.md`](../../../internal/references/out-of-scope.md) with the reason each is excluded (public sources belong to `research:public`; the local checkout belongs to `research:codebase`; git history belongs to `research:archaeology`).
 
 ## Re-Verification Triggers
 
@@ -86,7 +86,7 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 ## Composes With
 
 - **`research:internal`** — the per-query partner. Wiring publishes the contract; practice consumes it.
-- **`research:configuring-codebase`** and **`research:configuring-public`** — sibling wiring for the codebase and public stacks. Disjoint at the source level; shared cadence convention.
-- **`research:configuring-books`** and **`research:configuring-papers`** — the other two sibling wiring skills in the family.
+- **the codebase setup reference (`codebase.md`)** and **the public setup reference (`public.md`)** — sibling wiring for the codebase and public stacks. Disjoint at the source level; shared cadence convention.
+- **the books setup reference (`books.md`)** and **the papers setup reference (`papers.md`)** — the other two sibling wiring references in the family.
 - **`research/references/citations.md`** — internal documents cite as `[Internal]` per the loose IEEE style the practice skill writes against.
 - **`research/references/jeopardy.md`** — the 3-5 variant query expansion the practice skill runs against every configured source.

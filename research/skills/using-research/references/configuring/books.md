@@ -1,9 +1,9 @@
----
-name: configuring-books
-description: Use when bootstrapping or revising the books sources for this project — probing for an MCP server per source, falling back to HTTP, installing marketplace plugins where required, setting auth env vars, and smoke-testing each capability against the published contract. Applies once per environment when bootstrapping or revising the books sources, never inside a research session.
----
-
 # Configuring Books
+
+> Setup reference for the books research sources. Loaded on demand from
+> `research:using-research` (see its "Configuring Sources" section) when bootstrapping or
+> revising the books stack; not a standalone always-on skill. Applies once per
+> environment, never inside a research session.
 
 ## Overview
 
@@ -13,7 +13,7 @@ The harness this skill installs is the **books capability contract** below. The 
 
 ## Contract
 
-After `research:configuring-books` has run, callers of `research:books` may assume:
+After the books sources have been configured (this `books.md` reference), callers of `research:books` may assume:
 
 | Capability | Inputs | Returns | Conditional |
 |---|---|---|---|
@@ -36,7 +36,7 @@ After `research:configuring-books` has run, callers of `research:books` may assu
 
 The practice skill treats Not-Available as a routing signal, not as an error.
 
-**Etiquette is applied:** User-Agent contains a contact email, Google Books key is held in env, per-host rate limits are respected, marketplace plugins are installed where required. The shared rules live in [`books/references/etiquette.md`](../books/references/etiquette.md); each per-source reference cites that file for the rules it inherits.
+**Etiquette is applied:** User-Agent contains a contact email, Google Books key is held in env, per-host rate limits are respected, marketplace plugins are installed where required. The shared rules live in [`books/references/etiquette.md`](../../../books/references/etiquette.md); each per-source reference cites that file for the rules it inherits.
 
 ## When to Use
 
@@ -52,30 +52,30 @@ Walk the checklist top-to-bottom on a fresh environment. Each item probes the MC
 
 Default sources for wide adoption:
 
-- [ ] **Open Library** — probe `8enSmith/mcp-open-library`; if absent, configure HTTP fallback against `openlibrary.org` per [`books/references/open-library.md`](../books/references/open-library.md). Set `OPENLIBRARY_USER_AGENT` to a string containing a contact email. Smoke-test: ISBN→edition lookup for `9780321125217`.
-- [ ] **Gutendex / Project Gutenberg** — probe `bobbyhouse/project-gutenberg` (needs a local Gutenberg mirror); otherwise HTTP against `gutendex.com/books` per [`books/references/gutendex.md`](../books/references/gutendex.md). Smoke-test: title search for *On the Origin of Species*, fetch one passage.
-- [ ] **Internet Archive** — HTTP only against `archive.org/metadata` and `archive.org/advancedsearch.php` per [`books/references/internet-archive.md`](../books/references/internet-archive.md). Smoke-test: title search for one out-of-print technical manual.
-- [ ] **Google Books** — HTTP against `googleapis.com/books/v1/volumes` per [`books/references/google-books.md`](../books/references/google-books.md). Set `GOOGLE_BOOKS_API_KEY`. Smoke-test: table-of-contents fetch for a recent commercial nonfiction title.
+- [ ] **Open Library** — probe `8enSmith/mcp-open-library`; if absent, configure HTTP fallback against `openlibrary.org` per [`books/references/open-library.md`](../../../books/references/open-library.md). Set `OPENLIBRARY_USER_AGENT` to a string containing a contact email. Smoke-test: ISBN→edition lookup for `9780321125217`.
+- [ ] **Gutendex / Project Gutenberg** — probe `bobbyhouse/project-gutenberg` (needs a local Gutenberg mirror); otherwise HTTP against `gutendex.com/books` per [`books/references/gutendex.md`](../../../books/references/gutendex.md). Smoke-test: title search for *On the Origin of Species*, fetch one passage.
+- [ ] **Internet Archive** — HTTP only against `archive.org/metadata` and `archive.org/advancedsearch.php` per [`books/references/internet-archive.md`](../../../books/references/internet-archive.md). Smoke-test: title search for one out-of-print technical manual.
+- [ ] **Google Books** — HTTP against `googleapis.com/books/v1/volumes` per [`books/references/google-books.md`](../../../books/references/google-books.md). Set `GOOGLE_BOOKS_API_KEY`. Smoke-test: table-of-contents fetch for a recent commercial nonfiction title.
 
 Priority sources (personal-default; conditional on access):
 
-- [ ] **O'Reilly Learning** — probe order per [`books/references/oreilly.md`](../books/references/oreilly.md): official O'Reilly Learning MCP (enterprise SSO) first; if absent, `odewahn/orm-discovery-mcp` against the Platform Search API (personal subscription). If neither is reachable, mark the *O'Reilly library search* capability Not-Available. Smoke-test: search for "Kafka stream processing".
-- [ ] **Amazon Kindle** — no public MCP today; configure the user-supplied MCP path (expected capability shape: `search-by-title`, `fetch-passage`) or the `calibre-mcp` + Kindle plugin fallback per [`books/references/kindle.md`](../books/references/kindle.md). If neither is reachable, mark the *Kindle library search* capability Not-Available. Smoke-test: search the user's Kindle library for a known title.
+- [ ] **O'Reilly Learning** — probe order per [`books/references/oreilly.md`](../../../books/references/oreilly.md): official O'Reilly Learning MCP (enterprise SSO) first; if absent, `odewahn/orm-discovery-mcp` against the Platform Search API (personal subscription). If neither is reachable, mark the *O'Reilly library search* capability Not-Available. Smoke-test: search for "Kafka stream processing".
+- [ ] **Amazon Kindle** — no public MCP today; configure the user-supplied MCP path (expected capability shape: `search-by-title`, `fetch-passage`) or the `calibre-mcp` + Kindle plugin fallback per [`books/references/kindle.md`](../../../books/references/kindle.md). If neither is reachable, mark the *Kindle library search* capability Not-Available. Smoke-test: search the user's Kindle library for a known title.
 
 Opt-in sources (user's own corpus and aggregators; configure when the user supplies access):
 
-- [ ] **Apple Books via Claude Reader** — probe `jasonbates/claude-reader` per [`books/references/claude-reader.md`](../books/references/claude-reader.md). Local; DRM-free EPUB/PDF only. Smoke-test: search a known import.
-- [ ] **Calibre** — probe `trieloff/calibre-mcp` against the configured Calibre library path per [`books/references/calibre.md`](../books/references/calibre.md). Smoke-test: full-text search for a known phrase.
-- [ ] **Zotero** — probe `54yyyu/zotero-mcp` (or `cookjohn/zotero-mcp`) per [`books/references/zotero.md`](../books/references/zotero.md). Set `ZOTERO_API_KEY` and `ZOTERO_LIBRARY_ID`. Smoke-test: tag filter for a known tag.
-- [ ] **Alexandria (aggregator)** — probe `suavecito585/alexandria-mcp` per [`books/references/alexandria.md`](../books/references/alexandria.md). Smoke-test: cross-corpus query against the 46 keyless sources.
-- [ ] **Ebook-MCP / bookreader-mcp** — probe `onebirdrocks/ebook-mcp` or `jtmcn/bookreader-mcp` per [`books/references/ebook-mcp.md`](../books/references/ebook-mcp.md). Configure the EPUB/PDF directory path. Smoke-test: semantic search for a known phrase.
-- [ ] **Hardcover** — HTTP against `api.hardcover.app/v1/graphql` per [`books/references/hardcover.md`](../books/references/hardcover.md). Set `HARDCOVER_API_KEY`. Smoke-test: review search for a known title.
-- [ ] **HathiTrust** — HTTP against `catalog.hathitrust.org/api/volumes/...` per [`books/references/hathitrust.md`](../books/references/hathitrust.md). Bibliographic API is open; full-text Data API requires OAuth, configure when institutional access is available.
-- [ ] **Library of Congress** — HTTP against `loc.gov/{endpoint}/?fo=json` per [`books/references/library-of-congress.md`](../books/references/library-of-congress.md). Smoke-test: digitized primary-source query.
+- [ ] **Apple Books via Claude Reader** — probe `jasonbates/claude-reader` per [`books/references/claude-reader.md`](../../../books/references/claude-reader.md). Local; DRM-free EPUB/PDF only. Smoke-test: search a known import.
+- [ ] **Calibre** — probe `trieloff/calibre-mcp` against the configured Calibre library path per [`books/references/calibre.md`](../../../books/references/calibre.md). Smoke-test: full-text search for a known phrase.
+- [ ] **Zotero** — probe `54yyyu/zotero-mcp` (or `cookjohn/zotero-mcp`) per [`books/references/zotero.md`](../../../books/references/zotero.md). Set `ZOTERO_API_KEY` and `ZOTERO_LIBRARY_ID`. Smoke-test: tag filter for a known tag.
+- [ ] **Alexandria (aggregator)** — probe `suavecito585/alexandria-mcp` per [`books/references/alexandria.md`](../../../books/references/alexandria.md). Smoke-test: cross-corpus query against the 46 keyless sources.
+- [ ] **Ebook-MCP / bookreader-mcp** — probe `onebirdrocks/ebook-mcp` or `jtmcn/bookreader-mcp` per [`books/references/ebook-mcp.md`](../../../books/references/ebook-mcp.md). Configure the EPUB/PDF directory path. Smoke-test: semantic search for a known phrase.
+- [ ] **Hardcover** — HTTP against `api.hardcover.app/v1/graphql` per [`books/references/hardcover.md`](../../../books/references/hardcover.md). Set `HARDCOVER_API_KEY`. Smoke-test: review search for a known title.
+- [ ] **HathiTrust** — HTTP against `catalog.hathitrust.org/api/volumes/...` per [`books/references/hathitrust.md`](../../../books/references/hathitrust.md). Bibliographic API is open; full-text Data API requires OAuth, configure when institutional access is available.
+- [ ] **Library of Congress** — HTTP against `loc.gov/{endpoint}/?fo=json` per [`books/references/library-of-congress.md`](../../../books/references/library-of-congress.md). Smoke-test: digitized primary-source query.
 
-**Marketplace plugins.** Books currently uses no Anthropic-curated marketplace plugins, but the configure step is called out for parity with `configuring-papers`. The shape is the same when one is added later: `/plugin marketplace add anthropics/<marketplace>` then `/plugin install <plugin>@<marketplace>`, complete SSO if prompted.
+**Marketplace plugins.** Books currently uses no Anthropic-curated marketplace plugins, but the configure step is called out for parity with the papers setup reference (`papers.md`). The shape is the same when one is added later: `/plugin marketplace add anthropics/<marketplace>` then `/plugin install <plugin>@<marketplace>`, complete SSO if prompted.
 
-**Out-of-scope sources** are documented in [`books/references/out-of-scope.md`](../books/references/out-of-scope.md) with the reason each is excluded.
+**Out-of-scope sources** are documented in [`books/references/out-of-scope.md`](../../../books/references/out-of-scope.md) with the reason each is excluded.
 
 ## Re-Verification Triggers
 
@@ -85,11 +85,11 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 - An API key rotates or an OAuth token expires (Google Books, Hardcover, HathiTrust, Zotero, O'Reilly SSO).
 - A new books source is added that should sit in the contract.
 - A practice run reports a drift: a capability returned a shape the practice skill did not expect, or a smoke-test that previously passed now fails.
-- **O'Reilly individual access opens.** Target is 2026 with no published date as of writing. When the official O'Reilly Learning MCP becomes available to individual subscribers, promote it from the enterprise-only probe to the primary transport for personal use and update [`books/references/oreilly.md`](../books/references/oreilly.md) accordingly.
+- **O'Reilly individual access opens.** Target is 2026 with no published date as of writing. When the official O'Reilly Learning MCP becomes available to individual subscribers, promote it from the enterprise-only probe to the primary transport for personal use and update [`books/references/oreilly.md`](../../../books/references/oreilly.md) accordingly.
 
 ## Composes With
 
 - **`research:books`** — the per-query partner. Wiring publishes the contract; practice consumes it.
-- **`research:configuring-papers`** — sibling wiring for the papers stack. The two harnesses are disjoint at the source level but share the cadence convention.
+- **the papers setup reference (`papers.md`)** — sibling wiring for the papers stack. The two harnesses are disjoint at the source level but share the cadence convention.
 - **`research/references/citations.md`** — IEEE citation format the practice skill writes against.
 - **`research/references/jeopardy.md`** — query expansion the practice skill applies before dispatching to a capability.

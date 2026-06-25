@@ -84,7 +84,7 @@ Prefer the Rule of Three when the abstraction boundary is unclear or when the do
 ## Composes With
 
 - **the arrange-act-assert pattern (`references/patterns/arrange-act-assert.md`)** — each test in the triangulation sequence is an independent AAA test; do not combine the two examples into one test.
-- **`developer:red-green-refactor`** — triangulation is a strategy for the green phase when the refactor step is blocked by uncertainty about the correct abstraction.
+- **the red-green-refactor (build) phase** (`/ailly build`) — triangulation is a strategy for the green phase when the refactor step is blocked by uncertainty about the correct abstraction.
 
 ## Additional Notes
 

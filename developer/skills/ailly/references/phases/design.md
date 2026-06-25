@@ -1,9 +1,9 @@
----
-name: design
-description: "Use when starting creative work such as building features, components, or modifying system behavior, and the research is cleared. Explores alternatives, produces a formal design document, and writes the one executable feature test that defines done."
----
+# Design Phase
 
-# developer:design
+> Phase reference loaded by the coordinator (`developer:ailly`) when entered as
+> `/ailly design ...`. The coordinator hands this to an isolated phase subagent
+> that reads only this one reference. There is no standalone `developer:design`
+> skill; the phase is entered by argument.
 
 ## Overview
 
@@ -79,7 +79,7 @@ digraph brainstorming {
     test [shape=box label="Write the one feature test\n(record path in design.md)"];
     review [shape=box label="Self-review design + test\n(fix inline)"];
     user_review [shape=diamond label="User reviews written draft?"];
-    done [shape=doublecircle label="Invoke developer:plan in a new session"];
+    done [shape=doublecircle label="Run developer:ailly (plan phase)\nin a new session"];
 
     explore -> research;
     research -> visual_q;
@@ -96,7 +96,7 @@ digraph brainstorming {
 }
 ```
 
-**The terminal state is a completed design doc plus its one failing feature test.** Do NOT invoke any implementation skill. The user will invoke `developer:plan` in a new session once the draft is cleared.
+**The terminal state is a completed design doc plus its one failing feature test.** Do NOT invoke any implementation skill. The user will run `developer:ailly` (resuming at the plan phase) in a new session once the draft is cleared.
 
 ## The Process
 
@@ -144,6 +144,6 @@ Write the validated design to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`.
 **User Review Gate:**
 After the review loop passes, ask the user to review the written design and feature test before proceeding.
 
-> "The design is at `<path>/design.md` and the feature test is at `<test-file-path>`. Please make any further modifications you find appropriate. When you're satisfied, end this session, remove the `*Draft*` marker from `design.md`, and run `developer:ailly` (or `developer:plan`) in a new session to continue."
+> "The design is at `<path>/design.md` and the feature test is at `<test-file-path>`. Please make any further modifications you find appropriate. When you're satisfied, end this session, remove the `*Draft*` marker from `design.md`, and run `developer:ailly` (it resumes at the plan phase) in a new session to continue."
 
 Wait for the user's response. If they request changes, make them and re-run the review loop. Stop once the user approves. Do not continue to any implementation skill in this prompt. Politely decline any such requests.

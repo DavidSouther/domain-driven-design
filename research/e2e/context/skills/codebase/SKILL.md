@@ -7,7 +7,7 @@ description: Use when performing research on the current codebase — finding wh
 
 ## Overview
 
-Answers research questions about the current codebase state using LSP queries first, Bash search as fallback. Never uses git history — that is archaeology's domain.
+Answers research questions about the current codebase state using LSP queries first, Bash search as fallback. Never uses git history — that is archaeology's domain. Language-server install and project priming belong in [the codebase setup reference](../using-research/references/configuring/codebase.md); this skill consumes the contract that skill publishes.
 
 ## When to Use
 
@@ -16,7 +16,7 @@ Answers research questions about the current codebase state using LSP queries fi
 - Understanding interface implementations or trait bounds
 - Reading a module's public surface without opening every file
 
-**Do NOT use** for questions about why code changed (use `archaeology`), or about dependency origins (use `dependencies`).
+**Do NOT use** for questions about why code changed (use `archaeology`), or about dependency origins (use `dependencies`). To install or prime a language server, or to add a new language to the contract, use [the codebase setup reference](../using-research/references/configuring/codebase.md), not this skill.
 
 ## Query Expansion (Jeopardy! Search)
 
@@ -33,11 +33,13 @@ Run all variants; union results before drawing conclusions.
 ## Search Strategy
 
 **Prefer LSP** (see language reference files) for:
-- Symbol definitions and hover types — `definition`, `hover`
-- All call sites / usages — `references`
-- Interface/trait implementors — `references` on the type definition
-- Available members on a value — `completions`
-- Errors in a file — `diagnostics`
+- Symbol definitions and hover types — `goToDefinition`, `hover`
+- All call sites / usages — `findReferences`
+- Interface/trait implementors — `goToImplementation`
+- A file's or workspace's symbol tree — `documentSymbol`, `workspaceSymbol`
+- Callers / callees of a function — `prepareCallHierarchy` with `incomingCalls`/`outgoingCalls`
+- Available members on a value — `hover` (the `LSP` tool exposes no `completions`)
+- Errors in a file — run `cargo check` / `tsc` via Bash (the `LSP` tool exposes no `diagnostics`)
 
 **Bash fallback** when LSP is unavailable or for:
 - String literals and comments (not symbols)
@@ -67,3 +69,10 @@ Write findings to `docs/research/YYYY-MM-DD-A-<topic>/codebase.md`.
 - **Using git for context** — blame and log are archaeology tools; avoid them here.
 - **Stopping at first match** — a symbol may have multiple definitions (overloads, feature flags); collect all before concluding.
 - **Asserting a universal without searching its negation** — claims like "no caller does X" or "every write path does Y" are easy to state and easy to be wrong about. Before reporting a universal, search for its counterexample. See `research/references/falsify.md`.
+- **Re-teaching the wiring** — a "first, make sure rust-analyzer is installed" or "activate the venv before searching" preface is wiring leakage. The wiring SKILL owns install and priming; this skill consumes the contract. If a preface is unavoidable, the contract is incomplete — widen it in [the codebase setup reference](../using-research/references/configuring/codebase.md).
+
+## Composes With
+
+- **the codebase setup reference** (`research:using-research`, `references/configuring/codebase.md`) — the wiring partner. Publishes the LSP-operation contract this skill consumes and owns language-server install and project priming.
+- **`research/references/jeopardy.md`** — the identifier-variant query expansion this skill runs before searching.
+- **`research/references/falsify.md`** — the falsification pass on universal claims (see Common Mistakes).

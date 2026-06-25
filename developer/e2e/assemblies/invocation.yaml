@@ -1,8 +1,16 @@
 name: invocation
 model: claude-sonnet-4-6
 
+# Post-consolidation (Feature C): the five lifecycle phases are no longer standalone
+# `../skills/<name>/SKILL.md` bodies; they collapsed into references under the coordinator
+# (`../skills/ailly/references/phases/<phase>.md`) entered by argument. This invocation
+# matrix therefore carries only the four AUXILIARY skills that survive as standalone
+# skills (thinking, refactor, initialize, ailly). The five phase bodies are exercised by
+# the sibling `invocation-phases.yaml` suite, which loads them from their new reference
+# path. Both suites keep the same prompts and checkers; only the loaded file changed.
+#
 # Loads the routing bootstrap plus exactly one skill body (the matrix value).
-# Paths are project-rooted; vendor.sh populates ./context/ before assemble.
+# Paths are project-rooted; vendor.py populates ./context/ before assemble.
 prefix:
   - { kind: file,   path: context/AGENTS.md,                       cache: true }
   - { kind: file,   path: profile.md,                              cache: true }
@@ -13,14 +21,9 @@ prefix:
 
 matrix:
   skill:
-    - research
-    - design
-    - plan
-    - red-green-refactor
     - thinking
     - refactor
     - initialize
-    - cleanup
     - ailly
 
 conversation:

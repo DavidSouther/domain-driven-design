@@ -7,7 +7,7 @@ description: Use when a research question targets a citable book — ISBN-keyed 
 
 ## Overview
 
-Per-query research against the configured books capability contract. Pick the **capability** the question needs (ISBN lookup, table-of-contents, library search, full-text retrieval), dispatch to it, write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, and re-verification belong in [`research:configuring-books`](../configuring-books/SKILL.md); this skill consumes the contract that skill publishes.
+Per-query research against the configured books capability contract. Pick the **capability** the question needs (ISBN lookup, table-of-contents, library search, full-text retrieval), dispatch to it, write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, and re-verification belong in [the books setup reference](../using-research/references/configuring/books.md); this skill consumes the contract that skill publishes.
 
 ## When to use / When NOT to use
 
@@ -20,7 +20,7 @@ Per-query research against the configured books capability contract. Pick the **
 
 **When NOT to use:**
 
-- To configure books sources, install an MCP, rotate a key, or add a new source. Those belong in [`research:configuring-books`](../configuring-books/SKILL.md).
+- To configure books sources, install an MCP, rotate a key, or add a new source. Those belong in [the books setup reference](../using-research/references/configuring/books.md).
 - For language reference, library documentation, RFCs, or public web search — use `research:public`.
 - For internal documents (Slack, Confluence, Linear, Notion) — use `research:internal`.
 - For domain-model questions (entities, bounded contexts, ubiquitous language) — use `research:domain`.
@@ -40,7 +40,7 @@ Run the variants in the order that the routing table below dictates. Union the r
 
 ## Capability routing
 
-Capabilities are named in the contract published by [`research:configuring-books`](../configuring-books/SKILL.md). The routing table maps question type to the capability that answers it.
+Capabilities are named in the contract published by [the books setup reference](../using-research/references/configuring/books.md). The routing table maps question type to the capability that answers it.
 
 | Question intent | Primary capability | Reference |
 |---|---|---|
@@ -96,13 +96,13 @@ Excerpts only; do not stage cached PDFs or full bodies. For passages from copyri
 - **Mixing capabilities.** Calling Gutendex for an in-copyright recent technical book; calling Google Books for a 19th-century classic. Each capability has a content focus; the routing table is the lookup.
 - **Quoting from non-quotable sources.** HathiTrust gated full text is non-consumptive; Hardcover reviews are user-generated under platform terms; O'Reilly content is subscription-licensed; Kindle and Apple Books content is personal-use licensed. Cite-and-link instead.
 - **Ignoring typed Not-Available.** A conditional capability returning Not-Available is a routing signal, not a failure. Continue with the next capability in the heuristic.
-- **Re-teaching the wiring.** A "first, make sure you have configured O'Reilly access" preface is wiring leakage. The wiring SKILL owns setup; this skill consumes the contract. If a preface is unavoidable, the contract is incomplete — widen it in [`research:configuring-books`](../configuring-books/SKILL.md).
+- **Re-teaching the wiring.** A "first, make sure you have configured O'Reilly access" preface is wiring leakage. The wiring SKILL owns setup; this skill consumes the contract. If a preface is unavoidable, the contract is incomplete — widen it in [the books setup reference](../using-research/references/configuring/books.md).
 - **Routing the user's own corpus to public sources first.** When the user asks about a passage from a book they own, the priority order is their library (Kindle, Apple Books, Calibre, Zotero, Ebook-MCP) **before** Open Library or Internet Archive.
 - **Treating Alexandria as a replacement for per-source capabilities.** Alexandria is a supplement for cross-corpus sweeps; for targeted ISBN lookup, edition disambiguation, or public-domain full-text retrieval, the per-source capability gives richer query shapes and licensing metadata.
 
 ## Composes With
 
-- **`research:configuring-books`** — the wiring partner. Publishes the contract this skill consumes.
+- **the books setup reference** (`research:using-research`, `references/configuring/books.md`) — the wiring partner. Publishes the contract this skill consumes.
 - **`research:papers`** — sibling practice skill for academic papers.
 - **`research/references/jeopardy.md`** — query expansion technique.
 - **`research/references/citations.md`** — IEEE citation format.
