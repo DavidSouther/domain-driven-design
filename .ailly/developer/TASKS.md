@@ -67,6 +67,28 @@ Implement. **The project is halted at the human merge gate and the Closing Bell.
   historical cached judge artifacts under `developer/e2e/evals/judges/2026-06-12...`
   carry pre-consolidation strings and regenerate on the next live run.
 
+## Follow-ups: progressive disclosure round 2 (developer + domain deep consolidation)
+
+Deeper consolidation on `progressive_disclosure` (commits `d242f2e` domain, `2b496cb`
+developer). developer/skills/ is now { ailly, clean-comments-review }; domain/skills/ is
+now { using-domain }. Total concurrent Level-1 choices ~66 -> ~20. Open:
+
+- **Re-run developer/e2e and domain/e2e live (supersedes the round-1 runs for these two).**
+  Both suites were re-expressed again this round (developer split ability cases into
+  invocation/baseline-abilities, 1+5+3=9; domain collapsed to 5 ability references). The
+  earlier live validation ran against the prior structure. Re-run
+  `AILLY_BIN=/Users/david.souther/bin/ailly bash developer/e2e/ci.sh` and
+  `AILLY=/Users/david.souther/bin/ailly bash domain/e2e/ci.sh` and confirm discovery
+  holds and `improved>0, regressed==0`. (pytest was unavailable here, so
+  `developer/tests/` was verified by `bash -n`/structure only; run `pytest developer/tests/`
+  too once available.)
+- **Minor cosmetic staleness (non-blocking).** `developer/skills/ailly/references/refactor.md`
+  says "Drive the names from `domain:glossary`" (now the glossary ability under
+  `domain:using-domain`); the domain `e2e/evals/scripts/check_*.py` docstrings still name
+  `domain:<ability>` invocation cases. Refresh wording opportunistically; neither breaks
+  routing. The research/e2e `context/skills/domain/SKILL.md` fixture references
+  `domain:glossary` but is a vendored research-suite snapshot, out of scope.
+
 ## Follow-ups: phase-entry guardrails (`2026-06-24-A-phase-guardrails`)
 
 Implemented and green (`developer/tests/test_phase_guardrails.py` G1–G7 pass; `test_model_per_phase.py` stays green). Ran the two complementary prompts (`.ailly/prompts/fail-if-no-tools.md`, `.ailly/prompts/force-model-per-phase.md`) together as one phase-boundary escalation discipline: new `developer/references/tool-failure.md`, a strengthened "Phase-entry check" (active current-vs-recommended comparison, mismatch flagged, no-gate preserved) in `developer/references/model-per-phase.md`, a unifying `## Phase-Entry Checks` section in `developer/skills/ailly/SKILL.md` pointing at both, and a harness-first/announce-fallback chain wired into the four phase-skill announce lines ("I'll switch when the harness allows; otherwise `/model` as the fallback"). The announce lines are **provider-parametric**: they defer to the Phase by Provider table and select the model for the active provider rather than hardcoding the Anthropic model, so the verbatim model names + qualifiers live in the reference table (the source of truth) and `test_model_per_phase.py` now asserts them there (R4) plus provider-neutrality of the announce lines (R5, no hardcoded model). Deferred:
