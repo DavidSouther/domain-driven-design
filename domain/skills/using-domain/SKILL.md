@@ -7,14 +7,16 @@ description: Bootstrap skill for Domain-Driven Design. Loaded when brainstorming
 
 You are working in a project that uses Domain-Driven Design practices. Invoke the appropriate skill for each situation:
 
+**Glossary-first gate:** before introducing, naming, or changing any domain term, invoke `domain:glossary` first. All other DDD skills defer to it for terminology.
+
 | Situation | Invoke |
 |-----------|--------|
-| Starting a new project, service, or feature with business logic | `ddd:domain-model` |
-| Naming entities, operations, or domain concepts | `ddd:ubiquitous-language` |
-| An ambiguous or potentially synonymous term appears | `ddd:glossary` |
-| Designing any API boundary, service interface, or domain operation | `ddd:contracts-and-invariants` |
-| Evaluating architecture, adding persistence, or feeling scaling pressure | `ddd:arrow-of-maturity` |
-| Reviewing changes to entities, value objects, aggregates, or bounded contexts | `ddd:domain-review` |
+| Starting a new project, service, or feature with business logic | `domain:domain-model` |
+| Introducing, naming, or changing any domain term, entity, operation, or concept (check the glossary first; resolve synonyms and ambiguity) | `domain:glossary` |
+| Developing the ubiquitous language for a bounded context | `domain:ubiquitous-language` |
+| Designing any API boundary, service interface, or domain operation | `domain:contracts-and-invariants` |
+| Evaluating architecture, adding persistence, or feeling scaling pressure | `domain:arrow-of-maturity` |
+| Reviewing changes to entities, value objects, aggregates, or bounded contexts | `domain:domain-review` |
 
 ## Change Cadence Gate
 
