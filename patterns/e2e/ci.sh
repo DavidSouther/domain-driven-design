@@ -45,8 +45,19 @@ for f in "${project_dir}/AGENTS.md" "${project_dir}/profile.md"; do
     echo "FAIL: ${f#"${repo_root}/"} contains a 'patterns:*' identifier; the baseline arm leaks the answer." >&2
     exit 1
   fi
+  # Post-consolidation: the discovery answer is the bare pattern name AND its
+  # `references/patterns/<name>.md` path. The leaf identifiers are retired, so the
+  # reference-path form is the post-consolidation answer token; forbid it leaking into
+  # the baseline arm's context too. Bare pattern names are NOT grepped (reviewer
+  # decision 2: they false-positive on prose like "builder"/"repository"); the
+  # falsification strength is carried on the assertion side, which requires BOTH the
+  # name and the path that the baseline arm cannot emit.
+  if grep -E 'references/patterns/[a-z][a-z-]+' "${f}" >/dev/null 2>&1; then
+    echo "FAIL: ${f#"${repo_root}/"} contains a 'references/patterns/<name>' path; the baseline arm leaks the answer." >&2
+    exit 1
+  fi
 done
-echo "OK: falsification grep clean (no 'patterns:*' identifier in AGENTS.md or profile.md)."
+echo "OK: falsification grep clean (no 'patterns:*' identifier or 'references/patterns/<name>' path in AGENTS.md or profile.md)."
 
 expected_count() {
   case "$1" in

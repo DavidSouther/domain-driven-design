@@ -91,21 +91,18 @@ The Arrow of Maturity describes six architectural stages a DDD project grows thr
 ### Design Patterns (`patterns:*`)
 
 Provides structured guidance for applying common software patterns at the right time.
+The plugin exposes a single skill, `patterns:using-patterns`, whose body is the routing
+surface. Each pattern's full guidance lives in a reference under
+`patterns/skills/using-patterns/references/patterns/<name>.md`, loaded on demand.
 
-| Skill | When to use |
-|-------|-------------|
-| `patterns:using-patterns` | Bootstrap — establishes when to invoke each pattern skill |
-| `patterns:aggregate` | Operations that must transition domain state atomically |
-| `patterns:arrange-act-assert` | Writing any test to ensure clear setup, single action, and focused assertions |
-| `patterns:bootstrap-and-service` | Wiring concrete dependencies and separating domain from HTTP/CLI |
-| `patterns:builder` | Object construction with many fields or required/optional distinction |
-| `patterns:entities-value-objects-services` | Deciding what has identity, what is a value, what is a function |
-| `patterns:newtype` | A primitive type represents a distinct domain concept |
-| `patterns:parse-dont-validate` | Data arrives from an external boundary (HTTP, input, file, queue) |
-| `patterns:repository` | Decoupling domain logic from a specific storage technology |
-| `patterns:triangulate` | A hardcoded implementation passes the first test and the right generalization is not yet obvious |
-| `patterns:type-states` | Modeling a state machine or finite set of mutually-exclusive states |
-| `patterns:unit-of-work` | Bridging an Aggregate with a Repository in a single transaction |
+`patterns:using-patterns` is the bootstrap and router: it names the pattern that fits a
+design pressure and points at its `references/patterns/<name>.md`.
+
+The patterns it routes to (each a `references/patterns/<name>.md` reference): aggregate,
+arrange-act-assert, bootstrap-and-service, builder, configuring-feature-flags,
+configuring-logging, domain-objects, emitting-logs, errors-typed-untyped, newtype,
+parse-dont-validate, repository, triangulate, type-conversion, type-states,
+unit-of-work, using-feature-flags, visibility.
 
 ### Research (`research:*`)
 

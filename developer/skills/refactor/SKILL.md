@@ -33,7 +33,7 @@ Code smells are patterns for applying refactoring.
 - **Comments** There’s a fine line between comments that illuminate and comments that obscure. Are the comments necessary? Do they explain “why” and not “what”? Can you refactor the code so the comments aren’t required? And remember, you’re writing comments for people, not machines.
 - **Conditional Complexity** Watch out for large conditional logic blocks, particularly blocks that tend to grow larger or change significantly over time. Consider alternative object-oriented approaches such as decorator, strategy, or type state.
 - **Combinatorial Explosion** You have lots of code that does almost the same thing... but with tiny variations in data or behavior. This can be difficult to refactor – perhaps using generics or an interpreter?
-- **Temporary Field** Watch out for objects that contain a lot of optional or unnecessary fields. If you’re passing an object as a parameter to a method, make sure that you’re using all of it and not cherry-picking single fields. Use `patterns:domain-objects`.
+- **Temporary Field** Watch out for objects that contain a lot of optional or unnecessary fields. If you’re passing an object as a parameter to a method, make sure that you’re using all of it and not cherry-picking single fields. Use the domain-objects pattern (`patterns:using-patterns`, `references/patterns/domain-objects.md`).
 
 - **Long Method** All other things being equal, a shorter method is easier to read, easier to understand, and easier to troubleshoot. Refactor long methods into smaller methods if you can.
 - **Long Parameter List** The more parameters a method has, the more complex it is. Limit the number of parameters you need in a given method, or use an object to combine the parameters.
@@ -49,7 +49,7 @@ Code smells are patterns for applying refactoring.
 ### Code Smells Between Classes
 
 - **Alternative Classes with Different Interfaces** If two classes are similar on the inside, but different on the outside, perhaps they can be modified to share a common interface.
-- **Primitive Obsession** Apply `patterns:newtype` instead of using primitive types at API boundaries. Primitives are perfectly fine within a method or function.
+- **Primitive Obsession** Apply the newtype pattern (`patterns:using-patterns`, `references/patterns/newtype.md`) instead of using primitive types at API boundaries. Primitives are perfectly fine within a method or function.
 
 - **Data Clumps** If you always see the same data hanging around together, maybe it belongs together. Consider rolling the related data up into a larger class.
 - **Inheritance** Prefer composition to inheritance.

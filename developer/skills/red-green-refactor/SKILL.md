@@ -69,10 +69,10 @@ Run check. Fix all type errors before writing any tests. A clean type check mean
 
 ## Test: Arrange-Act-Assert
 
-Add one test per iteration using `patterns:arrange-act-assert`. The test should:
+Add one test per iteration using the arrange-act-assert pattern (`patterns:using-patterns`, `references/patterns/arrange-act-assert.md`). The test should:
 - Target one behavior of the current plan step
 - Fail for the right reason (the implementation is a stub, not a type error)
-- Triangulate implementation and edge cases, following `patterns:triangulate`
+- Triangulate implementation and edge cases, following the triangulate pattern (`patterns:using-patterns`, `references/patterns/triangulate.md`)
 
 Run check, then run tests. Confirm the test fails as expected.
 

@@ -20,7 +20,7 @@ Review domain model changes for alignment with DDD principles and the project's 
 
 Evaluate the following. For each finding, name the file and line, quote the relevant code, state what principle is violated, and recommend an action.
 
-**Identity and value semantics** — Each object should be either identity-bearing (Entity) or equality-by-value (Value Object), not both and not neither. Flag an Entity that exposes no stable identity, a Value Object that carries mutable state, or an object whose role is ambiguous. See `patterns:domain-objects`.
+**Identity and value semantics** — Each object should be either identity-bearing (Entity) or equality-by-value (Value Object), not both and not neither. Flag an Entity that exposes no stable identity, a Value Object that carries mutable state, or an object whose role is ambiguous. See the domain-objects pattern (`patterns:using-patterns`, `references/patterns/domain-objects.md`).
 
 **Invariant placement** — Business rules that must always hold should be enforced by the object that owns the state, not by callers. Flag validation or guard logic that lives outside the domain object it protects, or an object whose constructor accepts inputs it never rejects.
 

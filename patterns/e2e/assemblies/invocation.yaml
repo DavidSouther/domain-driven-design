@@ -24,8 +24,10 @@ prefix:
   - { kind: file,   path: AGENTS.md,                       cache: true }
   - { kind: file,   path: profile.md,                      cache: true }
   - { kind: system, path: skills/using-patterns/SKILL.md,  cache: true }
+  # Post-consolidation: the leaf skills are now references under using-patterns. The
+  # per-skill system file is the relocated reference, not a standalone SKILL.md.
   - kind: system
-    path: "skills/{{ skill }}/SKILL.md"
+    path: "skills/using-patterns/references/patterns/{{ skill }}.md"
     cache: true
 
 conversation:

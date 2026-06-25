@@ -33,7 +33,8 @@ Middle-loop planning skill. Given a cleared design and its failing feature test,
 Before implementation steps, define the type and API surface area the feature test requires. Step 0 is where all new types and public function signatures are established as stubs:
 
 - Introduce new entities, value objects, or services needed
-- Lean on `patterns:entities-value-objects-services`, `patterns:newtype`, `patterns:type-states` for guidance
+- Run the dedicated "look for applicable patterns" beat (`.ailly/prompts/plan-use-patterns.md`): consult `patterns:using-patterns` and name the patterns that apply before fixing the surface.
+- Lean on the domain-objects pattern (`patterns:using-patterns`, `references/patterns/domain-objects.md`), the newtype pattern (`references/patterns/newtype.md`), and the type-states pattern (`references/patterns/type-states.md`) for guidance
 - Show type signatures and function signatures (not implementations) for new objects
 - Keep this focused on the domain model, not persistence or UI
 
