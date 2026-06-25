@@ -1,5 +1,55 @@
 # Next Tasks
 
+## Follow-ups: skill progressive disclosure (`2026-06-25-A-progressive-disclosure`)
+
+Project run (long loop) on branch `progressive_disclosure`. Three features built and
+committed; concurrent Level-1 skill choices dropped ~66 to ~34 (patterns 19 to 1,
+characters 5 to 0, developer 14 to 9, research 14 to 9). Documents are long-lived
+(`design.md`, `closing-bell.md`, `report.md`, `plan.md`, `research.md`); design phase is
+Implement. **The project is halted at the human merge gate and the Closing Bell.** Open:
+
+- **Run the live e2e validation before merge (the go/no-go gate).** No `ailly` binary or
+  model key was present, so all gates are structural only (the standing repo deferral).
+  Run all four re-expressed suites with a key/`.env`: `bash patterns/e2e/ci.sh`,
+  `bash developer/e2e/ci.sh`, `bash research/e2e/ci.sh`, `bash characters/e2e/ci.sh`
+  (the last is a structural `check_metrics.py`). For patterns confirm
+  `newtype-vs-evs-order-line` and `errors-library-failure` flip green,
+  `newtype-mixed-ids` holds, and `improved>0, regressed==0`. If patterns routing does
+  not hold-or-improve, the consolidation thesis is refuted; reconsider before merge.
+- **Run the Closing Bell** (`.ailly/developer/2026-06-25-A-progressive-disclosure/closing-bell.md`):
+  a human usability study, run once. Critical tasks 1-6 must pass before the project lands.
+- **Replicate the long-lived docs to the org repository on acceptance** (project-cycle
+  Long-Lived Documentation): once a doc's section is approved, copy `design.md` (main
+  page) with `closing-bell.md`/`report.md`/`plan.md`/`research.md` as sub-pages to the
+  configured doc repo. Destination not configured here; ask before replicating.
+- **General plugin is the recognized next consolidation project** (design Summary): a
+  mechanism mismatch (review/thinking/dispatching to agents; writing-* to a bootstrap).
+  Out of scope here; run as its own project.
+- **Stale illustrative `patterns:<leaf>` identifiers in the general plugin**
+  (`general/skills/writing-pattern-skills/SKILL.md`, `general/skills/writing-paired-skills/SKILL.md`,
+  `general/e2e/evals/scripts/check_writing_pattern_skills.py`) teach the `plugin:skill`
+  cross-reference form using now-retired example names. Refresh to a still-valid example
+  when the general consolidation project runs (touching them now risks general/e2e).
+- **Research configuring invocation coverage was dropped, not relocated.** Feature C
+  removed the two `configuring-*` invocation/baseline cases (now 8 source leaves) rather
+  than mix load paths in one matrix; `research/e2e/evals/scripts/check_configuring_books.py`
+  and `check_configuring_papers.py` are now unreferenced. Either restore invocation-level
+  coverage via a `configuring` arm loading `references/configuring/<name>.md` (the phase-
+  style split the developer suite got), or delete the two scripts. Discovery still gates
+  setup-routing.
+- **Smaller parked items.** Token-trim the deliberately keyword-rich `using-patterns`
+  description once discoverability is also carried by the always-loaded body; decide if
+  `plan-use-patterns.md` needs its own eval case (currently rides the patterns suite);
+  historical cached judge artifacts under `developer/e2e/evals/judges/2026-06-12...`
+  carry pre-consolidation strings and regenerate on the next live run.
+
+## Follow-ups: phase-entry guardrails (`2026-06-24-A-phase-guardrails`)
+
+Implemented and green (`developer/tests/test_phase_guardrails.py` G1–G7 pass; `test_model_per_phase.py` stays green). Ran the two complementary prompts (`.ailly/prompts/fail-if-no-tools.md`, `.ailly/prompts/force-model-per-phase.md`) together as one phase-boundary escalation discipline: new `developer/references/tool-failure.md`, a strengthened "Phase-entry check" (active current-vs-recommended comparison, mismatch flagged, no-gate preserved) in `developer/references/model-per-phase.md`, a unifying `## Phase-Entry Checks` section in `developer/skills/ailly/SKILL.md` pointing at both, and a harness-first/announce-fallback chain wired into the four phase-skill announce lines ("I'll switch when the harness allows; otherwise `/model` as the fallback"). The announce lines are **provider-parametric**: they defer to the Phase by Provider table and select the model for the active provider rather than hardcoding the Anthropic model, so the verbatim model names + qualifiers live in the reference table (the source of truth) and `test_model_per_phase.py` now asserts them there (R4) plus provider-neutrality of the announce lines (R5, no hardcoded model). Deferred:
+
+- **Behavior-level e2e coverage.** Same deferral as the model-per-phase work: no invocation-harness case asserts the coordinator actually performs the model comparison or the tool-failure escalation at runtime. The feature test is a static contract check over the source files only.
+- **`ruff` not on PATH at build time.** Could not lint/format the new `test_phase_guardrails.py` (mirrors the existing test's style). Run `ruff check --fix && ruff format` over it once ruff is available — folds into the existing "Cleanup hygiene" ruff item below.
+
 ## Follow-ups: program-management skills (`developer:configuring-program-management` / `using-program-management`)
 
 Merged to `main` via PR (built on `issue_tracking`, feature `943fd6f` + refactor `d004979`). All five plan steps verified **offline** (vendor.py regenerates `disclosure.md` with both skills; routing rows in `using-developer`; integration edits in `ailly`/`cleanup`). Open:
@@ -69,3 +119,10 @@ Ruff findings that predate the refactor, in files it never touched (do not bundl
 The long-loop coordination mode was authored 2026-06-17 (source prompt `.ailly/prompts/dynamic-workflow.md`): a `## Long-loop Mode` section in `developer/skills/ailly/SKILL.md` plus `developer/references/long-loop.md`. The `developer/e2e/` feature-test case for it was added 2026-06-24 (the `long-loop` / `long-loop-baseline` assembly pair, `evals/scripts/check_long_loop.py` asserting L1-L4, and the second falsification comparison in `ci.sh`). One residual is deferred:
 
 - **Confirm the long-loop eval live (needs the `ailly` binary + a model key).** The case is authored and the structural checker is unit-verified against synthetic good/baseline turns, but the live run (`developer/e2e/ci.sh`) was not executed here because the `ailly` binary is not installed and no model key was available. Run `bash developer/e2e/ci.sh` once both are present and confirm the long-loop comparison reports `improved>0, regressed==0`. Same deferral as the program-management discovery-eval follow-up. The dry-run trace at `.ailly/developer/TASK-NOTES-long-loop-e2e.md` (assertions A1-A7) is the spec the checker encodes.
+
+## Follow-ups: modular review composer (`general:review`)
+
+Merged to `main` via PR #13 (`d278792`). `general:review` is now a composer: compose applicable reviewers (base four-criterion reviewer always present, specialists discovered by `description`) → dispatch in parallel → converge (verify/dedup/severity-rank) → fix → re-evaluate. Added `domain:domain-review` as a composable specialist and registered it in `using-domain`. Deferred from design (`.ailly/developer/2026-06-15-A-reviewers/design.md`):
+
+- **Dynamic-workflow dispatch path is unexercised.** The skill specifies static `Agent` dispatch below six reviewers and a dynamic workflow at or above. Only three composable reviewers exist today (base, `developer:clean-comments-review`, `domain:domain-review`), so the dynamic path is never reached and the feature test does not cover it. Revisit when a sixth specialist lands.
+- **Eval coverage for the composer reframing.** The existing `general/e2e` invocation `review` case (`check_review.py` R1–R4 + judge) is structural and framing-neutral; it does not assert the composed-set structure (a second distinct lens, the convergence stage). Decide in a separate session whether to update the discovery/baseline evals or add a dynamic-dispatch eval case. Harness changes were out of scope for the authoring session.

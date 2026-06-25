@@ -1,6 +1,6 @@
 # Project Design: Skill Progressive Disclosure for the Ailly Skillset
 
-**Phase:** Review
+**Phase:** Implement (features A/B/C landed on `progressive_disclosure`; awaiting the live e2e validation, the Closing Bell, and the merge gate before Completed)
 **Closing Bell:** `.ailly/developer/2026-06-25-A-progressive-disclosure/closing-bell.md`
 **Release flag:** the `progressive_disclosure` branch / merge gate (see Release Flagging).
 
