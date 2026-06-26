@@ -17,11 +17,13 @@ matrix:
     - public
 
 prefix:
-  - { kind: file,   path: ./AGENTS.md,                                cache: true }
-  - { kind: file,   path: ./context/AGENTS.md,                        cache: true }
-  - { kind: system, path: ./context/skills/using-research/SKILL.md,   cache: true }
-  - kind: system
-    path: "context/skills/{{ skill }}/SKILL.md"
+  - { kind: file,     path: ./AGENTS.md,                            cache: true }
+  - { kind: file,     path: ./context/AGENTS.md,                    cache: true }
+  - { kind: external, path: ../skills/using-research/SKILL.md,       cache: true }
+  # Pull each source-leaf body straight from the real skill tree via an external
+  # link, rather than duplicating it under context/skills/<name>/SKILL.md.
+  - kind: external
+    path: "../skills/{{ skill }}/SKILL.md"
     cache: true
 
 conversation:
