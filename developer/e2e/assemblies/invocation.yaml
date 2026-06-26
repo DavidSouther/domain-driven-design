@@ -1,26 +1,23 @@
 name: invocation
 model: claude-sonnet-4-6
 
-# Loads the routing bootstrap plus exactly one skill body (the matrix value).
-# Paths are project-rooted; vendor.sh populates ./context/ before assemble.
+# Post-consolidation (progressive-disclosure, developer-plugin consolidation): the only
+# standalone developer skills left are `ailly` (the bootstrap + coordinator) and
+# `clean-comments-review`. The five lifecycle phases live as references under the
+# coordinator (../skills/ailly/references/phases/<phase>.md, exercised by
+# invocation-phases.yaml), and the four progressive abilities (thinking, refactor,
+# initialize, program-management) live as references too (../skills/ailly/references/...,
+# exercised by invocation-abilities.yaml). This suite therefore carries only the `ailly`
+# coordinator case. The bootstrap IS the ailly body, so it is loaded once.
+#
+# Paths are project-rooted; vendor.py populates ./context/ before assemble.
 prefix:
-  - { kind: file,   path: context/AGENTS.md,                       cache: true }
-  - { kind: file,   path: profile.md,                              cache: true }
-  - { kind: external, path: ../skills/using-developer/SKILL.md, cache: true }
-  - kind: external
-    path: "../skills/{{ skill }}/SKILL.md"
-    cache: true
+  - { kind: file,   path: context/AGENTS.md,           cache: true }
+  - { kind: file,   path: profile.md,                  cache: true }
+  - { kind: external, path: ../skills/ailly/SKILL.md,  cache: true }
 
 matrix:
   skill:
-    - research
-    - design
-    - plan
-    - red-green-refactor
-    - thinking
-    - refactor
-    - initialize
-    - cleanup
     - ailly
 
 conversation:

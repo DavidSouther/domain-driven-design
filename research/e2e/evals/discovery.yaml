@@ -43,27 +43,41 @@ cases:
           change — historical rationale from git history, not current state. It
           does not select research:codebase.
 
+  # Post-consolidation (progressive-disclosure Feature C): the five setup-only
+  # `research:configuring-*` descriptions were deferred out of the always-on Level-1 view.
+  # They are no longer standalone skills; source wiring is a once-per-environment task that
+  # lives as on-demand references under the `research:using-research` bootstrap (its
+  # "Configuring Sources" section), at `references/configuring/<name>.md`. The discovery arm
+  # loads that bootstrap body, so each configuring case now asserts the routing ANSWER the
+  # bootstrap teaches — the `references/configuring/<name>.md` reference path — instead of the
+  # retired `research:configuring-<name>` identifier. The negative still forbids routing the
+  # setup task to the per-query practice skill. The eight research SOURCE leaves
+  # (codebase/public/internal/papers/books/domain/dependencies/archaeology) are unchanged.
   - name: configuring-papers-trigger
     assertions:
-      - { type: text_contains, value: "research:configuring-papers" }
+      - { type: text_contains, value: "references/configuring/papers.md" }
+      - { type: text_not_contains, value: "research:papers" }
       - type: judge
         prompt: |
-          The answer selects research:configuring-papers as the skill to invoke,
+          The answer routes the task to the papers SETUP reference
+          (references/configuring/papers.md, reached through research:using-research),
           because the task is one-time bootstrapping of the paper sources on a
           fresh checkout — probing servers, setting keys and contact emails,
           smoke-testing. It does NOT recommend research:papers (the per-query
-          practice skill) as the skill to use for this setup task.
+          practice skill) for this setup task.
 
   - name: configuring-books-trigger
     assertions:
-      - { type: text_contains, value: "research:configuring-books" }
+      - { type: text_contains, value: "references/configuring/books.md" }
+      - { type: text_not_contains, value: "research:books" }
       - type: judge
         prompt: |
-          The answer selects research:configuring-books as the skill to invoke,
+          The answer routes the task to the books SETUP reference
+          (references/configuring/books.md, reached through research:using-research),
           because the task is one-time wiring of the book sources on a fresh
           checkout — probing servers, setting the User-Agent and keys,
           smoke-testing. It does NOT recommend research:books (the per-query
-          practice skill) as the skill to use for this setup task.
+          practice skill) for this setup task.
 
   - name: papers-vs-public
     assertions:

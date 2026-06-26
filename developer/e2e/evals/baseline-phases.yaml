@@ -1,0 +1,70 @@
+name: baseline-phases
+# Post-consolidation (Feature C): the falsification arm for the five lifecycle phases.
+# Mechanically the same cases as evals/invocation-phases.yaml, scored over the no-body
+# baseline run (assemblies/baseline-phases.yaml). Pairs with evals/invocation-phases.yaml
+# so the comparison matches same-named cases on each side.
+cases:
+  - name: design
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_design.py } }
+      - type: judge
+        prompt: |
+          The response is a formal design document with the sections Purpose,
+          Prior Art, User Journey and Metrics, Specification, Alternatives, and
+          Summary, presented as a draft for human review. Alongside the design it
+          embeds exactly one executable feature test that encodes the primary
+          user story end-to-end, marked as a draft, and it does NOT include the
+          implementation code that would make that test pass.
+      - { type: tokens, metric: output, op: "<", value: 7000 }
+
+  - name: research
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_research.py } }
+      - type: judge
+        prompt: |
+          The response is a research draft that delegates the search and
+          falsification work: an expand pass that gathers supporting context and
+          prior art, and a refine pass that sizes the task (is it a project, a
+          feature, or a bug, can an off-the-shelf tool do it, what is the
+          smallest version). It has the sections Topic and Intent, Search/Expand,
+          Falsification/Refine, Scope, Resolved Decisions, and Sources, and it is
+          marked as a draft for human review. It is not a design doc or a feature
+          test.
+      - { type: tokens, metric: output, op: "<", value: 7000 }
+
+  - name: plan
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_plan.py } }
+      - type: judge
+        prompt: |
+          The response is an incremental implementation plan of between three
+          and seven steps, presented as a draft. Each implementation step
+          indicates which part of the feature test it moves toward passing. The
+          steps describe what to build — names, intent, and type/API signatures
+          — without the filled-in implementation logic (function bodies) for the
+          steps.
+      - { type: tokens, metric: output, op: "<", value: 6000 }
+
+  - name: red-green-refactor
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_red_green_refactor.py } }
+      - type: judge
+        prompt: |
+          The response executes a single type-first TDD cycle for Step 1 only.
+          It writes the function/type signatures with stub bodies first, then
+          one arrange-act-assert test that fails for the right reason, then the
+          implementation that makes that single test pass. It does not start
+          Step 2 and does not write more than one test.
+      - { type: tokens, metric: output, op: "<", value: 7000 }
+
+  - name: cleanup
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_cleanup.py } }
+      - type: judge
+        prompt: |
+          The response is a topic-closeout procedure that does the cleanup
+          skill's specific steps: a final refactoring and review pass (including
+          lint/formatters), extracting the deferred decisions into a TASKS file,
+          removing the topic's .ailly/developer session folder, and opening a PR or
+          preparing a squash merge. It is workspace tidy-up, not new feature work.
+      - { type: tokens, metric: output, op: "<", value: 5000 }

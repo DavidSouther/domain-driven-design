@@ -3,4 +3,6 @@ answer DOI or citation questions, I need to stand up the academic-paper sources
 for the project — probe for servers, set whatever API keys and contact emails
 they need, and confirm each one works.
 
-Which single `research:*` skill should I invoke? Name it.
+Which single setup guide should I follow for this — name the
+`references/configuring/<name>.md` reference (reached through the
+`research:using-research` bootstrap) and one sentence on why.

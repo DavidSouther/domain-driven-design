@@ -16,18 +16,6 @@ name: codebase
 description: Use when performing research on the current codebase — finding where a symbol is defined, discovering all call sites of a function, understanding a type's structure, tracing interface implementations, or answering any question about what the code does right now at the checked-out commit.
 ---
 
-==> configuring-books/SKILL.md <==
----
-name: configuring-books
-description: Use when bootstrapping or revising the books sources for this project — probing for an MCP server per source, falling back to HTTP, installing marketplace plugins where required, setting auth env vars, and smoke-testing each capability against the published contract. Applies once per environment when bootstrapping or revising the books sources, never inside a research session.
----
-
-==> configuring-papers/SKILL.md <==
----
-name: configuring-papers
-description: Use when bootstrapping or revising the academic-papers sources for this project — probing for an MCP server per source, falling back to HTTP, installing the Anthropic life-sciences marketplace plugins where required, completing SSO handshakes, setting auth env vars and polite-pool email parameters, and smoke-testing each capability against the published contract. Applies once per environment when bootstrapping or revising the papers sources, never inside a research session.
----
-
 ==> dependencies/SKILL.md <==
 ---
 name: dependencies
@@ -63,4 +51,3 @@ description: Use when a research question requires publicly available informatio
 name: using-research
 description: Bootstrap skill for research. Loaded at session start to establish when to invoke each research skill.
 ---
-

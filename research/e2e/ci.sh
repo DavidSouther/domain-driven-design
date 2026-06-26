@@ -46,16 +46,31 @@ for f in AGENTS.md context/AGENTS.md; do
     echo "FAIL: ${f} leaks a 'research:<id>' into the baseline-shared prefix." >&2
     exit 1
   fi
+  # Post-consolidation (Feature C): the five setup-only configuring-* descriptions were
+  # deferred to references; the discovery answer for a configuring case is now the
+  # `references/configuring/<name>.md` reference path the using-research bootstrap teaches.
+  # Forbid that path leaking into the baseline-shared prefix too, so the baseline arm cannot
+  # see the answer through the renamed token. (Bare source names are not grepped; the
+  # positive assertion requires the reference path the baseline cannot emit.)
+  if grep -Eq 'references/configuring/[a-z-]+' "${f}"; then
+    echo "FAIL: ${f} leaks a 'references/configuring/<name>' path into the baseline-shared prefix." >&2
+    exit 1
+  fi
 done
-echo "OK: no 'research:<id>' leak in the baseline-shared prefix."
+echo "OK: no 'research:<id>' identifier or 'references/configuring/<name>' path leak in the baseline-shared prefix."
 
 # --- CUJ 1: assemble ---------------------------------------------------------
 
+# Post-consolidation (Feature C): the discovery matrix still sweeps 10 cases (the two
+# configuring-*-trigger cases were re-expressed to assert the relocated reference path, not
+# dropped). The invocation/baseline matrices dropped the two configuring cases — those
+# skills no longer have a standalone body to invoke — leaving the eight research SOURCE
+# leaves, so each pair still compares same-named cases.
 expected_count() {
   case "$1" in
     discovery)  echo 10 ;;
-    baseline)   echo 10 ;;
-    invocation) echo 10 ;;
+    baseline)   echo 8 ;;
+    invocation) echo 8 ;;
     *) echo "FAIL: unknown suite $1" >&2; exit 1 ;;
   esac
 }

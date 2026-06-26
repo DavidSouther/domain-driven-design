@@ -1,0 +1,46 @@
+name: invocation-abilities
+# Post-consolidation (developer-plugin consolidation): the three progressive abilities
+# thinking, refactor, and initialize are entered through the `developer:ailly` coordinator
+# and their bodies live as references (../skills/ailly/references/<ability>.md). This suite
+# scores those ability bodies -- the SAME checkers, judges, and token budgets the prior
+# single `invocation` suite used for them; only the loaded file path changed (see
+# assemblies/invocation-abilities.yaml). Scored against baseline-abilities.yaml so the
+# falsification gate (improved>0, regressed==0) isolates the ability body's contribution.
+cases:
+  - name: thinking
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_thinking.py } }
+      - type: judge
+        prompt: |
+          The response is a debugging analysis, not a fix applied to files. It
+          states the root cause specifically (the parser rule is left-recursive,
+          so parse_expr calls itself with no base case and recurses forever), and
+          gives an ordered list of concrete next steps where each step names the
+          outcome it should produce. It does not say "try X and see" and does not
+          just rewrite the file for the user.
+      - { type: tokens, metric: output, op: "<", value: 5000 }
+
+  - name: refactor
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_refactor.py } }
+      - type: judge
+        prompt: |
+          The response improves the given code as a post-green refactoring. It
+          identifies specific named code smells (the duplicated Bearer-token
+          parsing, the "Bearer " magic constant, the long handler) and resolves
+          them one at a time without changing behaviour and without adding new
+          features or tests. It treats the work as cleanup of existing green
+          code, not new development.
+      - { type: tokens, metric: output, op: "<", value: 6000 }
+
+  - name: initialize
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_initialize.py } }
+      - type: judge
+        prompt: |
+          The response sets up the project by scaffolding/validating the layout
+          for the chosen toolchain and configuring the four development hooks --
+          Format (after editing a file), Check (before running tests), Test
+          (after every change), and Lint (after a task completes) -- and confirms
+          a clean build. It is a project-setup procedure, not application code.
+      - { type: tokens, metric: output, op: "<", value: 5000 }

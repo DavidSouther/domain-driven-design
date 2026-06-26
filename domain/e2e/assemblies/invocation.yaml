@@ -13,11 +13,14 @@ matrix:
     - arrow-of-maturity
 
 prefix:
-  - { kind: file,   path: ./AGENTS.md,                    cache: true }
-  - { kind: file,   path: ./profile.md,                   cache: true }
-  - { kind: system, path: ./skills/using-domain/SKILL.md, cache: true }
-  - kind: system
-    path: "./skills/{{ skill }}/SKILL.md"
+  - { kind: file,     path: ./AGENTS.md,                          cache: true }
+  - { kind: file,     path: ./profile.md,                         cache: true }
+  - { kind: external, path: ../skills/using-domain/SKILL.md,      cache: true }
+  # Post-consolidation: the leaf skills are now references under using-domain. Pull
+  # each per-ability reference straight from the real skill tree via an external link,
+  # rather than duplicating it through the e2e `skills` symlink.
+  - kind: external
+    path: "../skills/using-domain/references/{{ skill }}.md"
     cache: true
 
 conversation:

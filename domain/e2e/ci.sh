@@ -59,6 +59,18 @@ if grep -Eq '(ddd|domain):(glossary|ubiquitous-language|domain-model|contracts-a
   echo "FAIL: falsification leak — a domain skill identifier is present in AGENTS.md or profile.md" >&2
   exit 1
 fi
+# Post-consolidation: the discovery answer is the bare ability name AND its
+# `references/<name>.md` path. The leaf identifiers are retired, so the
+# reference-path form is the post-consolidation answer token; forbid it leaking
+# into the baseline arm's context too. Bare ability names are NOT grepped (they
+# false-positive on prose like "domain-model" in the mindset framing); the
+# falsification strength is carried on the assertion side, which requires BOTH
+# the name and the path that the baseline arm cannot emit.
+if grep -Eq 'references/(glossary|ubiquitous-language|domain-model|contracts-and-invariants|arrow-of-maturity)\.md' \
+     "${repo_root}/e2e/AGENTS.md" "${project_dir}/profile.md"; then
+  echo "FAIL: falsification leak — a 'references/<name>.md' path is present in AGENTS.md or profile.md" >&2
+  exit 1
+fi
 echo "OK: falsification grep clean."
 
 expected_count() {

@@ -21,9 +21,9 @@ matrix:
     - visibility-public-fields
 
 prefix:
-  - { kind: file,   path: AGENTS.md,                       cache: true }
-  - { kind: file,   path: profile.md,                      cache: true }
-  - { kind: system, path: skills/using-patterns/SKILL.md,  cache: true }
+  - { kind: file,     path: AGENTS.md,                            cache: true }
+  - { kind: file,     path: profile.md,                           cache: true }
+  - { kind: external, path: ../skills/using-patterns/SKILL.md,    cache: true }
 
 conversation:
   - { role: user, path: "prompts/discovery/{{ case }}.md" }

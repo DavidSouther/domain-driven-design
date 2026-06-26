@@ -9,14 +9,15 @@ rather than silently working around a problem.
   compare it to the phase's recommended model, and flag a mismatch explicitly,
   while preserving the deliberate no-gate guarantee (the loop never stalls).
 - fail-if-no-tools: when a declared project tool fails, be adamant (do not silently
-  substitute another tool); first try local remediation via `developer:initialize`
-  (e.g. `mise trust` / `npm install`), then escalate to the user with what failed,
+  substitute another tool); first try local remediation via the initialize reference
+  (skills/ailly/references/abilities/initialize.md) (e.g. `mise trust` / `npm install`), then
+  escalate to the user with what failed,
   a suggested remediation, and why it is correct; retry after remediation/permission.
 
 Like test_model_per_phase.py this is a contract check on the source of truth (the
 reference files plus the coordinator skill body). It needs no model and no pytest,
 and exits 0 (all rules hold) or 1 with a single reason line on stdout. It starts RED:
-today developer/references/tool-failure.md does not exist and ailly/SKILL.md has no
+today developer/skills/ailly/references/checks/tool-failure.md does not exist and ailly/SKILL.md has no
 Phase-Entry Checks section.
 """
 
@@ -26,8 +27,8 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 DEV = REPO / "developer"
-TOOL_REF = DEV / "references" / "tool-failure.md"
-MODEL_REF = DEV / "references" / "model-per-phase.md"
+TOOL_REF = DEV / "skills" / "ailly" / "references" / "checks" / "tool-failure.md"
+MODEL_REF = DEV / "skills" / "ailly" / "references" / "checks" / "model-per-phase.md"
 AILLY = DEV / "skills" / "ailly" / "SKILL.md"
 
 
@@ -62,7 +63,7 @@ def main() -> int:
     if "initialize" not in tool_low:
         return fail(
             "G2 local remediation: tool-failure reference must direct a check of "
-            "`developer:initialize` for a local fix before escalating"
+            "the initialize reference for a local fix before escalating"
         )
     if not any(t in tool_low for t in ("mise", "npm", "install")):
         return fail(
@@ -103,7 +104,7 @@ def main() -> int:
     if "tool-failure" not in checks:
         return fail(
             "G4 coordinator: the Phase-Entry Checks section must point to "
-            "developer/references/tool-failure.md"
+            "developer/skills/ailly/references/checks/tool-failure.md"
         )
 
     # G5 — the model reference documents an active phase-entry check (compare the
@@ -140,15 +141,16 @@ def main() -> int:
     if "model-per-phase" not in checks:
         return fail(
             "G6 coordinator: the Phase-Entry Checks section must point to "
-            "developer/references/model-per-phase.md"
+            "developer/skills/ailly/references/checks/model-per-phase.md"
         )
 
     # G7 — each phase announce line carries the fallback phrasing: switch when the
     # harness allows, else `/model`. (test_model_per_phase.py covers the model name,
     # qualifier, and reference pointer; here we lock the harness-first/fallback shape.)
     announce_re = re.compile(r"\*\*Announce at start:\*\*.*", re.IGNORECASE)
+    phase_ref_dir = DEV / "skills" / "ailly" / "references" / "phases"
     for skill in ("research", "design", "plan", "red-green-refactor"):
-        body = (DEV / "skills" / skill / "SKILL.md").read_text()
+        body = (phase_ref_dir / f"{skill}.md").read_text()
         m = announce_re.search(body)
         line = m.group(0).lower() if m else ""
         if "harness" not in line:

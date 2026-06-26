@@ -1,12 +1,14 @@
 name: invocation
 model: claude-sonnet-4-6
 
+# Post-consolidation (Feature C): the configuring-papers / configuring-books skills were
+# deferred to references under using-research (references/configuring/<name>.md) and no
+# longer have a standalone body to load here. The matrix carries the eight research SOURCE
+# leaves only; setup-reference routing is exercised by the discovery suite instead.
 matrix:
   skill:
     - codebase
     - archaeology
-    - configuring-papers
-    - configuring-books
     - papers
     - books
     - dependencies
@@ -15,11 +17,13 @@ matrix:
     - public
 
 prefix:
-  - { kind: file,   path: ./AGENTS.md,                                cache: true }
-  - { kind: file,   path: ./context/AGENTS.md,                        cache: true }
-  - { kind: system, path: ./context/skills/using-research/SKILL.md,   cache: true }
-  - kind: system
-    path: "context/skills/{{ skill }}/SKILL.md"
+  - { kind: file,     path: ./AGENTS.md,                            cache: true }
+  - { kind: file,     path: ./context/AGENTS.md,                    cache: true }
+  - { kind: external, path: ../skills/using-research/SKILL.md,       cache: true }
+  # Pull each source-leaf body straight from the real skill tree via an external
+  # link, rather than duplicating it under context/skills/<name>/SKILL.md.
+  - kind: external
+    path: "../skills/{{ skill }}/SKILL.md"
     cache: true
 
 conversation:

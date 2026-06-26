@@ -1,0 +1,24 @@
+name: baseline-abilities
+model: claude-sonnet-4-6
+
+# Falsification arm for the ability invocation suite: mechanically identical to
+# invocation-abilities.yaml with the bootstrap + ability-reference body entries dropped.
+# AGENTS.md and profile.md stay, so the only difference between the arms is the loaded
+# ability body -- any behaviour gap is attributable to it. Same prompts, same matrix.
+#
+# Post-consolidation: pairs with `invocation-abilities` (thinking, refactor, initialize
+# now reached as coordinator references). The comparison matches same-named cases on each
+# side.
+prefix:
+  - { kind: file, path: context/AGENTS.md, cache: true }
+  - { kind: file, path: profile.md,        cache: true }
+
+matrix:
+  ability:
+    - thinking
+    - refactor
+    - initialize
+
+conversation:
+  - { role: user, path: "prompts/invocation/{{ ability }}.md" }
+  - { role: assistant }

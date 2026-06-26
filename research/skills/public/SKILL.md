@@ -7,7 +7,7 @@ description: Use when a research question requires publicly available informatio
 
 Public research answers questions using `WebSearch` and `WebFetch` against the open internet. It expands each query into multiple variants before searching, fetches high-value sources, and synthesizes findings with inline citations.
 
-Etiquette, allowed/blocked-domain policy, and any augmentation provider belong in [`research:configuring-public`](../configuring-public/SKILL.md); this skill consumes the contract that skill publishes. The cross-reference makes the pairing symmetric.
+Etiquette, allowed/blocked-domain policy, and any augmentation provider belong in [the public setup reference](../using-research/references/configuring/public.md); this skill consumes the contract that skill publishes. The cross-reference makes the pairing symmetric.
 
 # When to Use / When NOT to Use
 
@@ -21,7 +21,7 @@ Etiquette, allowed/blocked-domain policy, and any augmentation provider belong i
 - Current codebase questions — use `research:codebase`
 - Internal documents or private knowledge bases — use `research:internal`
 - Questions answered entirely from git history — use `research:archaeology`
-- Configuring sources: setting the contact User-Agent, recording allowed/blocked domains, adjusting rate limits, or wiring an augmentation provider — those belong in [`research:configuring-public`](../configuring-public/SKILL.md)
+- Configuring sources: setting the contact User-Agent, recording allowed/blocked domains, adjusting rate limits, or wiring an augmentation provider — those belong in [the public setup reference](../using-research/references/configuring/public.md)
 
 # Query Expansion (Jeopardy! Search)
 
@@ -121,11 +121,11 @@ Write findings to `docs/research/YYYY-MM-DD-A-<topic>/public.md`.
 - **Treating blogs as authoritative** — verify blog claims against official docs before including them as findings.
 - **Ignoring version specifics** — API behavior often differs across versions; include the version in at least one query variant.
 - **Reporting only confirming hits** — web search ranks confirming results highly and buries contradictions. When a claim is load-bearing, run a falsification pass: search specifically for the negation. See `research/references/falsify.md`.
-- **Re-teaching the wiring** — a "first, set your User-Agent / record your blocked domains" preface is wiring leakage. The wiring SKILL owns setup; this skill consumes the contract. If a preface is unavoidable, the contract is incomplete — widen it in [`research:configuring-public`](../configuring-public/SKILL.md).
+- **Re-teaching the wiring** — a "first, set your User-Agent / record your blocked domains" preface is wiring leakage. The wiring SKILL owns setup; this skill consumes the contract. If a preface is unavoidable, the contract is incomplete — widen it in [the public setup reference](../using-research/references/configuring/public.md).
 
 # Composes With
 
-- **`research:configuring-public`** — the wiring partner. Publishes the contract this skill consumes (built-in web search/fetch, etiquette and domain policy, optional augmentation provider).
+- **the public setup reference** (`research:using-research`, `references/configuring/public.md`) — the wiring partner. Publishes the contract this skill consumes (built-in web search/fetch, etiquette and domain policy, optional augmentation provider).
 - **`research:books`** and **`research:papers`** — sibling practice skills for citable books and academic papers.
 - **`research/references/jeopardy.md`** — query expansion technique.
 - **`research/references/citations.md`** — IEEE citation format.

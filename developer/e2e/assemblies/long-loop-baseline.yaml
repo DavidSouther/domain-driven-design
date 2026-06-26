@@ -2,7 +2,7 @@ name: long-loop-baseline
 model: claude-sonnet-4-6
 
 # Falsification arm for the long-loop case: mechanically identical to
-# long-loop.yaml with the using-developer, ailly, and long-loop reference bodies
+# long-loop.yaml with the ailly coordinator and long-loop reference bodies
 # dropped. AGENTS.md and profile.md stay, so the only difference between the arms
 # is the loaded skill/reference — any behaviour gap is attributable to it. Same
 # prompt.

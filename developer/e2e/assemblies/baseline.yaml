@@ -1,24 +1,22 @@
 name: baseline
 model: claude-sonnet-4-6
 
-# Falsification arm: mechanically identical to invocation.yaml with the two
-# kind:system SKILL.md entries dropped. AGENTS.md and profile.md stay, so the
-# only difference between the arms is the loaded skill — any behaviour gap is
-# attributable to it. Same prompts, same matrix.
+# Falsification arm for the coordinator invocation suite: mechanically identical to
+# invocation.yaml with the bootstrap + SKILL.md body entries dropped. AGENTS.md and
+# profile.md stay, so the only difference between the arms is the loaded skill -- any
+# behaviour gap is attributable to it. Same prompts, same matrix.
+#
+# Post-consolidation: this arm pairs with `invocation` (the surviving `ailly` coordinator
+# skill). The five lifecycle phases moved to their own pair (baseline-phases.yaml vs
+# invocation-phases.yaml) and the four progressive abilities to theirs
+# (baseline-abilities.yaml vs invocation-abilities.yaml), so each comparison matches
+# same-named cases on each side.
 prefix:
   - { kind: file, path: context/AGENTS.md, cache: true }
   - { kind: file, path: profile.md,        cache: true }
 
 matrix:
   skill:
-    - research
-    - design
-    - plan
-    - red-green-refactor
-    - thinking
-    - refactor
-    - initialize
-    - cleanup
     - ailly
 
 conversation:

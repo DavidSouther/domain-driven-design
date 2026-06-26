@@ -1,6 +1,6 @@
 {
   "name": "characters",
-  "description": "Character voices that color the response style of other plugins. Each character corresponds to one or more plugins, and tailors human-facing output with a distinct personality, methodology, and quirks.",
+  "description": "Character voices that color the response style of other plugins. Output-style only (no skills): each voice is a selectable Claude Code output-style applied outside the model's selection loop, not an always-on skill. See README.md for the cast and how to activate a voice.",
   "version": "1.0.0",
   "owner": {
     "name": "David Souther",
@@ -13,6 +13,7 @@
     "characters",
     "voice",
     "personality",
-    "tone"
+    "tone",
+    "output-style"
   ]
 }

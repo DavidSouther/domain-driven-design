@@ -6,13 +6,19 @@ failure surfaces of a `SKILL.md` edit:
 
 - **Discovery** — does the `description:` frontmatter still route the model to
   the right skill? Sweeps 10 routing cases over the concatenated descriptions of
-  all eleven research skills (`context/skills/disclosure.md`) plus the
-  `using-research` bootstrap. Asserts which skill the model names.
+  the nine always-on research skills (`context/skills/disclosure.md`) plus the
+  `using-research` bootstrap. Asserts which skill the model names. Post-consolidation
+  (progressive-disclosure Feature C) the five setup-only `configuring-*` descriptions
+  were deferred out of the always-on view into references under the `using-research`
+  bootstrap; the two `configuring-*-trigger` cases now assert routing to the relocated
+  `references/configuring/<name>.md` reference instead of a retired skill identifier.
 - **Invocation** — once a skill body is loaded, does the output exhibit the
-  conventions the skill teaches? Sweeps all 10 non-bootstrap skills (`codebase`,
-  `archaeology`, `configuring-papers`, `configuring-books`, `papers`, `books`,
-  `dependencies`, `domain`, `internal`, `public`). Each case mixes a structural
-  Python checker, an LLM judge, and a token budget.
+  conventions the skill teaches? Sweeps the eight non-bootstrap SOURCE leaves
+  (`codebase`, `archaeology`, `papers`, `books`, `dependencies`, `domain`,
+  `internal`, `public`). Each case mixes a structural Python checker, an LLM judge,
+  and a token budget. The `configuring-*` skills are no longer standalone bodies to
+  invoke (they are references under `using-research`), so they are not in the
+  invocation matrix; their setup-routing is covered by the discovery suite.
 
 The invocation axis is run as an A/B falsification comparison against a
 **baseline** arm with no skill body loaded, over identical prompts. The gate is
@@ -24,7 +30,7 @@ the baseline failed, and break nothing the baseline passed.
 ```
 AGENTS.md                     constitution + falsification narrative (prefix position 0)
 context/AGENTS.md             neutral candidate-project context (invocation + baseline)
-context/skills/disclosure.md  routing table — all 11 live descriptions (discovery surface)
+context/skills/disclosure.md  routing table — the 9 always-on descriptions (discovery surface)
 context/skills/<name>/        the skills under test, vendored verbatim
 assemblies/{discovery,invocation,baseline}.yaml
 prompts/{discovery,invocation}/<case>.md

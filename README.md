@@ -61,51 +61,42 @@ A strict three-loop development lifecycle: design → feature test → TDD imple
 
 | Skill | When to use |
 |-------|-------------|
-| `developer:ailly` | Starting or resuming a feature development session. The main driver for development. Running `/ailly` in Claude will get it going on the next thing. |
-| `developer:using-developer` | Bootstrap skill that guides which developer skill to invoke for the current situation |
-| `developer:initialize` | Setting up a new project or language environment |
-| `developer:design` | Formatting or structuring a design doc |
-| `developer:feature-test` | Writing the feature test after design is approved |
-| `developer:plan` | Breaking a failing feature test into implementation steps |
-| `developer:red-green-refactor` | Implementing a plan step with TDD |
-| `developer:refactor` | Tests are green; cleaning up code before continuing |
-| `developer:think` | Stuck on a compiler error or test failure during TDD |
+| `developer:ailly` | Bootstrap and session coordinator for all developer work. The main driver and the entry point for every lifecycle phase: `/ailly research`, `/ailly design`, `/ailly plan`, `/ailly build`, `/ailly cleanup`. Each phase loads one `references/phases/<phase>.md` and runs in an isolated subagent. It also routes the coordinator's progressive abilities — thinking (stuck on a build error), refactor (clean up green code), initialize (new project/language setup), and program-management (tracker task I/O and wiring). Running `/ailly` will get it going on the next thing. |
+| `developer:clean-comments-review` | Reviewing comment and DocBlock audience and longevity (a review specialist consumed by `general:review`) |
 
 The developer lifecycle uses draft gates: each artifact (design doc, feature test, plan) must be human-reviewed and cleared before the next loop begins.
 
 ### Domain-Driven Design (`domain:*`)
 
 Guides architectural decisions and domain modeling through the full DDD lifecycle.
+The plugin exposes a single skill, `domain:using-domain`, whose body is the routing
+surface. Each ability's full guidance lives in a reference under
+`domain/skills/using-domain/references/<name>.md`, loaded on demand.
 
-| Skill | When to use |
-|-------|-------------|
-| `domain:using-domain` | Bootstrap — establishes when to invoke each DDD skill |
-| `domain:arrow-of-maturity` | Evaluating architecture, adding persistence, or feeling scaling pressure |
-| `domain:contracts-and-invariants` | Designing API boundaries, service interfaces, or domain operations |
-| `domain:domain-model` | Starting a new project, service, or feature with business logic |
-| `domain:glossary` | Any ambiguous or potentially synonymous term appears |
-| `domain:ubiquitous-language` | Naming entities, operations, or domain concepts |
+`domain:using-domain` is the bootstrap and router: it names the domain ability that fits
+the situation and points at its `references/<name>.md`, with a glossary-first gate on any
+new term.
 
-The Arrow of Maturity describes six architectural stages a DDD project grows through, from prototype scripts to event-sourced microservices. Each skill knows which stage is appropriate and what signal justifies advancing.
+The abilities it routes to (each a `references/<name>.md` reference): glossary,
+ubiquitous-language, domain-model, contracts-and-invariants, arrow-of-maturity.
+
+The Arrow of Maturity describes six architectural stages a DDD project grows through, from prototype scripts to event-sourced microservices. Each ability knows which stage is appropriate and what signal justifies advancing.
 
 ### Design Patterns (`patterns:*`)
 
 Provides structured guidance for applying common software patterns at the right time.
+The plugin exposes a single skill, `patterns:using-patterns`, whose body is the routing
+surface. Each pattern's full guidance lives in a reference under
+`patterns/skills/using-patterns/references/patterns/<name>.md`, loaded on demand.
 
-| Skill | When to use |
-|-------|-------------|
-| `patterns:using-patterns` | Bootstrap — establishes when to invoke each pattern skill |
-| `patterns:aggregate` | Operations that must transition domain state atomically |
-| `patterns:arrange-act-assert` | Writing any test to ensure clear setup, single action, and focused assertions |
-| `patterns:bootstrap-and-service` | Wiring concrete dependencies and separating domain from HTTP/CLI |
-| `patterns:builder` | Object construction with many fields or required/optional distinction |
-| `patterns:entities-value-objects-services` | Deciding what has identity, what is a value, what is a function |
-| `patterns:newtype` | A primitive type represents a distinct domain concept |
-| `patterns:parse-dont-validate` | Data arrives from an external boundary (HTTP, input, file, queue) |
-| `patterns:repository` | Decoupling domain logic from a specific storage technology |
-| `patterns:triangulate` | A hardcoded implementation passes the first test and the right generalization is not yet obvious |
-| `patterns:type-states` | Modeling a state machine or finite set of mutually-exclusive states |
-| `patterns:unit-of-work` | Bridging an Aggregate with a Repository in a single transaction |
+`patterns:using-patterns` is the bootstrap and router: it names the pattern that fits a
+design pressure and points at its `references/patterns/<name>.md`.
+
+The patterns it routes to (each a `references/patterns/<name>.md` reference): aggregate,
+arrange-act-assert, bootstrap-and-service, builder, configuring-feature-flags,
+configuring-logging, domain-objects, emitting-logs, errors-typed-untyped, newtype,
+parse-dont-validate, repository, triangulate, type-conversion, type-states,
+unit-of-work, using-feature-flags, visibility.
 
 ### Research (`research:*`)
 

@@ -1,12 +1,13 @@
 name: baseline
 model: claude-sonnet-4-6
 
+# Post-consolidation (Feature C): mirrors invocation.yaml — the two configuring skills were
+# deferred to references and dropped from the matrix, leaving the eight research SOURCE
+# leaves so the baseline-vs-invocation comparison pairs same-named cases.
 matrix:
   skill:
     - codebase
     - archaeology
-    - configuring-papers
-    - configuring-books
     - papers
     - books
     - dependencies

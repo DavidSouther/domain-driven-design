@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 # CI driver for the developer-plugin skill-eval harness.
 #
-# Drives the full operator journey across five suites: the discovery,
-# invocation, and baseline matrices, plus the long-loop / long-loop-baseline
-# pair (a single-conversation case for the long-loop mode of ailly, which is not
-# a matrix skill):
+# Drives the full operator journey across the suites: the discovery matrix; the
+# invocation/baseline coordinator pair; the invocation-phases/baseline-phases and
+# invocation-abilities/baseline-abilities pairs (the lifecycle phases and the
+# progressive abilities, both reached through the coordinator); plus the long-loop /
+# long-loop-baseline pair (a single-conversation case for the long-loop mode of ailly,
+# which is not a matrix skill):
 #   0. vendor.py        -- copy the live AGENTS.md and regenerate the disclosure
 #      table so the SCORED text is current HEAD.
 #   1. ailly assemble <suite>     -- always runs; asserts N conversation files
@@ -48,15 +50,45 @@ if grep -nE 'developer:[a-z][a-z-]+' "${hygiene_targets[@]}"; then
   echo "FAIL: a baseline-prefix file names a developer:<skill> identifier (see matches above)." >&2
   exit 1
 fi
-echo "OK: baseline-prefix files (AGENTS.md, profile.md) leak no developer:<skill> identifier."
+# Post-consolidation (developer-plugin consolidation): the five lifecycle phases are
+# entered by argument and the four progressive abilities (thinking, refactor, initialize,
+# program-management) are reached as coordinator references. The discovery answer for any
+# of these is the `references/...` reference path the coordinator loads. Those skill
+# identifiers are retired, so the reference-path form is the post-consolidation answer
+# token; forbid it leaking into the baseline arm's context too. Bare ability/phase names
+# (research, design, plan, cleanup, thinking, refactor, initialize) are NOT grepped
+# (reviewer decision 2: they false-positive on ordinary prose); the falsification strength
+# is carried on the assertion side, which requires BOTH the routing token and the
+# reference path the baseline arm cannot emit. The single pattern below covers the
+# `references/phases/<phase>`, the `references/abilities/<ability>`, and the
+# `references/abilities/program-management/<name>` answer-path forms.
+if grep -nE 'references/[a-z][a-z-]*(/[a-z][a-z-]*){0,2}\.md' "${hygiene_targets[@]}"; then
+  echo "FAIL: a baseline-prefix file names a references/<...>.md answer path (see matches above); the baseline arm leaks the answer." >&2
+  exit 1
+fi
+echo "OK: baseline-prefix files (AGENTS.md, profile.md) leak no developer:<skill> identifier or references/<...>.md answer path."
 
+# Post-consolidation (developer-plugin consolidation): the invocation/baseline matrix now
+# splits into THREE pairs because the bodies load from three different path families:
+#   - invocation/baseline           -- the surviving `ailly` coordinator skill (1 case)
+#   - invocation-phases/baseline-phases   -- the five lifecycle phase references (5 cases)
+#   - invocation-abilities/baseline-abilities -- the three progressive ability references
+#     thinking, refactor, initialize (3 cases)
+# The matrix total is unchanged from the prior split (1 + 5 + 3 = 9 cases); only the suite
+# split changed, because thinking/refactor/initialize moved from standalone skills to
+# coordinator references and now load from ../skills/ailly/references/abilities/<ability>.md. The
+# discovery matrix (9) and the long-loop pair (1) are untouched.
 expected_count() {
   case "$1" in
-    discovery)           echo 9 ;;
-    invocation)          echo 9 ;;
-    baseline)            echo 9 ;;
-    long-loop)           echo 1 ;;
-    long-loop-baseline)  echo 1 ;;
+    discovery)              echo 9 ;;
+    invocation)             echo 1 ;;
+    baseline)               echo 1 ;;
+    invocation-phases)      echo 5 ;;
+    baseline-phases)        echo 5 ;;
+    invocation-abilities)   echo 3 ;;
+    baseline-abilities)     echo 3 ;;
+    long-loop)              echo 1 ;;
+    long-loop-baseline)     echo 1 ;;
     *) echo "FAIL: unknown suite $1" >&2; exit 1 ;;
   esac
 }
@@ -65,26 +97,38 @@ expected_count() {
 discovery_run_dir=""
 invocation_run_dir=""
 baseline_run_dir=""
+invocation_phases_run_dir=""
+baseline_phases_run_dir=""
+invocation_abilities_run_dir=""
+baseline_abilities_run_dir=""
 long_loop_run_dir=""
 long_loop_baseline_run_dir=""
 
 set_run_dir() {
   case "$1" in
-    discovery)           discovery_run_dir="$2" ;;
-    invocation)          invocation_run_dir="$2" ;;
-    baseline)            baseline_run_dir="$2" ;;
-    long-loop)           long_loop_run_dir="$2" ;;
-    long-loop-baseline)  long_loop_baseline_run_dir="$2" ;;
+    discovery)              discovery_run_dir="$2" ;;
+    invocation)             invocation_run_dir="$2" ;;
+    baseline)               baseline_run_dir="$2" ;;
+    invocation-phases)      invocation_phases_run_dir="$2" ;;
+    baseline-phases)        baseline_phases_run_dir="$2" ;;
+    invocation-abilities)   invocation_abilities_run_dir="$2" ;;
+    baseline-abilities)     baseline_abilities_run_dir="$2" ;;
+    long-loop)              long_loop_run_dir="$2" ;;
+    long-loop-baseline)     long_loop_baseline_run_dir="$2" ;;
   esac
 }
 
 get_run_dir() {
   case "$1" in
-    discovery)           printf '%s\n' "${discovery_run_dir}" ;;
-    invocation)          printf '%s\n' "${invocation_run_dir}" ;;
-    baseline)            printf '%s\n' "${baseline_run_dir}" ;;
-    long-loop)           printf '%s\n' "${long_loop_run_dir}" ;;
-    long-loop-baseline)  printf '%s\n' "${long_loop_baseline_run_dir}" ;;
+    discovery)              printf '%s\n' "${discovery_run_dir}" ;;
+    invocation)             printf '%s\n' "${invocation_run_dir}" ;;
+    baseline)               printf '%s\n' "${baseline_run_dir}" ;;
+    invocation-phases)      printf '%s\n' "${invocation_phases_run_dir}" ;;
+    baseline-phases)        printf '%s\n' "${baseline_phases_run_dir}" ;;
+    invocation-abilities)   printf '%s\n' "${invocation_abilities_run_dir}" ;;
+    baseline-abilities)     printf '%s\n' "${baseline_abilities_run_dir}" ;;
+    long-loop)              printf '%s\n' "${long_loop_run_dir}" ;;
+    long-loop-baseline)     printf '%s\n' "${long_loop_baseline_run_dir}" ;;
   esac
 }
 
@@ -117,18 +161,26 @@ assemble_suite() {
   set_run_dir "${suite}" "$(dirname "${files[0]}")"
 }
 
-# --- CUJ 1: assemble (all five suites) --------------------------------------
+# --- CUJ 1: assemble (all suites) --------------------------------------
 
 assemble_suite discovery
 assemble_suite baseline
 assemble_suite invocation
+# The phase and ability pairs (modes/abilities reached through the coordinator, not matrix
+# skills) mirror the coordinator pair. The `*-baseline`/`*-invocation` globs are suffix-
+# anchored by the trailing `/`, so they do not pick up the `*-baseline-phases` /
+# `*-invocation-phases` / `*-baseline-abilities` / `*-invocation-abilities` dirs.
+assemble_suite baseline-phases
+assemble_suite invocation-phases
+assemble_suite baseline-abilities
+assemble_suite invocation-abilities
 # long-loop is a single-conversation pair (a mode of ailly, not a matrix skill).
 # Assembled after baseline so the `*-baseline` glob never picks up the
 # `*-long-loop-baseline` dir.
 assemble_suite long-loop-baseline
 assemble_suite long-loop
 
-# --- CUJ 2: run (all five suites, gated on credentials) ---------------------
+# --- CUJ 2: run (all suites, gated on credentials) ---------------------
 
 if [[ -z "${ANTHROPIC_API_KEY:-}" && ! -f "${project_dir}/.env" ]]; then
   echo "FAIL: ailly run requires a live model. Set ANTHROPIC_API_KEY in the shell or drop a ${project_dir#"${repo_root}/"}/.env file." >&2
@@ -189,10 +241,14 @@ run_suite() {
 run_suite discovery
 run_suite baseline
 run_suite invocation
+run_suite baseline-phases
+run_suite invocation-phases
+run_suite baseline-abilities
+run_suite invocation-abilities
 run_suite long-loop-baseline
 run_suite long-loop
 
-# --- CUJ 3: eval (all five suites) ------------------------------------------
+# --- CUJ 3: eval (all suites) ------------------------------------------
 
 eval_suite() {
   local suite="$1"
@@ -234,6 +290,10 @@ PY
 eval_suite discovery
 eval_suite baseline
 eval_suite invocation
+eval_suite baseline-phases
+eval_suite invocation-phases
+eval_suite baseline-abilities
+eval_suite invocation-abilities
 eval_suite long-loop-baseline
 eval_suite long-loop
 
@@ -318,4 +378,6 @@ PY
 
 report_discovery
 report_comparison "${baseline_run_dir}" "${invocation_run_dir}" baseline invocation
+report_comparison "${baseline_phases_run_dir}" "${invocation_phases_run_dir}" baseline-phases invocation-phases
+report_comparison "${baseline_abilities_run_dir}" "${invocation_abilities_run_dir}" baseline-abilities invocation-abilities
 report_comparison "${long_loop_baseline_run_dir}" "${long_loop_run_dir}" long-loop-baseline long-loop

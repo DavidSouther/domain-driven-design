@@ -1,115 +1,151 @@
 name: discovery
+# Post-consolidation (progressive-disclosure Feature A): the 19 leaf skills collapsed
+# into one `patterns:using-patterns` whose body is the routing surface. The discovery
+# arm loads only that body (see assemblies/discovery.yaml), so each case now asserts the
+# routing ANSWER the body teaches — the bare pattern name AND the reference path
+# `references/patterns/<name>.md` — instead of the retired `patterns:<name>` skill
+# identifier. Asserting both the name and the path is strictly harder to satisfy by
+# accident than the single identifier, and the baseline arm (no body loaded) cannot
+# emit the path, so the falsification gate stays sharp.
 cases:
   - name: newtype-mixed-ids
+    # Bare UserId/OrderId mixing: a primitive with no behavior. Routes to newtype only;
+    # must NOT drag in domain-objects. Regression guard for the discrimination sharpening.
     assertions:
-      - { type: text_contains, value: "patterns:newtype" }
-      - { type: text_not_contains, value: "patterns:domain-objects" }
+      - { type: text_contains, value: "newtype" }
+      - { type: text_contains, value: "references/patterns/newtype.md" }
+      # Negative uses the path form only (not the bare "domain-objects" token): a
+      # correct answer legitimately says "this is newtype, NOT domain-objects, because
+      # it carries no behavior", so a bare-name negative would false-fail it. The
+      # reference path is the unambiguous thing a correct newtype route never emits.
+      - { type: text_not_contains, value: "references/patterns/domain-objects.md" }
 
-  # Asserts the real skill name on disk (`patterns:domain-objects`). The routing
-  # table in using-patterns/SKILL.md still names the stale
-  # `patterns:entities-value-objects-services`, so this case is EXPECTED to fail
-  # until that entry is corrected. It tests the correct property (route an
-  # OrderLine-with-behaviour question to the value-object skill that ships); the
-  # failure is a faithful regression signal, not a harness defect.
+  # Previously RED: the old routing table named the stale
+  # `patterns:entities-value-objects-services` and could not route an OrderLine-with-
+  # behaviour question to the value-object skill. The consolidated body states the
+  # discriminator explicitly ("an object carrying behavior or calculations, e.g. an
+  # OrderLine doing price math, routes to domain-objects"), so this case now flips
+  # GREEN: it must name domain-objects and its reference path, NOT newtype.
   - name: newtype-vs-evs-order-line
     assertions:
-      - { type: text_not_contains, value: "patterns:newtype" }
-      - { type: text_contains, value: "patterns:domain-objects" }
+      - { type: text_not_contains, value: "references/patterns/newtype.md" }
+      - { type: text_contains, value: "domain-objects" }
+      - { type: text_contains, value: "references/patterns/domain-objects.md" }
 
   - name: configuring-first-log-line
     assertions:
-      - { type: text_contains, value: "patterns:configuring-logging" }
-      - { type: text_not_contains, value: "patterns:emitting-logs" }
+      - { type: text_contains, value: "configuring-logging" }
+      - { type: text_contains, value: "references/patterns/configuring-logging.md" }
+      - { type: text_not_contains, value: "references/patterns/emitting-logs.md" }
 
   - name: emitting-order-placed
     assertions:
-      - { type: text_contains, value: "patterns:emitting-logs" }
-      - { type: text_not_contains, value: "patterns:configuring-logging" }
+      - { type: text_contains, value: "emitting-logs" }
+      - { type: text_contains, value: "references/patterns/emitting-logs.md" }
+      - { type: text_not_contains, value: "references/patterns/configuring-logging.md" }
 
   - name: paired-add-propagator
     assertions:
-      - { type: text_contains, value: "patterns:configuring-logging" }
-      - { type: text_not_contains, value: "patterns:emitting-logs" }
+      - { type: text_contains, value: "configuring-logging" }
+      - { type: text_contains, value: "references/patterns/configuring-logging.md" }
+      - { type: text_not_contains, value: "references/patterns/emitting-logs.md" }
       - type: judge
         prompt: |
-          The answer selects patterns:configuring-logging because the W3C
+          The answer selects the configuring-logging pattern
+          (references/patterns/configuring-logging.md) because the W3C
           propagator is installed once at process bootstrap. It does not
-          recommend patterns:emitting-logs.
+          recommend the emitting-logs pattern.
 
   - name: paired-log-handler-success
     assertions:
-      - { type: text_contains, value: "patterns:emitting-logs" }
-      - { type: text_not_contains, value: "patterns:configuring-logging" }
+      - { type: text_contains, value: "emitting-logs" }
+      - { type: text_contains, value: "references/patterns/emitting-logs.md" }
+      - { type: text_not_contains, value: "references/patterns/configuring-logging.md" }
       - type: judge
         prompt: |
-          The answer selects patterns:emitting-logs because the success
-          occurs inside an already-bootstrapped handler. It does not
-          recommend re-running patterns:configuring-logging.
+          The answer selects the emitting-logs pattern
+          (references/patterns/emitting-logs.md) because the success occurs
+          inside an already-bootstrapped handler. It does not recommend
+          re-running the configuring-logging pattern.
 
   - name: aggregate-vs-unit-of-work
     assertions:
-      - { type: text_contains, value: "patterns:aggregate" }
-      - { type: text_not_contains, value: "patterns:unit-of-work" }
+      - { type: text_contains, value: "aggregate" }
+      - { type: text_contains, value: "references/patterns/aggregate.md" }
+      - { type: text_not_contains, value: "references/patterns/unit-of-work.md" }
       - type: judge
         prompt: |
-          The answer selects patterns:aggregate because the rule keeping the
+          The answer selects the aggregate pattern
+          (references/patterns/aggregate.md) because the rule keeping the
           order and its line items consistent is an invariant across multiple
-          objects, protected by a single root. It does not select
-          patterns:unit-of-work, which is the atomic, durable flush that wraps
+          objects, protected by a single root. It does not select the
+          unit-of-work pattern, which is the atomic, durable flush that wraps
           the aggregate operation at commit time.
 
   - name: parse-vs-type-states
     assertions:
-      - { type: text_contains, value: "patterns:type-states" }
-      - { type: text_not_contains, value: "patterns:parse-dont-validate" }
+      - { type: text_contains, value: "type-states" }
+      - { type: text_contains, value: "references/patterns/type-states.md" }
+      - { type: text_not_contains, value: "references/patterns/parse-dont-validate.md" }
       - type: judge
         prompt: |
-          The answer selects patterns:type-states because a shippingAddress that
+          The answer selects the type-states pattern
+          (references/patterns/type-states.md) because a shippingAddress that
           is only present after the cart is confirmed is a distinct lifecycle
-          phase that should be encoded as its own type. It does not select
-          patterns:parse-dont-validate, which is about untrusted data crossing a
+          phase that should be encoded as its own type. It does not select the
+          parse-dont-validate pattern, which is about untrusted data crossing a
           boundary, not a field that appears only in a later lifecycle phase.
 
   - name: aax-interleaved-test
     assertions:
-      - { type: text_contains, value: "patterns:arrange-act-assert" }
-      - { type: text_not_contains, value: "patterns:triangulate" }
+      - { type: text_contains, value: "arrange-act-assert" }
+      - { type: text_contains, value: "references/patterns/arrange-act-assert.md" }
+      - { type: text_not_contains, value: "references/patterns/triangulate.md" }
 
   - name: bootstrap-thin-adapter
     assertions:
-      - { type: text_contains, value: "patterns:bootstrap-and-service" }
-      - { type: text_not_contains, value: "patterns:repository" }
+      - { type: text_contains, value: "bootstrap-and-service" }
+      - { type: text_contains, value: "references/patterns/bootstrap-and-service.md" }
+      - { type: text_not_contains, value: "references/patterns/repository.md" }
 
   - name: builder-many-fields
     assertions:
-      - { type: text_contains, value: "patterns:builder" }
-      - { type: text_not_contains, value: "patterns:parse-dont-validate" }
+      - { type: text_contains, value: "builder" }
+      - { type: text_contains, value: "references/patterns/builder.md" }
+      - { type: text_not_contains, value: "references/patterns/parse-dont-validate.md" }
 
-  # errors-typed-untyped is absent from the using-patterns routing table, so this
-  # case is expected to fail text_contains until that table gains a row for it — a
-  # faithful finding (a discoverable skill with no routing entry), recorded as a
-  # follow-up, not a harness defect.
+  # Previously RED: errors-typed-untyped was absent from the routing table, so a
+  # library-failure question had no routing entry. The consolidated body adds an
+  # explicit row and discriminator ("a library function failing several ways the caller
+  # must match on routes to errors-typed-untyped, NOT parse-dont-validate"), so this
+  # case now flips GREEN: it must name errors-typed-untyped and its reference path, and
+  # must NOT route to parse-dont-validate.
   - name: errors-library-failure
     assertions:
-      - { type: text_contains, value: "patterns:errors-typed-untyped" }
-      - { type: text_not_contains, value: "patterns:parse-dont-validate" }
+      - { type: text_contains, value: "errors-typed-untyped" }
+      - { type: text_contains, value: "references/patterns/errors-typed-untyped.md" }
+      - { type: text_not_contains, value: "references/patterns/parse-dont-validate.md" }
 
   - name: triangulate-fake-passes
     assertions:
-      - { type: text_contains, value: "patterns:triangulate" }
-      - { type: text_not_contains, value: "patterns:arrange-act-assert" }
+      - { type: text_contains, value: "triangulate" }
+      - { type: text_contains, value: "references/patterns/triangulate.md" }
+      - { type: text_not_contains, value: "references/patterns/arrange-act-assert.md" }
 
   - name: type-conversion-extract-rewrap
     assertions:
-      - { type: text_contains, value: "patterns:type-conversion" }
-      - { type: text_not_contains, value: "patterns:newtype" }
+      - { type: text_contains, value: "type-conversion" }
+      - { type: text_contains, value: "references/patterns/type-conversion.md" }
+      - { type: text_not_contains, value: "references/patterns/newtype.md" }
 
   - name: unit-of-work-atomic-handler
     assertions:
-      - { type: text_contains, value: "patterns:unit-of-work" }
-      - { type: text_not_contains, value: "patterns:aggregate" }
+      - { type: text_contains, value: "unit-of-work" }
+      - { type: text_contains, value: "references/patterns/unit-of-work.md" }
+      - { type: text_not_contains, value: "references/patterns/aggregate.md" }
 
   - name: visibility-public-fields
     assertions:
-      - { type: text_contains, value: "patterns:visibility" }
-      - { type: text_not_contains, value: "patterns:domain-objects" }
+      - { type: text_contains, value: "visibility" }
+      - { type: text_contains, value: "references/patterns/visibility.md" }
+      - { type: text_not_contains, value: "references/patterns/domain-objects.md" }

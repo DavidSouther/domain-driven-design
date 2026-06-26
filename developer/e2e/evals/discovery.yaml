@@ -1,90 +1,133 @@
 name: discovery
+# Post-consolidation (progressive-disclosure, developer-plugin consolidation): the only
+# standalone developer skills left are `ailly` (the bootstrap + coordinator) and
+# `clean-comments-review`. The five lifecycle phases AND the four progressive abilities
+# (thinking, refactor, initialize, program-management) collapsed out of the always-on
+# Level-1 view. They are no longer standalone `developer:<name>` skills; they are reached
+# through the coordinator -- phases by argument (`developer:ailly <phase>`), abilities by
+# the coordinator consulting a reference. Either way the answer is the `developer:ailly`
+# coordinator plus the `references/...` reference path the coordinator loads. The discovery
+# arm loads only the `ailly` bootstrap (see assemblies/discovery.yaml), so each case
+# asserts the routing ANSWER the bootstrap teaches -- the ability/phase NAME as a routing
+# token AND the `references/...` reference path -- instead of the retired `developer:<name>`
+# skill identifier.
+#
+# Why this stays a sharp gate: a relocated-ability or phase case requires BOTH the routing
+# token AND the `references/...` path, which the no-skill baseline arm cannot emit, so the
+# falsification gap (improved>0, regressed==0) is at least as hard to satisfy by accident
+# as the single-identifier assertion it replaces. Negatives use the reference-path form for
+# retired abilities/phases (a correct answer may legitimately name the contrasted ability
+# in prose while routing to the right one).
 cases:
-  # Vague idea, nothing gathered yet → research, not design (research owns the
-  # nothing-gathered niche; design starts once research is cleared).
+  # Vague idea, nothing gathered yet → research phase, not design (research owns the
+  # nothing-gathered niche; design starts once research is cleared). Both are retired
+  # phases, so assert the phase argument + reference path, not a `developer:<phase>` id.
   - name: research-vs-design
     assertions:
-      - { type: text_contains, value: "developer:research" }
-      - { type: text_not_contains, value: "developer:design" }
+      - { type: text_contains, value: "developer:ailly" }
+      - { type: text_contains, value: "references/phases/research.md" }
+      - { type: text_not_contains, value: "references/phases/design.md" }
 
-  # Design cleared and its feature test recorded → plan, not the impl loop.
+  # Design cleared and its feature test recorded → plan phase, not the build loop.
   - name: design-vs-plan
     assertions:
-      - { type: text_contains, value: "developer:plan" }
-      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - { type: text_contains, value: "developer:ailly" }
+      - { type: text_contains, value: "references/phases/plan.md" }
+      - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
 
-  # Feature test failing as expected, no steps yet → plan, not the impl loop.
+  # Feature test failing as expected, no steps yet → plan phase, not the build loop.
   - name: plan-vs-rgr
     assertions:
-      - { type: text_contains, value: "developer:plan" }
-      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - { type: text_contains, value: "developer:ailly" }
+      - { type: text_contains, value: "references/phases/plan.md" }
+      - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
 
-  # Same error after a fix during a TDD cycle → thinking, not loop back to RGR.
+  # Same error after a fix during a TDD cycle → the thinking ability (a coordinator
+  # reference), not back into the build (red-green-refactor) phase. The positive side
+  # asserts the thinking routing token AND its reference path; the negative forbids the
+  # retired build phase's reference path.
   - name: rgr-vs-thinking
     assertions:
-      - { type: text_contains, value: "developer:thinking" }
-      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - { type: text_contains, value: "thinking" }
+      - { type: text_contains, value: "references/abilities/thinking.md" }
+      - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
       - type: judge
         prompt: |
-          The answer routes to developer:thinking because the same error
-          recurred after a change intended to fix it — a stuck-debugging
-          situation. It does not recommend continuing or restarting the
-          red-green-refactor loop as the fix for the recurring error.
+          The answer routes to the thinking ability (the coordinator's
+          references/abilities/thinking.md) because the same error recurred after a change
+          intended to fix it — a stuck-debugging situation. It does not recommend
+          continuing or restarting the red-green-refactor build phase as the fix
+          for the recurring error.
 
-  # Green code, smells to clean before merge → refactor, not a new RGR step.
+  # Green code, smells to clean before merge → the refactor ability (a coordinator
+  # reference), not a new build-phase step. Positive asserts the refactor routing token
+  # AND its reference path; negative forbids the retired build phase's reference path.
   - name: refactor-vs-rgr
     assertions:
-      - { type: text_contains, value: "developer:refactor" }
-      - { type: text_not_contains, value: "developer:red-green-refactor" }
+      - { type: text_contains, value: "refactor" }
+      - { type: text_contains, value: "references/abilities/refactor.md" }
+      - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
       - type: judge
         prompt: |
-          The answer routes to developer:refactor because the tests are
-          already green and the goal is to improve the code without changing
-          behaviour. It does not propose starting another red-green-refactor
-          implementation step.
+          The answer routes to the refactor ability (the coordinator's
+          references/abilities/refactor.md) because the tests are already green and the goal
+          is to improve the code without changing behaviour. It does not propose
+          starting another red-green-refactor build-phase step.
 
-  # Paired tidy-vs-finish: (a) → refactor (green mid-build), (b) → cleanup
-  # (terminal phase). Restores the cleanup routing coverage the removed
-  # is-clean-vs-cleanup pair provided.
+  # Paired tidy-vs-finish: (a) → the refactor ability (green mid-build), (b) → cleanup
+  # phase (the terminal phase, entered by argument). Asserts the refactor reference path
+  # for (a) and the cleanup phase reference path for (b).
   - name: cleanup-vs-refactor
     assertions:
-      - { type: text_contains, value: "developer:refactor" }
-      - { type: text_contains, value: "developer:cleanup" }
+      - { type: text_contains, value: "references/abilities/refactor.md" }
+      - { type: text_contains, value: "references/phases/cleanup.md" }
       - type: judge
         prompt: |
           The answer maps question (a) — cleaning up green code mid-build without
-          changing behavior — to developer:refactor, and question (b) — finishing
-          the whole topic with a final review, extracting the deferred decisions
-          into the TASKS file, and preparing the squash merge — to
-          developer:cleanup. The two are not swapped.
+          changing behavior — to the refactor ability (references/abilities/refactor.md),
+          and question (b) — finishing the whole topic with a final review,
+          extracting the deferred decisions into the TASKS file, and preparing the
+          squash merge — to the coordinator's cleanup phase (developer:ailly
+          cleanup, references/phases/cleanup.md). The two are not swapped.
 
-  # Empty folder, toolchain/layout/hooks to install → initialize, not the
-  # session coordinator.
+  # Empty folder, toolchain/layout/hooks to install → the initialize ability, not the
+  # session coordinator's flow. initialize is a retired ability reached as a coordinator
+  # reference, so assert its routing token + reference path; the negative forbids routing
+  # the answer to a lifecycle phase (the contrast here is "set up the environment" vs
+  # "start the development flow").
   - name: initialize-vs-ailly
     assertions:
-      - { type: text_contains, value: "developer:initialize" }
-      - { type: text_not_contains, value: "developer:ailly" }
+      - { type: text_contains, value: "initialize" }
+      - { type: text_contains, value: "references/abilities/initialize.md" }
+      - { type: text_not_contains, value: "references/phases/research.md" }
 
-  # Project already set up; start the gated workflow for a new feature → the
-  # session coordinator, not project setup.
+  # Project already set up; start the gated workflow for a new feature → the session
+  # coordinator's flow (the research phase is the entry), not project setup. Assert the
+  # coordinator plus the research phase path; the negative forbids the initialize
+  # reference path.
   - name: ailly-vs-initialize
     assertions:
       - { type: text_contains, value: "developer:ailly" }
-      - { type: text_not_contains, value: "developer:initialize" }
+      - { type: text_contains, value: "references/phases/research.md" }
+      - { type: text_not_contains, value: "references/abilities/initialize.md" }
 
-  # Paired bootstrap-vs-per-use: (a) one-time wiring of the team's tracker and
-  # docs → configuring-program-management; (b) everyday next-task / write-back →
-  # using-program-management. The configure/practice cadence split, not swapped.
+  # Paired bootstrap-vs-per-use: (a) one-time wiring of the team's tracker and docs →
+  # the program-management configuring reference; (b) everyday next-task / write-back →
+  # the program-management using reference. Both are retired abilities reached as
+  # coordinator references, so assert each reference path; the judge confirms the routing
+  # is not swapped.
   - name: program-management-config-vs-use
     assertions:
-      - { type: text_contains, value: "developer:configuring-program-management" }
-      - { type: text_contains, value: "developer:using-program-management" }
+      - { type: text_contains, value: "references/abilities/program-management/configuring.md" }
+      - { type: text_contains, value: "references/abilities/program-management/using.md" }
       - type: judge
         prompt: |
           The answer maps question (a) — the one-time setup that records the
           active tracker, the Epic/feature/bug term mapping, and the doc-system
-          target — to developer:configuring-program-management, and question (b)
-          — the everyday session work of pulling the next task and writing
-          deferred work back to the tracker — to developer:using-program-management.
-          The two are not swapped, and it does not route either to
-          developer:initialize or developer:ailly.
+          target — to the program-management configuring reference
+          (references/abilities/program-management/configuring.md), and question (b) — the
+          everyday session work of pulling the next task and writing deferred work
+          back to the tracker — to the program-management using reference
+          (references/abilities/program-management/using.md). The two are not swapped, and
+          it does not route either to the initialize reference or a lifecycle
+          phase.
