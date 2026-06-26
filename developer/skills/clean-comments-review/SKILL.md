@@ -1,85 +1,64 @@
 ---
 name: clean-comments-review
-description: Use when reviewing the comments and DocBlocks in code for their audience and longevity, not the code's correctness. Applies when a public DocBlock enumerates current callers or describes how a symbol is used today (detail that rots when usage changes) instead of why the symbol exists, when a comment's audience is unclear (an external-reader DocBlock versus an internal line comment), or when over-documentation should be cut back to intent. Produces a critique document, not edits to the code.
+description: Use when reviewing comments in coding artifacts. Produces a critique document, not code edits.
 ---
 
 # Clean Comments Review
 
 ## Overview
 
-Review the comments in a piece of code and report on them. The artifact is a
-critique document, not a rewrite of the code. Judge every comment by its
-audience and by whether it will still be true after the surrounding code
-changes. A comment earns its place when it captures something the code cannot
-say for itself. A comment is a liability when it restates the code, or when it
-records facts that rot as the code evolves.
+Review comments for whether they explain durable intent and invariants to the right reader. The artifact is a critique document, not a code rewrite.
 
-Two audiences, two standards:
+Comments explain why this exists, what contract callers may rely on, what invariant must be preserved, or why an unusual choice is correct.
+A comment explains what the code, signatures, type names, editor navigation, and git history cannot say clearly enough.
 
-- A **public DocBlock** addresses an **external reader** who will not read the
-  implementation. It states why the code exists and what a caller may expect.
-  It must not enumerate the current call sites or describe how the symbol is
-  used today: that detail rots the moment usage changes, and the external
-  reader cannot act on it. Module-level intent and worked examples help that
-  reader; links into the implementation do not.
-- An **internal line comment** addresses a future maintainer who can read the
-  code and find usages, but cannot recover why a surprising or atypical
-  decision was made. Most code needs none. A comment that restates what the
-  next line plainly does is noise.
+## Comments Explain Intent and Invariants
 
-## When to Use
+The review’s core question is: what can this comment tell a future reader that the code and tools cannot?
 
-- A public DocBlock lists current callers, or describes how the symbol is
-  used today, or any details will drift as soon as usage changes.
-- A comment documents how a symbol is used rather than why it exists.
-- A comment's audience is unclear: it sits on a public symbol but reads like an
-  internal note, or sits inline but restates a public contract.
-- A reviewer asks whether over-documentation should be reduced to intent.
+Good comments name durable things: intent, invariants, contracts, constraints, tradeoffs, surprising decisions, compatibility requirements, and domain meaning.
+They remain useful after code moves, files are renamed, callers change, helper functions are rearranged, and the original project plan is forgotten.
 
-**When NOT to use:** judging whether the code is correct, fast, or
-well-structured. This is a comment review, not a code review. It doesn't
-critique implementations, but it may critique examples in a docblock.
+## Public DocBlocks Serve External Readers
 
-## The Audience Model
+A public DocBlock addresses someone using the symbol without reading its implementation. It should explain why the symbol exists, what behavior callers may rely on, and any constraints that shape correct use.
 
-A comment should capture what the code cannot (Ousterhout, *A Philosophy of
-Software Design*). Comments can be described as a failure to express intent in
-the code itself (Martin, *Clean Code*). Knuth-style literate programming, where
-prose and code interleave as equals, is an extreme end which this review does
-not pursue. The goal is the minimum comment that carries intent the code cannot.
+A public DocBlock can include module-level intent, stable contracts, important edge cases, and worked examples.
+It should trust the reader’s tools for signatures, parameter names, return types, definitions, and reference searches.
 
-For a **public DocBlock**, ask: could an external reader who never opens the
-implementation act on this? State the why. Cut anything that enumerates current
-call sites or current usage. That detail rots, and it serves the wrong audience.
+## Internal Comments Preserve Maintainer Judgment
 
-For an **internal line comment**, ask: does this recover a why that the code
-cannot show? If it restates the code, delete it. If it explains a surprising
-decision, keep it.
+An internal comment addresses a future maintainer who can read the code, jump to definitions, find usages, and inspect history.
+Its job is to preserve judgment that would otherwise be lost: why this path is surprising but intentional, what invariant the next edit must protect, or what external constraint shaped the implementation.
+
+The strongest inline comments sit near the decision they explain and survive a caller reshuffle.
+
+## Comments Trust the Tooling
+
+Treat the editor and repository as part of the reader’s context.
+Signatures, types, field names, visibility, cfg attributes, definitions, references, blame, and file history are already available.
+
+A comment like “split out of restir.wgsl” is history.
+A comment like “this layout must remain byte-compatible with the ReSTIR shader buffer” is an invariant.
+A comment like “used by testing_events.rs” is a reference search.
+A comment like “the test harness and production path must share this gather rule” may be a contract if that shared rule is the important thing to preserve.
 
 ## Output Format
 
-Produce a critique document. For each comment:
+Produce a critique document. For each comment or comment group:
 
-1. Classify its audience: a public DocBlock (external reader) or an internal
-   line comment (future maintainer).
-2. State whether it serves that audience, and why or why not.
-3. Recommend an action: keep, cut to intent, or remove. When a DocBlock
-   enumerates current usage, recommend cutting that detail and reducing the
-   comment to the why.
+1. Identify the audience: public DocBlock or internal maintainer note.
+2. State the durable intent or invariant the comment should carry.
+3. Assess whether the current comment serves that purpose.
+4. Recommend an action: keep, reduce to intent, rewrite around the invariant, or remove.
 
-Do not edit the code. The artifact is the review.
+The review artifact names the problem and the desired shape of the comment; it does not edit the code directly.
 
-## Common Mistakes
+## Review Signals
 
-- **Endorsing rot-prone usage enumeration** Praising a DocBlock that lists
-  current callers, or describes how a symbol is used today, as "thorough" or
-  "complete." That detail rots when the call sites change, and the external
-  reader cannot act on it. Recommend cutting it to intent.
-- **Ignoring the comment's audience** Reviewing every comment against one
-  standard instead of classifying each as a public DocBlock (external reader)
-  or an internal line comment (future maintainer). The audience sets the
-  standard.
-- **Recommending no change when reduction is warranted** Concluding "the
-  comments look thorough, no changes needed" when a comment should be cut back
-  to its intent. A review that never recommends reduction is not reviewing for
-  longevity.
+- **Durable intent:** Keep comments that explain why the code exists, what must remain true, or what contract readers may rely on.
+- **Audience fit:** Shape public DocBlocks around caller contracts and internal comments around maintainer judgment.
+- **Tooling duplication:** Reduce comments that repeat signatures, field names, type names, obvious control flow, or LSP-findable relationships.
+- **Usage-site drift:** Replace “called by,” “used from,” and fixture-provenance prose with the stable rule those usages depend on, if one exists.
+- **History breadcrumbs:** Replace “split out of,” “originally part of,” feature IDs, design-doc links, and TDD notes with the current invariant, or remove them.
+- **Over-complete prose:** Prefer the smallest comment that preserves the intent a future reader cannot recover from code alone.
