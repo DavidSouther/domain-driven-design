@@ -15,9 +15,9 @@ matrix:
     - arrow-of-maturity-trigger
 
 prefix:
-  - { kind: file,   path: ./AGENTS.md,                    cache: true }
-  - { kind: file,   path: ./profile.md,                   cache: true }
-  - { kind: system, path: ./skills/using-domain/SKILL.md, cache: true }
+  - { kind: file,     path: ./AGENTS.md,                          cache: true }
+  - { kind: file,     path: ./profile.md,                         cache: true }
+  - { kind: external, path: ../skills/using-domain/SKILL.md,      cache: true }
 
 conversation:
   - { role: user, path: "prompts/discovery/{{ case }}.md" }
