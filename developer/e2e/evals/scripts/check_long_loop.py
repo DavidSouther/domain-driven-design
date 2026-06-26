@@ -5,7 +5,7 @@ The invocation prompt is a resume scenario where a draft marker is still present
 and the session was declared a **long loop**. This is the inverse of the `ailly`
 case: there the coordinator must STOP at the gate; here it must CROSS it by
 dispatching a research-and-decide reviewer. Rules trace 1:1 to the ailly
-SKILL.md "Long-loop Mode" section and `developer/references/long-loop.md`
+SKILL.md "Long-loop Mode" section and `developer/skills/ailly/references/shapes/long-loop.md`
 (section 2 reviewer contract, section 3 recording format, section 6
 never-auto-clear invariants).
 

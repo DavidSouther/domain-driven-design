@@ -9,7 +9,7 @@
 
 The first phase of the development lifecycle. A thin **delegating coordinator** that opens a topic by gathering and then narrowing context before any design exists. It owns the `research.md` artifact and the draft gate; `research:using-research` owns the search and falsification internals (the Jeopardy! expand and the oppositional falsify). This skill does not re-implement search; it briefs and frames it.
 
-**Announce at start:** "Using the developer:ailly research phase to gather and refine context for [summary of topic]. Name the recommended model for research from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort or thinking qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+**Announce at start:** "Using the developer:ailly research phase to gather and refine context for [summary of topic]. Name the recommended model for research from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort or thinking qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
 
 **Trigger:** A new or vague development topic with nothing gathered yet. The intent is known loosely, but the supporting context, prior art, and scope are not.
 

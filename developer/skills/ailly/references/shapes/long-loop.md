@@ -39,13 +39,13 @@ Escalated items use the same block:
 A worked entry, taken from this session's own `research.md` (entry 1, "Where do the mechanics live?"):
 
 > **1. Where do the mechanics live? Decided: a new
-> `developer/references/long-loop.md` that `developer/skills/ailly/SKILL.md`
+> `developer/skills/ailly/references/shapes/long-loop.md` that `developer/skills/ailly/SKILL.md`
 > points to from a short "Long-loop Mode" section.** This matches the verified
 > reference-delegation convention (Bugfix Shape → `bugfix.md`, Project Shape →
 > `project-cycle.md`), and the contract, recording format, and gate mapping
 > together exceed a section's worth and would bloat SKILL.md.
 
-The cleanup phase already extracts deferred decisions from `design.md` into `TASKS.md` (or the configured tracker, when the program-management using reference `developer/skills/ailly/references/program-management/using.md` is wired), so the in-place block feeds that existing path. A separate decision log would split the audit trail.
+The cleanup phase already extracts deferred decisions from `design.md` into `TASKS.md` (or the configured tracker, when the program-management using reference `developer/skills/ailly/references/abilities/program-management/using.md` is wired), so the in-place block feeds that existing path. A separate decision log would split the audit trail.
 
 ## 4. The escalation rule (three concrete triggers)
 
@@ -59,7 +59,7 @@ The reviewer still clears the remaining gates if the escalated item is not a pre
 
 ## 5. Project-cycle nested-gate interaction
 
-A project loop has nested gates (`developer/references/project-cycle.md`), and the reviewer contract maps onto both altitudes.
+A project loop has nested gates (`developer/skills/ailly/references/shapes/project/project-cycle.md`), and the reviewer contract maps onto both altitudes.
 
 - **Project altitude.** The project-altitude **Review** phase is "the draft-gate period, the project-altitude equivalent of the `*Draft*` marker". The same reviewer contract applies, dispatched scoped to the project design doc at project altitude.
 - **Per feature-step.** Each feature-step is itself a feature loop with its own design, plan, and cleanup gates. The reviewer is dispatched fresh per gate for each, cold-scoped to that feature's artifact.
@@ -75,7 +75,7 @@ At project altitude, reuse the same `Resolved by the long-loop reviewer (YYYY-MM
 Two gates are never auto-cleared by any reviewer, in any mode.
 
 - **The human merge gate.** The coordinator "pauses for human approval before the squash-merge or PR" (`developer/skills/ailly/SKILL.md` Session-Folder note and the loop diagram's `gate_merge`; `project-cycle.md` at project altitude). This gate is owned by the **coordinator**, not the cleanup body. In long-loop mode the cleanup phase still runs in a subagent and produces the merge-ready state, but it hands back to the coordinator at this gate; the cleanup subagent never approves or performs the merge on its own. The long-loop autonomy stops at the draft gates; the merge gate stays human regardless of mode.
-- **The Closing Bell.** A human usability study; "the agent does not pass it on the user's behalf" (`developer/references/closing-bell.md`). The reviewer never runs or passes it. When the project gets to the closing bell, the long loop is completed.
+- **The Closing Bell.** A human usability study; "the agent does not pass it on the user's behalf" (`developer/skills/ailly/references/shapes/project/closing-bell.md`). The reviewer never runs or passes it. When the project gets to the closing bell, the long loop is completed.
 
 ## 7. The end-of-run report
 

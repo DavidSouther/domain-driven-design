@@ -23,10 +23,10 @@ Prepares a project folder for development using language-agnostic orchestration 
 
 | Language/Toolchain | Reference file |
 |---|---|
-| Rust | `developer/skills/ailly/references/initialize-languages/rust.md` |
-| Python | `developer/skills/ailly/references/initialize-languages/python.md` |
-| TypeScript | `developer/skills/ailly/references/initialize-languages/typescript.md` |
-| Mise monorepo | `developer/skills/ailly/references/initialize-languages/mise.md` |
+| Rust | `developer/skills/ailly/references/abilities/initialize/rust.md` |
+| Python | `developer/skills/ailly/references/abilities/initialize/python.md` |
+| TypeScript | `developer/skills/ailly/references/abilities/initialize/typescript.md` |
+| Mise monorepo | `developer/skills/ailly/references/abilities/initialize/mise.md` |
 
 If the target language is not in this table, ask the user which toolchain to use as the basis and adapt the closest reference file.
 

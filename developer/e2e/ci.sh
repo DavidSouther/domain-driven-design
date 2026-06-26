@@ -59,10 +59,10 @@ fi
 # (research, design, plan, cleanup, thinking, refactor, initialize) are NOT grepped
 # (reviewer decision 2: they false-positive on ordinary prose); the falsification strength
 # is carried on the assertion side, which requires BOTH the routing token and the
-# reference path the baseline arm cannot emit. The single pattern below covers both the
-# `references/phases/<phase>` and the `references/<ability>` (incl.
-# `references/program-management/<name>`) answer-path forms.
-if grep -nE 'references/(phases/)?[a-z][a-z-]*(/[a-z][a-z-]*)?\.md' "${hygiene_targets[@]}"; then
+# reference path the baseline arm cannot emit. The single pattern below covers the
+# `references/phases/<phase>`, the `references/abilities/<ability>`, and the
+# `references/abilities/program-management/<name>` answer-path forms.
+if grep -nE 'references/[a-z][a-z-]*(/[a-z][a-z-]*){0,2}\.md' "${hygiene_targets[@]}"; then
   echo "FAIL: a baseline-prefix file names a references/<...>.md answer path (see matches above); the baseline arm leaks the answer." >&2
   exit 1
 fi
@@ -76,7 +76,7 @@ echo "OK: baseline-prefix files (AGENTS.md, profile.md) leak no developer:<skill
 #     thinking, refactor, initialize (3 cases)
 # The matrix total is unchanged from the prior split (1 + 5 + 3 = 9 cases); only the suite
 # split changed, because thinking/refactor/initialize moved from standalone skills to
-# coordinator references and now load from ../skills/ailly/references/<ability>.md. The
+# coordinator references and now load from ../skills/ailly/references/abilities/<ability>.md. The
 # discovery matrix (9) and the long-loop pair (1) are untouched.
 expected_count() {
   case "$1" in

@@ -4,7 +4,7 @@ model: claude-sonnet-4-6
 # Post-consolidation (progressive-disclosure, developer-plugin consolidation): the three
 # progressive abilities thinking, refactor, and initialize are no longer standalone
 # `../skills/<name>/SKILL.md` bodies; they are references the `developer:ailly` coordinator
-# consults (../skills/ailly/references/<ability>.md). This suite loads the coordinator
+# consults (../skills/ailly/references/abilities/<ability>.md). This suite loads the coordinator
 # bootstrap plus exactly one ability reference (the matrix value) -- the same body the
 # prior `invocation` suite scored for these abilities, just at its new reference path. The
 # prompts and checkers are unchanged (prompts/invocation/<ability>.md,
@@ -15,7 +15,7 @@ prefix:
   - { kind: file,   path: profile.md,                                 cache: true }
   - { kind: external, path: ../skills/ailly/SKILL.md,                 cache: true }
   - kind: external
-    path: "../skills/ailly/references/{{ ability }}.md"
+    path: "../skills/ailly/references/abilities/{{ ability }}.md"
     cache: true
 
 matrix:

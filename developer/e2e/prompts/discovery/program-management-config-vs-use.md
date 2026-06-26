@@ -9,5 +9,5 @@ Ailly's concepts, and where long-lived docs get published.
 from that tracker and write deferred work back to it under the right parent.
 
 Name the single developer ability that applies to (a) and the single ability that
-applies to (b), name the `references/program-management/...` reference the
+applies to (b), name the `references/abilities/program-management/...` reference the
 `developer:ailly` coordinator loads for each, and one sentence each on why.

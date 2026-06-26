@@ -9,9 +9,9 @@
 
 Perform final refactoring and review passes for the topic. Check for lint findings, and include them in the refactor passes. Run automated formatters and lint fixers.
 
-Extract deferred decisions from design.md via the program-management using reference (`references/program-management/using.md`) when a tracker is configured (it writes them as labeled tasks under the right parent); otherwise write them to `TASKS.md`, including any necessary TASK-NOTES.
+Extract deferred decisions from design.md via the program-management using reference (`references/abilities/program-management/using.md`) when a tracker is configured (it writes them as labeled tasks under the right parent); otherwise write them to `TASKS.md`, including any necessary TASK-NOTES.
 
-For a **Project**-shape topic with a doc-system target configured, publish the accepted notes as long-lived docs via the program-management using reference (`references/program-management/using.md`) and mark them `completed:` before removing the local folder. A feature or bug leaves only its task record behind.
+For a **Project**-shape topic with a doc-system target configured, publish the accepted notes as long-lived docs via the program-management using reference (`references/abilities/program-management/using.md`) and mark them `completed:` before removing the local folder. A feature or bug leaves only its task record behind.
 
 Remove the `.ailly/developer/YYYY-MM-DD-A-<topic>` folder.
 

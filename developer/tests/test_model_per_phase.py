@@ -26,7 +26,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 DEV = REPO / "developer"
-REFERENCE = DEV / "references" / "model-per-phase.md"
+REFERENCE = DEV / "skills" / "ailly" / "references" / "checks" / "model-per-phase.md"
 
 # The four primary phases that get an announce-line recommendation. The verbatim
 # Anthropic model AND its effort/thinking qualifier must appear in that phase's

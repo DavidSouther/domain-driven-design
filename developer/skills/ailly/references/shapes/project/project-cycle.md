@@ -31,7 +31,7 @@ Projects run over long timeframes, so the intervening documents are kept. Author
 
 The project's exit criterion is the Closing Bell, a summative usability study that stands in for the feature test. It is written once, at the start, as a qualitative statement of what the finished project should let a user do, and run once, near the end, to judge whether the project delivered it. Unlike a feature test, it is not a gate that runs continuously from red to green. Writing it first fixes the definition of done before the features are designed.
 
-See `developer/references/closing-bell.md` for who runs it, the participant profile, the task scenarios, and the acceptance criteria.
+See `developer/skills/ailly/references/shapes/project/closing-bell.md` for who runs it, the participant profile, the task scenarios, and the acceptance criteria.
 
 ## Project Design Doc
 
@@ -58,7 +58,7 @@ Record the Closing Bell's location in the project design doc, the way a feature 
 
 A project lands its features over time, so the half-built whole must not reach users before the Closing Bell passes. Gate it behind a single project-level release flag. Deploy continuously, but release to users only when the project is done. Usually that one flag is enough. A feature-step earns its own only when it changes what users see on its own.
 
-See `developer/references/release-flags.md` for how this decouples deploy from release, how to run the Closing Bell behind the flag, when a step needs its own flag, and how the flag is turned on and later retired.
+See `developer/skills/ailly/references/shapes/project/release-flags.md` for how this decouples deploy from release, how to run the Closing Bell behind the flag, when a step needs its own flag, and how the flag is turned on and later retired.
 
 ## Plan Steps Are Features
 

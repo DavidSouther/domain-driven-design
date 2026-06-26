@@ -4,7 +4,7 @@
 
 A feature-flag system is assembled once, at the composition root, as a single evaluation entry point that the rest of the code reads through. The setup fixes the decisions every flag inherits: which provider backs evaluation, what a flag resolves to when the provider is unreachable, how flags are named and owned, and when they expire. Code against a vendor-neutral interface, the CNCF OpenFeature standard or a thin internal `Flags` port, so the provider is swappable and no call site imports a vendor SDK.
 
-This skill is the general flag harness. The project loop's single release gate, which hides a whole multi-feature project until its Closing Bell completes, is one application of this harness and is described in `developer/configuring-feature-flags/release-flags.md`.
+This skill is the general flag harness. The project loop's single release gate, which hides a whole multi-feature project until its Closing Bell completes, is one application of this harness and is described in `developer/skills/ailly/references/shapes/project/release-flags.md`.
 
 ## When to Use
 
@@ -78,4 +78,4 @@ Re-run this skill, and confirm the contract still holds, when:
 - **the using-feature-flags pattern (`references/patterns/using-feature-flags.md`)** — the call-site partner. This skill installs the evaluation entry point and the conventions. That skill puts one feature behind one flag at one toggle point. Run them together.
 - **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)** — the entry point built here is injected by the composition root that skill describes.
 - **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — the evaluation context crosses a boundary, so parse it into a typed shape rather than threading raw values inward.
-- **`developer/configuring-feature-flags/release-flags.md`** — the project loop's single release gate is one application of this harness.
+- **`developer/skills/ailly/references/shapes/project/release-flags.md`** — the project loop's single release gate is one application of this harness.

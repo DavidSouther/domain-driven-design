@@ -20,7 +20,7 @@ higher than for an undeclared, incidental tool.
 
 Many failures are a missing local setup step, not a broken project. Before escalating,
 consult the coordinator's initialize reference
-(`developer/skills/ailly/references/initialize.md`) to see whether the environment simply
+(`developer/skills/ailly/references/abilities/initialize.md`) to see whether the environment simply
 needs to be prepared — for example a missing `mise trust`, an `npm install` that has not
 been run, an unactivated virtualenv, or an uninstalled dev dependency. If the initialize
 reference identifies a safe, local, idempotent fix, apply it and retry the original

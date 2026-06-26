@@ -11,7 +11,7 @@ prefix:
   - { kind: file,     path: context/AGENTS.md,                       cache: true }
   - { kind: file,     path: profile.md,                              cache: true }
   - { kind: external, path: ../skills/ailly/SKILL.md,                cache: true }
-  - { kind: external, path: ../references/long-loop.md,              cache: true }
+  - { kind: external, path: ../skills/ailly/references/shapes/long-loop.md, cache: true }
 
 conversation:
   - { role: user, path: "prompts/invocation/long-loop.md" }

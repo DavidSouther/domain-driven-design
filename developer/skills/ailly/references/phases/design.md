@@ -13,7 +13,7 @@ Start by understanding the current project context, then ask questions one at a 
 
 **Trigger:** A cleared `research.md` in the session folder (or a topic clear enough that research added nothing to gather).
 
-**Announce at start:** "Designing a feature to [summary of the prompt]. Name the recommended model for design from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+**Announce at start:** "Designing a feature to [summary of the prompt]. Name the recommended model for design from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
 
 ## Anti-Patterns
 
@@ -46,7 +46,7 @@ The design phase produces **one executable feature test** that encodes the prima
 
 - Write the user story in plain language first (Given/When/Then or a short narrative).
 - Write exactly one executable test that runs end-to-end through that story, at the integration/e2e level, asserting the user-story outcome directly. It fails at the start because no implementation exists.
-- Use the language and test framework established by the initialize reference (`references/initialize.md`), and place the test in the project test tree at that conventional location.
+- Use the language and test framework established by the initialize reference (`references/abilities/initialize.md`), and place the test in the project test tree at that conventional location.
 - Record the test's path in `design.md` so the plan phase can find it.
 
 For complex UI features, Page Object abstractions are appropriate; for simple features, keep the test direct and flat. One test, not a suite of unit tests.
@@ -110,7 +110,7 @@ digraph brainstorming {
 
 - Propose 2-3 different approaches with trade-offs.
 - Present options directly with your recommendation and reasoning. Lead with your recommended option and explain why. Include pros and cons of each.
-- For each approach, use forward-backward planning to map the path from the current state to the proposed end state. Work backward from where the approach lands and forward from where the codebase is now, meeting in the middle. This surfaces whether an approach is feasibly reachable and where the hard steps are before committing to it. See `developer/references/forward_backward.md`.
+- For each approach, use forward-backward planning to map the path from the current state to the proposed end state. Work backward from where the approach lands and forward from where the codebase is now, meeting in the middle. This surfaces whether an approach is feasibly reachable and where the hard steps are before committing to it. See `developer/skills/ailly/references/abilities/forward-backward.md`.
 
 **Writing the design:**
 
@@ -129,7 +129,7 @@ digraph brainstorming {
 
 ## Bugfix Shape
 
-When the research refine pass sized the task as a bug, smaller than a feature or a project, consult `developer/references/bugfix.md`. The design content uses observed / expected / unchanged language, and the feature test is a failing **reproduction** test that fills the same slot the feature test otherwise fills.
+When the research refine pass sized the task as a bug, smaller than a feature or a project, consult `developer/skills/ailly/references/shapes/bugfix.md`. The design content uses observed / expected / unchanged language, and the feature test is a failing **reproduction** test that fills the same slot the feature test otherwise fills.
 
 ## After the Design
 

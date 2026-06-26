@@ -9,7 +9,7 @@
 
 The innermost development loop. Type-first TDD: write signatures before tests, tests before implementation, commit before refactoring. Has an explicit abort condition to prevent infinite loops.
 
-**Announce at start:** "[Summary of the plan step.] Using the developer:ailly Build phase (red-green-refactor) for this step of the plan. Name the recommended model for implementation from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort or context qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+**Announce at start:** "[Summary of the plan step.] Using the developer:ailly Build phase (red-green-refactor) for this step of the plan. Name the recommended model for implementation from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort or context qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
 
 ## The Loop
 
@@ -27,11 +27,11 @@ digraph rgr {
     run_checks [shape=box label="Run check + tests"];
     all_pass [shape=diamond label="All pass?"];
     same_error [shape=diamond label="Same error after fix?"];
-    invoke_thinking [shape=box label="Consult references/thinking.md"];
+    invoke_thinking [shape=box label="Consult references/abilities/thinking.md"];
     tried_thinking [shape=diamond label="Already tried thinking for this error?"];
     abort [shape=doublecircle label="ABORT"];
     commit [shape=box label="Commit"];
-    refactor [shape=box label="references/refactor.md"];
+    refactor [shape=box label="references/abilities/refactor.md"];
     done [shape=doublecircle label="Done"];
 
     plan_step -> write_sigs;
@@ -86,7 +86,7 @@ Replace stub bodies with real code. Run check, then run tests. Repeat until all 
 
 ## Thinking Trigger
 
-Consult `references/thinking.md` (as a subagent) when:
+Consult `references/abilities/thinking.md` (as a subagent) when:
 - The same error (or substantially the same) appears after a change was intended to fix it.
 - An error appears that is unrelated to the code added or changed in this step
 
@@ -97,7 +97,7 @@ Pass to the thinking subagent:
 
 ## Loop Abort
 
-If `references/thinking.md` has already been consulted for the current error and the same or equivalent error reappears after following its plan, do **not** consult it again. Stop immediately and report:
+If `references/abilities/thinking.md` has already been consulted for the current error and the same or equivalent error reappears after following its plan, do **not** consult it again. Stop immediately and report:
 
 > "Stuck on the same error after thinking. Error: `<error>`. Thinking doc at `.ailly/developer/YYYY-MM-DD-A-<topic>/thinking/<problem>.md`. Suggestion: review the current diff (`git diff`) or restore the working directory (`git restore .`) and try again."
 
@@ -108,5 +108,5 @@ Do not loop. Do not try a different approach on your own. Abort and report.
 When all tests are green:
 1. `git add` only the files changed in this step.
 2. Commit with a message describing what the step implemented.
-3. Consult `references/refactor.md`.
+3. Consult `references/abilities/refactor.md`.
 4. Commit with a message describing the refactorings.

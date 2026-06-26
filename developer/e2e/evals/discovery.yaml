@@ -49,12 +49,12 @@ cases:
   - name: rgr-vs-thinking
     assertions:
       - { type: text_contains, value: "thinking" }
-      - { type: text_contains, value: "references/thinking.md" }
+      - { type: text_contains, value: "references/abilities/thinking.md" }
       - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
       - type: judge
         prompt: |
           The answer routes to the thinking ability (the coordinator's
-          references/thinking.md) because the same error recurred after a change
+          references/abilities/thinking.md) because the same error recurred after a change
           intended to fix it — a stuck-debugging situation. It does not recommend
           continuing or restarting the red-green-refactor build phase as the fix
           for the recurring error.
@@ -65,12 +65,12 @@ cases:
   - name: refactor-vs-rgr
     assertions:
       - { type: text_contains, value: "refactor" }
-      - { type: text_contains, value: "references/refactor.md" }
+      - { type: text_contains, value: "references/abilities/refactor.md" }
       - { type: text_not_contains, value: "references/phases/red-green-refactor.md" }
       - type: judge
         prompt: |
           The answer routes to the refactor ability (the coordinator's
-          references/refactor.md) because the tests are already green and the goal
+          references/abilities/refactor.md) because the tests are already green and the goal
           is to improve the code without changing behaviour. It does not propose
           starting another red-green-refactor build-phase step.
 
@@ -79,12 +79,12 @@ cases:
   # for (a) and the cleanup phase reference path for (b).
   - name: cleanup-vs-refactor
     assertions:
-      - { type: text_contains, value: "references/refactor.md" }
+      - { type: text_contains, value: "references/abilities/refactor.md" }
       - { type: text_contains, value: "references/phases/cleanup.md" }
       - type: judge
         prompt: |
           The answer maps question (a) — cleaning up green code mid-build without
-          changing behavior — to the refactor ability (references/refactor.md),
+          changing behavior — to the refactor ability (references/abilities/refactor.md),
           and question (b) — finishing the whole topic with a final review,
           extracting the deferred decisions into the TASKS file, and preparing the
           squash merge — to the coordinator's cleanup phase (developer:ailly
@@ -98,7 +98,7 @@ cases:
   - name: initialize-vs-ailly
     assertions:
       - { type: text_contains, value: "initialize" }
-      - { type: text_contains, value: "references/initialize.md" }
+      - { type: text_contains, value: "references/abilities/initialize.md" }
       - { type: text_not_contains, value: "references/phases/research.md" }
 
   # Project already set up; start the gated workflow for a new feature → the session
@@ -109,7 +109,7 @@ cases:
     assertions:
       - { type: text_contains, value: "developer:ailly" }
       - { type: text_contains, value: "references/phases/research.md" }
-      - { type: text_not_contains, value: "references/initialize.md" }
+      - { type: text_not_contains, value: "references/abilities/initialize.md" }
 
   # Paired bootstrap-vs-per-use: (a) one-time wiring of the team's tracker and docs →
   # the program-management configuring reference; (b) everyday next-task / write-back →
@@ -118,16 +118,16 @@ cases:
   # is not swapped.
   - name: program-management-config-vs-use
     assertions:
-      - { type: text_contains, value: "references/program-management/configuring.md" }
-      - { type: text_contains, value: "references/program-management/using.md" }
+      - { type: text_contains, value: "references/abilities/program-management/configuring.md" }
+      - { type: text_contains, value: "references/abilities/program-management/using.md" }
       - type: judge
         prompt: |
           The answer maps question (a) — the one-time setup that records the
           active tracker, the Epic/feature/bug term mapping, and the doc-system
           target — to the program-management configuring reference
-          (references/program-management/configuring.md), and question (b) — the
+          (references/abilities/program-management/configuring.md), and question (b) — the
           everyday session work of pulling the next task and writing deferred work
           back to the tracker — to the program-management using reference
-          (references/program-management/using.md). The two are not swapped, and
+          (references/abilities/program-management/using.md). The two are not swapped, and
           it does not route either to the initialize reference or a lifecycle
           phase.

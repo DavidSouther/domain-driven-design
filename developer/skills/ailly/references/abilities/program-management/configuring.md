@@ -2,7 +2,7 @@
 
 > Coordinator reference loaded by `developer:ailly` for the **one-time** tracker
 > setup. The bootstrap-vs-per-use partner is the using reference
-> (`references/program-management/using.md`), which runs every session. There is
+> (`references/abilities/program-management/using.md`), which runs every session. There is
 > no standalone `developer:configuring-program-management` skill.
 
 ## Overview

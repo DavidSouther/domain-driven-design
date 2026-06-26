@@ -9,7 +9,7 @@
 
 Middle-loop planning skill. Given a cleared design and its failing feature test, defines the API surface area and breaks the path to making that test pass into 3–7 incremental steps. Each step must leave the codebase in a runnable state and advance the feature test measurably.
 
-**Announce at start:** "Using the developer:ailly plan phase to create the implementation plan for [summary of feature]. Name the recommended model for planning from the Phase by Provider table in developer/references/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+**Announce at start:** "Using the developer:ailly plan phase to create the implementation plan for [summary of feature]. Name the recommended model for planning from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
 
 **Trigger:** The design draft marker has been cleared by a human. The design records the project feature test, which is currently failing.
 
@@ -24,7 +24,7 @@ Middle-loop planning skill. Given a cleared design and its failing feature test,
 3. Break the path to a passing feature test into several (no more than 7) incremental steps.
   - If it seems a plan would require more than a few steps, encourage the user to go back to the design and simplify the size of the step.
   - If it seems a plan would require more than 7 steps, insist that the user go back to the design.
-3a. If the path from the failing test to a passing test isn't obvious, apply the forward-backward method. Work backward from the passing test state (what must be true just before the failing assertion passes?) and forward from the current code (what can be derived or added without breaking anything?) until the two sides connect into a complete sequence of steps. Write each candidate step to a map file as it is generated — do not hold steps only in context. See `developer/references/forward_backward.md`.
+3a. If the path from the failing test to a passing test isn't obvious, apply the forward-backward method. Work backward from the passing test state (what must be true just before the failing assertion passes?) and forward from the current code (what can be derived or added without breaking anything?) until the two sides connect into a complete sequence of steps. Write each candidate step to a map file as it is generated — do not hold steps only in context. See `developer/skills/ailly/references/abilities/forward-backward.md`.
 4. For each step: name it, describe what it builds, and identify which assertion in the feature test it enables. Steps may include type/API sketches and notes on critical areas as orientation for the builder, but no implementation code — each step is a description of what to build, not how to build it.
 5. Save the plan as a draft and stop.
 

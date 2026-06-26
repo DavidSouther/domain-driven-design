@@ -79,7 +79,7 @@ digraph refactor {
     pass [shape=diamond label="Pass?"];
     fix_causes_error [shape=diamond label="Fix attempt causes same or new error?"];
     tried_thinking [shape=diamond label="Already tried thinking for this error?"];
-    invoke_thinking [shape=box label="Consult references/thinking.md"];
+    invoke_thinking [shape=box label="Consult references/abilities/thinking.md"];
     abort [shape=doublecircle label="ABORT"];
     fix_error [shape=box label="Fix the error"];
     more_smells [shape=diamond label="More smells?"];
@@ -108,9 +108,9 @@ digraph refactor {
 
 ## Thinking Trigger
 
-Consult `references/thinking.md` (as a subagent) when a refactoring causes a failure and a fix attempt produces the same or a new error. Pass to the subagent: the exact error message, the refactoring applied, and the smell being addressed.
+Consult `references/abilities/thinking.md` (as a subagent) when a refactoring causes a failure and a fix attempt produces the same or a new error. Pass to the subagent: the exact error message, the refactoring applied, and the smell being addressed.
 
-If `references/thinking.md` has already been consulted for this error and the same error reappears after following its plan, do **not** consult it again! Instead, revert the changes and mark this refactoring as deferred.
+If `references/abilities/thinking.md` has already been consulted for this error and the same error reappears after following its plan, do **not** consult it again! Instead, revert the changes and mark this refactoring as deferred.
 
 ## Deferred Smells
 

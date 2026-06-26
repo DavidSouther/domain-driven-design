@@ -2,7 +2,7 @@
 
 > Coordinator reference loaded by `developer:ailly` for **per-session** task I/O
 > when a tracker is configured. The bootstrap-vs-per-use partner is the
-> configuring reference (`references/program-management/configuring.md`), which
+> configuring reference (`references/abilities/program-management/configuring.md`), which
 > sets up the wiring once. There is no standalone `developer:using-program-management`
 > skill.
 

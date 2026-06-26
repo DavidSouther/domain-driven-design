@@ -29,11 +29,13 @@ The coordinator's other abilities are progressive references it consults when th
 | Breaking a failing feature test into implementation steps | `/ailly plan` → `references/phases/plan.md` |
 | Implementing a plan step with TDD | `/ailly red-green-refactor` → `references/phases/red-green-refactor.md` |
 | Finishing the topic: final review, extract deferred tasks, prepare the squash-merge | `/ailly cleanup` → `references/phases/cleanup.md` |
-| Stuck on a red compiler/test/lint error during build, especially a recurring one after a fix | `references/thinking.md` (run as a subagent) |
-| Code is green and you want to clean up before finishing | `references/refactor.md` |
-| Setting up a new project or a language environment (layout, tooling, dev hooks) | `references/initialize.md` |
-| Reading the next task from the tracker, or writing deferred work back during a session | `references/program-management/using.md` |
-| Wiring Ailly to the team's issue tracker and document system (once per project) | `references/program-management/configuring.md` |
+| Stuck on a red compiler/test/lint error during build, especially a recurring one after a fix | `references/abilities/thinking.md` (run as a subagent) |
+| Code is green and you want to clean up before finishing | `references/abilities/refactor.md` |
+| Setting up a new project or a language environment (layout, tooling, dev hooks) | `references/abilities/initialize.md` |
+| Reading the next task from the tracker, or writing deferred work back during a session | `references/abilities/program-management/using.md` |
+| Wiring Ailly to the team's issue tracker and document system (once per project) | `references/abilities/program-management/configuring.md` |
+
+When running these skills under a non-Claude harness, consult `references/agents/<harness>.md` (codex, copilot, gemini) for the tool-name mappings that translate Claude's tool names to that harness.
 
 ```dot
 digraph phases {
@@ -174,8 +176,8 @@ Pass the session folder path to each phase subagent. The session folder is the s
 
 Before running each phase, the coordinator checks before it proceeds and escalates to the human rather than silently working around a problem. Two checks share this discipline:
 
-- **Model check.** Detect the running model and compare it to the model recommended for the phase. On a mismatch, say so explicitly and invite a `/model` switch; continue on the current model either way. This is a check, not a gate — the loop never stalls. Consult `developer/references/model-per-phase.md` for the phase×provider table, the detection rules, and the switch protocol.
-- **Tool readiness.** When a tool *declared for the project* fails, do not silently substitute another tool or work around it by hand. Consult `developer/references/tool-failure.md`: first check the initialize reference (`references/initialize.md`) for a local fix (e.g. `mise trust`, `npm install`), then escalate to the user with what failed, a suggested remediation, and why it is correct, and retry after the user remediates or grants permission.
+- **Model check.** Detect the running model and compare it to the model recommended for the phase. On a mismatch, say so explicitly and invite a `/model` switch; continue on the current model either way. This is a check, not a gate — the loop never stalls. Consult `developer/skills/ailly/references/checks/model-per-phase.md` for the phase×provider table, the detection rules, and the switch protocol.
+- **Tool readiness.** When a tool *declared for the project* fails, do not silently substitute another tool or work around it by hand. Consult `developer/skills/ailly/references/checks/tool-failure.md`: first check the initialize reference (`references/abilities/initialize.md`) for a local fix (e.g. `mise trust`, `npm install`), then escalate to the user with what failed, a suggested remediation, and why it is correct, and retry after the user remediates or grants permission.
 
 ## Topic Slug
 
@@ -214,24 +216,24 @@ When first starting an Ailly task, the user may ask to "run a long loop", a "dyn
 - Unlike quick-loop, the long loop does **not** inherit the forbidden list; it is the intended substitute precisely where quick-loop is forbidden (ambiguous, high-blast-radius, or security-sensitive work), keeping full-fidelity artifacts and deliberation.
 - The human merge gate and the Closing Bell are **never** auto-cleared by any reviewer.
 
-For the reviewer contract, the recording format, the escalation rule, the project-cycle interaction, and the end-of-run report, consult `developer/references/long-loop.md`.
+For the reviewer contract, the recording format, the escalation rule, the project-cycle interaction, and the end-of-run report, consult `developer/skills/ailly/references/shapes/long-loop.md`.
 
 ## Bugfix Shape
 
-When requested, or when the research refine pass reclassifies the task as a bug, consult `developer/references/bugfix.md`. The same five phases run, but the design specification uses "observed", "expected", and "unchanged" language, and the feature test is a failing **reproduction** test that fills the same slot the design's feature test fills. Bugfixes can usually be done with a quick loop.
+When requested, or when the research refine pass reclassifies the task as a bug, consult `developer/skills/ailly/references/shapes/bugfix.md`. The same five phases run, but the design specification uses "observed", "expected", and "unchanged" language, and the feature test is a failing **reproduction** test that fills the same slot the design's feature test fills. Bugfixes can usually be done with a quick loop.
 
 ## Project Shape
 
-When the topic is too large for one feature, needing several features that only deliver value as a unified whole, consult `developer/references/project-cycle.md`. The same five phases run at a larger scale. Each plan step has a dedicated development cycle. Sequential and parallel steps are marked explicitly. The exit criterion is a Closing Bell usability study rather than one executable feature test, and the documents are long-lived (replicated to the organization's document repository on acceptance, and marked `completed: date` rather than deleted at cleanup).
+When the topic is too large for one feature, needing several features that only deliver value as a unified whole, consult `developer/skills/ailly/references/shapes/project/project-cycle.md`. The same five phases run at a larger scale. Each plan step has a dedicated development cycle. Sequential and parallel steps are marked explicitly. The exit criterion is a Closing Bell usability study rather than one executable feature test, and the documents are long-lived (replicated to the organization's document repository on acceptance, and marked `completed: date` rather than deleted at cleanup).
 
 ## Next Task
 
 Read `DEVELOPMENT.md` for a `## Program Management` section. Two coordinator references handle the tracker, split bootstrap-vs-per-use:
 
-- **One-time tracker setup** (record the active tracker, the Epic/feature/bug term mapping, and the doc-system target) is `references/program-management/configuring.md`. Run it once per project, never inside a development session.
-- **Per-session task I/O** (select the next task, label and link tasks, record phase progress, write deferred work back, publish accepted Project docs) is `references/program-management/using.md`. It runs every session against the contract the configuring reference recorded.
+- **One-time tracker setup** (record the active tracker, the Epic/feature/bug term mapping, and the doc-system target) is `references/abilities/program-management/configuring.md`. Run it once per project, never inside a development session.
+- **Per-session task I/O** (select the next task, label and link tasks, record phase progress, write deferred work back, publish accepted Project docs) is `references/abilities/program-management/using.md`. It runs every session against the contract the configuring reference recorded.
 
-When an active tracker is recorded in `DEVELOPMENT.md`, defer next-task selection and deferred-work writing to `references/program-management/using.md`; the tracker is the source of truth for the task tier. When no tracker is configured (the section is absent, or the active tracker is `none`), fall back to `TASKS.md` with today's behavior below unchanged. Session artifacts remain **notes** in `.ailly/developer/<date>-<topic>/` either way.
+When an active tracker is recorded in `DEVELOPMENT.md`, defer next-task selection and deferred-work writing to `references/abilities/program-management/using.md`; the tracker is the source of truth for the task tier. When no tracker is configured (the section is absent, or the active tracker is `none`), fall back to `TASKS.md` with today's behavior below unchanged. Session artifacts remain **notes** in `.ailly/developer/<date>-<topic>/` either way.
 
 When finishing a session, add the next step to `.ailly/developer/TASKS.md`. When calling run, read `TASKS.md` first, then compare the user's input to the list of next steps. If the next step is obvious from context, run that. If there is no next step, start from the top. If the next step is ambiguous, ask whether they want to pick from a list or start a new developer task. When you start a task, remove it from `TASKS.md`. Ignore tasks in comments, either # lines or HTML section comments. When substantial context is needed for a task, create a `TASK-NOTES-<task>.md` file with the details, and include just a short overview to that in the TASKS file. Review NOTES when the task is selected.
 

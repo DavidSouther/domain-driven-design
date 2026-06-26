@@ -13,7 +13,7 @@ This skill assumes the flag harness from the configuring-feature-flags pattern (
 - An operational switch, a kill switch or circuit breaker, must flip without a deploy.
 - A capability should be visible only to certain users or cohorts.
 
-**When NOT to use:** choosing the provider, the naming convention, the fail-safe default, or the environment resolution. That setup is once-per-project and belongs in the configuring-feature-flags pattern (`references/patterns/configuring-feature-flags.md`). For the project loop's single release gate that hides a whole multi-feature project, see `developer/using-feature-flags/release-flags.md` rather than adding a flag per step.
+**When NOT to use:** choosing the provider, the naming convention, the fail-safe default, or the environment resolution. That setup is once-per-project and belongs in the configuring-feature-flags pattern (`references/patterns/configuring-feature-flags.md`). For the project loop's single release gate that hides a whole multi-feature project, see `developer/skills/ailly/references/shapes/project/release-flags.md` rather than adding a flag per step.
 
 ## Core Pattern
 
@@ -58,4 +58,4 @@ For complete examples, see [`using-feature-flags/typescript.md`](using-feature-f
 - **the configuring-feature-flags pattern (`references/patterns/configuring-feature-flags.md`)** — the setup partner. It installs the evaluation port, the naming convention, and the fail-safe default this skill relies on.
 - **the type-states pattern (`references/patterns/type-states.md`)** — when a flag gates a lifecycle change, model the two states as types rather than re-reading the flag downstream.
 - **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — read the flag once at the boundary into a typed decision rather than threading the raw flag through the domain.
-- **`developer/using-feature-flags/release-flags.md`** — the project loop's single release gate, for hiding a whole project rather than one feature.
+- **`developer/skills/ailly/references/shapes/project/release-flags.md`** — the project loop's single release gate, for hiding a whole project rather than one feature.
