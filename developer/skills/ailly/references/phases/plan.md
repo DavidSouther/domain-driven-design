@@ -1,8 +1,8 @@
 # Plan Phase
 
 > Phase reference loaded by the coordinator (`developer:ailly`) when entered as
-> `/ailly plan ...`. The coordinator hands this to an isolated phase subagent that
-> reads only this one reference. There is no standalone `developer:plan` skill; the
+> `/ailly plan ...`. The coordinator hands this to an isolated phase runner that
+> reads only this one reference through the active harness's isolation path. There is no standalone `developer:plan` skill; the
 > phase is entered by argument.
 
 ## Overview
@@ -19,7 +19,7 @@ Middle-loop planning skill. Given a cleared design and its failing feature test,
 
 ## Behavior
 
-1. Read the cleared design and its recorded feature test (and user story) from the session folder. If `design.md` (or `research.md`) names skills to load under a **Libraries & Skills** directive, **load them via the Skill tool before planning**, and carry that directive into `plan.md` so every red-green-refactor step loads the framework's skill while implementing.
+1. Read the cleared design and its recorded feature test (and user story) from the session folder. If `design.md` (or `research.md`) names skills to load under a **Libraries & Skills** directive, **load them via the active harness's skill-loading mechanism before planning**, and carry that directive into `plan.md` so every red-green-refactor step loads the framework's skill while implementing.
 2. Consider the API surface area changes needed (step 0 — see below).
 3. Break the path to a passing feature test into several (no more than 7) incremental steps.
   - If it seems a plan would require more than a few steps, encourage the user to go back to the design and simplify the size of the step.

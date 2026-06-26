@@ -1,14 +1,14 @@
 # Thinking
 
 > Coordinator reference loaded by `developer:ailly` during the Build phase when an
-> error recurs after a fix. Invoked as a subagent; there is no standalone
-> `developer:thinking` skill.
+> error recurs after a fix. Invoked through the active harness's isolation path;
+> there is no standalone `developer:thinking` skill.
 
 ## Overview
 
-Fresh-context subagent for stuck moments during the Build phase (red-green-refactor). Always runs as a subagent. Investigates the problem, produces a concrete next-steps plan, and returns control without modifying any files.
+Fresh-context investigation for stuck moments during the Build phase (red-green-refactor). Run it with the strongest isolation mechanism the active harness supports. It investigates the problem, produces a concrete next-steps plan, and returns control without modifying any files.
 
-**This reference MUST be invoked as a subagent** via the Agent tool. It does not run inline.
+**This reference MUST be invoked through the harness isolation path**. Prefer a subagent where available; otherwise use the fallback in `developer/skills/ailly/references/agents/<harness>.md`.
 
 **Hard constraints:**
 - Do NOT edit any files

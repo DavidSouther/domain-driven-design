@@ -10,9 +10,9 @@ SKILL.md "Long-loop Mode" section and `developer/skills/ailly/references/shapes/
 never-auto-clear invariants).
 
 Rules:
-- L1 a research-and-decide reviewer subagent is dispatched at the gate (section
-  2): the response refers to dispatching/launching a reviewer/subagent that
-  reads the artifact and decides its open questions.
+- L1 a research-and-decide reviewer is dispatched at the gate (section 2): the
+  response refers to dispatching/launching a reviewer/runner through an
+  isolation path that reads the artifact and decides its open questions.
 - L2 a decision is recorded with rationale in the artifact's recording block
   (section 3): the response contains a `Resolved by the long-loop reviewer`
   heading with at least one `Decided:` entry.
@@ -27,14 +27,14 @@ import sys
 
 from _checker_utils import fail, read_stdin
 
-# L1 — a reviewer/subagent is dispatched to decide the open questions. The
+# L1 — a reviewer/runner is dispatched to decide the open questions. The
 # "research-and-decide" / "research and decide" reviewer is the contract's name
 # for it; a bare "reviewer" without the dispatch verb must not satisfy this.
 REVIEWER_DISPATCHED = re.compile(
     r"research[\s-]and[\s-]decide"
     r"|(?:dispatch|launch|spawn|delegate|send)\w*[^.\n]{0,60}"
-    r"(?:reviewer|sub-?agent)"
-    r"|(?:reviewer|sub-?agent)[^.\n]{0,60}"
+    r"(?:reviewer|runner|sub-?agent|isolation)"
+    r"|(?:reviewer|runner|sub-?agent|isolation)[^.\n]{0,60}"
     r"(?:dispatch|launch|spawn|delegate)\w*",
     re.IGNORECASE,
 )
@@ -75,7 +75,7 @@ def main() -> int:
     if not REVIEWER_DISPATCHED.search(text):
         return fail(
             "L1 reviewer dispatch required: no research-and-decide reviewer "
-            "subagent is dispatched at the gate; in a long loop the coordinator "
+            "runner is dispatched at the gate; in a long loop the coordinator "
             "must dispatch the reviewer instead of waiting for the human"
         )
 

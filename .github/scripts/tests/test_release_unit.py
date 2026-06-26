@@ -110,6 +110,41 @@ class TestUpdatePluginJson(unittest.TestCase):
         self.assertEqual(data["name"], "developer")
 
 
+class TestUpdatePluginManifests(unittest.TestCase):
+    def setUp(self) -> None:
+        self._tmpdir = tempfile.TemporaryDirectory()
+        self.tmp = Path(self._tmpdir.name)
+
+    def tearDown(self) -> None:
+        self._tmpdir.cleanup()
+
+    def _write_manifest(self, plugin: str, manifest_dir: str, version: str) -> Path:
+        path = self.tmp / plugin / manifest_dir / "plugin.json"
+        path.parent.mkdir(parents=True)
+        path.write_text(
+            json.dumps({"name": plugin, "version": version}, indent=2) + "\n"
+        )
+        return path
+
+    def test_updates_claude_and_codex_manifests_when_both_exist(self) -> None:
+        claude = self._write_manifest("developer", ".claude-plugin", "0.0.0")
+        codex = self._write_manifest("developer", ".codex-plugin", "0.0.0")
+
+        updated = _r.update_plugin_manifests(self.tmp, "developer", "2026.06.0")
+
+        self.assertEqual(updated, [claude, codex])
+        self.assertEqual(json.loads(claude.read_text())["version"], "2026.06.0")
+        self.assertEqual(json.loads(codex.read_text())["version"], "2026.06.0")
+
+    def test_updates_existing_manifest_when_codex_mirror_is_absent(self) -> None:
+        claude = self._write_manifest("characters", ".claude-plugin", "0.0.0")
+
+        updated = _r.update_plugin_manifests(self.tmp, "characters", "2026.06.0")
+
+        self.assertEqual(updated, [claude])
+        self.assertEqual(json.loads(claude.read_text())["version"], "2026.06.0")
+
+
 class TestUpdateMarketplaceJson(unittest.TestCase):
     def setUp(self) -> None:
         self._tmpdir = tempfile.TemporaryDirectory()

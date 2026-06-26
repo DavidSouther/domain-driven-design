@@ -1,0 +1,41 @@
+{
+  "name": "patterns",
+  "version": "1.0.1",
+  "description": "Design patterns to ensure high-quality, idiomatic domain driven design.",
+  "author": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com",
+    "url": "https://github.com/davidsouther"
+  },
+  "homepage": "https://github.com/davidsouther/ddd_skill",
+  "repository": "https://github.com/davidsouther/ddd_skill",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "design-patterns",
+    "aggregate",
+    "builder",
+    "repository",
+    "new-type",
+    "type-state",
+    "unit-of-work"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Ailly Patterns",
+    "shortDescription": "Design pattern guidance for implementation work.",
+    "longDescription": "Routes design pressures to focused pattern references for aggregates, repositories, newtypes, builders, type states, logging, feature flags, and more.",
+    "developerName": "David Souther",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/davidsouther/ddd_skill",
+    "defaultPrompt": [
+      "Choose a pattern for this design pressure.",
+      "Model this as an aggregate.",
+      "Apply parse-dont-validate."
+    ]
+  }
+}

@@ -1,8 +1,8 @@
 # Design Phase
 
 > Phase reference loaded by the coordinator (`developer:ailly`) when entered as
-> `/ailly design ...`. The coordinator hands this to an isolated phase subagent
-> that reads only this one reference. There is no standalone `developer:design`
+> `/ailly design ...`. The coordinator hands this to an isolated phase runner
+> that reads only this one reference through the active harness's isolation path. There is no standalone `developer:design`
 > skill; the phase is entered by argument.
 
 ## Overview
@@ -55,7 +55,7 @@ For complex UI features, Page Object abstractions are appropriate; for simple fe
 
 Create a task for each of these items and complete them in order:
 
-1. **Explore project context** checking domain model, docs, files, and recent commits, plus the cleared `research.md`. If `research.md` has a **Libraries & Skills** section, **load every skill it names via the Skill tool before designing** (so the design uses the framework's own idioms, not a from-scratch reinvention), and copy that load-skill directive forward into `design.md` so the plan and build phases honor it too.
+1. **Explore project context** checking domain model, docs, files, and recent commits, plus the cleared `research.md`. If `research.md` has a **Libraries & Skills** section, **load every skill it names via the active harness's skill-loading mechanism before designing** (so the design uses the framework's own idioms, not a from-scratch reinvention), and copy that load-skill directive forward into `design.md` so the plan and build phases honor it too.
 2. **Research additional context** using `research` skills only if a gap remains after `research.md`.
 3. **Ask clarifying questions** one at a time, to understand purpose, constraints, success criteria, and other salient details.
 4. **Propose 2-3 approaches** with trade-offs and your recommendation.

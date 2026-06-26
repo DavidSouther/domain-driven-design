@@ -1,0 +1,39 @@
+{
+  "name": "domain",
+  "version": "1.0.1",
+  "description": "Domain driven design skills library: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
+  "author": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com",
+    "url": "https://github.com/davidsouther"
+  },
+  "homepage": "https://github.com/davidsouther/ddd_skill",
+  "repository": "https://github.com/davidsouther/ddd_skill",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "ddd",
+    "domain-modeling",
+    "domain-driven-design",
+    "ubiquitous-langauge",
+    "workflows"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Ailly Domain",
+    "shortDescription": "Domain-Driven Design modeling skills.",
+    "longDescription": "Guides glossary, ubiquitous language, domain model, contracts and invariants, and architecture maturity work for agentic development.",
+    "developerName": "David Souther",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/davidsouther/ddd_skill",
+    "defaultPrompt": [
+      "Map this bounded context.",
+      "Clarify this domain term.",
+      "Review these invariants."
+    ]
+  }
+}

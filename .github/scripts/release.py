@@ -19,8 +19,10 @@ import subprocess
 import sys
 from datetime import date as _date
 from pathlib import Path
+from typing import Optional
 
 PLUGINS = ["developer", "general", "patterns", "domain", "research", "characters"]
+MANIFEST_DIRS = [".claude-plugin", ".codex-plugin"]
 
 
 def _run(args: list[str], *, cwd: Path, capture: bool = True) -> str:
@@ -61,6 +63,20 @@ def update_plugin_json(path: Path, version: str) -> None:
     path.write_text(json.dumps(data, indent=2) + "\n")
 
 
+def update_plugin_manifests(repo: Path, plugin: str, version: str) -> list[Path]:
+    updated = []
+    for manifest_dir in MANIFEST_DIRS:
+        path = repo / plugin / manifest_dir / "plugin.json"
+        if path.exists():
+            update_plugin_json(path, version)
+            updated.append(path)
+
+    if not updated:
+        sys.exit(f"plugin {plugin!r} has no known plugin manifest")
+
+    return updated
+
+
 def update_marketplace_json(path: Path, plugin: str, version: str) -> None:
     data = json.loads(path.read_text())
     for entry in data.get("plugins", []):
@@ -72,7 +88,7 @@ def update_marketplace_json(path: Path, plugin: str, version: str) -> None:
     path.write_text(json.dumps(data, indent=2) + "\n")
 
 
-def main(argv: list[str] | None = None) -> int:
+def main(argv: Optional[list[str]] = None) -> int:
     parser = argparse.ArgumentParser(
         description="Release plugins with CalVer versioning.",
     )
@@ -104,7 +120,7 @@ def main(argv: list[str] | None = None) -> int:
     version = compute_version(repo, ym)
 
     for plugin in changed:
-        update_plugin_json(repo / plugin / ".claude-plugin" / "plugin.json", version)
+        update_plugin_manifests(repo, plugin, version)
         update_marketplace_json(marketplace, plugin, version)
 
     print(version)

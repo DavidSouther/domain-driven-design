@@ -108,7 +108,7 @@ digraph refactor {
 
 ## Thinking Trigger
 
-Consult `references/abilities/thinking.md` (as a subagent) when a refactoring causes a failure and a fix attempt produces the same or a new error. Pass to the subagent: the exact error message, the refactoring applied, and the smell being addressed.
+Consult `references/abilities/thinking.md` through the active harness's isolation path when a refactoring causes a failure and a fix attempt produces the same or a new error. Pass to the thinking runner: the exact error message, the refactoring applied, and the smell being addressed.
 
 If `references/abilities/thinking.md` has already been consulted for this error and the same error reappears after following its plan, do **not** consult it again! Instead, revert the changes and mark this refactoring as deferred.
 

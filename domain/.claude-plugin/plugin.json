@@ -1,6 +1,6 @@
 {
   "name": "domain",
-  "description": "Domain driven design skills library for Claude Code: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
+  "description": "Domain driven design skills library: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
   "version": "1.0.1",
   "owner": {
     "name": "David Souther",

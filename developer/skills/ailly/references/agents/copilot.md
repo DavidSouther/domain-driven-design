@@ -1,6 +1,6 @@
 # Copilot CLI Tool Mapping
 
-Skills use Claude Code tool names. When you encounter these in a skill, use your platform equivalent:
+Copilot CLI adapter for the harness contract in `developer:ailly`. When a skill reference names a tool that Copilot calls something else, use this table:
 
 | Skill references | Copilot CLI equivalent |
 |-----------------|----------------------|
@@ -21,7 +21,7 @@ Skills use Claude Code tool names. When you encounter these in a skill, use your
 
 ## Async shell sessions
 
-Copilot CLI supports persistent async shell sessions, which have no direct Claude Code equivalent:
+Copilot CLI supports persistent async shell sessions, which have no direct canonical Ailly equivalent:
 
 | Tool | Purpose |
 |------|---------|

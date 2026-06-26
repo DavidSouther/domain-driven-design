@@ -2,15 +2,15 @@
 
 *Ailly with Dynamic Workflows*
 
-When a topic is run autonomously at project scale, the five-phase lifecycle still runs unchanged. Only the crossing of each draft gate differs. Where the normal loop stops and waits for a human to clear the `*Draft*` marker, the long loop dispatches a research-and-decide subagent that resolves the gate's open questions and clears the marker, so the run proceeds without user intervention. It is the autonomous counterpart reached for instead of quick-loop when the work has ambiguities to resolve, which quick-loop is not built for. `developer:ailly` consults this reference when acting autonomously over project durations.
+When a topic is run autonomously at project scale, the five-phase lifecycle still runs unchanged. Only the crossing of each draft gate differs. Where the normal loop stops and waits for a human to clear the `*Draft*` marker, the long loop dispatches a research-and-decide reviewer through the active harness's isolation path. That reviewer resolves the gate's open questions and clears the marker, so the run proceeds without user intervention. It is the autonomous counterpart reached for instead of quick-loop when the work has ambiguities to resolve, which quick-loop is not built for. `developer:ailly` consults this reference when acting autonomously over project durations.
 
 ## 1. When the long loop applies
 
-The long loop is opt-in at session start, declared once and applied for the run, recognized via phrasings like "run a long loop", "dynamic workflow", or "run \<project\> to completion". It is the inverse trade from quick-loop. Quick-loop skips the deliberation for small, low-stakes work with a narrow surface. The long loop **keeps** the deliberation and the full-fidelity artifacts and only removes the human intervention. Both run every phase in subagents for session isolation. The long loop therefore does not inherit quick-loop's forbidden list (ambiguous, high-blast-radius, or security-sensitive work); that work is exactly what it is for.
+The long loop is opt-in at session start, declared once and applied for the run, recognized via phrasings like "run a long loop", "dynamic workflow", or "run \<project\> to completion". It is the inverse trade from quick-loop. Quick-loop skips the deliberation for small, low-stakes work with a narrow surface. The long loop **keeps** the deliberation and the full-fidelity artifacts and only removes the human intervention. Both run every phase through the active harness's isolation path. The long loop therefore does not inherit quick-loop's forbidden list (ambiguous, high-blast-radius, or security-sensitive work); that work is exactly what it is for.
 
 ## 2. The research-and-decide reviewer contract
 
-At each draft gate the coordinator dispatches a fresh reviewer subagent, scoped to a single artifact (document, code diff, or similar) and read cold. Its contract, stated as the dispatch instruction:
+At each draft gate the coordinator dispatches a fresh reviewer runner, scoped to a single artifact (document, code diff, or similar) and read cold. Its contract, stated as the dispatch instruction:
 
 - Read the artifact cold without including prior session context.
 - Find the artifact's open items (the "Open for human review" / "Summary / deferred decisions" / deferred-decisions slot) and research them using the `research:` skills and the repo conventions.
@@ -19,7 +19,7 @@ At each draft gate the coordinator dispatches a fresh reviewer subagent, scoped 
 - Escalate rather than decide when a trigger fires (rule in section 4): leave the gate uncleared and flag the item `ESCALATE: <why>`.
 - Remove the `*Draft*` marker once every blocking item is decided.
 
-This is a single cheap subagent per gate, not a fan-out ensemble. A standalone LLM reviewer suggests candidates to be validated rather than final truth, so one conservative decide-subagent with a recorded audit trail is the cheap, low-risk default. Model choice is left to the coordinator; the reference stays model-agnostic.
+This is a single cheap isolated reviewer per gate, not a fan-out ensemble. A standalone LLM reviewer suggests candidates to be validated rather than final truth, so one conservative decide-runner with a recorded audit trail is the cheap, low-risk default. Model choice is left to the coordinator; the reference stays model-agnostic.
 
 ## 3. The decision-recording format
 
@@ -74,7 +74,7 @@ At project altitude, reuse the same `Resolved by the long-loop reviewer (YYYY-MM
 
 Two gates are never auto-cleared by any reviewer, in any mode.
 
-- **The human merge gate.** The coordinator "pauses for human approval before the squash-merge or PR" (`developer/skills/ailly/SKILL.md` Session-Folder note and the loop diagram's `gate_merge`; `project-cycle.md` at project altitude). This gate is owned by the **coordinator**, not the cleanup body. In long-loop mode the cleanup phase still runs in a subagent and produces the merge-ready state, but it hands back to the coordinator at this gate; the cleanup subagent never approves or performs the merge on its own. The long-loop autonomy stops at the draft gates; the merge gate stays human regardless of mode.
+- **The human merge gate.** The coordinator "pauses for human approval before the squash-merge or PR" (`developer/skills/ailly/SKILL.md` Session-Folder note and the loop diagram's `gate_merge`; `project-cycle.md` at project altitude). This gate is owned by the **coordinator**, not the cleanup body. In long-loop mode the cleanup phase still runs through the harness isolation path and produces the merge-ready state, but it hands back to the coordinator at this gate; the cleanup runner never approves or performs the merge on its own. The long-loop autonomy stops at the draft gates; the merge gate stays human regardless of mode.
 - **The Closing Bell.** A human usability study; "the agent does not pass it on the user's behalf" (`developer/skills/ailly/references/shapes/project/closing-bell.md`). The reviewer never runs or passes it. When the project gets to the closing bell, the long loop is completed.
 
 ## 7. The end-of-run report

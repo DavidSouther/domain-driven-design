@@ -1,8 +1,8 @@
 # Cleanup Phase
 
 > Phase reference loaded by the coordinator (`developer:ailly`) when entered as
-> `/ailly cleanup ...`. The coordinator hands this to an isolated phase subagent
-> that reads only this one reference. There is no standalone `developer:cleanup`
+> `/ailly cleanup ...`. The coordinator hands this to an isolated phase runner
+> that reads only this one reference through the active harness's isolation path. There is no standalone `developer:cleanup`
 > skill; the phase is entered by argument.
 
 ## Clean Up
