@@ -19,7 +19,7 @@ Middle-loop planning skill. Given a cleared design and its failing feature test,
 
 ## Behavior
 
-1. Read the cleared design and its recorded feature test (and user story) from the session folder.
+1. Read the cleared design and its recorded feature test (and user story) from the session folder. If `design.md` (or `research.md`) names skills to load under a **Libraries & Skills** directive, **load them via the Skill tool before planning**, and carry that directive into `plan.md` so every red-green-refactor step loads the framework's skill while implementing.
 2. Consider the API surface area changes needed (step 0 — see below).
 3. Break the path to a passing feature test into several (no more than 7) incremental steps.
   - If it seems a plan would require more than a few steps, encourage the user to go back to the design and simplify the size of the step.
