@@ -49,7 +49,7 @@ Follow this order — stop as soon as the question is answered:
 
 ## Output Format
 
-Find `docs/research/YYYY-MM-DD-A-<topic>/` and write findings to `dependencies.md` inside it.
+Find `.ailly/research/YYYY-MM-DD-A-<topic>/` and write findings to `dependencies.md` inside it, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `dependencies.md` there.
 
 Include a `**Sources**` section listing every config file path and URL consulted.
 

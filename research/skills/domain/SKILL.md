@@ -51,7 +51,7 @@ Use Jeopardy! search variants across all artifact locations before concluding a 
 
 # Output Format
 
-Write findings to `docs/research/YYYY-MM-DD-A-<topic>/domain.md`.
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/domain.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `domain.md` there.
 
 Structure:
 

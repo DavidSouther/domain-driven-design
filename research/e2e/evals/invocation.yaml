@@ -13,7 +13,7 @@ cases:
       - type: judge
         prompt: |
           The answer is a codebase research note written to a path of the form
-          docs/research/YYYY-MM-DD-A-<topic>/codebase.md. It has a Findings
+          .ailly/research/YYYY-MM-DD-A-<topic>/codebase.md. It has a Findings
           section and a Sources section; the Sources cite specific repository
           files by path with a commit SHA (or #UNCOMMITTED). It reports the
           current state of the code only and does not rely on git history (no
@@ -27,7 +27,7 @@ cases:
       - type: judge
         prompt: |
           The answer is an archaeology research note written to a path of the
-          form docs/research/YYYY-MM-DD-A-<topic>/archaeology.md. It has a
+          form .ailly/research/YYYY-MM-DD-A-<topic>/archaeology.md. It has a
           Findings section, a Timeline section ordering the relevant commits by
           hash and date, and a Sources section listing the commits consulted
           and the git commands run. It explains the historical rationale from
@@ -41,7 +41,7 @@ cases:
       - type: judge
         prompt: |
           The answer is a papers research note written to a path of the form
-          docs/research/YYYY-MM-DD-A-<topic>/papers.md. It has a Findings
+          .ailly/research/YYYY-MM-DD-A-<topic>/papers.md. It has a Findings
           section with inline [N] citations and a Sources section in loose IEEE
           style ([N] Author/Org. "Title." Date. [Online]. Available: URL). It
           reports the paper's canonical metadata and includes no setup or wiring
@@ -56,7 +56,7 @@ cases:
       - type: judge
         prompt: |
           The answer is a books research note written to a path of the form
-          docs/research/YYYY-MM-DD-A-<topic>/books.md. It has a Findings section
+          .ailly/research/YYYY-MM-DD-A-<topic>/books.md. It has a Findings section
           with inline [N] citations and a Sources section in loose IEEE style.
           It reports the canonical ISBN-13, the original edition's publisher and
           year, and a table-of-contents pointer, and includes no setup or wiring
@@ -70,7 +70,7 @@ cases:
       - type: judge
         prompt: |
           The answer is a dependencies research note written to a path of the
-          form docs/research/YYYY-MM-DD-A-<topic>/dependencies.md. It centers the
+          form .ailly/research/YYYY-MM-DD-A-<topic>/dependencies.md. It centers the
           project's declared dependency manifest (package.json, Cargo.toml,
           pyproject.toml, go.mod, etc.), keeps the declared manifest distinct
           from lock files (which it treats as out of scope, not as the source),
@@ -90,7 +90,7 @@ cases:
       - type: judge
         prompt: |
           The answer is a domain research note written to a path of the form
-          docs/research/YYYY-MM-DD-A-<topic>/domain.md. It has a Findings
+          .ailly/research/YYYY-MM-DD-A-<topic>/domain.md. It has a Findings
           section, a Key Concepts section defining the term(s) and their
           relationships, and a Sources section listing the domain artifacts or
           DDD concepts consulted. It answers from the conceptual model, not from
@@ -104,7 +104,7 @@ cases:
       - type: judge
         prompt: |
           The answer is an internal-research note written to a path of the form
-          docs/research/YYYY-MM-DD-A-<topic>/internal.md. Before searching, it
+          .ailly/research/YYYY-MM-DD-A-<topic>/internal.md. Before searching, it
           discovers which MCP servers are available (e.g. via
           ListMcpResourcesTool) rather than assuming integrations, names which
           internal sources it would query (Slack, Confluence, Notion, Linear,
@@ -120,7 +120,7 @@ cases:
       - type: judge
         prompt: |
           The answer is a public research note written to a path of the form
-          docs/research/YYYY-MM-DD-A-<topic>/public.md. It has a Findings
+          .ailly/research/YYYY-MM-DD-A-<topic>/public.md. It has a Findings
           section with inline citations rendered as markdown links and a Sources
           section listing titled URL links with the reason each was consulted.
           It draws on public, open-internet sources (official docs, specs,

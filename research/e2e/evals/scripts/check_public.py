@@ -2,7 +2,7 @@
 """Structural checker for the `public` invocation case.
 
 Rules trace to public/SKILL.md "Output Format":
-- R1 research-note path convention `docs/research/<dated-dir>/public.md`.
+- R1 research-note path convention `.ailly/research/<dated-dir>/public.md`.
 - R2 a `## Sources` section.
 - R3 at least one markdown-link citation to a URL — the public skill cites with
   `[Title](url)` links, not bare text.
@@ -13,7 +13,7 @@ import sys
 
 from _md import candidate, fail
 
-PATH = re.compile(r"docs/research/\d{4}-\d{2}-\d{2}-[\w-]+/public\.md")
+PATH = re.compile(r"\.ailly/research/\d{4}-\d{2}-\d{2}-[\w-]+/public\.md")
 MD_LINK = re.compile(r"\[[^\]]+\]\(https?://[^)]+\)")
 
 
@@ -22,7 +22,7 @@ def main() -> int:
 
     if not PATH.search(text):
         return fail(
-            "R1 path convention: no `docs/research/<YYYY-MM-DD-A-topic>/public.md` "
+            "R1 path convention: no `.ailly/research/<YYYY-MM-DD-A-topic>/public.md` "
             "path; the skill writes findings to that dated research-note path"
         )
 

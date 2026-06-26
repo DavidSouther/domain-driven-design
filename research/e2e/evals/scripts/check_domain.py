@@ -2,7 +2,7 @@
 """Structural checker for the `domain` invocation case.
 
 Rules trace to domain/SKILL.md "Output Format":
-- R1 research-note path convention `docs/research/<dated-dir>/domain.md`.
+- R1 research-note path convention `.ailly/research/<dated-dir>/domain.md`.
 - R2 a `## Key Concepts` section (the domain-specific block defining terms and
   relationships).
 - R3 a `## Sources` section.
@@ -13,7 +13,7 @@ import sys
 
 from _md import candidate, fail
 
-PATH = re.compile(r"docs/research/\d{4}-\d{2}-\d{2}-[\w-]+/domain\.md")
+PATH = re.compile(r"\.ailly/research/\d{4}-\d{2}-\d{2}-[\w-]+/domain\.md")
 
 
 def main() -> int:
@@ -22,7 +22,7 @@ def main() -> int:
 
     if not PATH.search(text):
         return fail(
-            "R1 path convention: no `docs/research/<YYYY-MM-DD-A-topic>/domain.md` "
+            "R1 path convention: no `.ailly/research/<YYYY-MM-DD-A-topic>/domain.md` "
             "path; the skill writes findings to that dated research-note path"
         )
 

@@ -50,8 +50,8 @@ Capabilities are named in the contract published by [the internal setup referenc
 
 ## Output Format
 
-1. Create folder `docs/research/YYYY-MM-DD-A-<topic>/`
-2. Write findings to `docs/research/YYYY-MM-DD-A-<topic>/internal.md`
+1. Create folder `.ailly/research/YYYY-MM-DD-A-<topic>/`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`
+2. Write findings to `internal.md` inside that folder
 3. Include a `**Sources**` section listing:
    - Which MCP servers were queried
    - Which documents, threads, or tickets were consulted

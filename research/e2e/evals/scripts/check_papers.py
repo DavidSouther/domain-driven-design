@@ -2,7 +2,7 @@
 """Structural checker for the `papers` invocation case.
 
 Rules trace to papers/SKILL.md "Output format" and "Common mistakes":
-- R1 research-note path convention `docs/research/<dated-dir>/papers.md`.
+- R1 research-note path convention `.ailly/research/<dated-dir>/papers.md`.
 - R2 a `## Sources` section.
 - R3 at least one numbered IEEE-style citation `[N]`.
 - R4 no wiring-leak preface (the "Re-teaching the wiring" mistake): setup
@@ -14,7 +14,7 @@ import sys
 
 from _md import candidate, fail
 
-PATH = re.compile(r"docs/research/\d{4}-\d{2}-\d{2}-[\w-]+/papers\.md")
+PATH = re.compile(r"\.ailly/research/\d{4}-\d{2}-\d{2}-[\w-]+/papers\.md")
 CITATION = re.compile(r"\[\d+\]")
 LEAK = [
     "first install",
@@ -36,7 +36,7 @@ def main() -> int:
 
     if not PATH.search(text):
         return fail(
-            "R1 path convention: no `docs/research/<YYYY-MM-DD-A-topic>/papers.md` "
+            "R1 path convention: no `.ailly/research/<YYYY-MM-DD-A-topic>/papers.md` "
             "path; the skill writes findings to that dated research-note path"
         )
 

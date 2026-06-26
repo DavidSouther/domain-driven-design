@@ -3,7 +3,7 @@
 
 Rules trace to dependencies/SKILL.md "Output Format", "Ecosystem Config Files
 Reference", and "Common Mistakes":
-- R1 research-note path convention `docs/research/<dated-dir>/dependencies.md`.
+- R1 research-note path convention `.ailly/research/<dated-dir>/dependencies.md`.
 - R2 a Sources section (the skill uses a `**Sources**` list).
 - R3 cites at least one declared manifest (package.json, Cargo.toml,
   pyproject.toml, setup.py, requirements.txt, go.mod, pom.xml, build.gradle).
@@ -19,7 +19,7 @@ import sys
 
 from _md import candidate, fail
 
-PATH = re.compile(r"docs/research/\d{4}-\d{2}-\d{2}-[\w-]+/dependencies\.md")
+PATH = re.compile(r"\.ailly/research/\d{4}-\d{2}-\d{2}-[\w-]+/dependencies\.md")
 MANIFEST = re.compile(
     r"package\.json|Cargo\.toml|pyproject\.toml|setup\.py|requirements\.txt|"
     r"go\.mod|pom\.xml|build\.gradle",
@@ -45,7 +45,7 @@ def main() -> int:
 
     if not PATH.search(text):
         return fail(
-            "R1 path convention: no `docs/research/<YYYY-MM-DD-A-topic>/dependencies.md` "
+            "R1 path convention: no `.ailly/research/<YYYY-MM-DD-A-topic>/dependencies.md` "
             "path; the skill writes findings to that dated research-note path"
         )
 

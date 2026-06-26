@@ -49,7 +49,7 @@ Run all variants; union results before drawing conclusions.
 
 ## Output Format
 
-Write findings to `docs/research/YYYY-MM-DD-A-<topic>/codebase.md`.
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/codebase.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `codebase.md` there.
 
 ```
 # Codebase: <question>
