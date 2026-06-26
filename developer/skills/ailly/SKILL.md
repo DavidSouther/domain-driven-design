@@ -1,15 +1,15 @@
 ---
 name: ailly
-description: "Use when starting, resuming, or routing any software development task. The single bootstrap and session coordinator for the developer plugin: it directs which developer ability applies and drives the five-phase development loop — research, design, plan, red-green-refactor (build), cleanup — entered by phase argument (`/ailly design ...`). Creates and manages the session folder, enforces the draft gates between phases, runs the phase-entry model and tool-readiness checks, and resumes an existing session at the right phase. Routes the coordinator's progressive abilities: thinking (stuck on a compiler/test/lint error during build), refactor (clean up green code before finishing), initialize (set up a new project or language environment), and program-management (read the next task or wire the team's issue tracker and document system). Also drives quick-loop, long-loop, bugfix, and project-shape variants."
+description: "Use when starting, resuming, or routing any software development task. The single bootstrap and session coordinator for the developer skill package: it directs which developer ability applies and drives the five-phase development loop — research, design, plan, red-green-refactor (build), cleanup — entered by phase argument (`/ailly design ...`). Creates and manages the session folder, enforces the draft gates between phases, runs the phase-entry model and tool-readiness checks, and resumes an existing session at the right phase. Routes the coordinator's progressive abilities: thinking (stuck on a compiler/test/lint error during build), refactor (clean up green code before finishing), initialize (set up a new project or language environment), and program-management (read the next task or wire the team's issue tracker and document system). Also drives quick-loop, long-loop, bugfix, and project-shape variants."
 ---
 
 # developer:ailly
 
 ## Overview
 
-The developer plugin's bootstrap and session coordinator. It routes every developer task to the right ability, creates and manages the session folder, drives each of the five lifecycle phases, enforces draft gates, and determines where to resume when re-entering an existing session.
+The developer skill package's bootstrap and session coordinator. It routes every developer task to the right ability, creates and manages the session folder, drives each of the five lifecycle phases, enforces draft gates, and determines where to resume when re-entering an existing session.
 
-The five phases — **research**, **design**, **plan**, **red-green-refactor** (the Build phase), and **cleanup** — are entered by argument, not by selecting a standalone skill. `/ailly design ...` runs the design phase; `/ailly` with no phase resumes the session at the correct phase (see Phase Argument and Resume). Each phase body lives in `developer/skills/ailly/references/phases/<phase>.md`. The coordinator never inlines all five phase bodies: it selects the one reference for the current phase and hands it to an isolated phase subagent.
+The five phases — **research**, **design**, **plan**, **red-green-refactor** (the Build phase), and **cleanup** — are entered by argument, not by selecting a standalone skill. `/ailly design ...` runs the design phase; `/ailly` with no phase resumes the session at the correct phase (see Phase Argument and Resume). Each phase body lives in `developer/skills/ailly/references/phases/<phase>.md`. The coordinator never inlines all five phase bodies: it selects the one reference for the current phase and runs it through the active harness's isolation mechanism.
 
 The other developer abilities — **thinking**, **refactor**, **initialize**, and the **program-management** pair — are likewise references the coordinator consults at the right moment, not separately-described skills (see Routing). The only other standalone developer skill is `developer:clean-comments-review`, a review specialist consumed by `general:review`.
 
@@ -17,7 +17,7 @@ The other developer abilities — **thinking**, **refactor**, **initialize**, an
 
 ## Routing
 
-Developer work runs through five phases — Research, Design, Plan, Build (red-green-refactor), and Cleanup — separated by human-review draft gates. The phases are **not standalone skills**: they are entered through this coordinator by phase argument (`/ailly design ...`), which selects the matching `references/phases/<phase>.md` and runs it in an isolated phase subagent (see Phase Subagent Isolation). With no argument the coordinator resumes at the correct phase.
+Developer work runs through five phases — Research, Design, Plan, Build (red-green-refactor), and Cleanup — separated by human-review draft gates. The phases are **not standalone skills**: they are entered through this coordinator by phase argument (`/ailly design ...`), which selects the matching `references/phases/<phase>.md` and runs it with phase isolation (see Phase Isolation). With no argument the coordinator resumes at the correct phase.
 
 The coordinator's other abilities are progressive references it consults when the situation calls for them, not phases and not separate skills:
 
@@ -29,13 +29,20 @@ The coordinator's other abilities are progressive references it consults when th
 | Breaking a failing feature test into implementation steps | `/ailly plan` → `references/phases/plan.md` |
 | Implementing a plan step with TDD | `/ailly red-green-refactor` → `references/phases/red-green-refactor.md` |
 | Finishing the topic: final review, extract deferred tasks, prepare the squash-merge | `/ailly cleanup` → `references/phases/cleanup.md` |
-| Stuck on a red compiler/test/lint error during build, especially a recurring one after a fix | `references/abilities/thinking.md` (run as a subagent) |
+| Stuck on a red compiler/test/lint error during build, especially a recurring one after a fix | `references/abilities/thinking.md` (run through the harness isolation path when available) |
 | Code is green and you want to clean up before finishing | `references/abilities/refactor.md` |
 | Setting up a new project or a language environment (layout, tooling, dev hooks) | `references/abilities/initialize.md` |
 | Reading the next task from the tracker, or writing deferred work back during a session | `references/abilities/program-management/using.md` |
 | Wiring Ailly to the team's issue tracker and document system (once per project) | `references/abilities/program-management/configuring.md` |
 
-When running these skills under a non-Claude harness, consult `references/agents/<harness>.md` (codex, copilot, gemini) for the tool-name mappings that translate Claude's tool names to that harness.
+## Agent Harness Compatibility
+
+Ailly's shared references use a canonical tool vocabulary (`Read`, `Edit`, `Bash`, `Task`, `Skill`, `TodoWrite`, and related names) so the workflow can stay stable across agent ecosystems. Before executing any instruction whose tool name differs in the active environment, consult `references/agents/<harness>.md`. The supported harness adapters are:
+
+- `references/agents/claude.md` — Claude Code, where the canonical vocabulary is native.
+- `references/agents/codex.md` — Codex tool and subagent mappings.
+- `references/agents/copilot.md` — Copilot CLI tool and async-session mappings.
+- `references/agents/gemini.md` — Gemini CLI tool and subagent mappings.
 
 ```dot
 digraph phases {
@@ -79,15 +86,16 @@ The phase is an argument to the coordinator. Five phase arguments are valid, map
 
 When invoked as `/ailly <phase> ...`, run that phase. When invoked with no phase argument, **determine the resume point** from the session folder (table below) and run that phase. Either way, the coordinator does not read all five phase references; it selects exactly one.
 
-## Phase Subagent Isolation
+## Phase Isolation
 
-Run each phase in its own subagent to keep session isolation (coordinator → phase reference → phase subagent that reads one reference):
+Run each phase with the strongest isolation mechanism the active harness supports:
 
 1. The coordinator resolves the phase argument (or resume point) to its single `references/phases/<phase>.md`.
-2. It spawns a phase subagent and instructs that subagent to **read only that one phase reference** and execute it, passing the session folder path.
-3. The subagent runs the phase, writes its artifact, and returns control. It never reads the other four phase references.
+2. If the harness supports subagents, it spawns a phase subagent and instructs that subagent to **read only that one phase reference** and execute it, passing the session folder path.
+3. If the harness does not support subagents, follow its `references/agents/<harness>.md` fallback. The fallback still reads only the current phase reference before executing the phase.
+4. The phase runner writes its artifact and returns control. It never reads the other four phase references.
 
-This preserves the prior per-phase subagent isolation while removing the five phase descriptions from the always-on Level-1 view: the phases are reached by argument and by reference, not as separately-described skills.
+This preserves per-phase isolation while removing the five phase descriptions from the always-on Level-1 view: the phases are reached by argument and by reference, not as separately-described skills.
 
 ## Session Folder
 
@@ -164,7 +172,7 @@ After any research, design, or plan phase produces a draft, stop the session and
 
 ## Phase Invocations
 
-Pass the session folder path to each phase subagent. The session folder is the single source of truth for all session artifacts. For each phase, spawn an isolated subagent and have it read only the matching phase reference:
+Pass the session folder path to each phase runner. The session folder is the single source of truth for all session artifacts. For each phase, use the active harness's isolation path and read only the matching phase reference:
 
 - Research phase: `references/phases/research.md`
 - Design phase: `references/phases/design.md`
@@ -202,16 +210,23 @@ Generally, be persistent in enforcing the draft structure. However, when first s
 
 - The draft gates **auto-clear**: each phase produces its artifact and the next phase begins in the same flow, without stopping for human review between them.
 - Artifacts are **minimal**: just enough research, design, plan, and feature test to drive the work, not the full documents.
-- The loop **churns straight to a green feature test**, then Cleanup.
-- Use a subagent for each phase of the loop to maintain session isolation, each reading only its one `references/phases/<phase>.md`.
+- The loop **churns straight to a green feature test**, then pauses before Cleanup so the user can review the intermediate session artifacts, including `research.md`, `design.md`, `plan.md`, `maps/`, and `thinking/`.
+- During that review pause, do **not** run Cleanup, remove the session folder, or tidy away intermediate artifacts.
+- If the user says **"no review"** when starting the quick loop, skip that post-green review pause and run Cleanup immediately.
+- After the review pause, proceed to Cleanup only when the user asks to proceed, continue, finish, or run cleanup.
+- Use the active harness's phase-isolation path for each phase of the loop, each reading only its one `references/phases/<phase>.md`.
 
 **When it fits:** a small, unambiguous task with a narrow surface, where the cost of a wrong turn is low.
 
 **What it trades away:** the human review beats. Skipping the gates means no chance to catch a wrong assumption before the next phase builds on it. Do not use quick-loop for ambiguous, high-blast-radius, or security-sensitive work.
 
+**Review pause wording:** after the feature test is green, unless the quick loop started with "no review", tell the user:
+
+> "Quick loop is green. Review the intermediate artifacts in `.ailly/developer/YYYY-MM-DD-A-<topic>/`, especially `thinking/` if it exists. Ask me to proceed when you're ready and I'll run cleanup."
+
 ## Long-loop Mode
 
-When first starting an Ailly task, the user may ask to "run a long loop", a "dynamic workflow", or to "run \<project\> to completion". The same five phases (Research, Design, Plan, Build, Cleanup) still run, each in a subagent reading only its one phase reference, but at each draft gate the coordinator does not stop for the human. Instead it dispatches a research-and-decide reviewer subagent that reads the artifact cold, decides its open questions, records each decision with rationale in place, and clears the `*Draft*` marker, so the run proceeds without the human wait while the deliberation those gates exist for is kept.
+When first starting an Ailly task, the user may ask to "run a long loop", a "dynamic workflow", or to "run \<project\> to completion". The same five phases (Research, Design, Plan, Build, Cleanup) still run through the active harness's phase-isolation path, but at each draft gate the coordinator does not stop for the human. Instead it dispatches a research-and-decide reviewer through the harness isolation path. That reviewer reads the artifact cold, decides its open questions, records each decision with rationale in place, and clears the `*Draft*` marker, so the run proceeds without the human wait while the deliberation those gates exist for is kept.
 
 - Unlike quick-loop, the long loop does **not** inherit the forbidden list; it is the intended substitute precisely where quick-loop is forbidden (ambiguous, high-blast-radius, or security-sensitive work), keeping full-fidelity artifacts and deliberation.
 - The human merge gate and the Closing Bell are **never** auto-cleared by any reviewer.

@@ -2,7 +2,7 @@
 
 > Phase reference loaded by the coordinator (`developer:ailly`) when entered as
 > `/ailly red-green-refactor ...` (the Build phase). The coordinator hands this to
-> an isolated phase subagent that reads only this one reference. There is no
+> an isolated phase runner that reads only this one reference through the active harness's isolation path. There is no
 > standalone `developer:red-green-refactor` skill; the phase is entered by argument.
 
 ## Overview
@@ -13,7 +13,7 @@ The innermost development loop. Type-first TDD: write signatures before tests, t
 
 ## Before the loop: load framework skills
 
-If `plan.md` (or the design it came from) carries a **Libraries & Skills** directive, **load every skill it names via the Skill tool before writing any signatures**. Those skills carry the framework's own idioms; loading them here is what keeps the implementation from dropping to a from-scratch reinvention of what the library already provides.
+If `plan.md` (or the design it came from) carries a **Libraries & Skills** directive, **load every skill it names via the active harness's skill-loading mechanism before writing any signatures**. Those skills carry the framework's own idioms; loading them here is what keeps the implementation from dropping to a from-scratch reinvention of what the library already provides.
 
 ## The Loop
 
@@ -90,11 +90,11 @@ Replace stub bodies with real code. Run check, then run tests. Repeat until all 
 
 ## Thinking Trigger
 
-Consult `references/abilities/thinking.md` (as a subagent) when:
+Consult `references/abilities/thinking.md` through the active harness's isolation path when:
 - The same error (or substantially the same) appears after a change was intended to fix it.
 - An error appears that is unrelated to the code added or changed in this step
 
-Pass to the thinking subagent:
+Pass to the thinking runner:
 - The exact error message
 - The code added or changed in this step
 - The plan step being implemented

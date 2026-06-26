@@ -17,32 +17,65 @@ jobs:
           fetch-depth: 0
           fetch-tags: true
 
-      - uses: photostructure/git-ssh-signing-action@v2
+      - name: Prepare release versions
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION=$(python3 .github/scripts/release.py)
+          if [[ -n "${VERSION}" ]] ; then
+            echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
+            echo "release_needed=true" >> "${GITHUB_OUTPUT}"
+          else
+            echo "release_needed=false" >> "${GITHUB_OUTPUT}"
+          fi
+
+      - name: Configure SSH signing
+        uses: photostructure/git-ssh-signing-action@v2
+        if: steps.release.outputs.release_needed == 'true'
         with:
           ssh-signing-key: ${{ secrets.SSH_SIGNING_KEY }}
           git-user-name: ${{ secrets.GIT_USER_NAME }}
           git-user-email: ${{ secrets.GIT_USER_EMAIL }}
 
-      - name: Generate a changelog
+      - name: Generate changelog
+        if: steps.release.outputs.release_needed == 'true'
         uses: orhun/git-cliff-action@v4
         with:
           config: cliff.toml
-          args: --verbose
+          args: --verbose --tag release/${{ steps.release.outputs.version }}
         env:
           OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
 
-      - name: Run release script
+      - name: Commit release changes to main
+        if: steps.release.outputs.release_needed == 'true'
+        shell: bash
         run: |
-          git config user.name "${{ secrets.GIT_USER_NAME }}"
-          git config user.email "${{ secrets.GIT_USER_EMAIL }}"
-          set +e
-          VERSION=$(python3 .github/scripts/release.py)
-          if [[ -n "${VERSION}" ]] ; then
-            git add .
-            git commit --no-gpg-sign -m "chore: release ${VERSION}"
-            git tag --no-sign -a "release/${VERSION}" -m "Release ${VERSION}"
-            git push origin main
-            git push origin --tags
-          fi
+          set -euo pipefail
+          VERSION="${{ steps.release.outputs.version }}"
+          git add CHANGELOG.md .claude-plugin .agents/plugins */.claude-plugin */.codex-plugin
+          git commit -m "chore: release ${VERSION}"
+          git push origin main
 
+      - name: Create release tag
+        if: steps.release.outputs.release_needed == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.release.outputs.version }}"
+          git tag -a "release/${VERSION}" -m "Release ${VERSION}"
+          git push origin "refs/tags/release/${VERSION}"
+
+      - name: Publish GitHub Release
+        if: steps.release.outputs.release_needed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.release.outputs.version }}"
+          gh release create "release/${VERSION}" \
+            --title "Release ${VERSION}" \
+            --notes-file CHANGELOG.md \
+            --verify-tag

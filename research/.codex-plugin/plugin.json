@@ -1,0 +1,39 @@
+{
+  "name": "research",
+  "version": "1.0.1",
+  "description": "Research skills library: public internet, internal documents, domain model, local codebase, and project dependencies.",
+  "author": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com",
+    "url": "https://github.com/davidsouther"
+  },
+  "homepage": "https://github.com/davidsouther/ddd_skill",
+  "repository": "https://github.com/davidsouther/ddd_skill",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "ddd",
+    "domain-modeling",
+    "domain-driven-design",
+    "ubiquitous-langauge",
+    "workflows"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Ailly Research",
+    "shortDescription": "Research routing for code, docs, books, papers, and public sources.",
+    "longDescription": "Chooses and coordinates codebase, public, internal, dependency, domain, books, papers, and archaeology research workflows.",
+    "developerName": "David Souther",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Read"
+    ],
+    "websiteURL": "https://github.com/davidsouther/ddd_skill",
+    "defaultPrompt": [
+      "Research this codebase question.",
+      "Find public docs for this library.",
+      "Trace why this code changed."
+    ]
+  }
+}

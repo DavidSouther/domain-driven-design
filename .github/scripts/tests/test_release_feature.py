@@ -50,6 +50,35 @@ class ReleaseFeatureTests(unittest.TestCase):
             json.dumps({"name": "developer", "version": "0.0.0"}, indent=2) + "\n"
         )
 
+        dev_codex_plugin = r / "developer" / ".codex-plugin"
+        dev_codex_plugin.mkdir(parents=True)
+        (dev_codex_plugin / "plugin.json").write_text(
+            json.dumps({"name": "developer", "version": "0.0.0"}, indent=2) + "\n"
+        )
+
+        codex_marketplace = r / ".agents" / "plugins"
+        codex_marketplace.mkdir(parents=True)
+        (codex_marketplace / "marketplace.json").write_text(
+            json.dumps(
+                {
+                    "name": "test",
+                    "plugins": [
+                        {
+                            "name": "developer",
+                            "source": {"source": "local", "path": "../../developer"},
+                            "policy": {
+                                "installation": "AVAILABLE",
+                                "authentication": "ON_INSTALL",
+                            },
+                            "category": "Productivity",
+                        }
+                    ],
+                },
+                indent=2,
+            )
+            + "\n"
+        )
+
         _git(["add", "."], cwd=r)
         _git(["commit", "-m", "init", "--no-gpg-sign"], cwd=r)
 
@@ -78,6 +107,11 @@ class ReleaseFeatureTests(unittest.TestCase):
             (self.repo / "developer" / ".claude-plugin" / "plugin.json").read_text()
         )
         self.assertEqual(plugin_data["version"], "2026.06.0")
+
+        codex_plugin_data = json.loads(
+            (self.repo / "developer" / ".codex-plugin" / "plugin.json").read_text()
+        )
+        self.assertEqual(codex_plugin_data["version"], "2026.06.0")
 
         mp_data = json.loads(
             (self.repo / ".claude-plugin" / "marketplace.json").read_text()

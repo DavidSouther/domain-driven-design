@@ -1,0 +1,37 @@
+{
+  "name": "general",
+  "version": "1.0.1",
+  "description": "General skills library: subagents, skill development, and git worktrees. From obra/superpowers.",
+  "author": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com",
+    "url": "https://github.com/davidsouther"
+  },
+  "homepage": "https://github.com/davidsouther/ddd_skill",
+  "repository": "https://github.com/davidsouther/ddd_skill",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "subagents",
+    "skill-writing",
+    "git-worktree"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Ailly General",
+    "shortDescription": "General collaboration and skill-authoring utilities.",
+    "longDescription": "Provides conversation, review, parallel agent dispatch, and skill-writing guidance for agentic workflows.",
+    "developerName": "David Souther",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/davidsouther/ddd_skill",
+    "defaultPrompt": [
+      "Review this work product.",
+      "Write a new skill.",
+      "Dispatch parallel agents."
+    ]
+  }
+}

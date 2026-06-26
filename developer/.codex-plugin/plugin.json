@@ -1,0 +1,40 @@
+{
+  "name": "developer",
+  "version": "1.2.0",
+  "description": "Skills for a software developer agent to follow a strict Domain- and Test-Driven Development lifecycle.",
+  "author": {
+    "name": "David Souther",
+    "email": "davidsouther@gmail.com",
+    "url": "https://github.com/davidsouther"
+  },
+  "homepage": "https://github.com/davidsouther/ddd_skill",
+  "repository": "https://github.com/davidsouther/ddd_skill",
+  "license": "MIT",
+  "keywords": [
+    "skills",
+    "ddd",
+    "tdd",
+    "domain-driven-design",
+    "test-driven-development",
+    "red-green-refactor",
+    "workflows"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Ailly Developer",
+    "shortDescription": "Strict DDD and TDD lifecycle skills.",
+    "longDescription": "Coordinates research, design, planning, red-green-refactor implementation, cleanup, initialization, and program-management workflows for software development agents.",
+    "developerName": "David Souther",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/davidsouther/ddd_skill",
+    "defaultPrompt": [
+      "Start a new Ailly feature loop.",
+      "Run a quick loop for this small change.",
+      "Initialize a new TypeScript project."
+    ]
+  }
+}

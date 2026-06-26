@@ -27,7 +27,8 @@ Examples: `2026.06.0`, `2026.06.1`, `2026.07.0`.
 A nightly workflow (`.github/workflows/nightly-release.yml`) runs at 02:00 UTC every day.
 
 - If no plugin has new commits since the last `release/*` tag the workflow exits 0 with "No changes since last release, skipping."
-- Otherwise it bumps versions, generates `CHANGELOG.md`, creates a signed commit and umbrella tag, and publishes a GitHub Release.
+- Otherwise it bumps Claude and Codex plugin manifest versions together, generates `CHANGELOG.md`, creates a signed release commit with those files, pushes `main`, creates a signed umbrella tag from that committed state, and publishes a GitHub Release.
+- The changelog update must land on `main` before the `release/*` tag is created, so the tag always points at a commit that already contains the release notes.
 - Trigger on demand via **Actions → Nightly Release → Run workflow**.
 - Logs are in the Actions tab; investigate and re-trigger if a push step fails.
 

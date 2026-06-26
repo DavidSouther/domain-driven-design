@@ -1,6 +1,6 @@
 # Gemini CLI Tool Mapping
 
-Skills use Claude Code tool names. When you encounter these in a skill, use your platform equivalent:
+Gemini CLI adapter for the harness contract in `developer:ailly`. When a skill reference names a tool that Gemini calls something else, use this table:
 
 | Skill references | Gemini CLI equivalent |
 |-----------------|----------------------|
@@ -14,15 +14,21 @@ Skills use Claude Code tool names. When you encounter these in a skill, use your
 | `Skill` tool (invoke a skill) | `activate_skill` |
 | `WebSearch` | `google_web_search` |
 | `WebFetch` | `web_fetch` |
-| `Task` tool (dispatch subagent) | No equivalent — Gemini CLI does not support subagents |
+| `Task` tool (dispatch subagent) | Gemini subagent dispatch (available as of 2026-04-15) |
 
-## No subagent support
+## Subagent support
 
-Gemini CLI has no equivalent to Claude Code's `Task` tool. Skills that rely on subagent dispatch (`subagent-driven-development`, `dispatching-parallel-agents`) will fall back to single-session execution via `executing-plans`.
+When Ailly asks for a phase subagent, dispatch a Gemini subagent with explicit context discipline:
+
+1. Read only the selected `references/phases/<phase>.md` file.
+2. Execute that phase against the session folder path passed by the coordinator.
+3. Return the phase result to the coordinator and close the subagent context before moving to another phase.
+
+For skills that rely on reviewer or thinking subagents, use the same dispatch discipline: read only the requested reference, write the requested artifact, and return to the coordinator flow.
 
 ## Additional Gemini CLI tools
 
-These tools are available in Gemini CLI but have no Claude Code equivalent:
+These tools are available in Gemini CLI but have no direct canonical Ailly equivalent:
 
 | Tool | Purpose |
 |------|---------|

@@ -8,10 +8,11 @@ cases:
           The session was declared a long loop and a draft marker is still
           present. The response does NOT stop and wait for the human at this
           gate. Instead the coordinator dispatches a research-and-decide reviewer
-          subagent that reads the artifact cold, decides each open question with
-          the conservative default, and records each decision with its rationale
-          in a "Resolved by the long-loop reviewer" block in the artifact, then
-          clears the *Draft* marker so the loop proceeds. It also states that the
+          through the active harness's isolation path. The reviewer reads the
+          artifact cold, decides each open question with the conservative
+          default, and records each decision with its rationale in a "Resolved by
+          the long-loop reviewer" block in the artifact, then clears the *Draft*
+          marker so the loop proceeds. It also states that the
           human merge gate and the Closing Bell are never auto-cleared by any
           reviewer. It is the long-loop gate-crossing behavior, not the normal
           loop's refuse-and-wait.
