@@ -77,7 +77,7 @@ For conditional capabilities that the contract marks Not-Available (plugin not i
 
 ## Output format
 
-Write findings to `docs/research/YYYY-MM-DD-A-<topic>/papers.md`. Cite per the loose IEEE style in [`research/references/citations.md`](../../references/citations.md). One consolidated `papers.md` per session topic (per Decision 6: no per-source split, no cache).
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/papers.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `papers.md` there. Cite per the loose IEEE style in [`research/references/citations.md`](../../references/citations.md). One consolidated `papers.md` per session topic (per Decision 6: no per-source split, no cache).
 
 ```
 # Papers: <question>

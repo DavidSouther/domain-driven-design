@@ -75,7 +75,7 @@ For conditional capabilities that the contract marks Not-Available (no MCP confi
 
 ## Output format
 
-Write findings to `docs/research/YYYY-MM-DD-A-<topic>/books.md`. Cite per the loose IEEE style in [`research/references/citations.md`](../../references/citations.md). One consolidated `books.md` per session topic (per Decision 6: no per-source split, no cache).
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/books.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `books.md` there. Cite per the loose IEEE style in [`research/references/citations.md`](../../references/citations.md). One consolidated `books.md` per session topic (per Decision 6: no per-source split, no cache).
 
 ```
 # Books: <question>

@@ -44,7 +44,12 @@ When a claim is load-bearing, when the user asks "are you sure?", or when the ev
 
 ## Research Notes Convention
 
-Before dispatching search subagents, create `docs/research/YYYY-MM-DD-A-<topic>/`. Each skill writes its findings to `<skill-name>.md` in that folder, with a `**Sources**` section listing every resource consulted. In text references to sources should use a loose IEEE style. See `references/citations.md` when formatting those sections for more details.
+Before dispatching search subagents, choose the research note folder:
+
+- Standalone research uses `.ailly/research/YYYY-MM-DD-A-<topic>/`.
+- Research that is part of an Ailly development task uses the task session's `.ailly/developer/<session-slug>/research/` folder when the caller provides it.
+
+Create that folder before dispatching. Each skill writes its findings to `<skill-name>.md` in that folder, with a `**Sources**` section listing every resource consulted. In text references to sources should use a loose IEEE style. See `references/citations.md` when formatting those sections for more details.
 
 ## Combining Skills
 

@@ -3,7 +3,7 @@
 
 Rules trace to internal/SKILL.md "Strategy", "Output Format", and the
 "Searching without discovering" common mistake:
-- R1 research-note path convention `docs/research/<dated-dir>/internal.md`.
+- R1 research-note path convention `.ailly/research/<dated-dir>/internal.md`.
 - R2 a Sources section.
 - R3 the discover-before-search step: name `ListMcpResourcesTool`, or otherwise
   describe discovering which MCP servers are available before searching.
@@ -16,7 +16,7 @@ import sys
 
 from _md import candidate, count_present, fail
 
-PATH = re.compile(r"docs/research/\d{4}-\d{2}-\d{2}-[\w-]+/internal\.md")
+PATH = re.compile(r"\.ailly/research/\d{4}-\d{2}-\d{2}-[\w-]+/internal\.md")
 SERVERS = ["Slack", "Confluence", "Notion", "Linear", "Jira", "GitHub", "Google Drive"]
 
 
@@ -34,7 +34,7 @@ def main() -> int:
 
     if not PATH.search(text):
         return fail(
-            "R1 path convention: no `docs/research/<YYYY-MM-DD-A-topic>/internal.md` "
+            "R1 path convention: no `.ailly/research/<YYYY-MM-DD-A-topic>/internal.md` "
             "path; the skill writes findings to that dated research-note path"
         )
 

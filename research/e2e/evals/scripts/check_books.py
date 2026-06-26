@@ -2,7 +2,7 @@
 """Structural checker for the `books` invocation case.
 
 Rules trace to books/SKILL.md "Output format" and "Common mistakes":
-- R1 research-note path convention `docs/research/<dated-dir>/books.md`.
+- R1 research-note path convention `.ailly/research/<dated-dir>/books.md`.
 - R2 a `## Sources` section.
 - R3 an ISBN-13 (the question asks for the canonical ISBN-13).
 - R4 no wiring-leak preface (the "Re-teaching the wiring" mistake).
@@ -13,7 +13,7 @@ import sys
 
 from _md import candidate, fail
 
-PATH = re.compile(r"docs/research/\d{4}-\d{2}-\d{2}-[\w-]+/books\.md")
+PATH = re.compile(r"\.ailly/research/\d{4}-\d{2}-\d{2}-[\w-]+/books\.md")
 ISBN13 = re.compile(r"97[89][\d -]{10,17}")
 LEAK = [
     "first install",
@@ -43,7 +43,7 @@ def main() -> int:
 
     if not PATH.search(text):
         return fail(
-            "R1 path convention: no `docs/research/<YYYY-MM-DD-A-topic>/books.md` "
+            "R1 path convention: no `.ailly/research/<YYYY-MM-DD-A-topic>/books.md` "
             "path; the skill writes findings to that dated research-note path"
         )
 

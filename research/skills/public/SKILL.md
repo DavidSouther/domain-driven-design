@@ -100,7 +100,7 @@ Report which tiers each finding is supported by, whether a falsification pass wa
 
 # Output Format
 
-Write findings to `docs/research/YYYY-MM-DD-A-<topic>/public.md`.
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/public.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `public.md` there.
 
 ```
 # Public: <question>

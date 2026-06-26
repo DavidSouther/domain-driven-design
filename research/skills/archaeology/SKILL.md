@@ -68,7 +68,7 @@ git bisect good <known-good-ref>
 
 # Output Format
 
-Write findings to `docs/research/YYYY-MM-DD-A-<topic>/archaeology.md`.
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/archaeology.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `archaeology.md` there.
 
 Structure:
 
