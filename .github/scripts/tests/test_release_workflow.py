@@ -33,6 +33,8 @@ class ReleaseWorkflowTests(unittest.TestCase):
             self.assertIn("if: steps.release.outputs.release_needed == 'true'", block)
 
     def test_changelog_lands_on_main_before_release_tag(self) -> None:
+        app_token = self._position("- name: Generate GitHub App token")
+        checkout = self._position("- uses: actions/checkout@v6")
         prepare = self._position("- name: Prepare release versions")
         changelog = self._position("- name: Generate changelog")
         commit = self._position("- name: Commit release changes to main")
@@ -40,11 +42,27 @@ class ReleaseWorkflowTests(unittest.TestCase):
         tag = self._position("- name: Create release tag")
         publish = self._position("- name: Publish GitHub Release")
 
+        self.assertLess(app_token, checkout)
+        self.assertLess(checkout, prepare)
         self.assertLess(prepare, changelog)
         self.assertLess(changelog, commit)
         self.assertLess(commit, push_main)
         self.assertLess(push_main, tag)
         self.assertLess(tag, publish)
+
+    def test_checkout_uses_release_app_token_for_git_push(self) -> None:
+        self.assertEqual(self.text.count("- name: Generate GitHub App token"), 1)
+
+        app_token = self._position("- name: Generate GitHub App token")
+        checkout = self._position("- uses: actions/checkout@v6")
+        checkout_token = self._position(
+            "token: ${{ steps.app_token.outputs.token }}"
+        )
+        commit = self._position("- name: Commit release changes to main")
+
+        self.assertLess(app_token, checkout)
+        self.assertLess(checkout, checkout_token)
+        self.assertLess(checkout_token, commit)
 
     def test_github_release_uses_the_created_tag_and_changelog(self) -> None:
         self.assertIn('gh release create "release/${VERSION}"', self.text)
