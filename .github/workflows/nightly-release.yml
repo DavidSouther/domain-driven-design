@@ -48,6 +48,25 @@ jobs:
           OUTPUT: CHANGELOG.md
           GITHUB_REPO: ${{ github.repository }}
 
+      - name: Generate GitHub App token
+        id: app_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.AILLY_RELEASE_APP_ID }}
+          private-key: ${{ secrets.AILLY_RELEASE_APP_PRIVATE_KEY }}
+
+      - name: Commit release changes to main
+        if: steps.release.outputs.release_needed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.app_token.outputs.token }}
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.release.outputs.version }}"
+          git add CHANGELOG.md .claude-plugin .agents/plugins */.claude-plugin */.codex-plugin
+          git commit -m "chore: release ${VERSION}"
+          git push origin main
+
       - name: Commit release changes to main
         if: steps.release.outputs.release_needed == 'true'
         shell: bash
@@ -70,7 +89,7 @@ jobs:
       - name: Publish GitHub Release
         if: steps.release.outputs.release_needed == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.app_token.outputs.token }}
         shell: bash
         run: |
           set -euo pipefail
