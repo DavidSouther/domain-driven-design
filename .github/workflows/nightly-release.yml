@@ -67,16 +67,6 @@ jobs:
           git commit -m "chore: release ${VERSION}"
           git push origin main
 
-      - name: Commit release changes to main
-        if: steps.release.outputs.release_needed == 'true'
-        shell: bash
-        run: |
-          set -euo pipefail
-          VERSION="${{ steps.release.outputs.version }}"
-          git add CHANGELOG.md .claude-plugin .agents/plugins */.claude-plugin */.codex-plugin
-          git commit -m "chore: release ${VERSION}"
-          git push origin main
-
       - name: Create release tag
         if: steps.release.outputs.release_needed == 'true'
         shell: bash
