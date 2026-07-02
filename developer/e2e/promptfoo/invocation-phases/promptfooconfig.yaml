@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Promptfoo invocation-phases pilot for Ailly lifecycle scoring
+
+# Source traceability:
+# - developer/e2e/evals/invocation-phases.yaml
+# - developer/e2e/assemblies/invocation-phases.yaml
+# - developer/e2e/evals/baseline-phases.yaml
+# - developer/e2e/assemblies/baseline-phases.yaml
+env:
+  AILLY_PROMPTFOO_BASELINE_RUN_DIR: "{{env.AILLY_PROMPTFOO_BASELINE_RUN_DIR}}"
+  AILLY_PROMPTFOO_INVOCATION_RUN_DIR: "{{env.AILLY_PROMPTFOO_INVOCATION_RUN_DIR}}"
+  PROMPTFOO_PYTHON: "{{env.PROMPTFOO_PYTHON}}"
+# Hosted llm-rubric graders read their provider credentials from the shell, for
+# example OPENAI_API_KEY={{env.OPENAI_API_KEY}}.
+
+prompts:
+  - file://prompt.md
+
+providers:
+  - id: file://provider.py
+    label: artifact-backed-ailly-provider
+
+defaultTest:
+  metadata:
+    evidence: file://evidence.md
+    assertionAdapter: file://assertions.py
+
+scenarios: []
+
+tests: file://tests.yaml

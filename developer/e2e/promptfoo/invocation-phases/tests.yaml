@@ -1,0 +1,89 @@
+- vars:
+    arm:
+      - baseline
+      - invocation
+    phase: research
+    expected_checker: evals/scripts/check_research.py
+    output_budget: 7000
+  assert:
+    - type: python
+      value: file://assertions.py:check_phase_output
+    - type: llm-rubric
+      value: |
+        The response is a research draft that delegates search and falsification work,
+        has Topic and Intent, Search/Expand, Falsification/Refine, Scope, Resolved
+        Decisions, and Sources, and remains a draft for human review.
+    - type: javascript
+      value: output.length < 7000
+
+- vars:
+    arm:
+      - baseline
+      - invocation
+    phase: design
+    expected_checker: evals/scripts/check_design.py
+    output_budget: 7000
+  assert:
+    - type: python
+      value: file://assertions.py:check_phase_output
+    - type: llm-rubric
+      value: |
+        The response is a formal design document with Purpose, Prior Art, User Journey
+        and Metrics, Specification, Alternatives, and Summary. It includes exactly one
+        executable feature test as a draft and does not include the implementation.
+    - type: javascript
+      value: output.length < 7000
+
+- vars:
+    arm:
+      - baseline
+      - invocation
+    phase: plan
+    expected_checker: evals/scripts/check_plan.py
+    output_budget: 6000
+  assert:
+    - type: python
+      value: file://assertions.py:check_phase_output
+    - type: llm-rubric
+      value: |
+        The response is an incremental implementation plan of three to seven steps,
+        with Step 0 defining the API surface as signatures only. Later steps describe
+        what to build and which part of the feature test they advance.
+    - type: javascript
+      value: output.length < 6000
+
+- vars:
+    arm:
+      - baseline
+      - invocation
+    phase: red-green-refactor
+    expected_checker: evals/scripts/check_red_green_refactor.py
+    output_budget: 7000
+  assert:
+    - type: python
+      value: file://assertions.py:check_phase_output
+    - type: llm-rubric
+      value: |
+        The red-green-refactor response executes one type-first TDD cycle for a single
+        plan step: signatures first, one arrange-act-assert test that fails for the
+        expected reason, then the implementation that makes that test pass.
+    - type: javascript
+      value: output.length < 7000
+
+- vars:
+    arm:
+      - baseline
+      - invocation
+    phase: cleanup
+    expected_checker: evals/scripts/check_cleanup.py
+    output_budget: 5000
+  assert:
+    - type: python
+      value: file://assertions.py:check_phase_output
+    - type: llm-rubric
+      value: |
+        The response closes the topic with final review, lint or formatter checks,
+        deferred-task extraction, session-folder cleanup, and preparation for human
+        approval before merge. It is workspace tidy-up, not new feature work.
+    - type: javascript
+      value: output.length < 5000
