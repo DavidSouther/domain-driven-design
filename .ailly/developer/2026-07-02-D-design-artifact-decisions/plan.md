@@ -11,7 +11,7 @@
 - [x] Step 0: API surface area (edit sites and file slots)
 - [x] Step 1: The planted-artifact prompt
 - [x] Step 2: The assembly pair
-- [ ] Step 3: The eval pair
+- [x] Step 3: The eval pair
 - [ ] Step 4: ci.sh wiring and the end-to-end RED
 - [ ] Step 5: The design.md reference edits — GREEN
 
