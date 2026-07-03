@@ -9,8 +9,8 @@
 
 **Steps:**
 - [x] Step 0: API surface area (edit sites and file slots)
-- [ ] Step 1: The planted-artifact prompt
-- [ ] Step 2: The assembly pair
+- [x] Step 1: The planted-artifact prompt
+- [x] Step 2: The assembly pair
 - [ ] Step 3: The eval pair
 - [ ] Step 4: ci.sh wiring and the end-to-end RED
 - [ ] Step 5: The design.md reference edits — GREEN
@@ -113,6 +113,8 @@ assemblies/design-artifacts.yaml          = long-loop.yaml with the second exter
 assemblies/design-artifacts-baseline.yaml = long-loop-baseline.yaml with the prompt
                                             swapped to design-artifacts.md
 ```
+
+**Correction applied during build:** the `ailly` CLI was unavailable in this build environment, so the Edge case fallback was used — YAML-parse validation of both new files plus a field-by-field diff against `long-loop.yaml`/`long-loop-baseline.yaml` confirmed only the intended swaps (external path and prompt path); live `ailly assemble` verification is deferred to Step 4's ci.sh run.
 
 ## Step 3: The eval pair
 
