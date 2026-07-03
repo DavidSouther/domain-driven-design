@@ -1,0 +1,20 @@
+name: design-artifacts
+model: claude-sonnet-4-6
+
+# Dedicated pair for the Open Artifact Decisions feature: the design's planted
+# scenario (a disposition-record artifact with no prescribed name or format)
+# cannot ride the invocation-phases matrix, which loads exactly one design
+# prompt (prompts/invocation/design.md) per case. Mirrors long-loop.yaml
+# mechanically: single conversation, no matrix. Context is the coordinator
+# skill plus the design phase reference, the two bodies whose edit (Step 5)
+# this pair measures. The baseline arm (design-artifacts-baseline.yaml) drops
+# both bodies.
+prefix:
+  - { kind: file,     path: context/AGENTS.md,                       cache: true }
+  - { kind: file,     path: profile.md,                              cache: true }
+  - { kind: external, path: ../skills/ailly/SKILL.md,                cache: true }
+  - { kind: external, path: ../skills/ailly/references/phases/design.md, cache: true }
+
+conversation:
+  - { role: user, path: "prompts/invocation/design-artifacts.md" }
+  - { role: assistant }

@@ -1,0 +1,15 @@
+name: design-artifacts-baseline
+model: claude-sonnet-4-6
+
+# Falsification arm for the design-artifacts case: mechanically identical to
+# design-artifacts.yaml with the ailly coordinator and design phase reference
+# bodies dropped. AGENTS.md and profile.md stay, so the only difference
+# between the arms is the loaded coordinator + phase reference — any
+# behaviour gap is attributable to it. Same prompt.
+prefix:
+  - { kind: file, path: context/AGENTS.md, cache: true }
+  - { kind: file, path: profile.md,        cache: true }
+
+conversation:
+  - { role: user, path: "prompts/invocation/design-artifacts.md" }
+  - { role: assistant }
