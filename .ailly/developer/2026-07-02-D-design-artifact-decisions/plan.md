@@ -13,7 +13,7 @@
 - [x] Step 2: The assembly pair
 - [x] Step 3: The eval pair
 - [x] Step 4: ci.sh wiring and the end-to-end RED
-- [ ] Step 5: The design.md reference edits — GREEN
+- [x] Step 5: The design.md reference edits — GREEN
 
 ## Step 0: API surface area
 
