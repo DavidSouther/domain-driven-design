@@ -12,7 +12,7 @@
 - [x] Step 1: The planted-artifact prompt
 - [x] Step 2: The assembly pair
 - [x] Step 3: The eval pair
-- [ ] Step 4: ci.sh wiring and the end-to-end RED
+- [x] Step 4: ci.sh wiring and the end-to-end RED
 - [ ] Step 5: The design.md reference edits — GREEN
 
 ## Step 0: API surface area
@@ -154,6 +154,8 @@ evals/design-artifacts.yaml (and -baseline, identical but for `name:`):
 ## Step 4: ci.sh wiring and the end-to-end RED
 
 **Enables:** the full feature-test loop runs end to end and fails for the right reason — the invocation arm (reference not yet edited) fails R4, so `report_comparison` prints improved==0 and the gate FAILs. This is the demonstrated RED that Step 5 flips.
+
+**Correction applied during build:** the Step 3 eval files' `cases[0].name: design-artifacts` never matched, because the `ailly` binary matches a named case against the assembled conversation's filename stem, which is always `default` for a no-matrix single-conversation assembly (confirmed against `filename_for` in ailly's `repository.rs`), so both files' case name was changed to `default` to unblock a real assertion run — the identical latent defect exists in the pre-existing `long-loop.yaml`/`long-loop-baseline.yaml` pair but is out of this plan's scope to touch.
 
 Edit `developer/e2e/ci.sh`: add `design-artifacts` and `design-artifacts-baseline` (expected count 1 each) to `expected_count`; add the two run-dir globals and their `set_run_dir`/`get_run_dir` cases; append `assemble_suite`, `run_suite`, and `eval_suite` calls for both; append `report_comparison "${design_artifacts_baseline_run_dir}" "${design_artifacts_run_dir}" design-artifacts-baseline design-artifacts`. Placement is load-bearing: assemble `design-artifacts-baseline` **after** the plain `baseline` suite (the suffix-anchored `runs/*-baseline/` glob would otherwise pick up the `*-design-artifacts-baseline` dir — same reason long-loop-baseline assembles late); simplest correct placement is after the long-loop pair at the end of each CUJ block. Update the header comment's suite inventory. No change to the hygiene gate: the new prompt is not a baseline-prefix file, and neither hygiene target is edited.
 
