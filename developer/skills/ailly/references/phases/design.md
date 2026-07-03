@@ -37,6 +37,7 @@ A design doc has these sections.
 - **Specification** of the technical details to implement, and the challenges to meet those constraints.
 - **Alternatives** considered and why existing off-the-shelf tools are not suitable to this problem.
 - **Summary** including any deferred technical decisions.
+  - **Open Artifact Decisions** (optional subsection under Summary) naming any concrete artifact the design invents — a filename, schema, on-disk location, or record format — that no skill template, project convention, or the cleared `research.md` prescribes. Omit or leave empty when every artifact is derived.
 
 ## The Feature Test
 
@@ -61,9 +62,10 @@ Create a task for each of these items and complete them in order:
 3. **Ask clarifying questions** one at a time, to understand purpose, constraints, success criteria, and other salient details.
 4. **Propose 2-3 approaches** with trade-offs and your recommendation.
 5. **Write the design doc draft** directly, scaling each section to its complexity, saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`. Write the whole draft; do not read it out section by section for approval first.
-6. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
-7. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
-8. **Collaborate on the written draft** — refer the user to the design and the test, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
+6. **Surface open artifact decisions.** For any concrete artifact choice not prescribed by a skill template, an existing project convention, or the cleared `research.md`, record it in an **Open Artifact Decisions** subsection under **Summary** in the draft. Do this before writing the feature test, since the test binds to the artifacts the draft settles.
+7. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
+8. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
+9. **Collaborate on the written draft** — refer the user to the design and the test, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
 
 ## Process Flow
 
@@ -119,7 +121,18 @@ digraph brainstorming {
 - At this stage, the design covers the user-visible side, without proposing implementation code (the feature test is the one exception, written right after the design draft).
 - Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced.
 - Cover user workflows, failure modes, and automated & manual verification steps.
-- Write the whole draft, then write the feature test that encodes its primary user story.
+- Write the whole draft, then surface open artifact decisions, then write the feature test that encodes its primary user story.
+- Surface an artifact choice in an **Open Artifact Decisions** subsection under **Summary** when it is not:
+  - prescribed by a skill template (a test path following the framework's convention),
+  - established by project convention (a manifest or config schema already in use), or
+  - resolved in the cleared `research.md`.
+  Otherwise the choice is derived; state it as a conclusion where it belongs, not in this subsection. Use this entry format:
+
+  ```text
+  **<artifact name/path>:** <the choice and its options>.
+  Proposed: <the design's recommendation>.
+  ```
+
 - Then collaborate with the user on the written draft, revising it in place from their feedback rather than gating each section before it is written.
 
 **Working in existing codebases:**
@@ -139,6 +152,6 @@ Write the validated design to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`.
 **User Review Gate:**
 After the review loop passes, ask the user to review the written design and feature test before proceeding.
 
-> "The design is at `<path>/design.md` and the feature test is at `<test-file-path>`. Please make any further modifications you find appropriate. When you're satisfied, end this session, remove the `*Draft*` marker from `design.md`, and run `developer:ailly` (it resumes at the plan phase) in a new session to continue."
+> "The design is at `<path>/design.md` and the feature test is at `<test-file-path>`. Please make any further modifications you find appropriate. Pay special attention to any **Open Artifact Decisions** subsection under Summary — these are artifact choices (filenames, formats, locations) the design does not prescribe elsewhere. Confirm they fit your intent before clearing the draft. When you're satisfied, end this session, remove the `*Draft*` marker from `design.md`, and run `developer:ailly` (it resumes at the plan phase) in a new session to continue."
 
 Wait for the user's response. If they request changes, make them and re-run the review loop. Stop once the user approves. Do not continue to any implementation skill in this prompt. Politely decline any such requests.

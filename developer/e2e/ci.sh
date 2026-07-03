@@ -4,9 +4,11 @@
 # Drives the full operator journey across the suites: the discovery matrix; the
 # invocation/baseline coordinator pair; the invocation-phases/baseline-phases and
 # invocation-abilities/baseline-abilities pairs (the lifecycle phases and the
-# progressive abilities, both reached through the coordinator); plus the long-loop /
+# progressive abilities, both reached through the coordinator); the long-loop /
 # long-loop-baseline pair (a single-conversation case for the long-loop mode of ailly,
-# which is not a matrix skill):
+# which is not a matrix skill); plus the design-artifacts/design-artifacts-baseline
+# pair (a single-conversation case measuring the design phase reference's Open
+# Artifact Decisions section, which cannot ride the invocation-phases matrix):
 #   0. vendor.py        -- copy the live AGENTS.md and regenerate the disclosure
 #      table so the SCORED text is current HEAD.
 #   1. ailly assemble <suite>     -- always runs; asserts N conversation files
@@ -89,6 +91,8 @@ expected_count() {
     baseline-abilities)     echo 3 ;;
     long-loop)              echo 1 ;;
     long-loop-baseline)     echo 1 ;;
+    design-artifacts)          echo 1 ;;
+    design-artifacts-baseline) echo 1 ;;
     *) echo "FAIL: unknown suite $1" >&2; exit 1 ;;
   esac
 }
@@ -103,6 +107,8 @@ invocation_abilities_run_dir=""
 baseline_abilities_run_dir=""
 long_loop_run_dir=""
 long_loop_baseline_run_dir=""
+design_artifacts_run_dir=""
+design_artifacts_baseline_run_dir=""
 
 set_run_dir() {
   case "$1" in
@@ -115,6 +121,8 @@ set_run_dir() {
     baseline-abilities)     baseline_abilities_run_dir="$2" ;;
     long-loop)              long_loop_run_dir="$2" ;;
     long-loop-baseline)     long_loop_baseline_run_dir="$2" ;;
+    design-artifacts)          design_artifacts_run_dir="$2" ;;
+    design-artifacts-baseline) design_artifacts_baseline_run_dir="$2" ;;
   esac
 }
 
@@ -129,6 +137,8 @@ get_run_dir() {
     baseline-abilities)     printf '%s\n' "${baseline_abilities_run_dir}" ;;
     long-loop)              printf '%s\n' "${long_loop_run_dir}" ;;
     long-loop-baseline)     printf '%s\n' "${long_loop_baseline_run_dir}" ;;
+    design-artifacts)          printf '%s\n' "${design_artifacts_run_dir}" ;;
+    design-artifacts-baseline) printf '%s\n' "${design_artifacts_baseline_run_dir}" ;;
   esac
 }
 
@@ -179,6 +189,14 @@ assemble_suite invocation-abilities
 # `*-long-loop-baseline` dir.
 assemble_suite long-loop-baseline
 assemble_suite long-loop
+# design-artifacts is a single-conversation pair (design phase reference's Open
+# Artifact Decisions section; cannot ride the invocation-phases matrix, which
+# loads exactly one design prompt per case). Assembled after the plain
+# `baseline` suite so the suffix-anchored `runs/*-baseline/` glob does not pick
+# up the `*-design-artifacts-baseline` dir (same reason long-loop-baseline
+# assembles late).
+assemble_suite design-artifacts-baseline
+assemble_suite design-artifacts
 
 # --- CUJ 2: run (all suites, gated on credentials) ---------------------
 
@@ -247,6 +265,8 @@ run_suite baseline-abilities
 run_suite invocation-abilities
 run_suite long-loop-baseline
 run_suite long-loop
+run_suite design-artifacts-baseline
+run_suite design-artifacts
 
 # --- CUJ 3: eval (all suites) ------------------------------------------
 
@@ -296,6 +316,8 @@ eval_suite baseline-abilities
 eval_suite invocation-abilities
 eval_suite long-loop-baseline
 eval_suite long-loop
+eval_suite design-artifacts-baseline
+eval_suite design-artifacts
 
 # --- CUJ 4: report ----------------------------------------------------------
 
@@ -381,3 +403,4 @@ report_comparison "${baseline_run_dir}" "${invocation_run_dir}" baseline invocat
 report_comparison "${baseline_phases_run_dir}" "${invocation_phases_run_dir}" baseline-phases invocation-phases
 report_comparison "${baseline_abilities_run_dir}" "${invocation_abilities_run_dir}" baseline-abilities invocation-abilities
 report_comparison "${long_loop_baseline_run_dir}" "${long_loop_run_dir}" long-loop-baseline long-loop
+report_comparison "${design_artifacts_baseline_run_dir}" "${design_artifacts_run_dir}" design-artifacts-baseline design-artifacts

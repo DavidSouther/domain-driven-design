@@ -1,0 +1,18 @@
+name: design-artifacts
+cases:
+  - name: default
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_design_artifacts.py } }
+      - type: judge
+        prompt: |
+          The response is a formal design document with the sections Purpose,
+          Prior Art, User Journey and Metrics, Specification, Alternatives, and
+          Summary, presented as a draft for human review. Alongside the design it
+          embeds exactly one executable feature test that encodes the primary
+          user story end-to-end, marked as a draft, and it does NOT include the
+          implementation code that would make that test pass. It additionally
+          surfaces the planted disposition-record artifact (whose filename and
+          data format nothing prescribes) in an Open Artifact Decisions section,
+          naming the choice, its alternatives, and a proposed recommendation,
+          rather than settling the artifact's name and format silently in prose.
+      - { type: tokens, metric: output, op: "<", value: 7000 }
