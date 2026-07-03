@@ -1,6 +1,6 @@
 name: design-artifacts
 cases:
-  - name: design-artifacts
+  - name: default
     assertions:
       - { type: script, runtime: python, script: { path: evals/scripts/check_design_artifacts.py } }
       - type: judge
