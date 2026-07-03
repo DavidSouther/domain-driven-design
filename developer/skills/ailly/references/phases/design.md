@@ -46,6 +46,7 @@ The design phase produces **one executable feature test** that encodes the prima
 
 - Write the user story in plain language first (Given/When/Then or a short narrative).
 - Write exactly one executable test that runs end-to-end through that story, at the integration/e2e level, asserting the user-story outcome directly. It fails at the start because no implementation exists.
+- For user interfaces, use reasonable controls and interface elements that a user might expect. These may be refined in later passes, but a human must be able to read the unit test and perform its steps in the UI without using developer or debugging tools.
 - Use the language and test framework established by the initialize reference (`references/abilities/initialize.md`), and place the test in the project test tree at that conventional location.
 - Record the test's path in `design.md` so the plan phase can find it.
 
