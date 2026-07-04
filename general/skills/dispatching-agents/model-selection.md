@@ -15,9 +15,10 @@ Classify a task along these axes before choosing a model. A task rarely sits at 
 - **Domain specificity** — how much specialized, narrow domain knowledge does the task assume before the model can even begin reasoning about it? General: everyday code or writing. Specific: an unusual API, a niche protocol, a regulatory or legal domain, a codebase's own idiosyncratic conventions.
 - **Generation-vs-evaluation asymmetry** — is it much harder to produce the output than to check it once produced? High asymmetry (generation is the hard part) favors spending more capability on generation; low asymmetry (checking is roughly as hard as producing) is a signal that a cheaper model can do the work if a strong evaluator or test suite backs it up.
 
-## Principle → Provider Example (as of 2026-07-03)
+## Principle → Provider Example
 
-Illustrative only — a dated snapshot, not the durable rule above. Re-verify against each provider's current documentation before relying on it; see the maintenance nudge in `DEVELOPMENT.md`.
+<!-- Last reviewed 2026-07-03. Illustrative only. Re-verify against each provider's current every few months.
+-->
 
 | Complexity profile | Anthropic | OpenAI | Open Source | Ailly Phases |
 | --- | --- | --- | --- | --- |

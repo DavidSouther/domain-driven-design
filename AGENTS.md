@@ -2,4 +2,6 @@
 
 Guidance for AI agents working in this repository.
 
-@RELEASING.md
+Keep main clean. Always use worktrees for any work. Keep worktrees in `.worktrees/`.
+
+@DEVELOPMENT.md
