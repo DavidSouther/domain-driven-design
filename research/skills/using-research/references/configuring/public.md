@@ -80,3 +80,4 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 - **`research/references/citations.md`** — the IEEE `[Online]` citation form the practice skill writes against.
 - **`research/references/jeopardy.md`** — the 3-5 variant query expansion the practice skill runs before searching.
 - **`research/references/falsify.md`** — the falsification pass the practice skill runs on load-bearing claims (its Source Quality section already cites this).
+- **`research/references/thread-digest.md`** — the three-pass digest the practice skill routes a fetched conversational thread (a forum, Reddit/HN, or mailing-list thread) through before treating it as scoped.
