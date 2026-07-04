@@ -32,6 +32,7 @@ immediate design pressure.
 | An application handler must load an aggregate, run a domain operation, and flush all changes atomically (commit together or roll back entirely), bridging the aggregate and the repository inside one durable transaction | unit-of-work — `references/patterns/unit-of-work.md` |
 | Structuring the application layer, wiring concrete dependencies at startup, and keeping external adapters (HTTP, CLI, queue) thin and free of domain logic so the service stays testable without external processes | bootstrap-and-service — `references/patterns/bootstrap-and-service.md` |
 | Writing or reviewing any test so it has a clear setup phase, a single action, and focused assertions; or untangling a test whose setup and assertions are interleaved | arrange-act-assert — `references/patterns/arrange-act-assert.md` |
+| A UI screen or console is driven repeatedly across acceptance/e2e tests, and selector/wait duplication should localize behind verb-phrase actions | page-objects — `references/patterns/page-objects.md` |
 | A fake (hardcoded) implementation passes the first test and the correct generalization is not yet obvious — write a second test that forces the real implementation rather than guessing the abstraction | triangulate — `references/patterns/triangulate.md` |
 | Converting one domain type to another, extracting a wrapped primitive to rewrap as something else, or reshaping an aggregate across lifecycle stages — visible as `as` casts, primitive extraction, or duplicated `to_X`/`from_X` pairs | type-conversion — `references/patterns/type-conversion.md` |
 | Bootstrapping a service's logging pipeline ONCE at process start — subscriber/registry, formatter/filter/enricher/exporter, resource attributes, installing a W3C trace propagator, sampling, redaction, graceful shutdown flush | configuring-logging — `references/patterns/configuring-logging.md` |
@@ -96,6 +97,12 @@ These pairs route to different patterns. State the discriminator before choosing
 - **triangulate vs arrange-act-assert.** Forcing a real implementation by writing a
   second test is triangulate (`references/patterns/triangulate.md`). Structuring any one
   test cleanly is arrange-act-assert (`references/patterns/arrange-act-assert.md`).
+
+- **page-objects vs arrange-act-assert.** Encapsulating a reusable UI surface
+  (a screen or console) behind verb-phrase actions, reused across many
+  acceptance tests, routes to page-objects (`references/patterns/page-objects.md`).
+  Structuring the arrange/act/assert phases of one test routes to
+  arrange-act-assert (`references/patterns/arrange-act-assert.md`).
 
 ## Pattern Composition
 
