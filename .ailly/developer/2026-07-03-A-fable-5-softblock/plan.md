@@ -3,10 +3,19 @@
 **Feature test:** `developer/tests/test_fable5_softblock.py`
 **User story:** A developer running `developer:ailly` on a harness reporting `claude-fable-5` gets an explicit soft-block flag (reason + un-block condition + `/model` switch recommendation) from the phase-entry Model check, the loop continues regardless of their choice, and phase-subagent dispatch does not silently inherit the soft-blocked model.
 **Steps:**
-- [ ] Step 0: API surface area
-- [ ] Step 1: `## Soft-Blocked Models` section in `model-selection.md` (T1, T2, T3)
-- [ ] Step 2: Extend the Model check bullet in `ailly/SKILL.md` (T4)
-- [ ] Step 3: Extend the same bullet with the no-silent-inheritance dispatch rule (T5)
+- [x] Step 0: API surface area
+- [x] Step 1: `## Soft-Blocked Models` section in `model-selection.md` (T1, T2, T3)
+- [x] Step 2: Extend the Model check bullet in `ailly/SKILL.md` (T4)
+- [x] Step 3: Extend the same bullet with the no-silent-inheritance dispatch rule (T5)
+
+**Build phase result:** Feature test `developer/tests/test_fable5_softblock.py`
+is green (`PASS: Fable 5 soft-block contract holds`, exit 0). Sibling
+regression test `developer/tests/test_subagent_model_mandate.py` remains
+green — no dated version strings were introduced into
+`model-selection.md`. Committed in three steps on branch
+`2026-07-03-A-fable-5-softblock` (local only, no push): the
+`## Soft-Blocked Models` section, the Model check bullet's soft-block
+flag, and the no-silent-inheritance dispatch sentence.
 
 ## Step 0: API surface area
 
