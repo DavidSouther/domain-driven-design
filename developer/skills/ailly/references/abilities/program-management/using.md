@@ -27,7 +27,7 @@ Read the three types. The notes tier is always active; the task and doc tiers la
 1. **Notes (always).** In-flight working artifacts live in `.ailly/developer/<date>-<topic>/`. This artifacat needs no contract, is never blocked, and is unaffected by whether a tracker or doc system exists.  Everything below layers on top of it.
 2. **Read the contract** from the `## Program Management` section of `DEVELOPMENT.md`. If that section is absent, or its **Active tracker** is unset or `none`, use `TASKS.md` for the task tier (today's behavior) and stop layering. Notes still apply.
 3. **Select next task** via the tracker, then map it to the topic using the recorded nouns.
-4. **Create/label tasks** for features and bugs using the recorded labels, and link to the parent Epic via the link capability (field-write fallback where no dedicated tool exists).
+4. **Create/label tasks** for features and bugs using the recorded labels, and link to the parent Epic via the link capability (field-write fallback where no dedicated tool exists). When a sub-issue is discovered mid-build, link it to its parent immediately when the child issue is created, using the same link capability — this is not deferred to cleanup.
 5. **Record phase progress** per the recorded strategy as phases advance (the default is to tick the task's checklist).
 6. **Write deferred work** at cleanup as labeled tasks/comments under the right parent (Note → Task). This is `TASKS.md` today when no tracker is configured.
 7. **Publish on Project acceptance** (Note → Doc): when the topic is a Project and the doc-system target is set, replicate the accepted notes to the document system and mark them `completed:`. Feature/bug notes are not published; they stay local and are removed at cleanup.
