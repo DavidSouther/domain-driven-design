@@ -19,6 +19,10 @@ Copilot CLI adapter for the harness contract in `developer:ailly`. When a skill 
 | `WebSearch` | No equivalent — use `web_fetch` with a search engine URL |
 | `EnterPlanMode` / `ExitPlanMode` | No equivalent — stay in the main session |
 
+## Model Mandate
+
+Copilot CLI's `task` dispatch call has no confirmed model-selection field today. This is not a separate, bespoke rule — it is `general/skills/dispatching-agents/model-selection.md`'s single mandate-with-announce rule degrading automatically wherever no mechanism is confirmed: the mandate half becomes a no-op, so only the announce half applies. Name the recommended model verbatim and invite a switch through Copilot's own equivalent of `/model`; never gate — continue on the current model either way.
+
 ## Async shell sessions
 
 Copilot CLI supports persistent async shell sessions, which have no direct canonical Ailly equivalent:

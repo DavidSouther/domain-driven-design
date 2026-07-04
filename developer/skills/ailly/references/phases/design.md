@@ -13,7 +13,7 @@ Start by understanding the current project context, then ask questions one at a 
 
 **Trigger:** A cleared `research.md` in the session folder (or a topic clear enough that research added nothing to gather).
 
-**Announce at start:** "Designing a feature to [summary of the prompt]. Name the recommended model for design from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+**Announce at start:** "Designing a feature to [summary of the prompt]. Per `general/skills/dispatching-agents/model-selection.md`, matched to the active provider with its effort qualifier verbatim: set the model directly when the harness's dispatch call allows it; announce the model chosen either way. I'll continue on the current model either way."
 
 ## Anti-Patterns
 
@@ -66,6 +66,12 @@ Create a task for each of these items and complete them in order:
 7. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
 8. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
 9. **Collaborate on the written draft** — refer the user to the design and the test, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
+
+## Sub-Dispatch
+
+Per `developer/skills/ailly/SKILL.md`'s Phase Isolation mandate (item 7) and the delegation signals in `general/skills/dispatching-agents/SKILL.md`, two Checklist steps qualify for their own subagent dispatch rather than running inline: **Explore project context** (step 1) and **Propose 2-3 approaches** (step 4) — both are independently scoped with a clear input/output boundary and can proceed in parallel with other design work. Dispatch each through the harness's subagent mechanism wherever it is available, following the mandate-with-announce rule for the model.
+
+The remaining steps stay inline, deliberately, not by omission: **Research additional context** (step 2) is conditional and tightly coupled to whatever gap step 1 surfaces; **Ask clarifying questions** (step 3) and **Collaborate on the written draft** (step 9) require synchronous, multi-turn exchange with the user that a subagent cannot hold; **Write the design doc draft** (step 5), **Surface open artifact decisions** (step 6), and **Write the feature test** (step 7) need low-latency access to the full context accumulated in-session up to that point; **Review** (step 8) already routes through the named `general:review` skill's own dispatch conventions, not through inline work this mandate targets.
 
 ## Process Flow
 

@@ -13,7 +13,7 @@ The five phases — **research**, **design**, **plan**, **red-green-refactor** (
 
 The other developer abilities — **thinking**, **refactor**, **initialize**, and the **program-management** pair — are likewise references the coordinator consults at the right moment, not separately-described skills (see Routing). The only other standalone developer skill is `developer:clean-comments-review`, a review specialist consumed by `general:review`.
 
-**Announce at start:** "Using developer:ailly to coordinate this session."
+**Announce at start:** "Using developer:ailly to coordinate this session." `general:using-general` must be loaded concurrently with `developer:ailly`: if it is not already present in the session's context at the moment Ailly loads, Ailly loads it immediately, before doing anything else — not deferred, not situational.
 
 ## Routing
 
@@ -94,6 +94,9 @@ Run each phase with the strongest isolation mechanism the active harness support
 2. If the harness supports subagents, it spawns a phase subagent and instructs that subagent to **read only that one phase reference** and execute it, passing the session folder path.
 3. If the harness does not support subagents, follow its `references/agents/<harness>.md` fallback. The fallback still reads only the current phase reference before executing the phase.
 4. The phase runner writes its artifact and returns control. It never reads the other four phase references.
+5. Before any dispatch, the coordinator loads `general:dispatching-agents`'s model-selection reference (`general/skills/dispatching-agents/model-selection.md`) as a mandatory precondition of dispatching at all — this holds on every subagent dispatch this skill package performs, unconditionally, not situationally. This is Ailly's own instance of the universal rule Step 1 wires through `general:using-general`'s routing table: any subagent dispatch in this repository, Ailly's or not, discovers the same mandate there.
+6. Mandate-with-announce: if the active dispatch call exposes a parameter or field for the subagent's model, set it from that guidance; either way, announce the model chosen to the developer.
+7. This mandate reaches qualifying sub-steps a phase reference's own body describes, not only the phase's top-level dispatch: within a phase, a sub-step that clears `general:dispatching-agents`'s delegation signals must itself run through a subagent dispatch wherever the active harness supports one, rather than being performed inline as a shortcut. A sub-step that fails those delegation signals stays inline, with no model-announcement obligation.
 
 This preserves per-phase isolation while removing the five phase descriptions from the always-on Level-1 view: the phases are reached by argument and by reference, not as separately-described skills.
 
@@ -184,7 +187,7 @@ Pass the session folder path to each phase runner. The session folder is the sin
 
 Before running each phase, the coordinator checks before it proceeds and escalates to the human rather than silently working around a problem. Two checks share this discipline:
 
-- **Model check.** Detect the running model and compare it to the model recommended for the phase. On a mismatch, say so explicitly and invite a `/model` switch; continue on the current model either way. This is a check, not a gate — the loop never stalls. Consult `developer/skills/ailly/references/checks/model-per-phase.md` for the phase×provider table, the detection rules, and the switch protocol.
+- **Model check.** Detect the running model and compare it to the model the guidance recommends for the dispatch about to happen. On a mismatch, say so explicitly; set the model directly where the dispatch call supports it, and announce the choice either way. This is a check, not a gate — the loop never stalls. Consult `general/skills/dispatching-agents/model-selection.md` for the selection principle, the complexity-dimension guidance, and the dated example table.
 - **Tool readiness.** When a tool *declared for the project* fails, do not silently substitute another tool or work around it by hand. Consult `developer/skills/ailly/references/checks/tool-failure.md`: first check the initialize reference (`references/abilities/initialize.md`) for a local fix (e.g. `mise trust`, `npm install`), then escalate to the user with what failed, a suggested remediation, and why it is correct, and retry after the user remediates or grants permission.
 
 ## Topic Slug

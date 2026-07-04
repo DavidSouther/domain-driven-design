@@ -17,3 +17,7 @@ Issues tracked in Github under DavidSouther/domain-driven-design.
 ## Evals
 
 Feature and unit tests for Ailly should be in the form of evals. Feature tests are authored in the root e2e/ folder; unit tests are authored in individual plugin e2e/ folders.
+
+## Model Guidance Maintenance
+
+The dated "as of 2026-07-03" Principle → Provider example table in `general/skills/dispatching-agents/model-selection.md` is a snapshot, not a durable contract. Ask Ailly (running on itself in this repo) to periodically check whether that example table still matches each provider's current alias recommendations, and to update the date stamp when it does.

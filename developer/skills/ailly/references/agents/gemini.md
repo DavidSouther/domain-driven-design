@@ -26,6 +26,10 @@ When Ailly asks for a phase subagent, dispatch a Gemini subagent with explicit c
 
 For skills that rely on reviewer or thinking subagents, use the same dispatch discipline: read only the requested reference, write the requested artifact, and return to the coordinator flow.
 
+## Model Mandate
+
+Gemini CLI's subagent dispatch has no confirmed model-selection field today. This is not a separate, bespoke rule — it is `general/skills/dispatching-agents/model-selection.md`'s single mandate-with-announce rule degrading automatically wherever no mechanism is confirmed: the mandate half becomes a no-op, so only the announce half applies. Name the recommended model verbatim and invite a switch through Gemini's own equivalent of `/model`; never gate — continue on the current model either way.
+
 ## Additional Gemini CLI tools
 
 These tools are available in Gemini CLI but have no direct canonical Ailly equivalent:

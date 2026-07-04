@@ -9,7 +9,7 @@
 
 Middle-loop planning skill. Given a cleared design and its failing feature test, defines the API surface area and breaks the path to making that test pass into 3–7 incremental steps. Each step must leave the codebase in a runnable state and advance the feature test measurably.
 
-**Announce at start:** "Using the developer:ailly plan phase to create the implementation plan for [summary of feature]. Name the recommended model for planning from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+**Announce at start:** "Using the developer:ailly plan phase to create the implementation plan for [summary of feature]. Per `general/skills/dispatching-agents/model-selection.md`, matched to the active provider with its effort qualifier verbatim: set the model directly when the harness's dispatch call allows it; announce the model chosen either way. I'll continue on the current model either way."
 
 **Trigger:** The design draft marker has been cleared by a human. The design records the project feature test, which is currently failing.
 
