@@ -73,7 +73,7 @@ Utilities for skill authoring, parallel agent dispatch, and git worktree isolati
 |-------|-------------|
 | `general:using-general` | Bootstrap — load before any action to find the most relevant skills |
 | `general:using-git-worktrees` | Starting feature work that needs isolation from the current workspace |
-| `general:dispatching-parallel-agents` | Multiple independent tasks with no shared state or sequential dependencies |
+| `general:dispatching-agents` | Multiple independent tasks with no shared state or sequential dependencies |
 | `general:writing-skills` | Creating, editing, or verifying skills before deployment |
 
 ### Developer (`developer:*`)

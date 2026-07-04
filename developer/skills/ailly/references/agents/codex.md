@@ -13,6 +13,10 @@ Codex adapter for the harness contract in `developer:ailly`. When a skill refere
 | `Read`, `Write`, `Edit` (files) | Use your native file tools |
 | `Bash` (run commands) | Use your native shell tools |
 
+## Model Mandate
+
+Each `spawn_agent` call accepts a per-agent `model` field in its TOML configuration — a confirmed model-selection mechanism. Per `general/skills/dispatching-agents/model-selection.md`'s mandate-with-announce rule: set that field directly from that guidance on every `spawn_agent` dispatch this skill package performs — the phase-level dispatch and any qualifying within-phase sub-dispatch alike; announce the model chosen to the developer either way.
+
 ## Subagent dispatch requires multi-agent support
 
 Add to your Codex config (`~/.codex/config.toml`):
@@ -22,7 +26,7 @@ Add to your Codex config (`~/.codex/config.toml`):
 multi_agent = true
 ```
 
-This enables `spawn_agent`, `wait`, and `close_agent` for skills like `dispatching-parallel-agents` and `subagent-driven-development`.
+This enables `spawn_agent`, `wait`, and `close_agent` for skills like `dispatching-agents` and `subagent-driven-development`.
 
 ## Named agent dispatch
 

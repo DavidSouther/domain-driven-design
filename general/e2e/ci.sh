@@ -42,7 +42,7 @@ bash "${project_dir}/evals/scripts/gen_disclosure.sh"
 # The baseline arm shares exactly two files with the invocation arm:
 # context/AGENTS.md (vendored from e2e/AGENTS.md) and profile.md. Neither may
 # name a general:<skill> identifier, or "no skill loaded" is a false claim.
-if grep -Eq 'general:(conversation|dispatching-parallel-agents|review|using-general|writing-paired-skills|writing-pattern-skills|writing-skills)' \
+if grep -Eq 'general:(conversation|dispatching-agents|review|using-general|writing-paired-skills|writing-pattern-skills|writing-skills)' \
      "${repo_root}/e2e/AGENTS.md" "${project_dir}/profile.md"; then
   echo "FAIL: e2e/AGENTS.md or profile.md names a general:<skill> identifier" >&2
   exit 1

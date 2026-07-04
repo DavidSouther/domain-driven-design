@@ -9,3 +9,7 @@ The `.claude-plugin/` directories in this repository are Claude Code marketplace
 ## Phase Isolation
 
 Claude Code supports subagent dispatch through `Task`, so phase isolation uses one `Task` call per Ailly phase. Each phase task reads only its matching `references/phases/<phase>.md` file and receives the session folder path from the coordinator.
+
+## Model Mandate
+
+`Task`'s `model` parameter (`sonnet | opus | haiku | fable`) is a confirmed model-selection mechanism. Per `general/skills/dispatching-agents/model-selection.md`'s mandate-with-announce rule: set it directly from that guidance on every `Task` dispatch this skill package performs — the phase-level dispatch and any qualifying within-phase sub-dispatch alike; announce the model chosen to the developer either way.

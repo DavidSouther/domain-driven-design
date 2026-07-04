@@ -1,9 +1,9 @@
 ---
-name: dispatching-parallel-agents
+name: dispatching-agents
 description: Use when preparing to start subagents. Especially multiple independent task.
 ---
 
-# Dispatching Parallel Agents
+# Dispatching Agents
 
 ## Overview
 
@@ -43,6 +43,23 @@ digraph when_to_use {
 - Understanding requires seeing the full system state
 - Agents would interfere with each other (editing same files, shared resources)
 - The failure scope is not yet known
+
+## Delegation Signals
+
+Whether a sub-step is dispatched to a subagent at all is the first question. Check these signals before reaching for model-selection guidance.
+
+**Positive signals (favor dispatch):**
+- Independent scope with a clear input/output boundary — the step can be handed a self-contained brief and returns a self-contained result.
+- Parallelizable with other work — the step can run concurrently with other sub-steps or with work the caller is doing itself.
+- A genuine cost- or capability-mismatch case — the step's complexity profile differs enough from the caller's own that isolating it lets it run on a cheaper or more specialized model.
+- A structured, deterministic hand-off — the caller can describe the step once, completely, without needing ongoing back-and-forth.
+
+**Negative signals (favor staying inline):**
+- Forced decomposition — the "step" exists only as a named heading in a plan or reference, with no real independent work behind it.
+- Tight, low-latency, multi-turn coupling to context the caller already holds in-session — the step needs to keep asking the caller things a subagent would have to reconstruct from scratch.
+- Round-trip coordination overhead — an extra model call plus context reconstruction on return would cost more than isolating the step saves.
+
+Dispatch a subagent once one of these signals is real, not because a step happens to have a name.
 
 ## The Pattern
 
