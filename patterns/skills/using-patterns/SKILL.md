@@ -98,6 +98,12 @@ These pairs route to different patterns. State the discriminator before choosing
   second test is triangulate (`references/patterns/triangulate.md`). Structuring any one
   test cleanly is arrange-act-assert (`references/patterns/arrange-act-assert.md`).
 
+- **page-objects vs arrange-act-assert.** Encapsulating a reusable UI surface
+  (a screen or console) behind verb-phrase actions, reused across many
+  acceptance tests, routes to page-objects (`references/patterns/page-objects.md`).
+  Structuring the arrange/act/assert phases of one test routes to
+  arrange-act-assert (`references/patterns/arrange-act-assert.md`).
+
 ## Pattern Composition
 
 Patterns compose in predictable ways. Recognise these combinations:
