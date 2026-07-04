@@ -3,10 +3,10 @@
 **Feature test:** `developer/tests/test_status_transition_and_subissue_linking.py`
 **User story:** As an agent running a development session with GitHub configured as the tracker, I link a discovered sub-issue to its parent the moment I create it (not at cleanup) and move the board card through In Progress/Done at the right phase boundaries, per the rules `using.md` prescribes.
 **Steps:**
-- [ ] Step 0: API surface area (N/A — documentation-only change)
-- [ ] Step 1: Rule 4 — immediate sub-issue linking
-- [ ] Step 2: Rule 5 — board-column triggers
-- [ ] Step 3: Capability Routing — GitHub id-type/`-F` caveat
+- [x] Step 0: API surface area (N/A — documentation-only change)
+- [x] Step 1: Rule 4 — immediate sub-issue linking
+- [x] Step 2: Rule 5 — board-column triggers
+- [x] Step 3: Capability Routing — GitHub id-type/`-F` caveat
 
 ## Step 0: API surface area
 
