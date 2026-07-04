@@ -1,14 +1,18 @@
 # Development
 
-## Release Script Tests
+## Commit conventions
 
-```sh
-PYTHONPATH=.github/scripts python3 -m unittest discover -s .github/scripts/tests
-```
+This repository uses [Conventional Commits](https://www.conventionalcommits.org/).
+Use a plugin name as the scope so each plugin's history stays readable:
 
-## Verified commits and main branch protection
+| Type | Changelog section | Example |
+|------|-------------------|---------|
+| `feat` | Features | `feat(developer): add bugfix skill shape` |
+| `fix` | Bug Fixes | `fix(general): correct dispatching agent prompt` |
+| `docs` | Documentation | `docs(patterns): clarify newtype vs domain-objects` |
+| `feat!` or `BREAKING CHANGE` body | Breaking Changes | `feat(research)!: rename configuring-public` |
+| `chore`, `refactor`, `test`, `perf`, `style` | (skipped) | internal bookkeeping |
 
-Commits are verified using git configuration, and main branch has strict protections. All changes must go through PR from a branch. Branches and commits use conventional commit messages.
 
 ## Project Management
 
@@ -18,6 +22,6 @@ Issues tracked in Github under DavidSouther/domain-driven-design.
 
 Feature and unit tests for Ailly should be in the form of evals. Feature tests are authored in the root e2e/ folder; unit tests are authored in individual plugin e2e/ folders.
 
-## Model Guidance Maintenance
+## Releasing
 
-The dated "as of 2026-07-03" Principle → Provider example table in `general/skills/dispatching-agents/model-selection.md` is a snapshot, not a durable contract. Ask Ailly (running on itself in this repo) to periodically check whether that example table still matches each provider's current alias recommendations, and to update the date stamp when it does.
+Review RELEASING.md when changing or troubleshooting the release process.
