@@ -6,12 +6,20 @@
 **Libraries & Skills:** Load `general:writing-pattern-skills` (already loaded this session) before Step 3 — it fixes the section shape and voice for the new reference file. No other framework/library skill applies; carry this directive into the Build phase too, per research.md's Libraries & Skills note.
 
 **Steps:**
-- [ ] Step 0: API surface area
-- [ ] Step 1: Routing table row (T1)
-- [ ] Step 2: Discriminator entry (T2)
-- [ ] Step 3: Reference file skeleton — Overview, When to Use, Core Pattern (T3, partial T4)
-- [ ] Step 4: Quick Reference and Common Mistakes (T4 complete, T5, T6)
-- [ ] Step 5: Composes With cross-link (T7, feature test green)
+- [x] Step 0: API surface area
+- [x] Step 1: Routing table row (T1)
+- [x] Step 2: Discriminator entry (T2)
+- [x] Step 3: Reference file skeleton — Overview, When to Use, Core Pattern (T3, partial T4)
+- [x] Step 4: Quick Reference and Common Mistakes (T4 complete, T5, T6)
+- [x] Step 5: Composes With cross-link (T7, feature test green)
+
+**Build phase result:** All steps complete; `developer/tests/test_page_objects_pattern.py`
+exits 0 (`PASS: page-objects pattern contract holds`). Steps 3-5 were
+implemented and committed together as one file (the reference's sections
+are interdependent prose covering one contract); Steps 1-2 and 3-5 are
+each their own commit. The e2e discovery/invocation/checker case under
+`patterns/e2e/` remains deferred per design.md, not attempted this
+session.
 
 ## Step 0: API surface area
 
