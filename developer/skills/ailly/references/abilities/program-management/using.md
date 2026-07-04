@@ -47,8 +47,6 @@ A capability whose MCP did not authenticate returns the typed result reused verb
 
 Treat Not-Available as a **routing signal, not an error**: route the task tier to the `TASKS.md` fallback and keep notes local. Do not retry the capability.
 
-GitHub's sub-issue endpoint (`POST /repos/:owner/:repo/issues/:parent/sub_issues`) takes the child's **database id** (an integer) as `sub_issue_id` — not its issue number. `gh api -F` sends every field value as a string, which is unreliable for this integer field; route the call through `gh api --input -` with a JSON heredoc body instead of `-F`.
-
 ## Degradation (no tracker configured)
 
 When `DEVELOPMENT.md` has no `## Program Management` section, or its **Active tracker** is unset or `none`:

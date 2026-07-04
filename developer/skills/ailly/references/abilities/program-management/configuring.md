@@ -52,6 +52,8 @@ The capability details the practice skill consumes, keyed by the active tracker'
 | Write deferred work | tasks | title/body, labels, optional parent | new task/comment id | — |
 | Publish long-lived doc | docs | doc path, doc-system target | published URL | only when doc-system target is not `none`, Project shape |
 
+**GitHub `Link parent/child` caveat:** GitHub's sub-issue endpoint (`POST /repos/:owner/:repo/issues/:parent/sub_issues`) takes the child's **database id** (an integer) as `sub_issue_id` — not its issue number. `gh api -F` sends every field value as a string, which is unreliable for this integer field; route the call through `gh api --input -` with a JSON heredoc body instead of `-F`.
+
 Every tracker/doc capability is **conditional**: available only when its MCP is authenticated. A project with no tracker configured is legal and returns Not-Available for every row. The **notes** tier has no row — writing working files to `.ailly/developer/` is never conditional. Conditional capabilities return the typed Not-Available result reused verbatim from the `research` family:
 
 ```

@@ -43,3 +43,7 @@ No new capability-table rows, no new files, no code. The one feature test is a s
 No Open Artifact Decisions: the one artifact this design touches — the feature test's path — follows the already-established `developer/tests/test_<topic>.py` source-contract-test convention (see `test_research_note_paths.py`, `test_subagent_model_mandate.py`, `test_quick_loop_review_retention.py`), so it is derived, not invented.
 
 **Feature test:** `developer/tests/test_status_transition_and_subissue_linking.py`
+
+## Addendum (post-review)
+
+Per PR #36 review comment ("This is specific to github, not program management."), the GitHub sub-issue id-type/`-F` caveat was moved out of `using.md`'s Capability Routing section (which stays tracker-agnostic) and attached to the `Link parent/child` row in `configuring.md`'s capability table instead, where tracker-specific mechanics already live.

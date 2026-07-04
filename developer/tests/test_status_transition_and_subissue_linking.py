@@ -12,18 +12,21 @@ Done. design.md (Specification) prescribes three prose additions:
 2. Rule 5 gains: move the board card to In Progress at Research-phase start
    (first commit to the session branch), and to Done when Cleanup completes
    and the issue closes -- conditioned on the tracker exposing a status field.
-3. Capability Routing gains a GitHub-specific note: the sub-issue endpoint
-   takes the child's database id (an integer), not its issue number; `gh api
-   -F` sends strings and is unreliable for it, so use `gh api --input -` with
-   a JSON heredoc instead.
+3. `configuring.md`'s capability table gains a GitHub-specific note attached
+   to the `Link parent/child` row: the sub-issue endpoint takes the child's
+   database id (an integer), not its issue number; `gh api -F` sends strings
+   and is unreliable for it, so use `gh api --input -` with a JSON heredoc
+   instead. (Per PR review on issue #22, this tracker-specific mechanic lives
+   in `configuring.md`, not in `using.md`'s tracker-agnostic Capability
+   Routing section.)
 
-This is a source-level contract check on `using.md`'s prose, matching the
-existing pattern in `test_subagent_model_mandate.py` and
+This is a source-level contract check on `using.md` and `configuring.md`'s
+prose, matching the existing pattern in `test_subagent_model_mandate.py` and
 `test_research_note_paths.py`. It needs no model and no pytest; it exits 0
 when all rules hold, or 1 with a single reason line on stdout. It starts RED:
 today `using.md` says only "link to the parent Epic via the link capability"
-in rule 4, only "tick the task's checklist" in rule 5, and its Capability
-Routing section says nothing about GitHub's id type or `gh api -F`.
+in rule 4, only "tick the task's checklist" in rule 5, and `configuring.md`
+says nothing about GitHub's id type or `gh api -F`.
 """
 
 import re
@@ -40,6 +43,16 @@ USING = (
     / "abilities"
     / "program-management"
     / "using.md"
+)
+CONFIGURING = (
+    REPO
+    / "developer"
+    / "skills"
+    / "ailly"
+    / "references"
+    / "abilities"
+    / "program-management"
+    / "configuring.md"
 )
 
 
@@ -109,28 +122,35 @@ def main() -> int:
             "status field"
         )
 
-    # T3 - Capability Routing names GitHub's sub-issue id-type caveat and the
-    # gh api --input workaround for gh api -F's string coercion.
-    routing = section(text, "Capability Routing")
-    if not routing:
-        return fail("T3 no `## Capability Routing` section found")
-    routing_low = routing.lower()
-    if "database id" not in routing_low and "database identifier" not in routing_low:
+    # T3 - configuring.md names GitHub's sub-issue id-type caveat and the
+    # gh api --input workaround for gh api -F's string coercion, attached to
+    # the capability table (tracker-specific mechanics live here, not in
+    # using.md's tracker-agnostic Capability Routing section).
+    if not CONFIGURING.is_file():
+        return fail(f"T0 {CONFIGURING} not found")
+    configuring_text = CONFIGURING.read_text(encoding="utf-8")
+    configuring_low = configuring_text.lower()
+    if "database id" not in configuring_low and "database identifier" not in configuring_low:
         return fail(
-            "T3 Capability Routing must say the sub-issue endpoint needs the "
+            "T3 configuring.md must say the sub-issue endpoint needs the "
             "child's database id, not its issue number"
         )
-    if "issue number" not in routing_low:
+    if "issue number" not in configuring_low:
         return fail(
-            "T3 Capability Routing must contrast the database id against the "
+            "T3 configuring.md must contrast the database id against the "
             "issue number"
         )
-    if "-f" not in routing_low:
-        return fail("T3 Capability Routing must call out `gh api -F`'s string coercion")
-    if "--input" not in routing_low:
+    if "-f" not in configuring_low:
+        return fail("T3 configuring.md must call out `gh api -F`'s string coercion")
+    if "--input" not in configuring_low:
         return fail(
-            "T3 Capability Routing must prescribe `gh api --input -` with a "
+            "T3 configuring.md must prescribe `gh api --input -` with a "
             "JSON heredoc as the fix"
+        )
+    if "link parent/child" not in configuring_low:
+        return fail(
+            "T3 configuring.md must have a `Link parent/child` capability "
+            "row for the GitHub caveat to attach to"
         )
 
     print("PASS: status-transition and sub-issue-linking rules hold")
