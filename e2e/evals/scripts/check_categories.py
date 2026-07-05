@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""T3 - all four verbatim question categories from issue #33 are present."""
+"""T3 - all four verbatim question categories are present."""
 import sys
 from pathlib import Path
 

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""T9 - phase wiring for the two gates issue #33 emphasizes: the Design and
-Plan phase references must each name intent review at their draft-gate /
-"After the ..." step, so the mechanism is reachable from those phases.
+"""T9 - phase wiring for the two gates that carry a feature test forward: the
+Design and Plan phase references must each name intent review at their
+draft-gate / "After the ..." step, so the mechanism is reachable from those
+phases.
 """
 import sys
 from pathlib import Path
@@ -19,7 +20,7 @@ def main() -> int:
             return fail(
                 f"T9 {label} phase wiring: {path.relative_to(REPO)} must name "
                 "intent review at its draft gate so the mechanism is reachable "
-                f"from the {label} phase (issue #33 emphasizes this gate)"
+                f"from the {label} phase"
             )
     return 0
 

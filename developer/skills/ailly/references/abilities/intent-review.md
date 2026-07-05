@@ -1,18 +1,17 @@
 # Intent Review
 
-## When to Consult This
-
-Consult this reference at a moment, the way `thinking.md` and `refactor.md` are consulted — not
-as a phase, and not folded into any single phase body.
+> Ability reference consulted by each `developer:ailly` phase runner at its draft gate, the way
+> `references/abilities/thinking.md` and `references/abilities/refactor.md` are consulted
+> elsewhere in the loop. Invoked through the active harness's isolation path; there is no
+> standalone `developer:intent-review` skill.
 
 ## The Backwards Method and Question Template
 
-Ailly's five phases each accumulate a "theory of the program" (in Naur's sense) built up across
-the artifacts. The one thing that predates all of those artifacts is the user's original
-request. Intent review works **backward** from that original prompt through the accumulated
-Research, Design, Plan, and Implementation artifacts, checking whether the theory built up along
-the way has quietly drifted from what was actually asked for. It generates falsifiable questions
-of the form:
+Ailly's five phases each accumulate a "theory of the program" built up across the artifacts, but
+the user's original request precedes all of them. Intent review works **backward** from that
+original prompt through the accumulated Research, Design, Plan, and Implementation artifacts,
+checking whether the theory built up along the way has quietly drifted from what was actually
+asked for. It generates falsifiable questions of the form:
 
 > As [designed / planned / implemented], the program will **[X]**. The original request asked
 > for **[Y]**. Is that what you intended?
@@ -29,8 +28,7 @@ drift.
 
 ## The Four Categories, and the Research-phase Variant
 
-Categorize each question by where the divergence entered, using four labels verbatim from
-issue #33:
+Categorize each question by where the divergence entered, using these four labels:
 
 - **Research gap**
 - **Design assumption**
@@ -66,19 +64,11 @@ current session's own reasoning trail, reading the artifact fresh — the same f
 isolation long-loop's reviewer already uses, not the same agent reflecting on its own in-session
 work.
 
-## Recording: the `reviews/` Folder
+## Recording
 
-Reuse **long-loop**'s dispatch shape and dated-block *entry* format (see
-`references/shapes/long-loop.md`), but do not write entries in place into the artifact under
-review. Review is one piece of feedback, and feedback resolves into an edit or a closed note, not
-a standing unresolved section living forever inside the primary artifact.
-
-Instead, every session tree gains a `reviews/` folder, sibling to the existing `research/`
-folder (i.e. `.ailly/developer/<session>/reviews/`). Intent review notates each question there as
-a dated entry, in long-loop's entry format, adapted for posing rather than deciding. Once the
-human answers a question — by revising the artifact, replying, or dismissing it — that entry is
-marked **resolved** and **closed** in place; it does not remain an open item inside `design.md`,
-`plan.md`, or any other artifact under review.
+Intent review notates its questions using `general:review`'s `reviews/` folder convention —
+dated entries, resolved and closed once the human answers them, never written in place into the
+artifact under review. See that skill for the mechanism.
 
 ## The Original-Prompt Anchor
 

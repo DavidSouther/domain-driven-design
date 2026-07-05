@@ -26,9 +26,10 @@ SKILL = AILLY_DIR / "SKILL.md"
 DESIGN_PHASE = AILLY_DIR / "references" / "phases" / "design.md"
 PLAN_PHASE = AILLY_DIR / "references" / "phases" / "plan.md"
 RESEARCH_PHASE = AILLY_DIR / "references" / "phases" / "research.md"
+GENERAL_REVIEW = REPO / "general" / "skills" / "review" / "SKILL.md"
 
-# The four question categories, verbatim from issue #33; they must survive
-# into the ability's text unchanged.
+# The four question categories; they must survive into the ability's text
+# unchanged.
 CATEGORIES = [
     "Research gap",
     "Design assumption",
