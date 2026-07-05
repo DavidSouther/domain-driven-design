@@ -1,26 +1,24 @@
 # Intent Review
 
-> Ability reference consulted by each `developer:ailly` phase runner at its draft gate, the way
-> `references/abilities/thinking.md` and `references/abilities/refactor.md` are consulted
-> elsewhere in the loop. Invoked through the active harness's isolation path; there is no
-> standalone `developer:intent-review` skill.
+> Ability referenced by each `developer:ailly` phase at its draft gate. Invoked through the active harness's isolation path and as one reviewer for `general:review`. There is no standalone `developer:intent-review` skill.
 
-## The Backwards Method and Question Template
+## Intent Alignment Gap
 
-Ailly's five phases each accumulate a "theory of the program" built up across the artifacts, but
-the user's original request precedes all of them. Intent review works **backward** from that
-original prompt through the accumulated Research, Design, Plan, and Implementation artifacts,
+The alignment gap occurs when the research, design, plan, or implementation developed across Ailly's phases differ from the expectations and intent of the user.
+Ailly's five phases each accumulate a "theory of the program" across their artifacts, but
+that theory may drift from the user's original request, which precedes all of them. Intent review works **backward** from that
+original prompt through the accumulated phase artifacts,
 checking whether the theory built up along the way has quietly drifted from what was actually
 asked for. It generates falsifiable questions of the form:
 
 > As [designed / planned / implemented], the program will **[X]**. The original request asked
-> for **[Y]**. Is that what you intended?
+> for **[Y]**. Do they align?
 
 Every question is a falsifiable claim about behavior paired with a quote or paraphrase of the
 original request — never a vague quality judgment like "is this good code?"
 
 Before raising a candidate question, cross-reference it against the *entire* original request
-(not just the sentence nearest the artifact text under scrutiny) and against the artifact's own
+and against the artifact's own
 existing "Open Artifact Decisions" or deferred-decisions section, dropping any candidate the
 request or the artifact already resolves elsewhere. Skipping this dedup discipline causes the
 mechanism to over-generate shallow, already-settled questions instead of surfacing genuine
@@ -35,9 +33,7 @@ Categorize each question by where the divergence entered, using these four label
 - **Plan scope**
 - **Implementation surprise**
 
-The Research phase gets a distinct variant instead, because at that stage there is no downstream
-implementation yet to compare against the original ask — the risk is not "did this match
-intent" but a **blind spot**: a **gap** the frame the research itself built has made invisible.
+The Research phase gets a distinct variant, instead focusing on whether the research leaves any **blind spots**: **gaps** the current research's own frame has made invisible.
 Its question form:
 
 > Inside the frame we have now built, what would we no longer notice is missing? The original
@@ -46,22 +42,19 @@ Its question form:
 
 ## Draft-Gate Timing and the Never-Clears Invariant
 
-Intent review runs by default at the **draft gate**, before the human clears the marker. It is a
-**recommended default**, not an enforcement: the developer may invoke it earlier, or dismiss it
-entirely. The mechanism is still experimental; promoting it from a dismissible soft default to a
-harder-to-skip primary mechanism is deferred until real usage shows the questions are
-consistently worth the developer's time.
+Intent review runs as part of artifact review when reaching the **draft gate**, before the human clears the marker. It is a
+**recommended default**, not an enforcement: the developer may invoke it earlier, or dismiss it entirely. Where `general:review` may immediately apply edits, intent review surfaces questions that require user feedback before incorporating.
 
-Intent review **never clears** a draft gate, merge gate, or Closing Bell — not an autonomous
+Intent review **never clears** a draft gate, merge gate, or Closing Bell. It is not an autonomous
 gate-clearer, unlike long-loop's research-and-decide reviewer, which does auto-clear. It
 **supplements** the human's existing draft-gate review; it does not replace the human as the
 gate-clearer. In long-loop mode, the coordinator's existing research-and-decide reviewer still
-owns auto-clearing; intent review's questions may be an *input* that reviewer consults, but
+owns auto-clearing; intent review's questions may be an input that reviewer consults, but
 intent review itself never clears anything.
 
 Dispatch is always **cold**: a memory-less, freshly dispatched reviewer with no access to the
 current session's own reasoning trail, reading the artifact fresh — the same fresh-eyes
-isolation long-loop's reviewer already uses, not the same agent reflecting on its own in-session
+isolation used throughout Ailly, not the same agent reflecting on its own in-session
 work.
 
 ## Recording

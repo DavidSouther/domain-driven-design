@@ -64,8 +64,8 @@ Create a task for each of these items and complete them in order:
 5. **Write the design doc draft** directly, scaling each section to its complexity, saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`. Write the whole draft; do not read it out section by section for approval first.
 6. **Surface open artifact decisions.** For any concrete artifact choice not prescribed by a skill template, an existing project convention, or the cleared `research.md`, record it in an **Open Artifact Decisions** subsection under **Summary** in the draft. Do this before writing the feature test, since the test binds to the artifacts the draft settles.
 7. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
-8. **Review** the design doc and the feature test using the `general:review` skill. When preparing the rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
-9. **Collaborate on the written draft** — before stopping, consult `references/abilities/intent-review.md` (dismissible default) through the harness isolation path. Then refer the user to the design and the test, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
+8. **Review** the design doc and the feature test using the `general:review` skill, including the intent-review ability (a recommended, dismissible default) in `references/abilities/intent-review.md`. When preparing the general review rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
+9. **Collaborate on the written draft** — refer the user to the design, the test and the intent review, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
 
 ## Sub-Dispatch
 
