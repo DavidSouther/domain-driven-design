@@ -1,0 +1,15 @@
+name: code-mode-baseline
+model: claude-sonnet-4-6
+
+# Falsification arm for the code-mode case: mechanically identical to
+# code-mode.yaml with the ailly coordinator and code-mode reference bodies
+# dropped. AGENTS.md and profile.md stay, so the only difference between the
+# arms is the loaded skill/reference -- any behaviour gap is attributable to
+# it. Same prompt.
+prefix:
+  - { kind: file, path: context/AGENTS.md, cache: true }
+  - { kind: file, path: profile.md,        cache: true }
+
+conversation:
+  - { role: user, path: "prompts/invocation/code-mode.md" }
+  - { role: assistant }

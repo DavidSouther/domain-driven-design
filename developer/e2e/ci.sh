@@ -6,9 +6,11 @@
 # invocation-abilities/baseline-abilities pairs (the lifecycle phases and the
 # progressive abilities, both reached through the coordinator); the long-loop /
 # long-loop-baseline pair (a single-conversation case for the long-loop mode of ailly,
-# which is not a matrix skill); plus the design-artifacts/design-artifacts-baseline
-# pair (a single-conversation case measuring the design phase reference's Open
-# Artifact Decisions section, which cannot ride the invocation-phases matrix):
+# which is not a matrix skill); the code-mode/code-mode-baseline pair (the same
+# single-conversation shape, for the Code Mode mode of ailly); plus the
+# design-artifacts/design-artifacts-baseline pair (a single-conversation case
+# measuring the design phase reference's Open Artifact Decisions section, which
+# cannot ride the invocation-phases matrix):
 #   0. vendor.py        -- copy the live AGENTS.md and regenerate the disclosure
 #      table so the SCORED text is current HEAD.
 #   1. ailly assemble <suite>     -- always runs; asserts N conversation files
@@ -18,9 +20,10 @@
 #      ANTHROPIC_API_KEY nor a project .env the script hard-fails: there is no
 #      assemble-only success path, so the falsification gate always runs.
 #   3. ailly eval <suite> --over runs/<id>/ -- asserts the per-run report landed.
-#   4. ailly report ...           -- single-run discovery summary, then two
-#      comparisons (baseline-vs-invocation, long-loop-baseline-vs-long-loop)
-#      whose four buckets the falsification gate reads.
+#   4. ailly report ...           -- single-run discovery summary, then several
+#      comparisons (baseline-vs-invocation, long-loop-baseline-vs-long-loop,
+#      code-mode-baseline-vs-code-mode, ...) whose four buckets the
+#      falsification gate reads.
 #
 # The `ailly` binary is resolved through AILLY_BIN (default `ailly`); a source
 # checkout can point it at a built binary:
@@ -79,7 +82,8 @@ echo "OK: baseline-prefix files (AGENTS.md, profile.md) leak no developer:<skill
 # The matrix total is unchanged from the prior split (1 + 5 + 3 = 9 cases); only the suite
 # split changed, because thinking/refactor/initialize moved from standalone skills to
 # coordinator references and now load from ../skills/ailly/references/abilities/<ability>.md. The
-# discovery matrix (9) and the long-loop pair (1) are untouched.
+# discovery matrix (9) and the long-loop pair (1) are untouched. code-mode (1) is
+# a new pair, same single-conversation shape as long-loop.
 expected_count() {
   case "$1" in
     discovery)              echo 9 ;;
@@ -91,6 +95,8 @@ expected_count() {
     baseline-abilities)     echo 3 ;;
     long-loop)              echo 1 ;;
     long-loop-baseline)     echo 1 ;;
+    code-mode)              echo 1 ;;
+    code-mode-baseline)     echo 1 ;;
     design-artifacts)          echo 1 ;;
     design-artifacts-baseline) echo 1 ;;
     *) echo "FAIL: unknown suite $1" >&2; exit 1 ;;
@@ -107,6 +113,8 @@ invocation_abilities_run_dir=""
 baseline_abilities_run_dir=""
 long_loop_run_dir=""
 long_loop_baseline_run_dir=""
+code_mode_run_dir=""
+code_mode_baseline_run_dir=""
 design_artifacts_run_dir=""
 design_artifacts_baseline_run_dir=""
 
@@ -121,6 +129,8 @@ set_run_dir() {
     baseline-abilities)     baseline_abilities_run_dir="$2" ;;
     long-loop)              long_loop_run_dir="$2" ;;
     long-loop-baseline)     long_loop_baseline_run_dir="$2" ;;
+    code-mode)              code_mode_run_dir="$2" ;;
+    code-mode-baseline)     code_mode_baseline_run_dir="$2" ;;
     design-artifacts)          design_artifacts_run_dir="$2" ;;
     design-artifacts-baseline) design_artifacts_baseline_run_dir="$2" ;;
   esac
@@ -137,6 +147,8 @@ get_run_dir() {
     baseline-abilities)     printf '%s\n' "${baseline_abilities_run_dir}" ;;
     long-loop)              printf '%s\n' "${long_loop_run_dir}" ;;
     long-loop-baseline)     printf '%s\n' "${long_loop_baseline_run_dir}" ;;
+    code-mode)              printf '%s\n' "${code_mode_run_dir}" ;;
+    code-mode-baseline)     printf '%s\n' "${code_mode_baseline_run_dir}" ;;
     design-artifacts)          printf '%s\n' "${design_artifacts_run_dir}" ;;
     design-artifacts-baseline) printf '%s\n' "${design_artifacts_baseline_run_dir}" ;;
   esac
@@ -189,6 +201,12 @@ assemble_suite invocation-abilities
 # `*-long-loop-baseline` dir.
 assemble_suite long-loop-baseline
 assemble_suite long-loop
+# code-mode is a single-conversation pair (a mode of ailly, not a matrix
+# skill, same shape as long-loop). Assembled after long-loop so the
+# suffix-anchored `runs/*-baseline/` glob never picks up the
+# `*-code-mode-baseline` dir.
+assemble_suite code-mode-baseline
+assemble_suite code-mode
 # design-artifacts is a single-conversation pair (design phase reference's Open
 # Artifact Decisions section; cannot ride the invocation-phases matrix, which
 # loads exactly one design prompt per case). Assembled after the plain
@@ -265,6 +283,8 @@ run_suite baseline-abilities
 run_suite invocation-abilities
 run_suite long-loop-baseline
 run_suite long-loop
+run_suite code-mode-baseline
+run_suite code-mode
 run_suite design-artifacts-baseline
 run_suite design-artifacts
 
@@ -316,6 +336,8 @@ eval_suite baseline-abilities
 eval_suite invocation-abilities
 eval_suite long-loop-baseline
 eval_suite long-loop
+eval_suite code-mode-baseline
+eval_suite code-mode
 eval_suite design-artifacts-baseline
 eval_suite design-artifacts
 
@@ -403,4 +425,5 @@ report_comparison "${baseline_run_dir}" "${invocation_run_dir}" baseline invocat
 report_comparison "${baseline_phases_run_dir}" "${invocation_phases_run_dir}" baseline-phases invocation-phases
 report_comparison "${baseline_abilities_run_dir}" "${invocation_abilities_run_dir}" baseline-abilities invocation-abilities
 report_comparison "${long_loop_baseline_run_dir}" "${long_loop_run_dir}" long-loop-baseline long-loop
+report_comparison "${code_mode_baseline_run_dir}" "${code_mode_run_dir}" code-mode-baseline code-mode
 report_comparison "${design_artifacts_baseline_run_dir}" "${design_artifacts_run_dir}" design-artifacts-baseline design-artifacts

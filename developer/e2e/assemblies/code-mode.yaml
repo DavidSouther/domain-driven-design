@@ -1,0 +1,19 @@
+name: code-mode
+model: claude-sonnet-4-6
+
+# Code Mode is a MODE of `developer:ailly`, not a skill of its own, so it
+# cannot ride the invocation matrix (which loads exactly one body per case) --
+# same reasoning as long-loop.yaml. Its context is the coordinator skill
+# (also the bootstrap post-consolidation) plus the mode's own reference doc,
+# which the SKILL.md "Code Mode" section points to for the behavioral
+# contract the checker asserts. Single conversation, no matrix. The baseline
+# arm (code-mode-baseline.yaml) drops both bodies.
+prefix:
+  - { kind: file,     path: context/AGENTS.md,                       cache: true }
+  - { kind: file,     path: profile.md,                              cache: true }
+  - { kind: external, path: ../skills/ailly/SKILL.md,                cache: true }
+  - { kind: external, path: ../skills/ailly/references/shapes/code-mode.md, cache: true }
+
+conversation:
+  - { role: user, path: "prompts/invocation/code-mode.md" }
+  - { role: assistant }

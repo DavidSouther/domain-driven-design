@@ -27,6 +27,7 @@ The coordinator's other abilities are progressive references it consults when th
 | Gathering and refining context for a vague new topic, with nothing written yet | `/ailly research` → `references/phases/research.md` |
 | Exploring a new idea and producing a formal design doc plus its one feature test | `/ailly design` → `references/phases/design.md` |
 | Breaking a failing feature test into implementation steps | `/ailly plan` → `references/phases/plan.md` |
+| Writing a small standalone script or automation, condensed but allowing ambiguity | `references/shapes/code-mode.md` |
 | Implementing a plan step with TDD | `/ailly red-green-refactor` → `references/phases/red-green-refactor.md` |
 | Finishing the topic: final review, extract deferred tasks, prepare the squash-merge | `/ailly cleanup` → `references/phases/cleanup.md` |
 | Surfacing intent-alignment questions against the original prompt at a draft gate | `references/abilities/intent-review.md` |
@@ -250,6 +251,16 @@ When requested, or when the research refine pass reclassifies the task as a bug,
 ## Project Shape
 
 When the topic is too large for one feature, needing several features that only deliver value as a unified whole, consult `developer/skills/ailly/references/shapes/project/project-cycle.md`. The same five phases run at a larger scale. Each plan step has a dedicated development cycle. Sequential and parallel steps are marked explicitly. The exit criterion is a Closing Bell usability study rather than one executable feature test, and the documents are long-lived (replicated to the organization's document repository on acceptance, and marked `completed: date` rather than deleted at cleanup).
+
+## Code Mode
+
+When the task is a small standalone script or automation rather than an application
+feature, consult `developer/skills/ailly/references/shapes/code-mode.md`. Entered by
+its own trigger phrase, like quick-loop and long-loop. It collapses research, design,
+and plan into one combined planning doc with a single human-cleared draft gate, drops
+the feature test in favor of writing the script and letting the user run it once to inspect the
+output, and — unlike quick-loop — still permits genuine ambiguity by reusing
+`intent-review.md` unchanged.
 
 ## Next Task
 
