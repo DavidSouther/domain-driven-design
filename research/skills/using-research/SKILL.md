@@ -42,6 +42,10 @@ Every research skill applies Jeopardy! search: before issuing any query, generat
 
 When a claim is load-bearing, when the user asks "are you sure?", or when the evidence so far is entirely confirming, run a falsification pass before reporting a conclusion. Restate the claim as a universal, negate it into 3 to 5 concrete falsifiable hypotheses, and dispatch a subagent per hypothesis to search specifically for the negation. A single counterexample refutes the original; absence of counterexamples only fails to refute it. See `research/references/falsify.md` for procedure and limits.
 
+## Thread Digest (conversational sources)
+
+When a fetched source is a discussion thread — a GitHub/PR comment thread, a Slack thread, a Reddit/HN thread, a mailing-list thread — read the full thread (body plus every comment) and always run it through the three-pass digest (fetch, organize, refine) before treating it as scoped, regardless of thread size. See `research/references/thread-digest.md` for the source-type gate, the procedure, and the untrusted-content rules for handling attacker-reachable comment text.
+
 ## Research Notes Convention
 
 Before dispatching search subagents, choose the research note folder:

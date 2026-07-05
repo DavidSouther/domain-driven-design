@@ -44,7 +44,7 @@ The capability details the practice skill consumes, keyed by the active tracker'
 
 | Capability | Tier | Inputs | Returns | Notes |
 |---|---|---|---|---|
-| Select next task | tasks | optional team/label/status filter | highest-priority open task with id, title, labels | — |
+| Select next task | tasks | optional team/label/status filter | highest-priority open task with id, title, labels, body, comments | — |
 | Create task | tasks | title, body, labels, optional parent | new task id | — |
 | Link parent/child | tasks | child id, parent id | confirmation | GitHub `sub_issue_write`; else parent field write |
 | Transition status | tasks | task id, target state | confirmation | Jira `transitionJiraIssue`; else status field write |

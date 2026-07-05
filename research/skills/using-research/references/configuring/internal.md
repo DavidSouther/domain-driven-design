@@ -90,3 +90,4 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 - **the books setup reference (`books.md`)** and **the papers setup reference (`papers.md`)** — the other two sibling wiring references in the family.
 - **`research/references/citations.md`** — internal documents cite as `[Internal]` per the loose IEEE style the practice skill writes against.
 - **`research/references/jeopardy.md`** — the 3-5 variant query expansion the practice skill runs against every configured source.
+- **`research/references/thread-digest.md`** — the three-pass digest the practice skill routes a fetched conversational thread (Slack, Linear/Jira, GitHub issue/PR comments, Confluence/Notion discussion) through before treating it as scoped.
