@@ -48,6 +48,48 @@ Its question form:
 
 ## Draft-Gate Timing and the Never-Clears Invariant
 
+Intent review runs by default at the **draft gate**, before the human clears the marker. It is a
+**recommended default**, not an enforcement: the developer may invoke it earlier, or dismiss it
+entirely. The mechanism is still experimental; promoting it from a dismissible soft default to a
+harder-to-skip primary mechanism is deferred until real usage shows the questions are
+consistently worth the developer's time.
+
+Intent review **never clears** a draft gate, merge gate, or Closing Bell — not an autonomous
+gate-clearer, unlike long-loop's research-and-decide reviewer, which does auto-clear. It
+**supplements** the human's existing draft-gate review; it does not replace the human as the
+gate-clearer. In long-loop mode, the coordinator's existing research-and-decide reviewer still
+owns auto-clearing; intent review's questions may be an *input* that reviewer consults, but
+intent review itself never clears anything.
+
+Dispatch is always **cold**: a memory-less, freshly dispatched reviewer with no access to the
+current session's own reasoning trail, reading the artifact fresh — the same fresh-eyes
+isolation long-loop's reviewer already uses, not the same agent reflecting on its own in-session
+work.
+
 ## Recording: the `reviews/` Folder
 
+Reuse **long-loop**'s dispatch shape and dated-block *entry* format (see
+`references/shapes/long-loop.md`), but do not write entries in place into the artifact under
+review. Review is one piece of feedback, and feedback resolves into an edit or a closed note, not
+a standing unresolved section living forever inside the primary artifact.
+
+Instead, every session tree gains a `reviews/` folder, sibling to the existing `research/`
+folder (i.e. `.ailly/developer/<session>/reviews/`). Intent review notates each question there as
+a dated entry, in long-loop's entry format, adapted for posing rather than deciding. Once the
+human answers a question — by revising the artifact, replying, or dismissing it — that entry is
+marked **resolved** and **closed** in place; it does not remain an open item inside `design.md`,
+`plan.md`, or any other artifact under review.
+
 ## The Original-Prompt Anchor
+
+There is no single mandated source for "the original prompt." Intent review reads whichever
+anchor is genuinely available and most faithful to the original ask, best effort:
+
+- a named `.ailly/prompts/<name>` file, when the invocation supplies one; otherwise
+- the session's own `research.md` **Topic and Intent** section (or an equivalent durable record
+  of the original request) as fallback.
+
+The `.ailly/prompts/` convention is used when present; it is not formalized as a convention that
+must exist. Whichever source is actually read, the Topic and Intent section must carry the
+original request as an exact, verbatim quote, not a paraphrase, since it serves either directly
+or as the fallback anchor (see `references/phases/research.md`'s Topic and Intent instruction).
