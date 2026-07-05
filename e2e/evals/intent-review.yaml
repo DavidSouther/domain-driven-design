@@ -1,0 +1,50 @@
+name: intent-review
+model: none
+
+# A STATIC suite: no model call anywhere (see e2e/README.md and
+# e2e/ci.sh). Each case has exactly one `type: script` assertion; the
+# checker at `script.path` (relative to this suite's e2e/ root, matching
+# the `evals/scripts/check_*.py` convention used by every plugin's
+# model-driven suites) is run directly against this repository's own
+# reference-architecture files, not against a scored model transcript.
+
+cases:
+  - name: ability-home
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_ability_home.py } }
+
+  - name: backwards-method
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_backwards_method.py } }
+
+  - name: categories
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_categories.py } }
+
+  - name: research-variant
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_research_variant.py } }
+
+  - name: gate-discipline
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_gate_discipline.py } }
+
+  - name: reviews-recording
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_reviews_recording.py } }
+
+  - name: prompt-anchor
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_prompt_anchor.py } }
+
+  - name: skill-wiring
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_skill_wiring.py } }
+
+  - name: phase-wiring
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_phase_wiring.py } }
+
+  - name: research-verbatim
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_research_verbatim.py } }

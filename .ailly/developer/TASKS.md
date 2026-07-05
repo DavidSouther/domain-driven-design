@@ -1,5 +1,26 @@
 # Tasks
 
+- Wire intent review's phase-appropriate variant into the Research and Build draft gates.
+  `references/abilities/intent-review.md` and the Design/Plan phase references now name intent
+  review at the two gates issue #33 emphasizes (Design, Plan); the Research and Build gates
+  follow the same soft-default rule by design but were not load-bearing for this feature's
+  primary story and were left unwired. See design.md "Deferred technical decisions" in session
+  `2026-07-04-B-intent-review-ooda`.
+- Decide whether long-loop's autonomous research-and-decide reviewer
+  (`references/shapes/long-loop.md`) should be updated to *consult* intent-review's `reviews/`
+  entries when present, as an input to its own decisions (it never auto-clears based on them,
+  per the never-clears invariant, but nothing today makes it read them either). Explicitly out
+  of scope for the Intent Review OODA Loop feature itself. See design.md "Deferred technical
+  decisions" in session `2026-07-04-B-intent-review-ooda`.
+- Revisit whether intent review should be promoted from a dismissible "recommended default" to
+  the issue's literal "primary questioning mechanism" framing (harder to skip). Shipped as a
+  soft default deliberately for this feature; revisit once real usage shows the questions are
+  consistently worth the developer's time. This is also dogfooded intent-review question 3
+  against this feature's own design, resolved for now as "dismissible, not primary" — see
+  `.ailly/developer/2026-07-04-B-intent-review-ooda/reviews/2026-07-04-design-intent-review.md`
+  (before that session folder was removed at cleanup) or `design.md`'s Deferred technical
+  decisions / Open Artifact Decisions for the full reasoning.
+
 - Extend the answer-leak hygiene gate to also grep the `design-artifacts` pair's prompt (`developer/e2e/prompts/invocation/design-artifacts.md`) for "open artifact" wording. Today the hygiene gate only scans `AGENTS.md` and `profile.md`; the prompt sharing both arms is the fragile invariant for the `design-artifacts` eval pair and isn't covered. See `.ailly/developer/2026-07-02-D-design-artifact-decisions/plan.md` Risks and Notes.
 - Fix the plan phase reference: it points at `.ailly/prompts/plan-use-patterns.md`, which does not exist in this repo. The patterns beat currently has to be run by consulting `patterns:using-patterns` directly. Recurring note, also seen in session 2026-07-02-C.
 - Build the eval suite that gates model adoption per complexity dimension. `general/skills/dispatching-agents/model-selection.md`'s Frontier-Model Caution section names this explicitly as future work ("that eval suite is named here as future work; it is not built by this guidance") — today the guidance only states the gating rule, with no suite to run it against. See `general/skills/dispatching-agents/model-selection.md` and design.md Specification item 4 in session `2026-07-03-A-subagent-model-guidance`.
