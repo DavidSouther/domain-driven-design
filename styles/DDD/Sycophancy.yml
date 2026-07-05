@@ -1,0 +1,26 @@
+---
+extends: substitution
+message: "Remove '%[2]s' — it adds warmth without content."
+link: "https://github.com/DavidSouther/domain-driven-design"
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  "great question": "question"
+  "excellent point": "point"
+  "wonderful example": "example"
+  "lovely insight": "insight"
+  "beautiful": ""
+  "amazing": "remarkable"
+  "awesome": "valuable"
+  "wonderful": ""
+  "glad to": "will"
+  "happy to": "will"
+  "delighted to": "will"
+  "I really": "I"
+  "very unique": "unique"
+  "truly": ""
+  "really": ""
+  "certainly": ""
+  "definitely": ""

@@ -1,0 +1,11 @@
+Ailly
+Anthropic
+DDD
+GitHub
+Haiku
+Opus
+README
+Sonnet
+TDD
+Vale
+YAML

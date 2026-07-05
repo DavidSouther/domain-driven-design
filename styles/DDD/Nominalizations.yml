@@ -1,0 +1,23 @@
+---
+extends: substitution
+message: "Use '%s' instead of '%s' for clarity and directness."
+link: "https://github.com/DavidSouther/domain-driven-design"
+level: suggestion
+ignorecase: true
+action:
+  name: replace
+swap:
+  "the creation of": "create"
+  "the determination of": "determine"
+  "the development of": "develop"
+  "the implementation of": "implement"
+  "the introduction of": "introduce"
+  "the elimination of": "eliminate"
+  "the selection of": "select"
+  "the identification of": "identify"
+  "the design of": "design"
+  "the analysis of": "analyze"
+  "the addition of": "add"
+  "the removal of": "remove"
+  "the consideration of": "consider"
+  "the evaluation of": "evaluate"

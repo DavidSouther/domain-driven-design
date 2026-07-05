@@ -1,0 +1,27 @@
+---
+extends: substitution
+message: "Remove '%[2]s' — it adds no information."
+link: "https://github.com/DavidSouther/domain-driven-design"
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  "quite a few": "many"
+  "a number of": "several"
+  "in some sense": ""
+  "to some extent": ""
+  "sort of": ""
+  "kind of": ""
+  "seems to": ""
+  "appears to": ""
+  "arguably": ""
+  "in many ways": ""
+  "one might say": ""
+  "it could be argued": ""
+  "as a matter of fact": "in fact"
+  "for the most part": "mostly"
+  "at the end of the day": ""
+  "when all is said and done": ""
+  "in point of fact": "in fact"
+  "various": "specific [term]"

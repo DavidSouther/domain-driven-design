@@ -1,0 +1,23 @@
+---
+extends: substitution
+message: "Redundant phrasing: use '%s' instead of '%s'."
+link: "https://github.com/DavidSouther/domain-driven-design"
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  "and also": "and"
+  "but however": "but"
+  "end result": "result"
+  "final outcome": "outcome"
+  "join together": "join"
+  "each and every": "each"
+  "any and all": "all"
+  "throughout the entire": "throughout"
+  "in the event that": "if"
+  "in the case where": "when"
+  "at the time when": "when"
+  "at this point in time": "now"
+  "for the purpose of": "to"
+  "in order to": "to"

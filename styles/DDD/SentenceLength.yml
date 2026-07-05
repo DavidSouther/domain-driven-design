@@ -1,0 +1,8 @@
+---
+extends: existence
+message: "This sentence is long. Break it into shorter sentences for clarity."
+link: "https://github.com/DavidSouther/domain-driven-design"
+level: suggestion
+scope: sentence
+raw:
+  - '^.{180,}$'
