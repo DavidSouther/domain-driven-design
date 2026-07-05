@@ -29,6 +29,7 @@ The coordinator's other abilities are progressive references it consults when th
 | Breaking a failing feature test into implementation steps | `/ailly plan` → `references/phases/plan.md` |
 | Implementing a plan step with TDD | `/ailly red-green-refactor` → `references/phases/red-green-refactor.md` |
 | Finishing the topic: final review, extract deferred tasks, prepare the squash-merge | `/ailly cleanup` → `references/phases/cleanup.md` |
+| Surfacing intent-drift questions against the original prompt at a draft gate | `references/abilities/intent-review.md` |
 | Stuck on a red compiler/test/lint error during build, especially a recurring one after a fix | `references/abilities/thinking.md` (run through the harness isolation path when available) |
 | Code is green and you want to clean up before finishing | `references/abilities/refactor.md` |
 | Setting up a new project or a language environment (layout, tooling, dev hooks) | `references/abilities/initialize.md` |
@@ -172,6 +173,12 @@ After any research, design, or plan phase produces a draft, stop the session and
 **Do not proceed past a draft gate in the same session under any circumstances.** If the user asks to continue anyway, decline:
 
 > "I can't continue past the draft gate in this session. The draft gate exists so you have a chance to review and refine before the next step builds on it."
+
+By default, before that stop, consult `references/abilities/intent-review.md` through the harness
+isolation path: it works backward from the original prompt through the accumulated artifacts and
+notates probative "is that what you intended?" questions as dated entries in the session's
+`reviews/` folder, for the human to weigh alongside their own draft-gate review. This is a
+recommended default, not an enforcement — dismissible, and it never clears the marker itself.
 
 ## Phase Invocations
 
