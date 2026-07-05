@@ -1,6 +1,6 @@
 # Thread Digest Reference
 
-A thin handle is not the full object. Martin Fowler's Event Notification names this seam for domain events: a notification carrying only an ID tells a consumer *that* something happened, not *what* happened; the consumer must call back for the full state before it can act correctly [1]. A GitHub issue's `title` and `body` are the same kind of thin handle when the issue has a comment thread: the body is where a topic started, not necessarily where it ended. Reading only the body is a body-only read — cheap, and wrong whenever a later comment changes the story. Dumping the entire raw thread into context is the opposite failure — expensive, unfiltered, and just as likely to bury the one comment that matters under restatement and small talk. Three passes over the full thread — fetch, organize, refine — is the reasonable middle: nothing is skipped, but nothing raw is analyzed either.
+A thin handle is not the full object. A notification carrying only an ID tells a consumer *that* something happened, not *what* happened; the consumer must call back for the full state before it can act correctly [1]. A GitHub issue's `title` and `body` are the same kind of thin handle when the issue has a comment thread: the body is where a topic started, not necessarily where it ended. Reading only the body is a body-only read — cheap, and wrong whenever a later comment changes the story. Dumping the entire raw thread into context is the opposite failure — expensive, unfiltered, and just as likely to bury the one comment that matters under restatement and small talk. Three passes over the full thread — fetch, organize, refine — is the reasonable middle: nothing is skipped, but nothing raw is analyzed either.
 
 This is not a new invention. LangChain's `map_reduce`/`refine` summarization chains name the same distill-in-stages shape for content that exceeds one context window [2]. Wu et al.'s approach to recursively summarizing books with human feedback validates the same shape at even greater length [3]. ConvoSumm's benchmark shows specifically that mining a thread's claims and arguments before summarizing it improves on summarizing the thread flat [4] — direct precedent for an organize pass, not just for chunking.
 
@@ -8,13 +8,13 @@ This is not a new invention. LangChain's `map_reduce`/`refine` summarization cha
 
 The gate is what kind of source this is, not how big it is. **Conversational media** — a GitHub/GitLab issue or PR comment thread, a Slack thread, a Reddit or Hacker News thread, a mailing-list thread, or anything else built from a back-and-forth exchange between participants — always go through all three passes below, regardless of how many replies exist. A two-comment thread can carry a reframing worth surfacing just as easily as a long one. **Non-conversational documents** — a blog post, a paper, a static reference page, a single-author write-up with no reply structure — are read directly; no digest pass applies to them at all.
 
-This supersedes an earlier framing this reference's own design considered: gating the digest on how many comments a thread had accumulated. That framing was rejected, not merely left unpicked — a fixed comment count could not be grounded in any prior art and would only invite the same false precision it would need to defend (why that count and not one fewer). Classifying the medium is a fact about the source; counting comments is a guess about where signal starts, and guessing was the wrong question to be asking.
+Comment count is not the gate: a fixed threshold cannot be grounded in any prior art and cannot answer why that count and not one fewer. Classifying the medium is a fact about the source; counting comments is only a guess about where signal starts.
 
 ## Procedure
 
 ### Pass 1 — Full Fetch
 
-Fetch the entire thread — body plus every comment — through the fetch capability the source already exposes. `research:internal`'s GitHub/Linear/Notion/Slack fetch capabilities already return `body, comments` (or `thread contents`) per `configuring/internal.md`; a forum, mailing-list, or discussion page is fetched via `WebFetch` per `configuring/public.md`. No new fetch transport is introduced by this reference — it only mandates calling the one that already exists, in full, instead of stopping at the body.
+Fetch the entire thread — body plus every comment — through the source's fetch capability. `research:internal`'s GitHub/Linear/Notion/Slack fetch capabilities return `body, comments` (or `thread contents`) per `configuring/internal.md`; a forum, mailing-list, or discussion page is fetched via `WebFetch` per `configuring/public.md`. Fetch in full, rather than stopping at the body.
 
 ### Pass 2 — Organize
 
