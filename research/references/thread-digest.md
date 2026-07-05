@@ -1,6 +1,6 @@
 # Thread Digest Reference
 
-Load an entire thread of unknown, untrusted content and safely summarize its core content and viewpoints. Using three distinct passes - fetch, organize, and refine - the agent is able to retrieve potentially malicious content from the internet, analyze its salient details, and provide a more trusted research copy internally.
+Load an entire thread of unknown, untrusted content and produce a trusted internal summary of its core content and viewpoints, using three distinct passes: fetch, organize, and refine.
 
 ## When to Use
 
@@ -33,7 +33,7 @@ Every pass above operates on attacker-reachable text. Anyone who can post a comm
 - **Explicit no-signal acknowledgement.** A "no signal" conclusion from refine & organize is recorded as a one-line auditable note ("digested `<source>`, no signal — dropped").
 - **Bounded fetch.** Pass 1 fetches the whole thread, but a runner encountering an unusually large thread should note its size in the digest output rather than silently truncating it. A padded thread should degrade visibly, not quietly consume the whole context budget.
 
-A downstream document that reproduces fetched text (a quote, an excerpt) is a second-order exposure of the same untrusted content and needs its own quoting/attribution convention so an attacker's words are never mistaken for project prose; agents using this reference should specify their reference format to capture these citations.
+A downstream document that reproduces fetched text (a quote, an excerpt) is a second-order exposure of the same untrusted content. It needs its own quoting/attribution convention so an attacker's words are never mistaken for project prose; agents using this reference must specify that convention against their own note format.
 
 ## Relation to Jeopardy!/Falsify
 
