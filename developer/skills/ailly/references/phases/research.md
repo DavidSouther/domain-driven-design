@@ -37,7 +37,7 @@ The expand brief leans on the general lens. The refine brief leans on the specif
 
 Write `research.md` with exactly these headings:
 
-- **Topic and Intent** — the loosely-stated goal in the user's own framing.
+- **Topic and Intent** — first, an exact, **verbatim quote** of the user's original request (blockquoted or fenced), not a paraphrase; then the loosely-stated goal in the user's own framing, added afterward as clearly separate prose. The verbatim quote is the durable anchor `references/abilities/intent-review.md` reads backward from at later draft gates to improve intent alignment.
 - **Search/Expand** — what the expand pass surfaced under the general lens.
 - **Libraries & Skills** — every library/framework this task touches, with the docs that matter (getting-started, the closest worked example/recipe, links) and, for each, **any published agentic skill to load** (its name and how to invoke it). Open with an explicit directive that downstream phases honor: *"Before doing any work in this feature, load these skills via the active harness's skill-loading mechanism: …"* This directive is **carried verbatim into `design.md` and `plan.md`** so design, plan, and every red-green-refactor step load the framework's skill instead of reinventing it. If no relevant library skill exists, say so explicitly (so the omission is a finding, not a gap).
 - **Falsification/Refine** — how the refine pass right-sized the task under the specific lens (size: project / feature / bug, off-the-shelf, smallest version).

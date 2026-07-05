@@ -1,0 +1,17 @@
+name: intent-review
+model: none
+
+# This suite has no model-facing conversation to assemble: it is a
+# deterministic, source-level contract check over this repository's own
+# markdown reference files, not a scored LLM transcript. `matrix`, `prefix`,
+# and `conversation` are the fields every other assembly in this repo uses
+# to build one via `ailly assemble`; they are intentionally empty here, and
+# `e2e/ci.sh` never calls `ailly assemble`, `ailly run`, or `ailly eval` for
+# this suite -- it runs each case's checker script directly against the
+# files on disk (see e2e/run_static_evals.py). This file exists at the
+# conventional `assemblies/<name>.yaml` path purely so a reader browsing
+# `e2e/` finds the same assemblies/evals/scripts three-way split used by
+# every plugin's model-driven harness (e.g. `patterns/e2e/`).
+matrix: {}
+prefix: []
+conversation: []
