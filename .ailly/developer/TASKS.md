@@ -1,5 +1,27 @@
 # Tasks
 
+- Build `scripts/vale-generate-examples.sh`, the offline LLM-generated example-backfill tier
+  named in design.md Specification item 3. It should iterate every Warning/Error rule across
+  the repo's effective style set (`Google`, `Joblint`, `DDD` — `.vale.ini`'s `BasedOnStyles`),
+  skipping any rule already covered by the auto-derived tier (has a `swap:`/`action:` block —
+  `vale-fix.sh`'s `lookup_example` already reads these live, nothing to generate) or already
+  carrying a hand-authored sidecar under `styles/config/examples/` (the two seed files this
+  session shipped — the generator must never overwrite curated content), and dispatch one LLM
+  call per remaining rule (mirroring `vale-fix.sh`'s own `xargs -P 8` pattern) asking it to
+  either write a `bad`/`good`/`note` example in the sidecar schema or emit nothing when the
+  rule's own `message:`/`link:` already states a sufficient correction. Output is written to
+  the sidecar path and reviewed/committed like any other content change, never generated or
+  trusted at fix-time. Deliberately out of scope for this session's plan (a separate script
+  with its own dispatch/testing needs). Also undecided, per design.md's Deferred technical
+  decisions: whether this script should be periodically re-run (e.g., whenever `vale sync`
+  updates a package's rule bodies) or is a one-time backfill — left to whoever builds/runs it
+  next; it's designed to be idempotent (skips rules with an existing sidecar) so re-running is
+  always safe once built. See design.md Specification item 3 and plan.md's Risks and Notes in
+  session `2026-07-06-A-vale-examples`.
+- Surface worked examples in `vale-check.sh`'s human-facing output too, not just
+  `vale-fix.sh`'s Claude-facing fix prompt. Deliberately deferred during design — see
+  design.md's Alternatives (resolved in `research.md`'s draft-gate review) in session
+  `2026-07-06-A-vale-examples`; this session's build targets only the LLM fixer prompt.
 - Wire intent review's phase-appropriate variant into the Research and Build draft gates.
   `references/abilities/intent-review.md` and the Design/Plan phase references now name intent
   review at the two gates issue #33 emphasizes (Design, Plan); the Research and Build gates
