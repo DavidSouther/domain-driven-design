@@ -61,8 +61,36 @@ PY
 }
 
 # Echoes the full "Worked examples" prompt section for the given rule list, or
-# nothing if no rule resolved an example.
-render_worked_examples_section() { :; }   # render_worked_examples_section "${rules[@]}"
+# nothing if no rule resolved an example. Reads $findings_json/$file from the
+# calling scope's scan-loop variables (see lookup_example's parameters).
+render_worked_examples_section() {   # render_worked_examples_section "${rules[@]}"
+  local rule example bad good note
+  local blocks=()
+  for rule in "$@"; do
+    example="$(lookup_example "$rule" "$findings_json" "$file")"
+    [ -z "$example" ] && continue
+    IFS=$'\t' read -r bad good note <<<"$example"
+    if [ -n "$note" ]; then
+      blocks+=("Rule: $rule
+Bad:  $bad
+Good: $good
+Note: $note")
+    else
+      blocks+=("Rule: $rule
+Bad:  $bad
+Good: $good")
+    fi
+  done
+
+  [ "${#blocks[@]}" -eq 0 ] && return
+
+  printf 'Worked examples for rules seen above:\n\n'
+  local i last=$(( ${#blocks[@]} - 1 ))
+  for i in "${!blocks[@]}"; do
+    printf '%s\n' "${blocks[$i]}"
+    [ "$i" -lt "$last" ] && printf '\n'
+  done
+}
 
 if [ "$#" -gt 0 ]; then
   FILES="${1#"$REPO_ROOT"/}"
@@ -107,6 +135,8 @@ while IFS= read -r file; do
     jq -r --arg f "$file" \
       '.[$f][] | "- [\(.Severity)] \(.Check) line \(.Line): \(.Message)"' \
       <<<"$findings_json"
+    echo "__WORKED_EXAMPLES__"
+    render_worked_examples_section "${rules[@]}"
   } > "$manifest"
   echo "$manifest" >> "$manifest_list"
 done <<<"$FILES"
@@ -117,11 +147,17 @@ cat > "$dispatch" <<'DISPATCH'
 set -uo pipefail
 manifest="$1"
 ABS_PATH="$(head -n 1 "$manifest")"
-FINDINGS="$(tail -n +2 "$manifest")"
+FINDINGS="$(sed -n '2,/^__WORKED_EXAMPLES__$/p' "$manifest" | sed '$d')"
+WORKED_EXAMPLES="$(sed -n '/^__WORKED_EXAMPLES__$/,$p' "$manifest" | tail -n +2)"
 PROMPT="Fix the following Vale lint findings in $ABS_PATH. Preserve the file's current tone and voice. Correct only the identified issues; make no other edits.
 
 Vale findings:
 $FINDINGS"
+if [ -n "$WORKED_EXAMPLES" ]; then
+  PROMPT="$PROMPT
+
+$WORKED_EXAMPLES"
+fi
 
 claude -p "$PROMPT" \
   --model haiku \
