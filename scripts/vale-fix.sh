@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Vale autofix (Code Mode): run vale over the skills/references docs, and
 # dispatch one path-scoped headless Claude Haiku session per flagged file to
-# fix the findings. See .ailly/developer/2026-07-05-B-vale-autofix/plan.md.
+# fix the findings, appending a worked bad->good example per distinct rule
+# where one resolves (see styles/config/examples/).
 # Pass a single file path as $1 to test the dispatch flow against just that
 # file instead of scanning the whole corpus.
 set -uo pipefail
@@ -61,25 +62,22 @@ PY
 }
 
 # Echoes the full "Worked examples" prompt section for the given rule list, or
-# nothing if no rule resolved an example. Reads $findings_json/$file from the
-# calling scope's scan-loop variables (see lookup_example's parameters).
-render_worked_examples_section() {   # render_worked_examples_section "${rules[@]}"
-  local rule example bad good note
+# nothing if no rule resolved an example.
+render_worked_examples_section() {   # render_worked_examples_section "$findings_json" "$f" "${rules[@]}"
+  local findings_json="$1" f="$2"
+  shift 2
+  local rule example bad good note block
   local blocks=()
   for rule in "$@"; do
-    example="$(lookup_example "$rule" "$findings_json" "$file")"
+    example="$(lookup_example "$rule" "$findings_json" "$f")"
     [ -z "$example" ] && continue
     IFS=$'\t' read -r bad good note <<<"$example"
-    if [ -n "$note" ]; then
-      blocks+=("Rule: $rule
+    block="Rule: $rule
 Bad:  $bad
-Good: $good
-Note: $note")
-    else
-      blocks+=("Rule: $rule
-Bad:  $bad
-Good: $good")
-    fi
+Good: $good"
+    [ -n "$note" ] && block="$block
+Note: $note"
+    blocks+=("$block")
   done
 
   [ "${#blocks[@]}" -eq 0 ] && return
@@ -136,7 +134,7 @@ while IFS= read -r file; do
       '.[$f][] | "- [\(.Severity)] \(.Check) line \(.Line): \(.Message)"' \
       <<<"$findings_json"
     echo "__WORKED_EXAMPLES__"
-    render_worked_examples_section "${rules[@]}"
+    render_worked_examples_section "$findings_json" "$file" "${rules[@]}"
   } > "$manifest"
   echo "$manifest" >> "$manifest_list"
 done <<<"$FILES"
