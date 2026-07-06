@@ -8,10 +8,16 @@ set -uo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT" || exit 1
 
-vale sync
+# vale sync
 
 if [ "$#" -gt 0 ]; then
-  vale --glob='!{**/e2e/**}' "$1"
+  path="$1"
 else
-  vale --glob='!{**/e2e/**}' .
+  path="."
 fi
+
+# vale --glob='!{**/e2e/**}' --glob='!.ailly/**' "$path"
+find "$path" -name '*.md' \
+  -not -path './.ailly/*' \
+  \( -not -path '*/e2e/*' -o -name 'README.md' \) \
+  -print0 | xargs -0 vale

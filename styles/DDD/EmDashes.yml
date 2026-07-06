@@ -1,8 +1,0 @@
----
-extends: existence
-message: "Replace the em-dash with a period (new sentence) or comma (continuation). Em-dashes add filler."
-link: "https://github.com/DavidSouther/domain-driven-design"
-level: warning
-scope: text
-raw:
-  - '(\s|[a-z])\s+—\s+'

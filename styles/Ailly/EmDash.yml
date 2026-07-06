@@ -1,0 +1,10 @@
+---
+extends: existence
+ignorecase: true
+level: warning
+scope: raw
+nonword: true
+message: Do not use em dashes. Use punctuation marks such as commas, parentheses, or colons. Prefer complete simple sentences.
+tokens:
+  - '—'
+  - '&mdash;'

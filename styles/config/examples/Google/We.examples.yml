@@ -1,5 +1,0 @@
-rule: Google.We
-examples:
-  - bad: "We mention this item for parity with the sibling skills."
-    good: "The skill index mentions this item for parity with the sibling skills."
-    note: "Name the specific actor — not 'we' — to satisfy both Google.We and active voice."

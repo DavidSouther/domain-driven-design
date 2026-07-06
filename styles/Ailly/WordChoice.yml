@@ -1,0 +1,102 @@
+---
+extends: substitution
+message: "Prefer '%s' instead of '%s'."
+level: warning
+ignorecase: true
+action:
+  name: replace
+swap:
+  "I really": I
+  "a number of": several
+  "allow": enable
+  "case": "scenario|situation|example"
+  "e-mail": email
+  "glad to": will
+  "handle": "process|execute|manage|[specific action]"
+  "happy to": will
+  "help": "facilitate|assist|[specific action]"
+  "maybe": "possibly (with conditional) or rephrase entirely"
+  "often": "frequently|[specific context]"
+  "quite a few": many
+  "sometimes": "in [specific condition or context]"
+  "stuff": "content|data|files|[specific term]"
+  "support": "[specific capability, e.g. supports authentication]"
+  "thing": "specific object | concept (class, module, process, data)"
+  "usually": "in most cases | [specific condition]"
+  "various": "[specific item]|[list items]"
+  "very unique": unique
+  "work with": "use|integrate|compose"
+
+  # Odd redundancies
+  "and also": "and"
+  "any and all": "all"
+  "as a matter of fact": in fact
+  "at the time when": "when"
+  "at this point in time": "now"
+  "but however": "but"
+  "each and every": "each"
+  "end result": "result"
+  "final outcome": "outcome"
+  "for the purpose of": "to"
+  "in order to": "to"
+  "in the case where": "when"
+  "in the event that": "if"
+  "join together": "join"
+  "throughout the entire": "throughout"
+
+  # Conscientious Language
+  blacklist: blocklist
+  master(?! broker| boot record): primary|source|initiator|requester|controller|host|director|supplier
+  slave(?! broker): secondary|replica|responder|device|worker|proxy|performer|consumer|child
+  whitelist: allowlist
+
+  # Filler
+  "appears to": ""
+  "arguably": ""
+  "basically": ""
+  "definitely": ""
+  "essentially": ""
+  "in many ways": ""
+  "it could be argued": ""
+  "kind of": ""
+  "one might say": ""
+  "really": ""
+  "seems to": ""
+  "sort of": ""
+  "truly": ""
+
+  # Sycophancy
+  "amazing": "remarkable"
+  "awesome": "valuable"
+  "beautiful": ""
+  "certainly": ""
+  "delighted to": "will"
+  "excellent point": "point"
+  "great question": "question"
+  "lovely insight": "insight"
+  "wonderful": ""
+
+  # Ailly consistency
+  "Bounded Context": bounded context
+  "RedGreenRefactor": red-green-refactor
+  "Unit-of-Work": unit of work
+  "domain-service": domain service
+  "feature-branch": feature branch
+  "feature-test": feature test
+  "value-object": value object
+
+  # Obsequious (is there a pattern for these?)
+  "the creation of": "create"
+  "the determination of": "determine"
+  "the development of": "develop"
+  "the implementation of": "implement"
+  "the introduction of": "introduce"
+  "the elimination of": "eliminate"
+  "the selection of": "select"
+  "the identification of": "identify"
+  "the design of": "design"
+  "the analysis of": "analyze"
+  "the addition of": "add"
+  "the removal of": "remove"
+  "the consideration of": "consider"
+  "the evaluation of": "evaluate"
