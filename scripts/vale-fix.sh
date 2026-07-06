@@ -19,7 +19,46 @@ dedup_rules() {                 # dedup_rules "$findings_json" "$f"
 }
 
 # Echoes "bad<TAB>good<TAB>note" for $rule, or nothing if no example resolves.
-lookup_example() { :; }         # lookup_example "$rule" "$findings_json" "$f"
+lookup_example() {              # lookup_example "$rule" "$findings_json" "$f"
+  local rule="$1" findings_json="$2" f="$3"
+
+  local auto
+  auto="$(jq -r --arg f "$f" --arg rule "$rule" '
+    [.[$f][] | select(.Check == $rule and ((.Action.Name // "") != ""))][0] as $m
+    | if $m == null then empty else "\($m.Match)\t\($m.Action.Params[0])\t" end
+  ' <<<"$findings_json")"
+  if [ -n "$auto" ]; then
+    printf '%s\n' "$auto"
+    return
+  fi
+
+  local style="${rule%%.*}" rule_name="${rule#*.}"
+  local sidecar="styles/config/examples/$style/$rule_name.examples.yml"
+  if [ -f "$sidecar" ]; then
+    python3 - "$sidecar" <<'PY'
+import re
+import sys
+
+bad = good = note = ""
+seen_bad = False
+with open(sys.argv[1], encoding="utf-8") as fh:
+    for line in fh:
+        m = re.match(r'^\s*-?\s*(bad|good|note):\s*"(.*)"\s*$', line)
+        if not m:
+            continue
+        key, val = m.group(1), m.group(2)
+        if key == "bad":
+            if seen_bad:
+                break
+            bad, seen_bad = val, True
+        elif key == "good" and not good:
+            good = val
+        elif key == "note" and not note:
+            note = val
+print(f"{bad}\t{good}\t{note}")
+PY
+  fi
+}
 
 # Echoes the full "Worked examples" prompt section for the given rule list, or
 # nothing if no rule resolved an example.
