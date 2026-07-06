@@ -159,9 +159,13 @@ if [ -n "$WORKED_EXAMPLES" ]; then
 $WORKED_EXAMPLES"
 fi
 
-claude -p "$PROMPT" \
-  --model haiku \
-  --allowedTools "Read(/$ABS_PATH)" "Edit(/$ABS_PATH)"
+if [ "${VALE_FIX_DRY_RUN:-}" = "1" ]; then
+  echo "$PROMPT"
+else
+  claude -p "$PROMPT" \
+    --model haiku \
+    --allowedTools "Read(/$ABS_PATH)" "Edit(/$ABS_PATH)"
+fi
 DISPATCH
 chmod +x "$dispatch"
 
