@@ -13,7 +13,10 @@ WORKDIR="$(mktemp -d)"
 trap 'rm -rf "$WORKDIR"' EXIT
 
 # Echoes the distinct .Check values found in $findings_json for file $f, one per line.
-dedup_rules() { :; }            # dedup_rules "$findings_json" "$f"
+dedup_rules() {                 # dedup_rules "$findings_json" "$f"
+  local findings_json="$1" f="$2"
+  jq -r --arg f "$f" '[.[$f][].Check] | unique | .[]' <<<"$findings_json"
+}
 
 # Echoes "bad<TAB>good<TAB>note" for $rule, or nothing if no example resolves.
 lookup_example() { :; }         # lookup_example "$rule" "$findings_json" "$f"
@@ -53,6 +56,11 @@ while IFS= read -r file; do
   dispatched=$((dispatched + 1))
   dispatched_files+=("$file")
   echo "flagged: $file ($count finding(s))"
+
+  rules=()
+  while IFS= read -r rule; do
+    rules+=("$rule")
+  done < <(dedup_rules "$findings_json" "$file")
 
   manifest="$WORKDIR/$scanned.manifest"
   {
