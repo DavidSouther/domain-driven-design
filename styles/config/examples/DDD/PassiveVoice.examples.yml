@@ -1,0 +1,5 @@
+rule: DDD.PassiveVoice
+examples:
+  - bad: "This item is mentioned for parity with the sibling skills."
+    good: "The skill index mentions this item for parity with the sibling skills."
+    note: "Name the specific actor — not 'we' — to satisfy both active voice and Google.We."

@@ -12,6 +12,16 @@ cd "$REPO_ROOT" || exit 1
 WORKDIR="$(mktemp -d)"
 trap 'rm -rf "$WORKDIR"' EXIT
 
+# Echoes the distinct .Check values found in $findings_json for file $f, one per line.
+dedup_rules() { :; }            # dedup_rules "$findings_json" "$f"
+
+# Echoes "bad<TAB>good<TAB>note" for $rule, or nothing if no example resolves.
+lookup_example() { :; }         # lookup_example "$rule" "$findings_json" "$f"
+
+# Echoes the full "Worked examples" prompt section for the given rule list, or
+# nothing if no rule resolved an example.
+render_worked_examples_section() { :; }   # render_worked_examples_section "${rules[@]}"
+
 if [ "$#" -gt 0 ]; then
   FILES="${1#"$REPO_ROOT"/}"
 else
