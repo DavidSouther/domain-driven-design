@@ -2,7 +2,7 @@
 extends: existence
 message: "Check whether '%s' is defined in context or earlier in the document."
 link: "https://github.com/DavidSouther/domain-driven-design"
-level: suggestion
+level: warning
 scope: text
 raw:
   - '\b(CQRS|OODA|SDLC|SKILL|PATTERN|ARTIFACT)\b'

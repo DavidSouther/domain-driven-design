@@ -1,4 +1,4 @@
-# Parse, Don't Validate — TypeScript Reference
+# Parse, don't validate, TypeScript reference
 
 ```typescript
 // BAD: boolean guard must be repeated at every call site

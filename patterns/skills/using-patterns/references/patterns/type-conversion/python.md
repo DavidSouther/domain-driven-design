@@ -1,4 +1,4 @@
-# Type Conversion — Python Reference
+# Type conversion. Python reference
 
 Python uses `classmethod` factories as the conversion entry points. The `from_x` name marks a total conversion. The `parse` or `try_from` name marks a partial conversion that may raise or return a union.
 
@@ -84,7 +84,7 @@ match result:
         reply.status(400, f"bad email ({why}): {r}")
 ```
 
-## Generic Acceptance: `singledispatch`
+## Generic acceptance: `singledispatch`
 
 ```python
 from functools import singledispatch
@@ -106,7 +106,7 @@ charge(Cents(500))
 charge(500)
 ```
 
-## Lifecycle Reshape
+## Lifecycle reshape
 
 ```python
 from datetime import datetime
@@ -135,9 +135,9 @@ class PlacedOrder:
         )
 ```
 
-Note that the typed fields of `draft` are passed through. The conversion does not unwrap and rewrap them.
+Note that the conversion passes the typed fields of `draft` through. It does not unwrap and rewrap them.
 
-## Anti-Patterns
+## Anti-patterns
 
 ```python
 # Wrong: __int__ lets arithmetic silently bypass the type.
@@ -154,7 +154,7 @@ Email("not an email")   # silent acceptance
 new_id = OrderId(draft.id.value)
 ```
 
-## Single Canonical Direction
+## Single canonical direction
 
 If `Cents.to_dollars` is canonical, the reverse is a separate named method that surfaces the rounding:
 

@@ -1,4 +1,4 @@
-# NewType — Python Reference
+# NewType, Python reference
 
 Python lacks compile-time branding, so newtypes use frozen dataclasses. mypy enforces the distinction; the `value` field carries the underlying primitive.
 

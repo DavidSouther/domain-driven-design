@@ -1,16 +1,16 @@
-# Citations Reference
+# Citations reference
 
-All factual claims should contain a reference. When citing sources inline, follow a loose IEEE style [1]: place the citation number in square brackets immediately after the statement. Numbers are assigned sequentially at first usage; subsequent references to the same source reuse the same number. This is not an academic publication, so strict adherence is not required.
+All factual claims should contain a reference. When citing sources inline, follow a loose IEEE style [1]: place the citation number in square brackets immediately after the statement. Assign numbers sequentially at first usage; subsequent references to the same source reuse the same number. This is not an academic publication, so strict adherence is not required.
 
-## URL References
+## URL references
 
-Most references will be URLs. Mark public web resources as `[Online]` and internal documents (Slack, Confluence, Linear, Notion) as `[Internal]`:
+Most references are URLs. Mark public web resources as `[Online]` and internal documents (Slack, Confluence, Linear, Notion) as `[Internal]`:
 
 ```
 [N] Author/Org. "Title." Date. [Online/Internal]. Available: <URL>
 ```
 
-## File References
+## File references
 
 For files within the project, use `[N (lines X–Y)]` inline (omit line range if citing the whole file). In the **Sources** section:
 
@@ -18,7 +18,7 @@ For files within the project, use `[N (lines X–Y)]` inline (omit line range if
 [N] Project Name. "path/to/filename.ext" #CommitSha
 ```
 
-If the file has not yet been committed, use `#UNCOMMITTED` in place of the commit SHA.
+If you have not yet committed the file, use `#UNCOMMITTED` in place of the commit SHA.
 
 # Citations
 

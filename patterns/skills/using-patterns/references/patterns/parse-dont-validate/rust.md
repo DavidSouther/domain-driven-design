@@ -1,6 +1,6 @@
-# Parse, Don't Validate — Rust Reference
+# Parse, don't validate. Rust reference
 
-Rust's `FromStr` / `TryFrom` traits are the idiomatic parse boundary. The `Email` type cannot be constructed any other way, so domain functions need no guard.
+Rust's `FromStr` / `TryFrom` traits are the idiomatic parse boundary. Only `from_str` constructs the `Email` type, so domain functions need no guard.
 
 ```rust
 use std::str::FromStr;

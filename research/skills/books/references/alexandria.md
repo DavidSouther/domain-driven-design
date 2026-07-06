@@ -1,13 +1,13 @@
 # Alexandria (aggregator)
 
-Broad keyless aggregation across 46 public-domain digital libraries (Project Gutenberg, Oxford ORA, Cambridge Apollo, Wikisource, Library of Congress, HathiTrust public-domain tier, Smithsonian, NASA ADS, CourtListener). Use for cross-corpus queries when the user does not know which library holds a text or wants the broadest sweep.
+Broad keyless aggregation across 46 public-domain digital libraries: Project Gutenberg, Oxford ORA, Cambridge Apollo, Wikisource, Library of Congress, HathiTrust public-domain tier, Smithsonian, NASA ADS, and CourtListener. Use for cross-corpus queries when the user does not know which library holds a text or wants the broadest sweep.
 
 ## What it provides
 
 - **Aggregated public-domain search** across 61 sources total: 46 keyless, 15 free-key.
-- Source-level routing — Alexandria exposes which underlying source returned each hit.
+- Source-level routing. Alexandria exposes which underlying source returned each hit.
 
-Alexandria is positioned as a **supplement** to the per-source capabilities, not a replacement. For targeted source-specific queries (ISBN lookup, edition resolution, public-domain full-text retrieval), the per-source capabilities remain primary.
+Alexandria serves as a **supplement** to the per-source capabilities, not a replacement. For targeted source-specific queries, the per-source capabilities remain primary. These queries include ISBN lookup, edition resolution, and public-domain full-text retrieval.
 
 ## MCP option
 
@@ -21,15 +21,15 @@ None. Alexandria is the aggregator; the per-source HTTP endpoints are reachable 
 
 ## Query shapes
 
-- *"Digitized 18th-century treatises on celestial mechanics across institutional repositories"* — cross-corpus query.
-- *"Where might I find a digitized copy of this 1810 botanical monograph"* — when the source is unknown.
+- *"Digitized eighteenth-century treatises on celestial mechanics across institutional repositories"* — cross-corpus query.
+- *"Where might one find a digitized copy of this 1810 botanical monograph"* — when the source is unknown.
 - *"Sweep all public-domain digital libraries for any mention of <topic>"* — broad cross-corpus.
 
-For ISBN lookup, edition disambiguation, or technical-book search, route to the targeted per-source capability instead; Alexandria's aggregated results are noisier than a focused per-source query.
+For ISBN lookup, edition disambiguation, or technical-book search, route to the targeted per-source capability instead. Alexandria's aggregated results are noisier than a focused per-source query.
 
 ## Licensing
 
-Per-source. Alexandria does not re-license; the originating source's terms apply. Most of the 46 keyless sources are public domain or CC; the 15 keyed sources vary (CORE is OA, Springer Nature is metadata-only without subscription, etc.).
+Per-source. Alexandria does not re-license; the originating source's terms apply. Most of the 46 keyless sources are public domain or CC. The 15 keyed sources vary: CORE is OA, Springer Nature is metadata-only without subscription, and so forth.
 
 ## Failure modes
 

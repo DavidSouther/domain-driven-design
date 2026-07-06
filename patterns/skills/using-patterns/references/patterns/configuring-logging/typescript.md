@@ -1,4 +1,4 @@
-# Configuring Logging — TypeScript Reference
+# Configuring logging, TypeScript reference
 
 `pino` for the formatter and writer; `@opentelemetry/sdk-node` for the OTLP exporter and the W3C propagator. Both shapes share the same module; the differences sit in the options.
 

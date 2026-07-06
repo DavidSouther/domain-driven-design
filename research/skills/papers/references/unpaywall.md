@@ -17,7 +17,7 @@ Example payload (`/v2/{doi}?email=...`):
 
 ## MCP option
 
-None first-party. The aggregators (`xingyulu23/Academix`, `benedict2310/Scientific-Papers-MCP`, `tfscharff/doi-mcp`) include Unpaywall in their fan-out.
+None first-party. The aggregators `xingyulu23/Academix`, `benedict2310/Scientific-Papers-MCP`, and `tfscharff/doi-mcp` include Unpaywall in their fan-out.
 
 ## HTTP fallback
 
@@ -30,11 +30,11 @@ None first-party. The aggregators (`xingyulu23/Academix`, `benedict2310/Scientif
 
 - *"Open-access PDF for DOI 10.1145/3603287"* → `/v2/10.1145/3603287?email=...`
 - *"Is this paper open-access at all"* → check `is_oa`.
-- *"Best OA repository copy when the publisher version is gated"* → check `oa_locations` and prefer `host_type: "repository"` when `best_oa_location` points at a gated publisher.
+- *"Best OA repository copy when the publisher gates the version"* → check `oa_locations` and prefer `host_type: "repository"` when `best_oa_location` points at a gated publisher.
 
 ## Licensing
 
-Per-location. Unpaywall reports the license string for each OA location; `cc-by-4.0`, `cc-by-nc-4.0`, etc. The PDF at the OA location is hosted by the repository or publisher; quote per its license, cite with the DOI.
+Per-location. Unpaywall reports the license string for each OA location; `cc-by-4.0`, `cc-by-nc-4.0`, etc. The repository or publisher hosts the PDF at the OA location; quote per its license, cite with the DOI.
 
 ## Failure modes
 

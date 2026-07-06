@@ -1,8 +1,8 @@
-# Python Project Reference
+# Python project reference
 
 Toolchain: uv + ruff (format + lint) + pyright + PyPA layout
 
-## Required Layout
+## Required layout
 
 ```
 <project>/
@@ -20,7 +20,7 @@ Toolchain: uv + ruff (format + lint) + pyright + PyPA layout
   .python-version     # pin Python version
 ```
 
-## Required Config Files
+## Required config files
 
 ### `pyproject.toml` (minimum)
 
@@ -56,9 +56,9 @@ testpaths = ["tests"]
 3.12
 ```
 
-## Validation Checklist
+## Validation checklist
 
-- [ ] `uv` is installed (`uv --version`)
+- [ ] `uv --version` exits 0
 - [ ] `pyproject.toml` exists with `[project]` section
 - [ ] `src/<package>/__init__.py` exists
 - [ ] `tests/` directory exists with `__init__.py`
@@ -86,7 +86,7 @@ uv run pyright
 uv run pytest
 ```
 
-## Development Hooks
+## Development hooks
 
 | Hook | Command |
 |---|---|
@@ -95,7 +95,7 @@ uv run pytest
 | Test | `uv run pytest` |
 | Lint | `uv run ruff check --fix src tests` |
 
-## Feature Tests
+## Feature tests
 
 Feature tests live in `tests/features/`. They test end-to-end flows without mocking the domain.
 
@@ -117,7 +117,7 @@ def test_user_logs_in_and_sees_dashboard() -> None:
     assert "Welcome" in dashboard.text
 ```
 
-## Verification Command
+## Verification command
 
 ```bash
 uv run pytest -v

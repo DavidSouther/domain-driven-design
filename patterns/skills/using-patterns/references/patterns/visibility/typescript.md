@@ -1,4 +1,4 @@
-# Visibility — TypeScript Reference
+# Visibility: TypeScript reference
 
 TypeScript has `private`, `readonly`, and `ReadonlyArray<T>`. Together they cover all four rules.
 
@@ -72,5 +72,5 @@ Key details:
 - Fields are `private`. There is no accidental write path from outside the class.
 - `lines()` returns `ReadonlyArray<OrderLine>` — `.push` is a type error at the call site.
 - `cancel()` and `addLine()` are the only writes; both check the invariants they protect.
-- `status` and `total` are derived getters, not assignable fields.
+- `status()` and `total()` compute their values; they are not assignable fields.
 - The constructor is private; `Order.builder(...)` is the only sanctioned construction path.

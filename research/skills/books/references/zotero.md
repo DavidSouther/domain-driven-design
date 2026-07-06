@@ -8,11 +8,11 @@ The user's reference manager. Strong for books the user has cited, annotated, or
 - ID-based lookup by ISBN.
 - Tag, collection, and full-text-note filtering.
 
-For papers items (`journalArticle`, `preprint`, `conferencePaper`), see [`../../papers/references/zotero.md`](../../papers/references/zotero.md). The books copy of this file is scoped to book items (`book`, `bookSection`).
+For papers items (`journalArticle`, `preprint`, `conferencePaper`), see [`../../papers/references/zotero.md`](../../papers/references/zotero.md). This copy focuses on book items (`book`, `bookSection`).
 
 ## MCP option
 
-`54yyyu/zotero-mcp` (adds semantic search) or `cookjohn/zotero-mcp` (ID-based lookup by DOI, ISBN, arXiv, PMID plus title/author/year/tag filters). `kujenga/zotero-mcp` is a third option.
+`54yyyu/zotero-mcp` adds semantic search. `cookjohn/zotero-mcp` provides ID-based lookup by DOI, ISBN, arXiv, PMID, title, author, year, and tag filters. `kujenga/zotero-mcp` is a third option.
 
 Install per the chosen repo's README. Auth: `ZOTERO_API_KEY` (generated at `zotero.org/settings/keys`) and `ZOTERO_LIBRARY_ID` (numeric, found at the same page).
 
@@ -25,9 +25,9 @@ Install per the chosen repo's README. Auth: `ZOTERO_API_KEY` (generated at `zote
 
 ## Query shapes
 
-- *"Books I've tagged `domain-modeling` in Zotero"* → `?tag=domain-modeling&itemType=book`
-- *"Find my saved copy of Domain-Driven Design by ISBN"* → `?q=9780321125217&itemType=book`
-- *"My annotated copies of Refactoring"* → `?q=Refactoring&itemType=book` then check the item's notes.
+- *"Books tagged `domain-modeling` in Zotero"* → `?tag=domain-modeling&itemType=book`
+- *"Find a saved copy of Domain-Driven Design by ISBN"* → `?q=9780321125217&itemType=book`
+- *"Annotated copies of Refactoring"* → `?q=Refactoring&itemType=book` then check the item's notes.
 
 ## Licensing
 

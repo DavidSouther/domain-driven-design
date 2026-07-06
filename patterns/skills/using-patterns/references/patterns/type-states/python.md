@@ -1,8 +1,8 @@
-# Type States — Python Reference
+# Type states: Python reference
 
 Python's type system is structural and checked by tools like mypy. Discriminated unions use `Literal` types; type states use `Generic` with phantom types enforced by mypy, not the runtime.
 
-### Discriminated Union
+### Discriminated union
 
 ```python
 from dataclasses import dataclass
@@ -28,7 +28,7 @@ def describe(rome: Rome) -> str:
             return "The dictator leads in wartime."
 ```
 
-### Type State — phantom generic
+### Type state: phantom generic
 
 ```python
 from typing import Generic, TypeVar
@@ -56,7 +56,7 @@ def close_conn(conn: "Connection[Open]") -> "Connection[Closed]":
     return result
 ```
 
-### Protocols — structural capability scoping
+### Protocols: structural capability scoping
 
 ```python
 from typing import Protocol

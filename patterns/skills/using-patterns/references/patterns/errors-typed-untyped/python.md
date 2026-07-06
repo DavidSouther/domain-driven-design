@@ -1,10 +1,10 @@
-# Errors: Typed vs Untyped — Python Reference
+# Errors: typed vs untyped, Python reference
 
-Each language has its own grammar for failure. The pattern is constant: typed at library boundaries, stringly at application boundaries, with a translation step between. The idioms differ. Use the variant native to your language; do not transliterate one into another.
+Each language has its own grammar for failure. The pattern is constant: typed at library boundaries, stringly at app boundaries, with a translation step between. The idioms differ. Use the variant native to your language; do not transliterate one into another.
 
-A shared scenario runs through every example: a `users` library that fetches a user by id, and an application that exposes that library through an HTTP handler.
+A shared scenario runs through every example: a `users` library that fetches a user by id, and an app that exposes that library through an HTTP handler.
 
-### Library, Typed Error Hierarchy
+### Library, typed error hierarchy
 
 Python's typed errors are exception subclasses. Each subclass is a distinct variant; instance attributes carry the variant data. A single base class for the library lets callers `except UsersError` for a coarse handler, while specific subclasses serve precise dispatch.
 
@@ -54,9 +54,9 @@ def fetch_user(client: httpx.Client, user_id: str) -> User:
 
 Each `raise ... from cause` preserves the underlying exception in `__cause__`. Callers may dispatch on the subclass; logging captures the full chain via `logging.exception` or `traceback.format_exception`.
 
-### Application, Stringly Error
+### App, stringly error
 
-In the HTTP handler, the typed exceptions are caught at the boundary and translated into a user-facing string. The application does not propagate `UsersError`; it formats and either returns or logs.
+In the HTTP handler, the typed exceptions are caught at the boundary and translated into a user-facing string. The app does not propagate `UsersError`; it formats and either returns or logs.
 
 ```python
 # app/http/users.py
@@ -81,7 +81,7 @@ def get_user(user_id: str):
 
 The handler is stringly: it produces a human message, no programmatic dispatch beyond the `except` clauses themselves.
 
-### Translation Rules
+### Translation rules
 
 - Always `raise FromTyped(...) from original_exception`. The `from` clause sets `__cause__` and keeps the chain intact for `logging.exception` and tracebacks.
 - Do not parse error messages with `str(e)` or substring matches. The message is for humans. Match on the class.

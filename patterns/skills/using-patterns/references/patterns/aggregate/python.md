@@ -1,4 +1,4 @@
-# Aggregate — Python Reference
+# Aggregate, python reference
 
 ```python
 from dataclasses import dataclass

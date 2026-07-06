@@ -1,6 +1,6 @@
-# Configuring Logging — Python Reference
+# Configuring logging, Python reference
 
-`structlog` for the formatter and processor chain; `opentelemetry-sdk` for the OTLP exporter and the W3C propagator. The bootstrap function below is `bootstrap_logging()` for a service; the CLI variant follows.
+`structlog` for the formatter and processor chain; `opentelemetry-sdk` for the OTLP exporter and the W3C propagator. The bootstrap function below is `bootstrap_logging()` for a service; the command-line tool variant follows.
 
 ```python
 # pyproject.toml dependencies

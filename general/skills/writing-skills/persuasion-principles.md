@@ -1,18 +1,18 @@
-# Persuasion Principles for Skill Design
+# Persuasion principles for skill design
 
 ## Overview
 
-LLMs respond to the same persuasion principles as humans. Understanding this psychology helps you design more effective skills - not to manipulate, but to ensure critical practices are followed even under pressure.
+LLMs respond to the same persuasion principles as humans. Understanding this psychology helps you design more effective skills - not to manipulate, but to ensure you implement critical practices even under pressure.
 
 **Research foundation:** Meincke et al. (2025) tested 7 persuasion principles with N=28,000 AI conversations. Persuasion techniques more than doubled compliance rates (33% → 72%, p < .001).
 
-## The Seven Principles
+## The seven principles
 
 ### 1. Authority
-**What it is:** Deference to expertise, credentials, or official sources.
+**What it is:** deference to expertise, credentials, or official sources.
 
 **How it works in skills:**
-- Imperative language: "YOU MUST", "Never", "Always"
+- Imperative language: "YOU MUST," "Never," "Always"
 - Non-negotiable framing: "No exceptions"
 - Eliminates decision fatigue and rationalization
 
@@ -28,7 +28,7 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 ```
 
 ### 2. Commitment
-**What it is:** Consistency with prior actions, statements, or public declarations.
+**What it is:** consistency with prior actions, statements, or public declarations.
 
 **How it works in skills:**
 - Require announcements: "Announce skill usage"
@@ -47,7 +47,7 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 ```
 
 ### 3. Scarcity
-**What it is:** Urgency from time limits or limited availability.
+**What it is:** urgency from time limits or limited availability.
 
 **How it works in skills:**
 - Time-bound requirements: "Before proceeding"
@@ -65,11 +65,11 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 ❌ You can review code when convenient.
 ```
 
-### 4. Social Proof
-**What it is:** Conformity to what others do or what's considered normal.
+### 4. Social proof
+**What it is:** conformity to what others do or what's considered normal.
 
 **How it works in skills:**
-- Universal patterns: "Every time", "Always"
+- Universal patterns: "Every time," "Always"
 - Failure modes: "X without Y = failure"
 - Establishes norms
 
@@ -85,11 +85,11 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 ```
 
 ### 5. Unity
-**What it is:** Shared identity, "we-ness", in-group belonging.
+**What it is:** shared identity, in-group belonging.
 
 **How it works in skills:**
-- Collaborative language: "our codebase", "we're colleagues"
-- Shared goals: "we both want quality"
+- Collaborative language: "this codebase," "colleagues working together"
+- Shared goals: "colleagues both want quality"
 
 **When to use:**
 - Collaborative workflows
@@ -98,12 +98,12 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 
 **Example:**
 ```markdown
-✅ We're colleagues working together. I need your honest technical judgment.
-❌ You should probably tell me if I'm wrong.
+✅ Colleagues working together. Your honest technical judgment is needed.
+❌ You should probably tell if something's wrong.
 ```
 
 ### 6. Reciprocity
-**What it is:** Obligation to return benefits received.
+**What it is:** obligation to return benefits received.
 
 **How it works:**
 - Use sparingly - can feel manipulative
@@ -113,7 +113,7 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 - Almost always (other principles more effective)
 
 ### 7. Liking
-**What it is:** Preference for cooperating with those we like.
+**What it is:** preference for cooperating with those one likes.
 
 **How it works:**
 - **DON'T USE for compliance**
@@ -123,7 +123,7 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 **When to avoid:**
 - Always for discipline enforcement
 
-## Principle Combinations by Skill Type
+## Principle combinations by skill type
 
 | Skill Type | Use | Avoid |
 |------------|-----|-------|
@@ -132,7 +132,7 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 | Collaborative | Unity + Commitment | Authority, Liking |
 | Reference | Clarity only | All persuasion |
 
-## Why This Works: The Psychology
+## Why this works: the psychology
 
 **Bright-line rules reduce rationalization:**
 - "YOU MUST" removes decision fatigue
@@ -150,10 +150,10 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 - Commitment sequences (statement → action) frequently modeled
 - Social proof patterns (everyone does X) establish norms
 
-## Ethical Use
+## Ethical use
 
 **Legitimate:**
-- Ensuring critical practices are followed
+- Ensuring people implement critical practices
 - Creating effective documentation
 - Preventing predictable failures
 
@@ -162,9 +162,9 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 - Creating false urgency
 - Guilt-based compliance
 
-**The test:** Would this technique serve the user's genuine interests if they fully understood it?
+**The test:** would this technique serve the user's genuine interests if they fully understood it?
 
-## Research Citations
+## Research citations
 
 **Cialdini, R. B. (2021).** *Influence: The Psychology of Persuasion (New and Expanded).* Harper Business.
 - Seven principles of persuasion
@@ -176,12 +176,12 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 - Authority, commitment, scarcity most effective
 - Validates parahuman model of LLM behavior
 
-## Quick Reference
+## Quick reference
 
 When designing a skill, ask:
 
 1. **What type is it?** (Discipline vs. guidance vs. reference)
-2. **What behavior am I trying to change?**
-3. **Which principle(s) apply?** (Usually authority + commitment for discipline)
-4. **Am I combining too many?** (Don't use all seven)
+2. **What behavior should change?**
+3. **Which principles apply?** (In most cases authority + commitment for discipline)
+4. **Are too many combined?** (Don't use all seven)
 5. **Is this ethical?** (Serves user's genuine interests?)

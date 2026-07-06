@@ -1,36 +1,36 @@
 ---
 name: codebase
-description: Use when performing research on the current codebase — finding where a symbol is defined, discovering all call sites of a function, understanding a type's structure, tracing interface implementations, or answering any question about what the code does right now at the checked-out commit.
+description: Use when performing research on the current codebase. Find where code defines a symbol, discover all call sites of a function, understand a type's structure, trace interface implementations, or answer any question about what the code does right now at the checked-out commit.
 ---
 
-# Codebase Research
+# Codebase research
 
 ## Overview
 
-Answers research questions about the current codebase state using LSP queries first, Bash search as fallback. Never uses git history — that is archaeology's domain. Language-server install and project priming belong in [the codebase setup reference](../using-research/references/configuring/codebase.md); this skill consumes the contract that skill publishes.
+Answers research questions about the current codebase state using LSP queries first, Bash search as fallback. Never uses git history. That is archaeology's domain. Language-server install and project priming belong in [the codebase setup reference](../using-research/references/configuring/codebase.md); this skill consumes the contract that skill publishes.
 
-## When to Use
+## When to use
 
-- Finding where a symbol is defined or what type it has
+- Finding where code defines a symbol or what type it has
 - Locating all call sites / references to a function or type
 - Understanding interface implementations or trait bounds
 - Reading a module's public surface without opening every file
 
-**Do NOT use** for questions about why code changed (use `archaeology`), or about dependency origins (use `dependencies`). To install or prime a language server, or to add a new language to the contract, use [the codebase setup reference](../using-research/references/configuring/codebase.md), not this skill.
+**Do NOT use** for questions about why code changed—use `archaeology` instead—or for dependency origins—use `dependencies` instead. To install or prime a language server, or to add a new language to the contract, use [the codebase setup reference](../using-research/references/configuring/codebase.md), not this skill.
 
-## Query Expansion (Jeopardy! Search)
+## Query expansion (Jeopardy search)
 
 Before any search, generate 3-5 variants of the target term:
 
 - **Original** — exact identifier as stated
-- **Case variants** — `myFn`, `my_fn`, `my-fn`, `MyFn`
+- **Naming variants** — `myFn`, `my_fn`, `my-fn`, `MyFn`
 - **Synonyms** — `create`/`new`/`build`; `error`/`err`/`failure`
 - **Related concepts** — interface name, trait name, module path
 - **Partial prefixes** — useful for glob and completion searches
 
 Run all variants; union results before drawing conclusions.
 
-## Search Strategy
+## Search strategy
 
 **Prefer LSP** (see language reference files) for:
 - Symbol definitions and hover types — `goToDefinition`, `hover`
@@ -39,17 +39,17 @@ Run all variants; union results before drawing conclusions.
 - A file's or workspace's symbol tree — `documentSymbol`, `workspaceSymbol`
 - Callers / callees of a function — `prepareCallHierarchy` with `incomingCalls`/`outgoingCalls`
 - Available members on a value — `hover` (the `LSP` tool exposes no `completions`)
-- Errors in a file — run `cargo check` / `tsc` via Bash (the `LSP` tool exposes no `diagnostics`)
+- Errors in a file. Run `cargo check` / `tsc` via Bash (the `LSP` tool exposes no `diagnostics`)
 
 **Bash fallback** when LSP is unavailable or for:
 - String literals and comments (not symbols)
 - File-level discovery (`Glob` for paths, `Grep` for patterns)
 
-**Hard constraint:** Never run `git log`, `git blame`, `git show`, `git diff`, or any other git command. Use only current-state tools. You may use `git rev-parse --short HEAD` to get the current commit sha for preparing `**Sources**`.
+**Hard constraint:** never run `git log`, `git blame`, `git show`, `git diff`, or any other git command. Use only current-state tools. You may use `git rev-parse --short HEAD` to get the current commit sha for preparing `**Sources**`.
 
-## Output Format
+## Output format
 
-Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/codebase.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `codebase.md` there.
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/codebase.md`. When the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `codebase.md` there instead.
 
 ```
 # Codebase: <question>
@@ -62,17 +62,17 @@ Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/codebase.md`, unless the
 - [2] `path/to/other.ts` [CommitSha]
 ```
 
-## Common Mistakes
+## Common mistakes
 
 - **Single query only** — always expand before searching; renamed identifiers won't appear under old names.
 - **Grep instead of LSP** — LSP follows type aliases, generics, and macros; grep matches text only.
 - **Using git for context** — blame and log are archaeology tools; avoid them here.
 - **Stopping at first match** — a symbol may have multiple definitions (overloads, feature flags); collect all before concluding.
 - **Asserting a universal without searching its negation** — claims like "no caller does X" or "every write path does Y" are easy to state and easy to be wrong about. Before reporting a universal, search for its counterexample. See `research/references/falsify.md`.
-- **Re-teaching the wiring** — a "first, make sure rust-analyzer is installed" or "activate the venv before searching" preface is wiring leakage. The wiring SKILL owns install and priming; this skill consumes the contract. If a preface is unavoidable, the contract is incomplete — widen it in [the codebase setup reference](../using-research/references/configuring/codebase.md).
+- **Re-teaching the wiring.** A "first, make sure you install rust-analyzer" or "activate the venv before searching" preface is wiring leakage. The codebase setup reference owns install and priming. This skill consumes the contract. If a preface is unavoidable, the contract is incomplete. Widen it in [the codebase setup reference](../using-research/references/configuring/codebase.md).
 
-## Composes With
+## Composes with
 
-- **the codebase setup reference** (`research:using-research`, `references/configuring/codebase.md`) — the wiring partner. Publishes the LSP-operation contract this skill consumes and owns language-server install and project priming.
+- **the codebase setup reference** — the wiring partner. See `research:using-research` and `references/configuring/codebase.md`. Publishes the LSP-operation contract this skill consumes and owns language-server install and project priming.
 - **`research/references/jeopardy.md`** — the identifier-variant query expansion this skill runs before searching.
 - **`research/references/falsify.md`** — the falsification pass on universal claims (see Common Mistakes).

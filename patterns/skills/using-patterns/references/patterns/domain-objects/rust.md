@@ -1,4 +1,4 @@
-# Entities, Value Objects, and Domain Service Functions — Rust Reference
+# Entities, value objects, and domain service functions, Rust reference
 
 ```rust
 use std::cmp::Ordering;

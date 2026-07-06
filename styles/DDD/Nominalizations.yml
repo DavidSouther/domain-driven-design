@@ -2,7 +2,7 @@
 extends: substitution
 message: "Use '%s' instead of '%s' for clarity and directness."
 link: "https://github.com/DavidSouther/domain-driven-design"
-level: suggestion
+level: warning
 ignorecase: true
 action:
   name: replace

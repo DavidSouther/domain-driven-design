@@ -2,7 +2,7 @@
 extends: existence
 message: "This parenthetical is long. Break it into a new sentence for clarity."
 link: "https://github.com/DavidSouther/domain-driven-design"
-level: suggestion
+level: warning
 scope: text
 raw:
   - '\([^)]{50,}\)'

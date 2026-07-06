@@ -1,18 +1,18 @@
-# TypeScript Project Reference
+# TypeScript project reference
 
 Toolchain: vite/vitest + biome + strict TypeScript
 
-## Target Distinction
+## Target distinction
 
 Choose the appropriate target before scaffolding:
 
 | Target | Use when | Framework |
 |---|---|---|
 | **Browser** | UI, React/Vue/Svelte apps | vite + vitest (jsdom) |
-| **Server** | Node.js API, CLI tools | vitest (node) |
+| **Server** | Node.js API, command-line tools | vitest (node) |
 | **Edge** | Cloudflare Workers, Vercel Edge | vitest (edge-runtime) |
 
-## Required Layout
+## Required layout
 
 ```
 <project>/
@@ -29,7 +29,7 @@ Choose the appropriate target before scaffolding:
       <module>.test.ts  # unit tests
 ```
 
-## Required Config Files
+## Required config files
 
 ### `package.json` (minimum)
 
@@ -105,10 +105,10 @@ export default defineConfig({
 });
 ```
 
-## Validation Checklist
+## Validation checklist
 
-- [ ] `node` is installed (`node --version`, v20+)
-- [ ] `npm` or `pnpm` is installed
+- [ ] You have `node` v20+ installed (verify with `node --version`)
+- [ ] You have `npm` or `pnpm` installed
 - [ ] `package.json` exists with required scripts
 - [ ] `tsconfig.json` has `"strict": true`
 - [ ] `biome.json` exists
@@ -133,7 +133,7 @@ npm run check
 npm test
 ```
 
-## Development Hooks
+## Development hooks
 
 | Hook | Command |
 |---|---|
@@ -142,7 +142,7 @@ npm test
 | Test | `npm test` |
 | Lint | `npx biome lint --write src tests` |
 
-## Feature Tests
+## Feature tests
 
 Feature tests live in `tests/features/`. For server targets, test HTTP handlers directly. For browser targets, use a test renderer or a minimal DOM fixture.
 
@@ -167,7 +167,7 @@ describe("user login", () => {
 });
 ```
 
-## Verification Command
+## Verification command
 
 ```bash
 npm run check && npm test

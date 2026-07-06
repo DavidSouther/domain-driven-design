@@ -1,6 +1,6 @@
-# Configuring Logging — Rust Reference
+# Configuring logging - Rust reference
 
-`tracing` plus `tracing-subscriber` provides the five-layer stack. `tracing-opentelemetry` bridges spans to OpenTelemetry; `opentelemetry-otlp` exports them. The bootstrap function below is `bootstrap_logging()` for a service; the CLI variant follows.
+`tracing` plus `tracing-subscriber` provides the five-layer stack. `tracing-opentelemetry` bridges spans to OpenTelemetry; `opentelemetry-otlp` exports them. The bootstrap function below is `bootstrap_logging()` for a service; the command-line tool variant follows.
 
 ```rust
 // Cargo.toml
@@ -128,4 +128,4 @@ impl Drop for ShutdownGuard {
 // }
 ```
 
-The `clap-verbosity-flag` crate maps `-q`/`-v`/`-vv`/`-vvv`/`-vvvv` onto a `tracing::LevelFilter`; pass it into `bootstrap_logging_cli`. Default is `ErrorLevel`, which surfaces ERROR and FATAL only — the clig.dev §Output convention.
+The `clap-verbosity-flag` crate maps `-q`/`-v`/`-vv`/`-vvv`/`-vvvv` onto a `tracing::LevelFilter`; pass it into `bootstrap_logging_cli`. Default is `ErrorLevel`, which surfaces ERROR and FATAL only, the clig.dev §Output convention.

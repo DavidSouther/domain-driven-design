@@ -1,22 +1,22 @@
 ---
 name: domain
-description: Use when a research question is about the conceptual model of the problem space — entities, bounded contexts, ubiquitous language, invariants, or DDD maturity — rather than how code implements those concepts. Applies when `domain:` skills are loaded or when domain artifacts exist in the codebase. Does not apply to implementation questions (use `research:codebase`) or to questions answerable only from external sources (use `research:public`).
+description: "Use when a research question is about the conceptual model of the problem space: entities, bounded contexts, ubiquitous language, invariants, or DDD maturity. Apply it instead of questions about how code implements those concepts. Use it when `domain:` skills load or when domain artifacts exist in the codebase. Don't use it for implementation questions (use `research:codebase`) or for questions answerable only from external sources (use `research:public`)."
 ---
 
 # Overview
 
 Domain answers research questions about the conceptual model: what things exist, what they mean, how they relate, and what rules govern them. It draws on `domain:` DDD skills when available, or on domain artifacts found in the codebase when they are not.
 
-# When to Use
+# When to use
 
 - The question is about what a term, entity, or concept means in this domain
 - The question is about structural relationships between domain objects
 - The question is about invariants, contracts, or business rules
 - The question requires understanding bounded contexts or aggregate boundaries
 
-**Do NOT use** when the question is about how code implements a domain concept (use `research:codebase`), or when the domain is entirely undefined and must be sourced from external references (use `research:public`).
+**Do NOT use** when the question is about how code implements a domain concept; use `research:codebase` instead. Also, don't use this when the domain is entirely undefined and you must source information from external references; use `research:public` instead.
 
-# Query Expansion (Jeopardy! Search)
+# Query expansion (jeopardy search)
 
 Before running any search, generate 3–5 query variants per concept:
 
@@ -30,7 +30,7 @@ Run each variant; union the results before synthesizing.
 
 # Strategy
 
-## When `domain:` skills are loaded
+## When `domain:` skills load
 
 1. Invoke `domain:glossary` to resolve unfamiliar or ambiguous terms.
 2. Invoke `domain:ubiquitous-language` to understand how the domain names and talks about concepts.
@@ -47,11 +47,11 @@ Search the codebase for domain artifacts:
 - README or documentation files describing the domain
 - Aggregate or bounded-context definitions in any documentation directory
 
-Use Jeopardy! search variants across all artifact locations before concluding a concept is undefined.
+Use Jeopardy search variants across all artifact locations before concluding a concept lacks definition.
 
-# Output Format
+# Output format
 
-Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/domain.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `domain.md` there.
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/domain.md`. If the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `domain.md` there instead.
 
 Structure:
 
@@ -70,7 +70,7 @@ Structure:
 - DDD concepts applied: <list>
 ```
 
-# Common Mistakes
+# Common mistakes
 
 - **Answering from code instead of the model** — if the only source is implementation files rather than domain artifacts or `domain:` skills, escalate to `research:codebase` or note the gap explicitly.
 - **Skipping query expansion** — a concept named `Order` may also appear as `PurchaseOrder`, `SalesOrder`, or `order_aggregate`; always expand before concluding absence.

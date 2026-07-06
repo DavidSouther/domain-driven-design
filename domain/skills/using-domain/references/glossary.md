@@ -1,6 +1,6 @@
 # Glossary
 
-**Trigger:** Any time a term is undefined, ambiguous, or potentially synonymous with an existing term.
+**Trigger:** any time a term lacks definition, is ambiguous, or is potentially synonymous with an existing term.
 
 **ALL other DDD skills must check the glossary before introducing terminology.**
 
@@ -12,7 +12,7 @@
 4. **If the term is new:** Add it with a definition, context, and source. Mark as **[DRAFT]** until human-approved.
 5. **If the term is ambiguous:** Check whether the glossary already defines the term with a specific context. If so, apply that definition. If the glossary has no entry or the ambiguity remains after checking, present both interpretations to the user and ask them to choose the canonical meaning before adding any entry.
 
-## Glossary File Format
+## Glossary file format
 
 File: `docs/ddd/glossary.md`
 
@@ -30,5 +30,5 @@ Each entry uses this format:
 
 - Every entry must include Definition, Context, and Source.
 - Include Synonyms only when synonyms exist.
-- Terms not confirmed by a domain expert must be marked **[DRAFT]**.
+- Mark terms not confirmed by a domain expert **[DRAFT]**.
 - Do not remove **[DRAFT]** without explicit human approval.

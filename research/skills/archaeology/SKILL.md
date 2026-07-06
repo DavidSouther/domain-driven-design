@@ -1,30 +1,30 @@
 ---
 name: archaeology
-description: Use when a research question asks why code changed over time, who introduced a behavior, when a feature was added or removed, or what motivated a past decision. Applies to questions about deleted code, renamed files, reverted changes, or the historical rationale behind current implementation. Does not apply to questions about current codebase state or dependency structure.
+description: Use when a research question asks why code changed over time, who introduced a behavior, when developers added or removed a feature, or what motivated a past decision. Applies to questions about deleted code, renamed files, reverted changes, or the historical rationale behind current implementation. Does not apply to questions about current codebase state or dependency structure.
 ---
 
 # Overview
 
 Archaeology answers "why did this change?" questions by mining git history. It reconstructs intent from commit messages, diffs, and authorship rather than from current code state.
 
-# When to Use
+# When to use
 
-- A behavior exists (or was removed) and the reason is unknown
-- A file was renamed, moved, or deleted and you need to trace its lineage
-- A bug was introduced at an unknown point in time
+- A behavior exists or someone removed it and the reason is unknown
+- Someone renamed, moved, or deleted a file and you need to trace its lineage
+- Someone introduced a bug at an unknown point in time
 - A decision needs historical justification from commits or PR context
 
-**Do NOT use** for questions about current codebase structure (use `codebase`), or about dependency origins (use `dependencies`).
+Do NOT use for questions about current codebase structure, dependency origins, or when you need to reference `codebase` or `dependencies` skills instead.
 
-# Core Workflow
+# Core workflow
 
 1. Decompose the research question into search terms (identifiers, strings, file paths, concepts).
-2. Apply Jeopardy! search to expand each term into 3-5 variants before running any command.
+2. Apply Jeopardy search to expand each term into 3-5 variants before running any command.
 3. Run git commands against each variant; collect matching commits.
 4. Inspect the most relevant commits with `git show` to read diffs and messages.
 5. Synthesize findings into a dated research note.
 
-# Query Expansion
+# Query expansion
 
 Before executing any git search, generate variants of each search term:
 
@@ -36,7 +36,7 @@ Before executing any git search, generate variants of each search term:
 
 Run each variant independently and union the results.
 
-# Git Command Reference
+# Git command reference
 
 ```bash
 # Trace a file through renames
@@ -66,9 +66,9 @@ git bisect bad HEAD
 git bisect good <known-good-ref>
 ```
 
-# Output Format
+# Output format
 
-Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/archaeology.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `archaeology.md` there.
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/archaeology.md`. If the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `archaeology.md` to that scenario instead.
 
 Structure:
 
@@ -86,9 +86,9 @@ Structure:
 - Commands run: <list of git commands with variants>
 ```
 
-# Common Mistakes
+# Common mistakes
 
-- **Running only one query variant** — always expand before searching; a renamed identifier will not appear under its original name.
+- **Running only one query variant** — always expand before searching; a renamed identifier does not appear under its original name.
 - **Reading current code** — archaeology uses only git history; current state is out of scope.
-- **Stopping at the first matching commit** — the introducing commit is often preceded by a reverting commit; check surrounding history.
-- **Ignoring merge commits** — merge commit messages often name the feature branch and link to external discussion.
+- **Stopping at the first matching commit** — a reverting commit frequently precedes the introducing commit; check surrounding history.
+- **Ignoring merge commits** — merge commit messages frequently name the feature branch and link to external discussion.

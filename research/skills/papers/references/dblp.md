@@ -1,6 +1,6 @@
-# DBLP
+# Dblp
 
-Authoritative CS publication index. Strong for computer-science author disambiguation, conference and journal listings, and exact-match publication lists.
+Authoritative CS publication index. Strong for computer-science author disambiguation, conference, journal, and exact-match publication listings.
 
 ## What it provides
 
@@ -8,11 +8,11 @@ Authoritative CS publication index. Strong for computer-science author disambigu
 - **Author disambiguation** — DBLP's strong invariant; the per-author token gives exact-match publication lists.
 - **Venue listings** — conference proceedings, journal volumes.
 
-## MCP option
+## Mcp option
 
 None first-party. The multi-source aggregators (`xingyulu23/Academix`, `tfscharff/doi-mcp` fan-out) include DBLP among their sources.
 
-## HTTP fallback
+## Http fallback
 
 - Base URL: `https://dblp.org/search`
 - Endpoints: `/publ/api?q=...&format=json`, `/author/api?q=...&format=json`, `/venue/api?q=...&format=json`
@@ -28,7 +28,7 @@ None first-party. The multi-source aggregators (`xingyulu23/Academix`, `tfscharf
 
 ## Licensing
 
-DBLP data is **CC0** for metadata. The underlying full text lives at the publisher's domain and is licensed per the publisher. Cite with the DBLP key or the canonical publisher DOI.
+Dblp data is **CC0** for metadata. The underlying full text lives at the publisher's domain under the publisher's license. Cite with the Dblp key or the canonical publisher DOI.
 
 ## Failure modes
 

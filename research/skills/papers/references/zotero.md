@@ -8,15 +8,15 @@ The user's reference manager scoped to academic papers, preprints, and conferenc
 - ID-based lookup by **DOI, PMID, PMCID, arXiv ID**.
 - Tag, collection, and full-text-note filtering.
 
-For book items (`book`, `bookSection`), see [`../../books/references/zotero.md`](../../books/references/zotero.md). The papers copy of this file is scoped to paper item types and identifier types — duplication is intentional per design §Reference file layout because the citation linkage (DOI / PMID / PMCID rather than ISBN) differs.
+For book items (`book`, `bookSection`), see [`../../books/references/zotero.md`](../../books/references/zotero.md). This file focuses on paper item types and identifier types. Duplication is intentional per design §Reference file layout, as citation linkage differs (DOI, PMID, PMCID rather than ISBN).
 
-## MCP option
+## MCP Option
 
-`54yyyu/zotero-mcp` (adds semantic search), `kujenga/zotero-mcp`, or `cookjohn/zotero-mcp` (ID-based lookup by DOI, ISBN, arXiv, PMID plus title/author/year/tag filters).
+`54yyyu/zotero-mcp` adds semantic search. Choose `kujenga/zotero-mcp` or `cookjohn/zotero-mcp` for ID-based lookup by DOI, ISBN, arXiv, PMID, title, author, year, or tag filters.
 
 Install per the chosen repo's README. Auth: `ZOTERO_API_KEY` and `ZOTERO_LIBRARY_ID`.
 
-## HTTP fallback
+## HTTP Fallback
 
 - Base URL: `https://api.zotero.org`
 - Endpoints: `/users/{libraryId}/items?q=...&itemType=journalArticle||preprint||conferencePaper`, `/users/{libraryId}/items/{itemKey}`
@@ -25,9 +25,9 @@ Install per the chosen repo's README. Auth: `ZOTERO_API_KEY` and `ZOTERO_LIBRARY
 
 ## Query shapes
 
-- *"Papers I have annotated in Zotero"* → `?q=&itemType=journalArticle||preprint&include=notes`
+- *"Papers with annotations in Zotero"* → `?q=&itemType=journalArticle||preprint&include=notes`
 - *"This paper by DOI"* → `?q=10.1145/3603287&itemType=journalArticle`
-- *"Preprints in my `formal-methods` collection"* → `/collections/{collectionKey}/items?itemType=preprint`
+- *"Preprints in the `formal-methods` collection"* → `/collections/{collectionKey}/items?itemType=preprint`
 
 ## Licensing
 

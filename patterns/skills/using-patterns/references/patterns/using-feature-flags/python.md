@@ -1,4 +1,4 @@
-# Using Feature Flags in Python
+# Using feature flags in Python
 
 One toggle point reads the injected `Flags` port and branches. The default branch is today's behavior. The targeting stays in the provider behind the port. The test exercises both branches.
 

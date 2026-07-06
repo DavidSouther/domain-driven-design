@@ -1,6 +1,6 @@
 # Hardcover
 
-Reviews and reading-community signal. Replaces the retired Goodreads API. Use for "what do other readers say about this book", rating snippets, comparable-titles queries.
+Reviews and reading-community signal. Replaces the retired Goodreads API. Use for "what do other readers say about this book.", rating snippets, comparable-titles queries.
 
 ## What it provides
 
@@ -8,11 +8,11 @@ Reviews and reading-community signal. Replaces the retired Goodreads API. Use fo
 - **Ratings and ranked-list data** — what users have shelved, rated, or compared.
 - **Comparable-titles** queries.
 
-## MCP option
+## Mcp option
 
 None first-party. Use HTTP.
 
-## HTTP fallback
+## Http fallback
 
 - Base URL: `https://api.hardcover.app/v1/graphql`
 - Auth: API key, sent as `Authorization: Bearer <HARDCOVER_API_KEY>`. Obtain at the Hardcover account settings page.

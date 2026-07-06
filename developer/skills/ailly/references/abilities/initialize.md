@@ -19,7 +19,7 @@ Prepares a project folder for development using language-agnostic orchestration 
 5. Configure the four development hooks.
 6. Verify the project builds/starts cleanly.
 
-## Language Reference Files
+## Language reference files
 
 | Language/Toolchain | Reference file |
 |---|---|
@@ -30,7 +30,7 @@ Prepares a project folder for development using language-agnostic orchestration 
 
 If the target language is not in this table, ask the user which toolchain to use as the basis and adapt the closest reference file.
 
-## Four Development Hooks
+## Four development hooks
 
 Every initialized project must have these hooks configured in the agent's settings:
 
@@ -48,12 +48,12 @@ The exact commands for each hook come from the language reference file.
 Validation must confirm:
 - Required config files exist with correct content
 - Directory layout matches the reference file
-- Tooling is installed (e.g., `cargo`, `uv`, `node`, `mise`)
+- You have installed required tooling (for example, `cargo`, `uv`, `node`, `mise`)
 - The project builds/runs cleanly with zero errors and zero warnings
 
 If validation fails, apply the fixes from the reference file before proceeding. Do not declare initialization complete until a clean build succeeds.
 
-## Verification Command
+## Verification command
 
 After setup, run the verification command from the reference file and confirm:
 - Exit code 0

@@ -1,6 +1,6 @@
-# Emitting Logs — TypeScript Reference
+# Emitting logs: TypeScript reference
 
-`pino` child loggers carry per-request context. The configuration skill's `mixin` already attaches `trace_id`/`span_id` from the active span; emit sites only add the per-event fields. Errors are logged via `logger.error({ err }, msg)` — pino serializes `Error.cause` chains automatically; semantic-convention keys are added explicitly under the OTel exception namespace.
+`pino` child loggers carry per-request context. The configuration skill's `mixin` already attaches `trace_id`/`span_id` from the active span; emit sites only add the per-event fields. Log errors via `logger.error({ err }, msg)`. pino serializes `Error.cause` chains automatically. Add semantic-convention keys explicitly under the OTel exception namespace.
 
 ```ts
 import type { Logger } from "pino";
@@ -123,4 +123,4 @@ async function processOne(_: string): Promise<void> {
 }
 ```
 
-`logger.child({...})` is the canonical way to bind unit-of-work context once; the per-event call adds only the outcome fields. `event_name` is the field name the OTel JS SDK uses for the log record's `EventName` (the underlying logs spec calls it `event.name`); pin the field name to whatever the configured exporter understands.
+`logger.child({...})` is the canonical way to bind unit-of-work context once; the per-event call adds only the outcome fields. `event_name` is the field name the OTel JS SDK uses for the log record's `EventName`. The underlying logs spec calls it `event.name`. Pin the field name to whatever the configured exporter understands.

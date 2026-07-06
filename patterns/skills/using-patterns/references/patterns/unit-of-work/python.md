@@ -1,4 +1,4 @@
-# Unit of Work — Python Reference
+# Unit of work. Python reference
 
 ```python
 from abc import ABC, abstractmethod

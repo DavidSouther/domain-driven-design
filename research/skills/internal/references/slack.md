@@ -7,13 +7,13 @@ Org communication channel. First stop for decisions, incident context, announcem
 - **Slack search** — message and thread hits with permalink, filterable by channel, user, and date.
 - **Slack fetch** — the full contents of a thread or a canvas, given a channel + ts or a permalink.
 
-## MCP / connector
+## MCP/connector
 
-The Anthropic Slack connector. Search tools are `slack_search_*` (`slack_search_public`, `slack_search_public_and_private`, `slack_search_channels`, `slack_search_users`); read tools are `slack_read_*` (`slack_read_thread`, `slack_read_channel`, `slack_read_canvas`, `slack_read_user_profile`, `slack_read_file`). If this connector is not the one installed, probe the configured Slack MCP for this org.
+The Anthropic Slack connector. Search tools are `slack_search_*`, including `slack_search_public`, `slack_search_public_and_private`, `slack_search_channels`, and `slack_search_users`. Read tools are `slack_read_*`, including `slack_read_thread`, `slack_read_channel`, `slack_read_canvas`, `slack_read_user_profile`, and `slack_read_file`. If this connector is not the one installed, probe the configured Slack MCP for this org.
 
 ## Auth
 
-Workspace OAuth install. The connector holds the session after the install completes; see [`auth.md`](auth.md). No env var is set for the OAuth path — the session lives in the connector. If OAuth is not completed, *Slack search* and *Slack fetch* return Not-Available.
+Workspace OAuth install. The connector holds the session after the install completes; see [`auth.md`](auth.md). No env var is set for the OAuth path. The session lives in the connector. If OAuth is not completed, *Slack search* and *Slack fetch* return Not-Available.
 
 ## Contract mapping
 

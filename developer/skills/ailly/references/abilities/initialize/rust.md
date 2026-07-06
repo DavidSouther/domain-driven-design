@@ -1,8 +1,8 @@
-# Rust Project Reference
+# Rust project reference
 
-Toolchain: Cargo + Clippy + rustfmt
+Toolchain: cargo + Clippy + rustfmt
 
-## Required Layout
+## Required layout
 
 ```
 <project>/
@@ -15,7 +15,7 @@ Toolchain: Cargo + Clippy + rustfmt
   .rustfmt.toml       # optional but recommended
 ```
 
-## Required Config Files
+## Required config files
 
 ### `Cargo.toml` (minimum)
 
@@ -37,11 +37,11 @@ edition = "2021"
 max_width = 100
 ```
 
-## Validation Checklist
+## Validation checklist
 
-- [ ] `cargo` is installed (`cargo --version`)
-- [ ] `rustfmt` is installed (`rustfmt --version`)
-- [ ] `clippy` is installed (`cargo clippy --version`)
+- [ ] Verify `cargo` installation (`cargo --version`)
+- [ ] Verify `rustfmt` installation (`rustfmt --version`)
+- [ ] Verify `clippy` installation (`cargo clippy --version`)
 - [ ] `Cargo.toml` exists with a valid `[package]` section
 - [ ] `src/` directory exists
 - [ ] `tests/` directory exists
@@ -69,7 +69,7 @@ cargo clippy -- -D warnings
 cargo test
 ```
 
-## Development Hooks
+## Development hooks
 
 | Hook | Command |
 |---|---|
@@ -78,9 +78,9 @@ cargo test
 | Test | `cargo test` |
 | Lint | `cargo clippy -- -D warnings` |
 
-## Feature Tests
+## Feature tests
 
-Feature tests live in `tests/`. Each file in `tests/` is compiled as a separate integration test binary.
+Feature tests live in `tests/`. Cargo compiles each file in `tests/` as a separate integration test binary.
 
 ```rust
 // tests/user_login.rs
@@ -95,7 +95,7 @@ fn user_logs_in_and_sees_dashboard() {
 }
 ```
 
-## Verification Command
+## Verification command
 
 ```bash
 cargo test -- --test-output immediate

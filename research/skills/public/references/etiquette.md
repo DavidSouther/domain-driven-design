@@ -1,14 +1,14 @@
-# Public — etiquette
+# Public: etiquette
 
-Shared rules for the public-web stack. The wiring SKILL ([`../../configuring-public/SKILL.md`](../../configuring-public/SKILL.md)) cites this file at configure time; the per-provider reference file ([`augmented-search.md`](augmented-search.md)) cites it for the shared rules it inherits.
+Shared rules for the public-web stack. The wiring in [`../../configuring-public/SKILL.md`](../../configuring-public/SKILL.md) cites this file at configure time. The per-provider reference file at [`augmented-search.md`](augmented-search.md) cites it for the shared rules it inherits.
 
 The core transport — `WebSearch` and `WebFetch` — is built in and needs no install. These rules are **policy** layered over that transport: who the project identifies as, how fast it may hit a host, and which hosts it may reach at all.
 
-## Contact User-Agent
+## Contact user-agent
 
-- Every fetch carries a `User-Agent` containing the application name and a **contact email**, so a host operator who notices the traffic can reach a human.
-- Hold the string in `RESEARCH_USER_AGENT` (or the environment's equivalent). Never hard-code an email into committed source — keep it in env so it travels with the operator, not the repo.
-- A descriptive User-Agent is the difference between being treated as a polite agent and being lumped in with anonymous scrapers. Some hosts raise anonymous rate limits when a contact header is present.
+- Every fetch carries a `User-Agent` containing the app name and a **contact email**, so a host operator who notices the traffic can reach a human.
+- Hold the string in `RESEARCH_USER_AGENT` (or the environment's equivalent). Never hard-code an email into committed source. Keep it in env so it travels with the operator, not the repo.
+- A descriptive user-agent distinguishes a polite agent from anonymous scrapers. Some hosts raise anonymous rate limits when a contact header is present.
 
 ## Rate limits and backoff
 
@@ -23,9 +23,9 @@ The core transport — `WebSearch` and `WebFetch` — is built in and needs no i
 
 ## Blocked-domain list
 
-- The blocked-domain list is honored unconditionally: **fetches to blocked hosts are refused** before the request is made, even when the allowed list is empty.
-- Use the blocked list for hosts the project must not touch (paywalled mirrors that violate terms, hosts the operator has been asked to avoid, known-malicious domains).
-- A fetch that should be blocked but succeeded is a drift signal and a re-verification trigger in [`../../configuring-public/SKILL.md`](../../configuring-public/SKILL.md).
+- The system honors the blocked-domain list unconditionally. **Blocked hosts reject all fetches** before the request travels, even when the allowed list is empty.
+- Use the blocked list for hosts the project must not touch. Include paywalled mirrors that violate terms, hosts operators request you to avoid, and known-malicious domains.
+- A fetch that should block but succeeds signals drift and triggers re-verification in [`../../configuring-public/SKILL.md`](../../configuring-public/SKILL.md).
 
 ## Key handling
 
@@ -34,4 +34,6 @@ The core transport — `WebSearch` and `WebFetch` — is built in and needs no i
 
 ## Cross-topic note
 
-The books and papers stacks maintain their own etiquette files ([`../../books/references/etiquette.md`](../../books/references/etiquette.md), [`../../papers/references/etiquette.md`](../../papers/references/etiquette.md)). All three share the **key-handling** and **backoff-on-429** posture. The public file is the thinnest: it has no per-host auth surface and no per-source rights tiers, because the public stack's core transport is built in and unauthenticated. Its distinct concerns are the **contact User-Agent** and the **allowed/blocked-domain policy** — project-level governance over an open transport, rather than per-source credentials.
+The books and papers stacks maintain their own etiquette files at [`../../books/references/etiquette.md`](../../books/references/etiquette.md) and [`../../papers/references/etiquette.md`](../../papers/references/etiquette.md). All three share the **key-handling** and **backoff-on-429** posture.
+
+The public file is the thinnest because the public stack's core transport is built in and unauthenticated. It has no per-host auth surface and no per-source rights tiers. Its distinct concerns are the **contact user-agent** and the **allowed/blocked-domain policy**. These provide project-level governance over an open transport, rather than per-source credentials.

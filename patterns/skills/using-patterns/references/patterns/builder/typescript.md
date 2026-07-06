@@ -1,4 +1,4 @@
-# Builder — TypeScript Reference
+# Builder: TypeScript reference
 
 ```typescript
 class HttpRequest {
@@ -50,7 +50,7 @@ const req = HttpRequest.builder("POST", "https://api.example.com/orders")
 ```
 
 Key details:
-- Required fields (`method`, `url`) are supplied at builder-creation time, not in `build()`.
+- The builder supplies required fields (`method`, `url`) at creation time, not in `build()`.
 - `build()` performs cross-field validation before constructing the object.
-- Headers are copied (`{ ...this.headers }`) so re-using the builder does not alias state.
-- The private constructor guarantees every `HttpRequest` was validated by the builder.
+- The builder copies headers (`{ ...this.headers }`) so re-using the builder does not alias state.
+- The private constructor guarantees the builder validates every `HttpRequest`.

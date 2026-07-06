@@ -1,6 +1,6 @@
 # Contracts and Invariants
 
-**Trigger:** Designing any API boundary, service interface, or domain operation signature.
+**Trigger:** designing any API boundary, service interface, or domain operation signature.
 
 ## Process
 
@@ -8,12 +8,12 @@
 
 Apply the glossary ability (`references/glossary.md`) to ensure all field names, types, and operation names use canonical terms. If `docs/ddd/glossary.md` does not exist, apply the glossary ability (`references/glossary.md`) to create it first before proceeding.
 
-### Step 2: Define Contracts
+### Step 2: Define contracts
 
 For each operation, specify:
 
 - **Input contract:** required fields, types, allowed values, and preconditions (conditions the caller must ensure before invoking)
-- **Output contract:** response shape, postconditions (guarantees the operation provides after completion), and error cases (e.g., "400 if X is missing, 409 if Y already exists")
+- **Output contract:** response shape, postconditions, and error cases. Postconditions guarantee what the operation provides after completion; error cases may include, for example: "400 if X is missing, 409 if Y already exists".
 
 Contracts describe the observable data shape at boundaries. Invariants (Step 3) are different: they are business rules that must always be true, not just at operation boundaries.
 
@@ -25,7 +25,7 @@ List states that must hold true at all times at the API edge.
 - Invariants may be **transiently violated** during transaction processing.
 - Violations must **never be observable externally** — effects are only visible once the transaction is complete.
 
-### Step 4: Record in Bounded Context File
+### Step 4: Record in bounded context file
 
 Append to `docs/ddd/contexts/<context-name>.md`:
 
@@ -45,4 +45,4 @@ Replace all `<...>` placeholders with actual values. Omit **Transactional note**
 
 - If the bounded context file does not exist, apply the domain-model ability (`references/domain-model.md`) first.
 - All type names and field names must match glossary canonical terms.
-- New entries in context files must be marked **[DRAFT]** until human-approved (see the Change Cadence Gate in `using-domain/SKILL.md`).
+- Mark new entries in context files with **[DRAFT]** until human-approved; see the Change Cadence Gate in `using-domain/SKILL.md`.

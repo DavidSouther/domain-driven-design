@@ -1,12 +1,12 @@
-# Bootstrap and Service — TypeScript Reference
+# Bootstrap and service: TypeScript reference
 
 The four layers and their mandates:
 
 | Layer | Mandate |
 |---|---|
 | **Domain** | Pure business rules, aggregates, value objects, domain services, errors as values; no I/O |
-| **Application Service** | Orchestrates one use case: parses input, calls domain + repository ports, returns typed results; no HTTP or DB knowledge |
-| **Adapter** | Implements a port interface defined by the service layer; translates protocol details (HTTP status codes, CLI flags) to/from service calls; no business logic |
+| **Application Service** | Orchestrates one use scenario: parses input, calls domain + repository ports, returns typed results; no HTTP or DB knowledge |
+| **Adapter** | Implements a port interface defined by the service layer; translates protocol details (HTTP status codes, command-line tool flags) to/from service calls; no business logic |
 | **Composition Root** | The only place that imports concrete classes; constructs and injects all dependencies; runs once at startup |
 
 ```typescript

@@ -3,7 +3,7 @@ name: dispatching-agents
 description: Use when preparing to start subagents. Especially multiple independent task.
 ---
 
-# Dispatching Agents
+# Dispatching agents
 
 ## Overview
 
@@ -11,9 +11,9 @@ Delegate tasks to specialized agents with isolated context. Craft their instruct
 
 When multiple unrelated failures appear across different test files or subsystems, investigating them sequentially wastes time. Each investigation is independent and can happen concurrently.
 
-**Core principle:** One agent per independent problem domain. Let them work concurrently.
+**Core principle:** one agent per independent problem domain. Let them work concurrently.
 
-## When to Use
+## When to use
 
 ```dot
 digraph when_to_use {
@@ -39,53 +39,53 @@ digraph when_to_use {
 - No shared state between investigations
 
 **When NOT to use:**
-- Failures are related (fixing one might fix others — investigate together first)
-- Understanding requires seeing the full system state
-- Agents would interfere with each other (editing same files, shared resources)
-- The failure scope is not yet known
+- Failures are related. Fixing one might fix others, so investigate them together first.
+- Understanding requires seeing the full system state.
+- Agents would interfere with each other (editing same files, shared resources).
+- The failure scope is not yet known.
 
-## Delegation Signals
+## Delegation signals
 
-Whether a sub-step is dispatched to a subagent at all is the first question. Check these signals before reaching for model-selection guidance.
+The first question is whether a sub-step should be dispatched to a subagent. Check these signals before reaching for model-selection guidance.
 
 **Positive signals (favor dispatch):**
-- Independent scope with a clear input/output boundary — the step can be handed a self-contained brief and returns a self-contained result.
-- Parallelizable with other work — the step can run concurrently with other sub-steps or with work the caller is doing itself.
-- A genuine cost- or capability-mismatch case — the step's complexity profile differs enough from the caller's own that isolating it lets it run on a cheaper or more specialized model.
-- A structured, deterministic hand-off — the caller can describe the step once, completely, without needing ongoing back-and-forth.
+- Independent scope with a clear input/output boundary. The step receives a self-contained brief and returns a self-contained result.
+- Parallelizable with other work. The step can run concurrently with other sub-steps or with work the caller is doing itself.
+- A genuine cost or capability mismatch. The step's complexity profile differs enough from the caller's own that isolating it lets it run on a cheaper or more specialized model.
+- A structured, deterministic hand-off. The caller can describe the step once, completely, without needing ongoing back-and-forth.
 
 **Negative signals (favor staying inline):**
-- Forced decomposition — the "step" exists only as a named heading in a plan or reference, with no real independent work behind it.
-- Tight, low-latency, multi-turn coupling to context the caller already holds in-session — the step needs to keep asking the caller things a subagent would have to reconstruct from scratch.
-- Round-trip coordination overhead — an extra model call plus context reconstruction on return would cost more than isolating the step saves.
+- Forced decomposition. The "step" exists only as a named heading in a plan or reference, with no real independent work behind it.
+- Tight, low-latency, multi-turn coupling to context the caller already holds in-session. The step needs to keep asking the caller things a subagent would have to reconstruct from scratch.
+- Round-trip coordination overhead. An extra model call plus context reconstruction on return would cost more than isolating the step saves.
 
 Dispatch a subagent once one of these signals is real, not because a step happens to have a name.
 
-## The Pattern
+## The pattern
 
-### 1. Identify Independent Operations 
+### 1. Identify independent operations 
 
-Group failures by what is broken:
+Group failures by what broke:
 - File A tests: Tool approval flow
 - File B tests: Batch completion behavior
-- File C tests: Abort functionality
+- File C tests: Stop functionality
 
-Group research by various areas
+Group research by areas
 - Internal search for conversations and designs
 - Codebase search for existing implementation
 - Public search for external context.
 
-Each domain is independent — fixing tool approval does not affect abort tests.
+Each domain is independent. Fixing tool approval does not affect stop tests.
 
-### 2. Create Focused Agent Tasks
+### 2. Create focused agent tasks
 
 Each agent gets:
 - **Specific scope:** One test file or subsystem
 - **Clear goal:** Make these tests pass
 - **Constraints:** Do not change other code
-- **Expected output:** Summary of root cause and what was fixed
+- **Expected output:** Summary of root cause and what you fixed
 
-### 3. Dispatch in Parallel
+### 3. Dispatch in parallel
 
 ```typescript
 Task("Fix agent-tool-abort.test.ts failures")
@@ -102,9 +102,9 @@ When agents return:
 - Run full test suite
 - Integrate all changes
 
-## Agent Prompt Structure
+## Agent prompt structure
 
-Effective agent prompts are focused, self-contained, and specific about expected output:
+Effective agent prompts focus on specific, self-contained goals with clear expected output:
 
 ```markdown
 Fix the 3 failing tests in src/agents/agent-tool-abort.test.ts:
@@ -127,19 +127,19 @@ Do NOT just increase timeouts - find the real issue.
 Return: Summary of what you found and what you fixed.
 ```
 
-## Common Mistakes
+## Common mistakes
 
-**❌ Too broad:** "Fix all the tests" — agent gets lost.
-**✅ Specific:** "Fix agent-tool-abort.test.ts" — focused scope.
+**❌ Too broad:** "Fix all the tests" - agent gets lost.
+**✅ Specific:** "Fix agent-tool-abort.test.ts" - focused scope.
 
-**❌ No context:** "Fix the race condition" — agent does not know where to look.
-**✅ Context:** Paste the error messages and test names.
+**❌ No context:** "Fix the race condition" - agent does not know where to look.
+**✅ Context:** paste the error messages and test names.
 
 **❌ No constraints:** Agent might refactor unrelated code.
-**✅ Constraints:** "Do NOT change production code" or "Fix tests only."
+**✅ Constraints:** "do NOT change production code" or "fix tests only."
 
-**❌ Vague output:** "Fix it" — no record of what changed.
-**✅ Specific:** "Return summary of root cause and changes."
+**❌ Vague output:** "Fix it" - no record of what changed.
+**✅ Specific:** "return summary of root cause and changes."
 
 ## Verification
 

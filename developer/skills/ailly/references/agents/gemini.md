@@ -1,8 +1,8 @@
-# Gemini CLI Tool Mapping
+# Gemini command-line tool mapping
 
-Gemini CLI adapter for the harness contract in `developer:ailly`. When a skill reference names a tool that Gemini calls something else, use this table:
+Gemini command-line tool adapter for the harness contract in `developer:ailly`. When a skill reference names a tool that Gemini calls something else, use this table:
 
-| Skill references | Gemini CLI equivalent |
+| Skill references | Gemini command-line tool equivalent |
 |-----------------|----------------------|
 | `Read` (file reading) | `read_file` |
 | `Write` (file creation) | `write_file` |
@@ -16,7 +16,7 @@ Gemini CLI adapter for the harness contract in `developer:ailly`. When a skill r
 | `WebFetch` | `web_fetch` |
 | `Task` tool (dispatch subagent) | Gemini subagent dispatch (available as of 2026-04-15) |
 
-## Subagent support
+## Subagent dispatch
 
 When Ailly asks for a phase subagent, dispatch a Gemini subagent with explicit context discipline:
 
@@ -24,15 +24,15 @@ When Ailly asks for a phase subagent, dispatch a Gemini subagent with explicit c
 2. Execute that phase against the session folder path passed by the coordinator.
 3. Return the phase result to the coordinator and close the subagent context before moving to another phase.
 
-For skills that rely on reviewer or thinking subagents, use the same dispatch discipline: read only the requested reference, write the requested artifact, and return to the coordinator flow.
+For skills that rely on reviewer or thinking subagents, use the same dispatch discipline. Read only the requested reference, write the requested artifact, and return to the coordinator flow.
 
-## Model Mandate
+## Model mandate
 
-Gemini CLI's subagent dispatch has no confirmed model-selection field today. This is not a separate, bespoke rule — it is `general/skills/dispatching-agents/model-selection.md`'s single mandate-with-announce rule degrading automatically wherever no mechanism is confirmed: the mandate half becomes a no-op, so only the announce half applies. Name the recommended model verbatim and invite a switch through Gemini's own equivalent of `/model`; never gate — continue on the current model either way.
+Gemini command-line tool's subagent dispatch has no confirmed model-selection field today. This is not a separate, bespoke rule. It is `general/skills/dispatching-agents/model-selection.md`'s single mandate-with-announce rule degrading automatically wherever no mechanism exists: the mandate half becomes a no-op, so only the announce half applies. Name the recommended model verbatim and invite a switch through Gemini's own equivalent of `/model`; never gate. Continue on the current model either way.
 
-## Additional Gemini CLI tools
+## Additional Gemini command-line tools
 
-These tools are available in Gemini CLI but have no direct canonical Ailly equivalent:
+These tools are available in Gemini command-line tool but have no direct canonical Ailly equivalent:
 
 | Tool | Purpose |
 |------|---------|

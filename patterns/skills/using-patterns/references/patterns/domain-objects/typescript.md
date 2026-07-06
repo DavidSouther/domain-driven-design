@@ -1,4 +1,4 @@
-# Entities, Value Objects, and Domain Service Functions — TypeScript Reference
+# Entities, value objects, and domain service functions. TypeScript reference
 
 ```typescript
 // ENTITY — identity via id, mutable state, equality by id

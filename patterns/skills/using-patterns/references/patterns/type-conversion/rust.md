@@ -1,6 +1,6 @@
-# Type Conversion — Rust Reference
+# Type conversion, rust reference
 
-Rust ships the conversion pattern in the standard library. `From` and `Into` are paired through a blanket impl. `TryFrom` and `TryInto` are paired the same way for fallible conversions. Implement the `From` side; the `Into` side is generated.
+Rust ships the conversion pattern in the standard library. A blanket impl pairs `From` and `Into`. The same impl pairs `TryFrom` and `TryInto` for fallible conversions. Implement the `From` side; the compiler generates the `Into` side.
 
 ## Total: `From` and `Into`
 
@@ -59,7 +59,7 @@ fn handle(raw: &str) -> Result<Email, EmailError> {
 }
 ```
 
-## Lifecycle Reshape: Aggregate Stage Transitions
+## Lifecycle reshape: aggregate stage transitions
 
 A move from one lifecycle stage to the next is a total conversion when no domain rule rejects it, and a partial conversion when it can.
 
@@ -90,9 +90,9 @@ impl PlacedOrder {
 }
 ```
 
-Note that no field is rebuilt by extracting and rewrapping. The newtypes are moved through.
+Note that no field requires extraction and rewrapping. The newtypes move through.
 
-## Anti-Patterns
+## Anti-patterns
 
 ```rust
 // Wrong: silent lossy cast scattered through call sites.
@@ -105,7 +105,7 @@ fn parse_amount(s: &str) -> Cents { Cents(s.parse().unwrap()) }
 let id = OrderId(draft.id.0.clone());
 ```
 
-## Single Canonical Direction
+## Single canonical direction
 
 If `Cents` to `Dollars` is canonical, do not also implement `From<Dollars> for Cents`. The reverse is lossy and deserves an explicit method:
 

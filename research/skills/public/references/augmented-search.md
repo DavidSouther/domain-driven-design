@@ -1,6 +1,6 @@
 # Search augmentation
 
-The one optional provider for the public stack. Built-in `WebSearch` is always available and answers the majority of public-research queries; an augmentation provider is configured only when the user supplies one, for **higher-recall or domain-scoped** search (a hosted search-API connector, or an index the user runs over a specific corpus).
+The one optional provider for the public stack. Built-in `WebSearch` is always available and answers the majority of public-research queries. You configure an augmentation provider only when you want **higher-recall or domain-scoped** search. This provider can be a hosted search-API connector or an index you run over a specific corpus.
 
 Inherits the shared rules in [`etiquette.md`](etiquette.md): contact User-Agent, per-host rate limits and backoff-on-429, allowed/blocked-domain policy, and provider-key handling in env.
 
@@ -8,18 +8,18 @@ Inherits the shared rules in [`etiquette.md`](etiquette.md): contact User-Agent,
 
 - **Augmented search** — a provider-ranked result list (title, URL, snippet), keyed off the same query the built-in search takes, optionally scoped to a provider or domain. Returns hits ranked by the provider's index rather than the built-in ranker.
 
-This is the single conditional capability in the public contract. The two unconditional capabilities (`WebSearch`, `WebFetch`) are built in and described in the contract directly; they have no provider reference because there is nothing to configure.
+This is the single conditional capability in the public contract. The two unconditional capabilities (`WebSearch`, `WebFetch`) are built in and described in the contract directly. They have no provider reference because there is nothing to configure.
 
 ## Probe order
 
-**Primary: the configured search-augmentation MCP.** Probe the MCP this project runs for augmented search (a hosted search-API connector, or a domain-scoped index the user maintains).
+**Primary: the configured search-augmentation MCP.** Probe the MCP this project runs for augmented search. This can be a hosted search-API connector or a domain-scoped index you maintain.
 
 - Transport: standard MCP wire protocol.
 - Auth: a provider API key when the provider requires one; set its env var (see below). Some local indexes need no key.
 
-**Fallback: built-in `WebSearch`.** When no augmentation MCP is reachable, fall back to the always-available built-in search. The wiring returns a typed Not-Available result for the *augmented search* capability and the practice skill degrades to `WebSearch` for the same query — no error, no gap in coverage.
+**Fallback: built-in `WebSearch`.** When no augmentation MCP is reachable, fall back to the always-available built-in search. The wiring returns a typed Not-Available result for the *augmented search* capability and the practice skill degrades to `WebSearch` for the same query. No error, no gap in coverage.
 
-**Not-Available** when no provider is configured:
+**Not-Available** when you don't configure a provider:
 
 ```
 { result: "not-available", capability: "augmented-search", reason: "no augmentation provider configured; falls back to built-in WebSearch" }

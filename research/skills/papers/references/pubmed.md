@@ -1,4 +1,4 @@
-# PubMed
+# Pubmed
 
 Biomedical literature: 36M+ citations, abstracts, and PMC full text where open-access. The primary biomedical-search capability for `research:papers`.
 
@@ -18,14 +18,14 @@ Biomedical literature: 36M+ citations, abstracts, and PMC full text where open-a
 /plugin install pubmed@life-sciences
 ```
 
-No account required. Free. The wiring SKILL's checklist marks the *Biomedical search* capability available only after install completes.
+No account required. Free. The wiring skill's checklist marks the *Biomedical search* capability available only after install completes.
 
 ## HTTP fallback
 
 - Base URL: `https://eutils.ncbi.nlm.nih.gov`
 - Endpoints: `/entrez/eutils/esearch.fcgi`, `/entrez/eutils/efetch.fcgi`, `/entrez/eutils/esummary.fcgi`, `/entrez/eutils/elink.fcgi`
 - Auth: API key optional but recommended (raises rate from 3 RPS to 10 RPS). Pass `&api_key=...`.
-- Rate limits: 3 RPS anonymous; 10 RPS with key. Use a `tool=` and `email=` parameter for polite-pool identification.
+- Rate limits: 3 RPS anonymous; 10 RPS with key. Use a `tool=` and `email=` parameter for polite request identification.
 
 ## Query shapes
 

@@ -1,4 +1,4 @@
-# Mise Monorepo Reference
+# Mise monorepo reference
 
 Toolchain: mise + per-language sub-projects
 
@@ -6,7 +6,7 @@ Toolchain: mise + per-language sub-projects
 
 A mise monorepo hosts multiple language sub-projects under one root. Mise provides a unified task interface (`mise format`, `mise test`, etc.) that delegates to each sub-project's own tooling.
 
-## Required Layout
+## Required layout
 
 ```
 <monorepo>/
@@ -20,7 +20,7 @@ A mise monorepo hosts multiple language sub-projects under one root. Mise provid
   docs/
 ```
 
-## Required Root `mise.toml`
+## Required root `mise.toml`
 
 ```toml
 [tools]
@@ -93,9 +93,9 @@ description = "Start all services for local development"
 run = "echo 'Override with service-specific commands'"
 ```
 
-## Validation Checklist
+## Validation checklist
 
-- [ ] `mise` is installed (`mise --version`)
+- [ ] Verify `mise` is installed (run `mise --version`)
 - [ ] Root `mise.toml` exists with `format`, `check`, `test`, `lint` tasks
 - [ ] `mise trust` has been run (or `MISE_TRUSTED_CONFIG_PATHS` is set)
 - [ ] Each sub-project has its own language reference validated
@@ -125,7 +125,7 @@ mise run check
 mise run test
 ```
 
-## Development Hooks
+## Development hooks
 
 | Hook | Command |
 |---|---|
@@ -134,7 +134,7 @@ mise run test
 | Test | `mise run test` |
 | Lint | `mise run lint` |
 
-## Per-Service Tasks
+## Per-service tasks
 
 Each sub-project can override tasks in its own `mise.toml`:
 
@@ -150,7 +150,7 @@ run = "cargo clippy -- -D warnings"
 run = "cargo test"
 ```
 
-## Service-Specific `run` and `serve`
+## Service-specific `run` and `serve`
 
 Configure `run` for primary service startup and `serve` for full local dev (all services + dependencies):
 
@@ -163,7 +163,7 @@ run = "cargo run --bin service-a"
 run = "docker compose up -d db && cargo run --bin service-a"
 ```
 
-## Verification Command
+## Verification command
 
 ```bash
 mise run check && mise run test

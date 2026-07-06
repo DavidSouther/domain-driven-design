@@ -1,50 +1,50 @@
-# Papers — etiquette
+# Papers: Etiquette
 
-Per-host rules for the papers stack. The wiring SKILL ([`../../configuring-papers/SKILL.md`](../../configuring-papers/SKILL.md)) cites this file at configure time; the per-source reference files cite it for the shared rules.
+Per-host rules for the papers stack. The wiring process (see [`../../configuring-papers/SKILL.md`](../../configuring-papers/SKILL.md)) cites this file at configure time; the per-source reference files cite it for the shared rules.
 
 ## Crossref
 
-- Enter the **polite pool** by adding `mailto=you@example.org` as a query parameter or `User-Agent` header. Set `CROSSREF_MAILTO` in env.
-- Watch `x-rate-limit-limit` / `x-rate-limit-interval` headers; back off on 429.
-- Rate limits revised downward 1 December 2025.
+- Enter the **polite tier** by adding `mailto=you@example.org` as a query parameter or `User-Agent` header. Set `CROSSREF_MAILTO` in env.
+- Watch `x-rate-limit-limit` / `x-rate-limit-interval` headers; back off on 429 s.
+- Rate limits revised downward December 1, 2025.
 
-## OpenAlex
+## Openalex
 
-- **API key required as of 13 February 2026.** Free, 30-second signup. Set `OPENALEX_API_KEY`.
-- Daily budget: **$1/day free credit**; per-call thereafter ($0 singletons, $0.0001/list, $0.001/search, $0.01/semantic-search or content download).
-- The historic `mailto=` polite-pool convention still works for politeness but no longer governs access.
+- **API key required as of February 13, 2026.** Free, 30-second signup. Set `OPENALEX_API_KEY`.
+- Daily budget: **$1/day free credit**. Per-call thereafter: $0 for singletons, $0.0001 for lists, $0.001 for search, $0.01 for semantic-search or content download.
+- The historic `mailto=` parameter still works for politeness but no longer governs access.
 
-## Semantic Scholar
+## Semantic scholar
 
 - API key strongly preferred. Request via the developer portal; pass as `x-api-key` header. Set `SEMANTIC_SCHOLAR_API_KEY`.
 - **With key**: 1 RPS dedicated.
-- **Anonymous**: global shared pool capped at 5,000 requests per 5 minutes.
+- **Anonymous**: global shared quota capped at 5,000 requests per 5 minutes.
 - **Mandatory exponential backoff on 429s.**
 
-## ArXiv
+## Arxiv
 
 - **One request per three seconds, single connection.** Serialize fan-out into this source.
-- OAI-PMH at `https://oaipmh.arxiv.org/oai` is preferred for bulk metadata harvesting; reserve the query API for live use.
+- Use OAI-PMH at `https://oaipmh.arxiv.org/oai` for bulk metadata harvesting. Reserve the query API for live use.
 - Output is Atom/XML; budget the parse cost accordingly.
 
 ## Unpaywall
 
-- Email parameter required: `?email=you@example.org`. Set `UNPAYWALL_EMAIL`.
+- email parameter required: `?email=you@example.org`. Set `UNPAYWALL_EMAIL`.
 - No key, no documented hard rate limit; the email serves as a per-caller fair-use identifier.
 
-## CORE
+## Core
 
 - API key required (free). Set `CORE_API_KEY`; pass as `Authorization: Bearer ...`.
-- Rate limits: **1 req/10s for batch, 5 req/10s for single queries**; higher tiers for member institutions.
+- Rate limits: **1 req/10 s for batch, 5 req/10 s for single queries**. Higher tiers for member institutions.
 
-## PubMed
+## Pubmed
 
-- API key optional but recommended — raises rate from 3 RPS to 10 RPS. Pass `&api_key=...`.
-- Use `tool=` and `email=` parameters for polite-pool identification.
+- API key optional but recommended. Raises rate from 3 RPS to 10 RPS. Pass `&api_key=...`.
+- Use `tool=` and `email=` parameters for politeness identification.
 
-## Wiley Scholar Gateway
+## Wiley scholar gateway
 
-- OAuth 2.1 via Wiley CONNECT SSO. **Claude Pro plus Wiley institutional or trial SSO.** Trial valid through 30 June 2026.
+- OAuth 2.0 via Wiley CONNECT SSO. Claude Pro plus Wiley institutional or trial SSO. Trial valid through June 30, 2026.
 - Treat SSO-token expiration as a re-verification trigger in [`../../configuring-papers/SKILL.md`](../../configuring-papers/SKILL.md).
 
 ## Scite
@@ -58,16 +58,18 @@ Per-host rules for the papers stack. The wiring SKILL ([`../../configuring-paper
 - Group libraries use `/groups/{id}` instead of `/users/{id}`.
 - 50 GB/month bandwidth per key; back off on 429.
 
-## DBLP / Europe PMC
+## Dblp / Europe pmc
 
-- No auth required. Be polite (≤2 req/s for DBLP; default to a similar posture for Europe PMC unless the user is institutional).
+- No auth required. Be polite (≤2 req/s for DBLP). Default to a similar posture for Europe PMC unless the user is institutional.
 
 ## Key handling
 
 - All API keys travel in environment variables; never in committed source.
 - Rotation of any key triggers a re-run of [`../../configuring-papers/SKILL.md`](../../configuring-papers/SKILL.md) to refresh the wiring and the smoke-tests.
-- Tokens with explicit expiration (Wiley SSO, Scite subscription, OpenAlex daily budget) carry re-verification triggers in the wiring SKILL.
+- Tokens with explicit expiration carry re-verification triggers in the wiring process. These include Wiley SSO, Scite subscription, and OpenAlex daily budget.
 
 ## Cross-topic note
 
-The books stack maintains its own [`../../books/references/etiquette.md`](../../books/references/etiquette.md). The two files share the **key-handling** posture but differ on every per-host rule: papers rules center on **polite-pool `mailto=` parameters**, **exponential backoff**, and **per-source request spacing** (ArXiv's three-second cap is the strictest); books rules center on **User-Agent contact emails**, **edition disambiguation**, and **full-text rights tiers** (HathiTrust OAuth is the strictest auth surface).
+The books stack maintains its own [`../../books/references/etiquette.md`](../../books/references/etiquette.md). The two files share the **key-handling** posture but differ on every per-host rule.
+
+Papers rules center on three aspects: **`mailto=` parameters for politeness**, **exponential backoff**, and **per-source request spacing** with ArXiv's three-second cap as the strictest limit. Books rules center on **User-Agent contact emails**, **edition disambiguation**, and **full-text rights tiers** with HathiTrust OAuth as the strictest auth surface.

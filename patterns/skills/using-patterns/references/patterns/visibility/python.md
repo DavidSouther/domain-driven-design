@@ -1,6 +1,6 @@
-# Visibility — Python Reference
+# Visibility: Python reference
 
-Python has no enforced privacy, so the convention is layered: leading underscores for "do not touch," `@property` for read-only views, and `MappingProxyType` / tuples for immutable collection returns. Frozen dataclasses cover the value-object case completely.
+Python has no enforced privacy. The convention comprises multiple layers: leading underscores signal "do not tap," `@property` provides read-only views, and `MappingProxyType` or tuples return immutable collections. Frozen dataclasses cover the value object scenario completely.
 
 ```python
 from dataclasses import dataclass, field
@@ -76,8 +76,8 @@ class OrderBuilder:
 
 Key details:
 - Underscore-prefixed names signal "private" to humans and to linters; tools such as Pyright respect the convention.
-- `@property` exposes a read path with no setter — assignment from outside raises `AttributeError`.
+- `@property` exposes a read path with no setter. Assignment from outside raises `AttributeError`.
 - `lines` returns a `tuple`, so `.append` is unavailable. For dictionaries, return `MappingProxyType(self._dict)`.
 - `add_line` and `cancel` enforce invariants before mutating.
 - Construction goes through `Order.builder(...)`; calling `Order(...)` directly is possible but flagged as private by convention and tooling.
-- For immutable value objects, `@dataclass(frozen=True)` is the strongest form — there is no mutation surface to control.
+- For immutable value objects, `@dataclass(frozen=True)` is the strongest form. There is no mutation surface to control.

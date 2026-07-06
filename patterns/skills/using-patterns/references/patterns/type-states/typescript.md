@@ -1,6 +1,6 @@
-# Type States — TypeScript Reference
+# Type states: TypeScript reference
 
-### Discriminated Union — Rome's bug made unrepresentable
+### Discriminated union: Rome's bug made unrepresentable
 
 ```typescript
 // Before: flat interface allows Peace + Dictator (the bug)
@@ -16,7 +16,7 @@ type Rome = RomeAtPeace | RomeAtWar;
 const invalid: Rome = { status: "peace", ruler: "dictator" }; // TS error
 ```
 
-### Type State — connection lifecycle with phantom types
+### Type state: connection lifecycle with phantom types
 
 ```typescript
 declare const _tag: unique symbol;
@@ -34,7 +34,7 @@ const c = new Connection<Closed>();
 send(c, "hello"); // TS2345
 ```
 
-### Protocols — scope which operations a caller may perform
+### Protocols: scope which operations a caller may perform
 
 ```typescript
 interface Readable { read(): Buffer; }

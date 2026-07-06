@@ -1,4 +1,4 @@
-# Wiley Scholar Gateway
+# Wiley scholar gateway
 
 Semantic search across ~3M articles in 1,300+ Wiley journals. Returns **passage snippets with DOI link-out**, not full PDFs.
 
@@ -17,14 +17,14 @@ Semantic search across ~3M articles in 1,300+ Wiley journals. Returns **passage 
 /plugin install wiley-scholar-gateway@life-sciences
 ```
 
-Auth: OAuth 2.1 via Wiley CONNECT SSO. Complete the SSO handshake after install.
+Auth: oauth 2.0 via Wiley CONNECT SSO. Complete the SSO handshake after install.
 
 Access requires:
 
 - **Claude Pro account**.
-- **Wiley institutional subscription** **or** a **limited free-trial registration** for active researchers, valid through 30 June 2026.
+- **Wiley institutional subscription** **or** a **limited free-trial registration** for active researchers, valid through June 30, 2026.
 
-The wiring SKILL's checklist marks the *Wiley journal search* capability available only after install **and** SSO handshake completes.
+The wiring checklist marks the *Wiley journal search* capability available only after install **and** SSO handshake completes.
 
 ## HTTP fallback
 
@@ -42,10 +42,10 @@ Snippets are **for display within the user's session**. Full text remains gated 
 
 ## Failure modes
 
-- **SSO not configured** — the *Wiley journal search* capability returns Not-Available. The wiring SKILL's re-verification trigger "Wiley SSO token expired" applies.
-- **Trial expired** — for free-trial users past 30 June 2026, access lapses unless institutional subscription is configured.
+- **SSO not configured** — the *Wiley journal search* capability returns Not-Available. The re-verification trigger "Wiley SSO token expired" applies.
+- **Trial expired** — for free-trial users past June 30, 2026, access lapses unless the user configures an institutional subscription.
 - **Excluded media** — figures and charts are not returned by Scholar Gateway; the practice skill cannot retrieve them. Link to the DOI for the user's authenticated session.
 
 ## Out-of-scope (related)
 
-**Wiley TDM API** at `api.wiley.com` delivers full-text PDFs under a contractual TDM license. Distinct from Scholar Gateway and **out of scope** for this stack — see [`out-of-scope.md`](out-of-scope.md).
+**Wiley TDM API** at `api.wiley.com` delivers full-text PDFs under a contractual TDM license. Distinct from Scholar Gateway and **out of scope** for this stack. See [`out-of-scope.md`](out-of-scope.md).

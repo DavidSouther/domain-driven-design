@@ -1,8 +1,8 @@
-# Type States — Rust Reference
+# Type states, rust reference
 
-Rust enforces type states at compile time through ownership and the borrow checker. Consuming the old state on transition is not convention — it is enforced by move semantics.
+Rust enforces type states at compile time through ownership and the borrow checker. Consuming the old state on transition is not convention. Move semantics enforce it.
 
-### Discriminated Union (enum)
+### Discriminated union (enum)
 
 ```rust
 struct Consuls;
@@ -24,7 +24,7 @@ fn describe(rome: &Rome) -> &'static str {
 // The compiler exhaustively checks every variant — no invalid combination possible.
 ```
 
-### Type State — zero-cost phantom types
+### Type state, zero-cost phantom types
 
 ```rust
 use std::marker::PhantomData;
@@ -69,7 +69,7 @@ fn demo() {
 }
 ```
 
-### Protocols — trait-based capability scoping
+### Protocols, trait-based capability scoping
 
 ```rust
 pub trait Readable {

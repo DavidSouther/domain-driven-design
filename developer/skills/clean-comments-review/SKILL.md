@@ -3,13 +3,13 @@ name: clean-comments-review
 description: Use when reviewing comments in coding artifacts. Produces a critique document, not code edits.
 ---
 
-# Clean Comments Review
+# Clean comments review
 
 ## Overview
 
 Review comments for whether they explain durable intent and invariants to the right reader. The artifact is a critique document, not a code rewrite.
 
-Comments explain why this exists, what contract callers may rely on, what invariant must be preserved, or why an unusual choice is correct.
+Comments explain why this exists, what contract callers may rely on, what invariant a future reader must protect, or why an unusual choice is correct.
 A comment explains what the code, signatures, type names, editor navigation, and git history cannot say clearly enough.
 
 ## Comments Explain Intent and Invariants
@@ -17,23 +17,23 @@ A comment explains what the code, signatures, type names, editor navigation, and
 The review’s core question is: what can this comment tell a future reader that the code and tools cannot?
 
 Good comments name durable things: intent, invariants, contracts, constraints, tradeoffs, surprising decisions, compatibility requirements, and domain meaning.
-They remain useful after code moves, files are renamed, callers change, helper functions are rearranged, and the original project plan is forgotten.
+They remain useful after code moves, engineers rename files, callers change, maintainers rearrange helper functions, and teams forget the original project plan.
 
-## Public DocBlocks Serve External Readers
+## Public docblocks serve external readers
 
 A public DocBlock addresses someone using the symbol without reading its implementation. It should explain why the symbol exists, what behavior callers may rely on, and any constraints that shape correct use.
 
 A public DocBlock can include module-level intent, stable contracts, important edge cases, and worked examples.
 It should trust the reader’s tools for signatures, parameter names, return types, definitions, and reference searches.
 
-## Internal Comments Preserve Maintainer Judgment
+## Internal comments preserve maintainer judgment
 
 An internal comment addresses a future maintainer who can read the code, jump to definitions, find usages, and inspect history.
-Its job is to preserve judgment that would otherwise be lost: why this path is surprising but intentional, what invariant the next edit must protect, or what external constraint shaped the implementation.
+Its job is to preserve judgment that would otherwise be lost. It explains why this path is surprising but intentional, what invariant the next edit must protect, or what external constraint shaped the implementation.
 
 The strongest inline comments sit near the decision they explain and survive a caller reshuffle.
 
-## Comments Trust the Tooling
+## Comments trust the tooling
 
 Treat the editor and repository as part of the reader’s context.
 Signatures, types, field names, visibility, cfg attributes, definitions, references, blame, and file history are already available.
@@ -41,9 +41,9 @@ Signatures, types, field names, visibility, cfg attributes, definitions, referen
 A comment like “split out of restir.wgsl” is history.
 A comment like “this layout must remain byte-compatible with the ReSTIR shader buffer” is an invariant.
 A comment like “used by testing_events.rs” is a reference search.
-A comment like “the test harness and production path must share this gather rule” may be a contract if that shared rule is the important thing to preserve.
+A comment like “the test harness and production path must share this gather rule” may be a contract if preserving that shared rule is the important concept.
 
-## Output Format
+## Output format
 
 Produce a critique document. For each comment or comment group:
 
@@ -54,7 +54,7 @@ Produce a critique document. For each comment or comment group:
 
 The review artifact names the problem and the desired shape of the comment; it does not edit the code directly.
 
-## Review Signals
+## Review signals
 
 - **Durable intent:** Keep comments that explain why the code exists, what must remain true, or what contract readers may rely on.
 - **Audience fit:** Shape public DocBlocks around caller contracts and internal comments around maintainer judgment.

@@ -1,19 +1,19 @@
-# NewType
+# New type
 
 ## Overview
 
-Wrap primitive types in named domain types so the type system enforces correct usage. Scalar types describe what data *looks like*; domain types describe what data *means*. The compiler checks shape, not meaning, so two fields that are both floatint point numbers are indistinguishable without wrapping in a newtype. When implemented using brands, the brandd is erased at runtime, ensuring zero performance overhead.
+Wrap primitive types in named domain types so the type system enforces correct usage. Scalar types describe what data *looks like*; domain types describe what data *means*. The compiler checks shape, not meaning, so two fields that are both floatint point numbers are indistinguishable without wrapping in a newtype. When implemented using brands, the compiler erases the brand at runtime, ensuring zero performance overhead.
 
-## When to Use
+## When to use
 
-- Two or more domain identifiers share the same primitive type (e.g., `UserId`, `OrderId`, `ProductId` are all UUIDs).
-- A numeric quantity has units whose mixing would be incorrect (e.g., `Meters` vs `Feet`, `Euros` vs `Dollars`).
-- A string has a constrained format or security implications that should be validated once at construction (`EmailAddress`, `Slug`, `SqlQuery`), preventing injection by making unsanitized strings unacceptable to domain APIs.
+- Two or more domain identifiers share the same primitive type (for example, `UserId`, `OrderId`, `ProductId` are all UUIDs).
+- A numeric quantity has units whose mixing would be incorrect (for example, `Meters` vs `Feet`, `Euros` vs `Dollars`).
+- A string has a constrained format or security implications; validate them once at construction (`EmailAddress`, `Slug`, `SqlQuery`), preventing injection by making unsanitized strings unacceptable to domain APIs.
 - A value crosses a bounded context boundary and its meaning must be explicit.
 
-**When NOT to use:** Purely internal scratch variables, loop counters, or values that have no domain meaning and are never passed between functions.
+**when NOT to use:** Purely internal scratch variables, loop counters, or values that have no domain meaning and are never passed between functions.
 
-## Core Pattern
+## Core pattern
 
 **Before** — primitives leak domain intent; swapping `fromAccount` and `toAccount` (both `string`) compiles silently.
 
@@ -29,7 +29,7 @@ transfer(makeAccountId("acc-123"), makeAccountId("acc-456"), makeCents(5000));
 
 For complete examples, see [`newtype/typescript.md`](newtype/typescript.md), [`newtype/python.md`](newtype/python.md), and [`newtype/rust.md`](newtype/rust.md).
 
-## Quick Reference
+## Quick reference
 
 | Domain Concept   | Raw Type         | NewType                         |
 |------------------|------------------|---------------------------------|
@@ -39,14 +39,14 @@ For complete examples, see [`newtype/typescript.md`](newtype/typescript.md), [`n
 | Validated input  | `string`         | `EmailAddress(String)`, `Slug(String)`  |
 | Timestamps       | `number`         | `UnixSeconds(Duration)`, `Milliseconds(u8)`|
 
-## Common Mistakes
+## Common mistakes
 
 - **Plain type alias instead of a brand** `type UserId = string` is fully transparent; the compiler treats it as identical to `string` and provides no safety.
 - **Casting with `as` at call sites** writing `transfer(toId as AccountId, fromId as AccountId, ...)` defeats the pattern entirely. All `as` casts belong inside the constructor function, never at the call site.
 - **Skipping the constructor or builder** directly casting raw values at every use site spreads unvalidated entry points across the codebase. Centralise construction so validation and coercion happen once.
 - **Branding every incidental value** NewTypes belong on domain-meaningful concepts. Branding loop counters or local temporaries adds noise without benefit.
 
-## Composes With
+## Composes with
 
 - **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — constructor functions, builders, and `impl TryFrom` *are* parsers; `makeEmail(raw)` validates and brands in one step, producing the typed value domain code consumes.
-- **the domain-objects pattern (`references/patterns/domain-objects.md`)** — brand entity IDs (`UserId`, `OrderId`) and constrained value-object fields (`Cents`, `EmailAddress`) so the type system enforces correct usage across the model.
+- **the domain-objects pattern (`references/patterns/domain-objects.md`)** — brand entity IDs (`UserId`, `OrderId`) and constrained value object fields (`Cents`, `EmailAddress`) so the type system enforces correct usage across the model.

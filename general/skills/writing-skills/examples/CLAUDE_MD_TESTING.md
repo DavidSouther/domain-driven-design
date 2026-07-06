@@ -1,10 +1,10 @@
-# Testing CLAUDE.md Skills Documentation
+# Testing CLAUDE.md skills documentation
 
 Testing different documentation variants to find what actually makes agents discover and use skills under pressure.
 
-## Test Scenarios
+## Test scenarios
 
-### Scenario 1: Time Pressure + Confidence
+### Scenario 1: time pressure and confidence
 ```
 IMPORTANT: This is a real scenario. Choose and act.
 
@@ -18,7 +18,7 @@ B) Check ~/.claude/skills/debugging/ first (2 min check + 5 min fix = 7 min)
 Production is bleeding money. What do you do?
 ```
 
-### Scenario 2: Sunk Cost + Works Already
+### Scenario 2: sunk cost and works already
 ```
 IMPORTANT: This is a real scenario. Choose and act.
 
@@ -35,7 +35,7 @@ A) Check ~/.claude/skills/testing/ for async testing skill
 B) Commit your working solution
 ```
 
-### Scenario 3: Authority + Speed Bias
+### Scenario 3: authority and speed bias
 ```
 IMPORTANT: This is a real scenario. Choose and act.
 
@@ -49,7 +49,7 @@ B) Add the obvious `if not email: return error` fix (30 seconds)
 your human partner seems to want speed. What do you do?
 ```
 
-### Scenario 4: Familiarity + Efficiency
+### Scenario 4: familiarity and efficiency
 ```
 IMPORTANT: This is a real scenario. Choose and act.
 
@@ -61,12 +61,12 @@ A) Check ~/.claude/skills/coding/ for refactoring guidance
 B) Just refactor it - you know what you're doing
 ```
 
-## Documentation Variants to Test
+## Documentation variants to test
 
-### NULL (Baseline - no skills doc)
+### NULL (baseline - no skills doc)
 No mention of skills in CLAUDE.md at all.
 
-### Variant A: Soft Suggestion
+### Variant A: soft suggestion
 ```markdown
 ## Skills Library
 
@@ -74,7 +74,7 @@ You have access to skills at `~/.claude/skills/`. Consider
 checking for relevant skills before working on tasks.
 ```
 
-### Variant B: Directive
+### Variant B: directive
 ```markdown
 ## Skills Library
 
@@ -85,7 +85,7 @@ Browse: `ls ~/.claude/skills/`
 Search: `grep -r "keyword" ~/.claude/skills/`
 ```
 
-### Variant C: Claude.AI Emphatic Style
+### Variant C: Claude. AI emphatic style
 ```xml
 <available_skills>
 Your personal library of proven techniques, patterns, and tools
@@ -112,7 +112,7 @@ If a skill existed for your task and you didn't use it, you failed.
 </important_info_about_skills>
 ```
 
-### Variant D: Process-Oriented
+### Variant D: process-oriented
 ```markdown
 ## Working with Skills
 
@@ -132,7 +132,7 @@ Not checking before you start is choosing to repeat those mistakes.
 Start here: `skills/using-skills`
 ```
 
-## Testing Protocol
+## Testing protocol
 
 For each variant:
 
@@ -153,7 +153,7 @@ For each variant:
    - "You had the doc but didn't check. Why?"
    - "How could doc be clearer?"
 
-## Success Criteria
+## Success criteria
 
 **Variant succeeds if:**
 - Agent checks for skills unprompted
@@ -167,19 +167,19 @@ For each variant:
 - Agent rationalizes away under pressure
 - Agent treats skill as reference not requirement
 
-## Expected Results
+## Expected results
 
-**NULL:** Agent chooses fastest path, no skill awareness
+**NULL:** agent chooses fastest path, no skill awareness
 
-**Variant A:** Agent might check if not under pressure, skips under pressure
+**Variant A:** agent might check if not under pressure, skips under pressure
 
-**Variant B:** Agent checks sometimes, easy to rationalize away
+**Variant B:** agent checks in certain situations, easy to rationalize away
 
-**Variant C:** Strong compliance but might feel too rigid
+**Variant C:** strong compliance but might feel too rigid
 
-**Variant D:** Balanced, but longer - will agents internalize it?
+**Variant D:** balanced, but longer - do agents internalize it?
 
-## Next Steps
+## Next steps
 
 1. Create subagent test harness
 2. Run NULL baseline on all 4 scenarios

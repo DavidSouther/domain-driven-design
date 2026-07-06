@@ -1,6 +1,6 @@
-# Type Conversion — TypeScript Reference
+# Type conversion - TypeScript reference
 
-TypeScript has no built-in `From` or `Into` traits, so the discipline is supplied by convention. Use static `from` and `tryFrom` methods on the target class or namespace. Total conversions never throw. Partial conversions either throw a typed error or return a discriminated `Result`.
+TypeScript has no built-in `From` or `Into` traits, so you supply the discipline through convention. Use static `from` and `tryFrom` methods on the target class or namespace. Total conversions never throw. Partial conversions either throw a typed error or return a discriminated `Result`.
 
 ## Total: `static from`
 
@@ -25,7 +25,7 @@ const d: Dollars = Dollars.from(Cents(2599));
 
 ## Partial: `static tryFrom`
 
-`Email` is a partial conversion: a raw string may not be a valid email. The constructor stays private; the only public construction paths are `tryFrom` and `parse`. Two return shapes are idiomatic — choose one per project and stay consistent.
+`Email` is a partial conversion: a raw string may not be a valid email. The constructor stays private; the only public construction paths are `tryFrom` and `parse`. Two return shapes are idiomatic. Choose one per project and stay consistent.
 
 ```typescript
 export class Email {
@@ -59,7 +59,7 @@ export class EmailFormatError extends Error {
 }
 ```
 
-The result-shaped variant is consumed by pattern-matching on the union:
+You consume the result-shaped variant by pattern-matching on the union:
 
 ```typescript
 const result = Email.tryFrom(req.body.email);
@@ -71,7 +71,7 @@ sendWelcome(result);
 
 Both factories call `new Email(raw)` from inside a static method, so the private constructor is reachable without an `as` cast.
 
-## Generic Acceptance
+## Generic acceptance
 
 Function overloads accept multiple convertible inputs while the body narrows once.
 
@@ -87,7 +87,7 @@ charge(Cents(500));
 charge(500);
 ```
 
-## Lifecycle Reshape
+## Lifecycle reshape
 
 ```typescript
 interface DraftOrder  { readonly id: OrderId; readonly customer: CustomerId; readonly total: Cents; }
@@ -102,7 +102,7 @@ export const PlacedOrder = {
 
 The fields of `draft` are spread, not extracted and rewrapped. The branded values flow through.
 
-## Anti-Patterns
+## Anti-patterns
 
 ```typescript
 // Wrong: `as` cast at the call site bypasses the constructor.
@@ -116,7 +116,7 @@ Email.from(req.body.email); // throws on bad input
 const newId = (draft.id as string) as OrderId;
 ```
 
-## Single Canonical Direction
+## Single canonical direction
 
 Implement one direction. If `Cents` to `Dollars` is canonical, the reverse gets a named method that surfaces the rounding:
 

@@ -1,4 +1,4 @@
-# Confluence / Notion (wiki)
+# Confluence / notion (wiki)
 
 The org knowledge base. First stop for specs, ADRs, runbooks, and any long-form document that outlives a Slack thread.
 
@@ -11,8 +11,8 @@ The org knowledge base. First stop for specs, ADRs, runbooks, and any long-form 
 
 Two wiki shapes share this contract row:
 
-- **Notion** — the Anthropic Notion connector exposes `notion-search` and `notion-fetch` (plus `notion-get-comments` where comments are wanted).
-- **Confluence** — probe the configured Confluence MCP for this org; tool names vary by which server is installed, so discover the surface rather than assuming a slug.
+- **Notion** — the Anthropic Notion connector exposes `notion-search` and `notion-fetch` (plus `notion-get-comments` when you want comments).
+- **Confluence** — probe the configured Confluence MCP for this org; tool names vary by which server you install, so discover the surface rather than assuming a slug.
 
 If neither wiki MCP authenticates, the wiki capabilities are Not-Available.
 

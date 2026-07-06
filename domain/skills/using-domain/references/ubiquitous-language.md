@@ -1,10 +1,10 @@
-# Ubiquitous Language
+# Ubiquitous language
 
-**Trigger:** When entities, operations, or domain concepts are being named or discovered.
+**Trigger:** when you name or discover entities, operations, or domain concepts.
 
 ## Process
 
-### Step 1: Check the Glossary First
+### Step 1: Check the glossary first
 
 Apply the glossary ability (`references/glossary.md`) before introducing any term. If the term already exists, use the canonical name.
 
@@ -13,10 +13,10 @@ Apply the glossary ability (`references/glossary.md`) before introducing any ter
 Read `docs/ddd/domain-model.md` (if it exists) to understand the established subdomains and bounded contexts. Then use other internal knowledge bases (requirements, design docs, domain literature) to draft candidate terms for those contexts.
 
 - **Do NOT use the codebase as source of truth**, as the code itself may be wrong.
-- Many domain questions have been answered in existing literature.
-- Draft definitions with a **[DRAFT]** label and record the source (document name, section, or literature reference) for each term. The source is required in the output.
+- Existing literature answers many domain questions.
+- Draft definitions with a **[DRAFT]** label and record the source (document name, section, or literature reference) for each term. You must include the source in the output.
 
-### Step 3: Categorize Questions
+### Step 3: Categorize questions
 
 For each term not resolved by research, categorize:
 
@@ -27,7 +27,7 @@ For each term not resolved by research, categorize:
 
 When in doubt, use **Ask** rather than **Confirm** — over-confirming is safe; under-asking risks incorrect domain language.
 
-### Step 4: Present for Human Review
+### Step 4: Present for human review
 
 - Mark all generated terms as **[DRAFT]**.
 - Present the candidate terms list and categorized question list to a domain expert.

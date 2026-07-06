@@ -1,6 +1,6 @@
-# O'Reilly Learning
+# O'Reilly learning
 
-Technical content from O'Reilly Media and partner publishers (Manning, Pragmatic Programmers, Packt, No Starch, Wiley tech imprints) plus video courses and live events. First stop for any hands-on technical question routing through this skill.
+Technical content from O'Reilly Media and partner publishers (Manning, Pragmatic Programmers, Packt, No Starch, Wiley tech imprints). Plus video courses and live events. First stop for any hands-on technical question routing through this skill.
 
 ## What it provides
 
@@ -9,7 +9,7 @@ Technical content from O'Reilly Media and partner publishers (Manning, Pragmatic
 
 ## MCP options (probe order)
 
-**Primary: official O'Reilly Learning MCP** (launched 19 November 2025).
+**Primary: official O'Reilly Learning MCP** (launched November 19, 2025).
 
 - Transport: standard MCP wire protocol; gated to **enterprise** O'Reilly customers at launch; wider rollout to individual subscribers promised for 2026 with no published date.
 - Auth: O'Reilly enterprise SSO token.
@@ -19,7 +19,7 @@ Technical content from O'Reilly Media and partner publishers (Manning, Pragmatic
 
 - Wraps the O'Reilly Platform Search API at `oreilly.com/online-learning/integration-docs/search.html`.
 - Requires a personal O'Reilly Learning subscription; auth details are not publicly documented.
-- Small project (≈4 stars at May 2026); likely to be deprecated when the official MCP opens to individuals.
+- Small project (≈4 stars at May 2026); the official MCP will likely deprecate it when it opens to individuals.
 
 **Not-Available** when neither is reachable. The wiring skill returns a typed Not-Available result for the *O'Reilly library search* capability; the practice skill degrades to Google Books and Open Library for the same query.
 
@@ -37,11 +37,11 @@ None practical for individual developers. O'Reilly's separate SCIM API token is 
 
 ## Licensing
 
-O'Reilly content is **subscription-licensed**. Cite-and-link with the platform URL and the user's session; do not redistribute passages. Snippets returned by the MCP may be quoted within the user's own session for their own work; do not stage them into public artifacts.
+O'Reilly content is **subscription-licensed**. Cite-and-link with the platform URL and the user's session; do not redistribute passages. You may quote snippets returned by the MCP within the user's own session for their own work; do not stage them into public artifacts.
 
 ## Failure modes
 
-- **SSO token expired** (enterprise MCP) — re-authenticate. This is a re-verification trigger in [`../../configuring-books/SKILL.md`](../../configuring-books/SKILL.md).
-- **Search API quota exceeded** (community MCP) — back off; the Platform Search API is not documented in detail and quotas can shift without notice.
-- **Capability mismatch** — section-level retrieval is on the 2026 roadmap; if the deployed MCP does not expose it, the *chapter-section retrieval* capability returns Not-Available.
+- **SSO token expired** (enterprise MCP)—re-authenticate. This is a re-verification trigger in [`../../configuring-books/SKILL.md`](../../configuring-books/SKILL.md).
+- **Search API quota exceeded** (community MCP)—back off; the Platform Search API is not documented in detail and quotas can shift without notice.
+- **Capability mismatch** — section-level retrieval is on the 2026 roadmap; if the deployed MCP does not expose it, the *section retrieval* capability returns Not-Available.
 - **Individual access opens in 2026** — when the official MCP opens to individual subscribers, promote it from the enterprise-only probe to the primary transport for personal use. This is a named re-verification trigger.

@@ -1,4 +1,4 @@
-# Google Drive
+# Google drive
 
 The org document store. First stop for documents, spreadsheets, and presentations that live outside the wiki.
 
@@ -7,9 +7,9 @@ The org document store. First stop for documents, spreadsheets, and presentation
 - **Google Drive search** — file hits with id, type, and owner, filterable by file type.
 - **Google Drive fetch** — the file content, or extracted text for binary formats, given a file id.
 
-## MCP / connector
+## MCP / connector support
 
-The Anthropic Google Drive connector exposes `search_files` and `read_file_content` (plus `get_file_metadata`, `list_recent_files`, and `download_file_content` where richer access is wanted). If this connector is not the one installed, probe the configured Drive MCP for this org.
+The Anthropic Google Drive connector exposes `search_files` and `read_file_content`. Additional capabilities—`get_file_metadata`, `list_recent_files`, and `download_file_content`—enable richer access when you need it. If this connector is not the one installed, probe the configured Drive MCP for this org.
 
 ## Auth
 

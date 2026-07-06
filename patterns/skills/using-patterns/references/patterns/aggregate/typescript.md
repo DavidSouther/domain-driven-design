@@ -1,4 +1,4 @@
-# Aggregate — TypeScript Reference
+# Aggregate, TypeScript reference
 
 ```typescript
 // Value object — no identity, equality by fields

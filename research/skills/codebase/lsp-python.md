@@ -1,4 +1,4 @@
-# LSP Reference: Python (pylsp / pyright)
+# LSP reference: Python (pylsp / pyright)
 
 > Priming rules (venv activation, pyright config) live in [`lsp-setup.md`](lsp-setup.md).
 
@@ -11,13 +11,13 @@ Two common Python LSPs:
 
 Claude Code uses whichever LSP the project has configured. For research purposes both expose the same operations (`hover`, `definition`, `references`).
 
-> **Note:** `completions` and `diagnostics` are *not* on the current `LSP` tool surface (which exposes `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, `outgoingCalls`). Where they appear below they describe a server-specific path not reachable through the `LSP` tool; use Bash search or a typed-symbol `hover` instead.
+> **Note:** `completions` and `diagnostics` are *not* on the current `LSP` tool surface. The tool exposes `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, and `outgoingCalls`. Where they appear below they describe a server-specific path not reachable through the `LSP` tool; use Bash search or a typed-symbol `hover` instead.
 
-For pyright to resolve types fully, a `pyrightconfig.json` or `pyproject.toml` with `[tool.pyright]` should be present and `venvPath` or `pythonPath` should point to the active virtual environment.
+For pyright to resolve types fully, a `pyrightconfig.json` or `pyproject.toml` with `[tool.pyright]` should be present. Set `venvPath` or `pythonPath` to point to the active virtual environment.
 
-## Most Useful Queries for Research
+## Most useful queries for research
 
-### Find where a symbol is defined
+### Locate a symbol definition
 
 ```
 LSP definition
@@ -53,7 +53,7 @@ Returns every call site across the project. For a method defined on a class, ret
 
 ### Understand protocol / duck-typed interface
 
-When a function accepts a duck-typed argument, use `completions` at the point where the argument is used inside the function body. The completion list shows what attributes the function assumes on the object, revealing the implicit protocol.
+When a function accepts a duck-typed argument, use `completions` at the point where the function body uses the argument. The completion list shows what attributes the function assumes on the object, revealing the implicit protocol.
 
 ### Errors and type mismatches
 
@@ -64,14 +64,14 @@ LSP diagnostics
 
 Pyright reports type errors, missing attributes, and unreachable code. Useful for quickly finding where type assumptions break without running the full test suite.
 
-## Python-Specific Patterns
+## Python-specific patterns
 
-**Untyped code:** When there are no annotations, pyright infers types from assignments and return values. Hover returns `Unknown` when inference fails — this signals a place where Bash grep may be more useful than LSP.
+**Untyped code:** when there are no annotations, pyright infers types from assignments and return values. Hover returns `Unknown` when inference fails. This signals a place where Bash grep may be more useful than LSP.
 
 **Dynamic attributes (`__getattr__`, dataclasses, pydantic):** pyright understands `dataclasses.dataclass` and `pydantic.BaseModel` field generation. Hover on a field access to confirm the inferred type.
 
 **`__init__.py` re-exports:** `definition` follows the import chain to the original definition file. If you need to know what a package's public surface is, open the `__init__.py` and use `completions` at the module level.
 
-**Multiple implementations of a base class:** Use `references` on the base class method definition to find all overriding methods across subclasses. This is faster than grepping for `def method_name` which returns unrelated functions with the same name.
+**Multiple implementations of a base class:** use `references` on the base class method definition to find all overriding methods across subclasses. This is faster than grepping for `def method_name` which returns unrelated functions with the same name.
 
-**Virtual environment:** If LSP returns no results, confirm the virtual environment is activated and matches what pyright is configured to use. Mismatched environments cause import resolution failures.
+**Virtual environment:** if LSP returns no results, confirm you activated the virtual environment and it matches your pyright configuration. Mismatched environments cause import resolution failures.

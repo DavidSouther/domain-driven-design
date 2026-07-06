@@ -1,4 +1,4 @@
-# Using Feature Flags in Rust
+# Using feature flags in Rust
 
 One toggle point reads the injected `Flags` port and branches. The default branch is today's behavior. The targeting stays in the provider behind the port. The test exercises both branches.
 
@@ -51,7 +51,7 @@ mod tests {
 
 When the new flow is fully rolled out, delete the flag, the `if`, and `current_checkout`, leaving `checkout` as a direct call.
 
-## Cargo Features: Compile-Time Toggle Points
+## Cargo features: compile-time toggle points
 
 When the decision is made at build time rather than runtime, a Cargo feature replaces the runtime `Flags` port. The toggle point uses `#[cfg(feature = "...")]` instead of reading the injected port. The same discipline applies: one toggle point, default to current behavior, test both states.
 
@@ -92,4 +92,4 @@ mod tests {
 }
 ```
 
-A Cargo feature is appropriate when the toggle must not change without a rebuild: an optional backend adapter, a platform-specific code path, or a capability that has no runtime-flip requirement. It is not appropriate for release gates or experiments that need to change without a redeploy — use the runtime `Flags` port for those. See `references/patterns/configuring-feature-flags/rust.md` for the full comparison.
+A Cargo feature is appropriate when the toggle must not change without a rebuild: an optional backend adapter, a platform-specific code path, or a capability that has no runtime-flip requirement. It is not appropriate for release gates or experiments that need to change without a redeploy. Use the runtime `Flags` port for those. See `references/patterns/configuring-feature-flags/rust.md` for the full comparison.

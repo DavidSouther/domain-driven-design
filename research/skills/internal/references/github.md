@@ -11,8 +11,8 @@ The code-collaboration surface. First stop for issues, pull requests, and the te
 
 Two transports, probed in order:
 
-- **GitHub MCP** — probe the configured GitHub MCP for this org first; tool names vary by which server is installed, so discover the surface rather than assuming a slug.
-- **`gh` CLI fallback** — if no MCP is configured, fall back to the `gh` CLI: `gh issue list`/`gh issue view`, `gh pr list`/`gh pr view`, `gh search issues`. Authenticated by `GH_TOKEN` / `GITHUB_TOKEN` or an existing `gh auth login` session.
+- **GitHub MCP** — probe the configured GitHub MCP for this org first; tool names vary by which server you install, so discover the surface rather than assuming a slug.
+- **`gh` command-line tool fallback** — if you haven't configured an MCP, fall back to the `gh` command-line tool: `gh issue list`/`gh issue view`, `gh pr list`/`gh pr view`, `gh search issues`. Authenticated by `GH_TOKEN` / `GITHUB_TOKEN` or an existing `gh auth login` session.
 
 If no token is set and no MCP authenticates, the GitHub capabilities are Not-Available.
 

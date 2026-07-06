@@ -1,4 +1,4 @@
-# Repository — TypeScript Reference
+# Repository: TypeScript reference
 
 ```typescript
 // domain/repositories.ts — interface defined in the domain layer; no ORM imports

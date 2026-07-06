@@ -1,6 +1,6 @@
-# NewType — TypeScript Reference
+# NewType: TypeScript reference
 
-Branded types erase at runtime — zero performance overhead.
+Branded types erase at runtime, zero performance overhead.
 
 ```typescript
 // Before: primitives leak domain intent

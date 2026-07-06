@@ -10,9 +10,9 @@ jobs:
       - uses: errata-ai/vale-action@reviewdog
         with:
           files: all
-          # Skill/agent definition files use YAML frontmatter that isn't
-          # meant as prose (and can crash Vale's frontmatter parser), so
-          # they're excluded from linting.
-          vale_flags: "--glob=!{**/skills/**}"
+          # e2e test/eval fixtures may deliberately contain the prose
+          # patterns that Vale flags, so they're excluded from linting. Skill
+          # definitions and reference docs are linted like any other prose.
+          vale_flags: "--glob=!{**/e2e/**}"
           fail_on_error: false # warnings don't fail; errors do
           reporter: github-pr-review

@@ -1,4 +1,4 @@
-# Configuring Feature Flags in TypeScript
+# Configuring feature flags in TypeScript
 
 The composition root builds one evaluation client behind a vendor-neutral port and injects it. Call sites receive the port, never a vendor SDK.
 

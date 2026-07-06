@@ -192,30 +192,61 @@ def check_rules_actually_fire() -> str | None:
     return None
 
 
-def check_skill_frontmatter_excluded() -> str | None:
-    """R6: skill/agent definition files carry YAML frontmatter that isn't
-    prose. Some of it isn't even valid standalone YAML (an unquoted
-    description containing a bare 'key:'-looking colon), which crashes
-    Vale's frontmatter parser with a fatal, whole-run-aborting error
-    (discovered by running the documented whole-repo command for real).
-    Confirms the documented `--glob` exclusion actually keeps those files
-    out of Vale's input set."""
-    skill_docs = list(REPO.glob("**/skills/**/*.md"))
-    if not skill_docs:
-        return None  # nothing in this checkout exercises the exclusion
+def check_e2e_excluded_skills_included() -> str | None:
+    """R6: the documented `--glob` excludes only e2e test/eval fixtures
+    (which may deliberately contain the prose patterns Vale flags), not
+    skill/agent definitions or reference docs. An earlier version of this
+    exclusion covered `**/skills/**` wholesale, working around a fatal,
+    whole-run-aborting frontmatter parse error (an unquoted `description:`
+    containing a bare `: `) by hiding every skill/reference file from Vale
+    instead of fixing the two offending files. Confirms both halves of the
+    corrected contract: an e2e doc is excluded, and a skill doc is linted
+    (and the whole-repo run itself doesn't crash)."""
+    e2e_docs = list(REPO.glob("**/e2e/**/*.md"))
+    skill_docs = list(REPO.glob("**/skills/**/SKILL.md"))
 
-    result = subprocess.run(
-        ["vale", "--glob=!{**/skills/**}", str(skill_docs[0])],
+    if e2e_docs:
+        result = subprocess.run(
+            ["vale", "--glob=!{**/e2e/**}", str(e2e_docs[0])],
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if "in 0 files" not in result.stdout:
+            return (
+                f"R6 --glob='!{{**/e2e/**}}' did not exclude {e2e_docs[0].relative_to(REPO)} "
+                f"from linting:\n{result.stdout}\n{result.stderr}"
+            )
+
+    if skill_docs:
+        result = subprocess.run(
+            ["vale", "--glob=!{**/e2e/**}", str(skill_docs[0])],
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        if "in 0 files" in result.stdout or result.returncode not in (0, 1):
+            return (
+                f"R6 --glob='!{{**/e2e/**}}' unexpectedly excluded or crashed on "
+                f"{skill_docs[0].relative_to(REPO)}:\n{result.stdout}\n{result.stderr}"
+            )
+
+    whole_repo = subprocess.run(
+        ["vale", "--glob=!{**/e2e/**}", "."],
         cwd=REPO,
         capture_output=True,
         text=True,
-        timeout=30,
+        timeout=120,
     )
-    if "in 0 files" not in result.stdout:
+    if whole_repo.returncode not in (0, 1):
         return (
-            f"R6 --glob='!{{**/skills/**}}' did not exclude {skill_docs[0].relative_to(REPO)} "
-            f"from linting:\n{result.stdout}\n{result.stderr}"
+            f"R6 whole-repo 'vale --glob=!{{**/e2e/**}} .' crashed (exit "
+            f"{whole_repo.returncode}), likely an unquoted frontmatter value "
+            f"somewhere under a skills/ tree:\n{whole_repo.stdout}\n{whole_repo.stderr}"
         )
+
     return None
 
 
@@ -228,7 +259,7 @@ def main() -> int:
         dynamic_failure = check_rules_actually_fire()
         if dynamic_failure:
             return fail(dynamic_failure)
-        dynamic_failure = check_skill_frontmatter_excluded()
+        dynamic_failure = check_e2e_excluded_skills_included()
         if dynamic_failure:
             return fail(dynamic_failure)
         print("PASS: vale lint setup contract holds (verified by running vale)")

@@ -1,6 +1,6 @@
-# CORE
+# Core
 
-200M+ open-access full-text aggregation. Strong for full-text retrieval when the publisher version is gated and Unpaywall reports a repository copy held in CORE.
+200M+ open-access full-text aggregation. Strong for full-text retrieval when the publisher gates the version and Unpaywall reports a repository copy held in CORE.
 
 ## What it provides
 
@@ -17,7 +17,7 @@ None first-party. The Alexandria aggregator's keyed set includes CORE for cross-
 - Base URL: `https://api.core.ac.uk/v3`
 - Endpoints: `/search/outputs?q=...`, `/outputs/{id}`, `/search/works?q=...`
 - Auth: **API key required (free)**. Sent as `Authorization: Bearer <CORE_API_KEY>`. Obtain at `core.ac.uk/services/api`.
-- Rate limits: **1 req/10s for batch, 5 req/10s for single queries**; higher tiers for member institutions.
+- Rate limits: **1 req/10 s for batch, 5 req/10 s for single queries**; higher tiers for member institutions.
 
 ## Query shapes
 
@@ -32,5 +32,5 @@ Per-article. CORE reports the license string for each record; aggregates only le
 ## Failure modes
 
 - **Missing API key** — 401. Set `CORE_API_KEY`.
-- **Rate-limit (429)** — particularly low at 1 req/10s for batch. Use the higher single-query rate when feasible.
+- **Rate-limit (429)** — particularly low at 1 req/10 s for batch. Use the higher single-query rate when feasible.
 - **License mismatch** — occasional records report ambiguous licenses; cross-check with Unpaywall before quoting.

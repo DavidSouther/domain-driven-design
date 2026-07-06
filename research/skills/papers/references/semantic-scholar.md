@@ -1,4 +1,4 @@
-# Semantic Scholar
+# Semantic scholar
 
 Allen Institute for AI's academic graph. Strong for citation-graph queries, ML/AI coverage, and DOI/arXiv/PMID lookup with consistent shape across identifiers.
 
@@ -27,7 +27,7 @@ Example payload (`/graph/v1/paper/{id}`):
 - Auth: API key strongly preferred. Request via the Semantic Scholar developer portal. Pass as header `x-api-key: ...`. Set `SEMANTIC_SCHOLAR_API_KEY`.
 - Rate limits:
   - **With key**: 1 RPS dedicated.
-  - **Anonymous**: global shared pool of 5,000 requests per 5 minutes; **mandatory exponential backoff on 429s**. See [`etiquette.md`](etiquette.md).
+  - **Anonymous**: global shared quota of 5,000 requests per 5 minutes; **mandatory exponential backoff on 429&nbsp;s**. See [`etiquette.md`](etiquette.md).
 
 ## Query shapes
 
@@ -38,10 +38,10 @@ Example payload (`/graph/v1/paper/{id}`):
 
 ## Licensing
 
-Metadata, abstracts, and citation-graph edges are freely usable. Full PDFs are linked through Semantic Scholar but hosted at their original repositories; quote per the original license.
+Metadata, abstracts, and citation-graph edges are freely usable. Semantic Scholar links to full PDFs at their original repositories; quote per the original license.
 
 ## Failure modes
 
-- **429 without backoff** — anonymous pool exhausted. Apply exponential backoff or set the API key.
+- **429 without backoff** — anonymous quota exhausted. Apply exponential backoff or set the API key.
 - **Identifier prefix missing** — endpoints disambiguate via prefix (`DOI:`, `arXiv:`, `PMID:`). Forgetting the prefix matches no record.
-- **Citation graph truncation** — `/citations` is paginated; iterate via `offset`. Highly-cited papers (10k+ citations) require many requests.
+- **Citation graph truncation** — `/citations` requires pagination; iterate via `offset`. Highly cited papers (10k+ citations) require many requests.

@@ -1,4 +1,4 @@
-# OpenAlex
+# Openalex
 
 OurResearch's open scholarly graph. Broadest coverage at ~240M works, with citation graph, institutions, authors, concepts, and sources.
 
@@ -17,17 +17,17 @@ Example payload (`/works/{doi}`):
   "referenced_works": [...], "open_access": { "is_oa": true, "oa_status": "gold" } }
 ```
 
-## MCP options
+## Mcp options
 
 `oksure/openalex-research-mcp`, `drAbreu/alex-mcp`, `hbiaou/openalex-mcp`. The aggregators (`xingyulu23/Academix`, `openags/paper-search-mcp`) include OpenAlex in their fan-out.
 
-## HTTP fallback
+## Http fallback
 
 - Base URL: `https://api.openalex.org`
 - Endpoints: `/works`, `/works/{id-or-doi}`, `/authors`, `/concepts`, `/institutions`, `/sources`
-- Auth: **API key required as of 13 February 2026** (free, 30-second signup). Pass via `api_key` query parameter or `Authorization: Bearer ...` header. Set `OPENALEX_API_KEY`.
-- Pricing: $1/day free credit; per-call thereafter ($0 singletons, $0.0001/list, $0.001/search, $0.01/semantic-search or content download).
-- The historic `mailto=` polite-pool convention still works for politeness signaling but no longer governs access.
+- Auth: **API key required as of February 13, 2026** (free, 30-second signup). Pass via `api_key` query parameter or `Authorization: Bearer ...` header. Set `OPENALEX_API_KEY`.
+- Pricing: $1/day free credit; per-call thereafter. Charges are $0 for singletons, $0.0001 per list, $0.001 per search, and $0.01 for semantic-search or content download.
+- The historic `mailto=` polite-courtesy convention still works for politeness signaling but no longer governs access.
 
 ## Query shapes
 
@@ -38,7 +38,7 @@ Example payload (`/works/{doi}`):
 
 ## Licensing
 
-OpenAlex metadata is **CC0**. Full text is linked through OpenAlex but hosted at the original repository; quote per the original license. Concept and institution data are freely usable.
+OpenAlex metadata is **CC0**. OpenAlex provides links to full text, though the text is hosted at the original repository; quote per the original license. Concept and institution data is freely usable.
 
 ## Failure modes
 

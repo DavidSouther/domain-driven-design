@@ -1,4 +1,4 @@
-# Configuring Feature Flags in Rust
+# Configuring feature flags in Rust
 
 The composition root builds one evaluation client behind a vendor-neutral port and injects it. Call sites receive the port, never a vendor SDK.
 
@@ -59,18 +59,18 @@ pub fn build_flags(environment: &str) -> Box<dyn Flags> {
 
 The flag inventory (key, owner, expiry) lives beside this module, and a CI check fails any flag past its expiry.
 
-## Cargo Features: Compile-Time Flags
+## Cargo features: compile-time flags
 
-Cargo features are Rust's built-in compile-time flag mechanism, declared in `Cargo.toml` under `[features]` and read with `#[cfg(feature = "...")]`. They are a different tool from the runtime `Flags` port above.
+Cargo features are Rust's built-in compile-time flag mechanism, declared in `Cargo.toml` under `[features]` and read with `#[cfg(feature = "...")]`. They are a different tool from the preceding runtime `Flags` port.
 
 | Property | Cargo features | Runtime `Flags` port |
 |---|---|---|
 | Evaluated | At compile time | At runtime |
 | Changes require | Rebuild and redeploy | Provider update (may be live) |
-| Appropriate for | Optional deps, optional capabilities, library opt-ins | Release gates, experiments, ops kill switches, permissions |
+| Appropriate for | Optional deps, optional capabilities, library opt-ins | Release gates, experiments, ops stop switches, permissions |
 | Provider needed | No (built into `cargo`) | Yes (static or remote) |
 
-Use Cargo features for decisions that are fixed for a given binary: enabling an optional dependency, compiling in a backend adapter, or gating a capability that has no business needing to flip at runtime. Use the runtime `Flags` port for anything that should change without a rebuild.
+Use Cargo features for decisions fixed at compile time for a given binary. Examples include enabling an optional dependency, compiling in a backend adapter, or gating capabilities that have no business needing to flip at runtime. Use the runtime `Flags` port for anything that should change without a rebuild.
 
 ```toml
 # Cargo.toml

@@ -4,10 +4,10 @@ description: Bootstrap skill for research. Loaded at session start to establish 
 ---
 
 <SUBAGENT-STOP>
-If you were dispatched as a subagent to execute a specific task, skip this skill.
+If you're a subagent executing a specific task, skip this skill.
 </SUBAGENT-STOP>
 
-# Research Skills Workflow
+# Research skills workflow
 
 You are working in a project with structured research skills. When asked a research question, select the appropriate skill based on the nature of the question.
 
@@ -15,38 +15,38 @@ You are working in a project with structured research skills. When asked a resea
 |---------------|--------|
 | Why did this code change? Who introduced it? When was it added or removed? | `research:archaeology` |
 | What does this code do right now? Where is a symbol defined or used? | `research:codebase` |
-| What version of a dependency is used? What does a package provide or require? | `research:dependencies` |
+| What version does the project use? What does a package provide or require? | `research:dependencies` |
 | What does this concept mean in the domain? How are domain terms defined? | `research:domain` |
 | What do internal documents (Slack, Confluence, Linear, Notion) say about this? | `research:internal` |
 | What does the public internet say? What do official docs or forums say? | `research:public` |
 | What book covers this topic? Find an ISBN? Quote from a book? | `research:books` |
 | What paper says X? Cite this DOI? What cites this paper? | `research:papers` |
 
-## Configuring Sources
+## Configuring sources
 
-Source wiring is a once-per-environment setup task, not a per-query research move, so it lives as on-demand references rather than always-on skills. When bootstrapping or revising a source stack on a fresh checkout — probing MCP servers, falling back to HTTP, installing marketplace plugins, completing OAuth/SSO handshakes, setting auth env vars and contact details, and smoke-testing each capability against its published contract — read the matching setup reference and follow it. Each reference publishes the capability contract the per-query skill above consumes. Do NOT run these inside a research session.
+Source wiring is a once-per-environment setup task, not a per-query research move, so it lives as on-demand references rather than always-on skills. When bootstrapping or revising a source stack on a fresh checkout, take these steps: probe MCP servers, fall back to HTTP, install marketplace plugins, complete OAuth/SSO handshakes, set auth env vars and contact details, and smoke-test each capability against its published contract. Read the matching setup reference and follow it. Each reference publishes the capability contract the per-query skill preceding this consumes. Do NOT run these inside a research session.
 
 | Setting up sources for | Read |
 |---|---|
-| Books (ISBN lookup, full text, O'Reilly, personal libraries) | `references/configuring/books.md` |
+| Books (ISBN lookup, full text, O'Reilly) | `references/configuring/books.md` |
 | Codebase language servers (pyright/pylsp, rust-analyzer, tsserver) | `references/configuring/codebase.md` |
 | Internal authenticated sources (Slack, Notion, Linear, GitHub, Drive) | `references/configuring/internal.md` |
 | Academic papers (Crossref, OpenAlex, ArXiv, PubMed, Wiley) | `references/configuring/papers.md` |
 | Public web (WebSearch/WebFetch policy, augmentation provider) | `references/configuring/public.md` |
 
-## Jeopardy! Search (all skills)
+## Jeopardy search (all skills)
 
-Every research skill applies Jeopardy! search: before issuing any query, generate 3–5 variants (synonyms, different phrasings, casing variants, related concepts) and run each. See `research/references/jeopardy.md` for background.
+Every research skill applies Jeopardy search. Before issuing any query, generate 3–5 variants: synonyms, different phrasings, casing variants, and related concepts. Run each. See `research/references/jeopardy.md` for background.
 
 ## Falsification (oppositional research)
 
-When a claim is load-bearing, when the user asks "are you sure?", or when the evidence so far is entirely confirming, run a falsification pass before reporting a conclusion. Restate the claim as a universal, negate it into 3 to 5 concrete falsifiable hypotheses, and dispatch a subagent per hypothesis to search specifically for the negation. A single counterexample refutes the original; absence of counterexamples only fails to refute it. See `research/references/falsify.md` for procedure and limits.
+When a claim is load-bearing, when the user asks "are you sure?," or when the evidence so far is entirely confirming, run a falsification pass before reporting a conclusion. Restate the claim as a universal, negate it into 3 to 5 concrete falsifiable hypotheses, and dispatch a subagent per hypothesis to search specifically for the negation. A single counterexample refutes the original; absence of counterexamples only fails to refute it. See `research/references/falsify.md` for procedure and limits.
 
-## Thread Digest (conversational sources)
+## Thread digest (conversational sources)
 
-When a fetched source is a discussion thread — a GitHub/PR comment thread, a Slack thread, a Reddit/HN thread, a mailing-list thread — read the full thread (body plus every comment) and always run it through the three-pass digest (fetch, organize, refine) before treating it as scoped, regardless of thread size. See `research/references/thread-digest.md` for the source-type gate, the procedure, and the untrusted-content rules for handling attacker-reachable comment text.
+When a fetched source is a discussion thread (GitHub/PR, Slack, Reddit/HN, or mailing-list), read the full thread including body and every comment. Always run it through the three-pass digest: fetch, organize, and refine. Do this before treating it as scoped, regardless of thread size. See `research/references/thread-digest.md` for the source-type gate, the procedure, and the untrusted-content rules for handling attacker-reachable comment text.
 
-## Research Notes Convention
+## Research notes convention
 
 Before dispatching search subagents, choose the research note folder:
 
@@ -55,7 +55,7 @@ Before dispatching search subagents, choose the research note folder:
 
 Create that folder before dispatching. Each skill writes its findings to `<skill-name>.md` in that folder, with a `**Sources**` section listing every resource consulted. In text references to sources should use a loose IEEE style. See `references/citations.md` when formatting those sections for more details.
 
-## Combining Skills
+## Combining skills
 
 Most research questions benefit from more than one skill. Dispatch them in parallel and synthesize the findings:
 

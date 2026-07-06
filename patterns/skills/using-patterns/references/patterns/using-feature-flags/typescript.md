@@ -1,4 +1,4 @@
-# Using Feature Flags in TypeScript
+# Using feature flags in TypeScript
 
 One toggle point reads the injected `Flags` port and branches. The default branch is today's behavior. The targeting stays in the provider behind the port. The test exercises both branches.
 

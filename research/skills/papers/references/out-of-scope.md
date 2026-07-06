@@ -1,28 +1,28 @@
-# Papers — out of scope
+# Papers, out of scope
 
 Documented-but-excluded papers sources with reasons. When a user asks for one of these, the practice skill cites this file and routes to the closest in-scope alternative.
 
-## Wiley TDM API
+## Wiley text and data mining API
 
 - **Reason:** Wiley's Text and Data Mining API at `api.wiley.com` delivers **full-text PDFs of subscribed content under a contractual TDM license**. The license posture is incompatible with the individual-developer surface of this stack.
-- **Closest alternative:** **Wiley Scholar Gateway** for semantic-snippet hits with DOI link-out — see [`wiley-scholar-gateway.md`](wiley-scholar-gateway.md). Snippet plus link, not full PDF.
+- **Closest alternative:** **Wiley Scholar Gateway** for semantic-snippet hits with DOI link-out, see [`wiley-scholar-gateway.md`](wiley-scholar-gateway.md). Snippet plus link, not full PDF.
 
-## Google Scholar
+## Google scholar
 
-- **Reason:** **No public API** and the `robots.txt` explicitly **forbids automated access**. Community servers like `JackKuo666/Google-Scholar-MCP-Server` and Apify-hosted scrapers exist but live in a legally gray zone that this stack will not endorse.
+- **Reason:** **No public API** and the `robots.txt` explicitly **forbids automated access**. Community servers like `JackKuo666/Google-Scholar-MCP-Server` and Apify-hosted scrapers exist but live in a legally gray zone that this stack does not endorse.
 - **Closest alternative:** OpenAlex for breadth, Semantic Scholar for CS/ML, ArXiv for preprints. The default stack matches or beats Google Scholar's coverage for most queries this skill targets.
 
-## IEEE Xplore
+## IEEE xplore
 
-- **Reason:** IEEE Xplore's developer API returns metadata across the full corpus, but **full-text access is gated behind separate sales contracts**. Out of scope for an individual-developer skill.
+- **Reason:** IEEE Xplore's developer API returns metadata across the full corpus, but **separate sales contracts gate full-text access**. Out of scope for an individual-developer skill.
 - **Closest alternative:** ArXiv for CS preprints; OpenAlex for citations to IEEE papers; DOI resolution via Crossref or `doi-mcp` for the metadata.
 
-## ACM Digital Library
+## ACM digital library
 
 - **Reason:** Paywalled; full-text requires institutional subscription. No public API for full text.
 - **Closest alternative:** ArXiv for CS preprints (most ACM papers are available as ArXiv preprints); DBLP for venue-level publication lists; OpenAlex for citation data.
 
-## Connected Papers
+## Connected papers
 
 - **Reason:** No MCP wrapper. Publishes only **official JS and Python clients**, both **gated by API key requested via email**.
 - **Closest alternative:** OpenAlex citation graph and Semantic Scholar citation graph give the same neighborhood signal without the off-stack client.
@@ -40,7 +40,7 @@ Documented-but-excluded papers sources with reasons. When a user asks for one of
 
 - **Reason:** Books-only and paid. Not relevant to papers.
 
-## LinkedIn Learning
+## LinkedIn learning
 
 - **Reason:** Books and course content surface, restricted to LinkedIn Partner Program members. Out of scope for both topics.
 

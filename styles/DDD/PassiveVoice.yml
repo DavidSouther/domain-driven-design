@@ -2,7 +2,7 @@
 extends: existence
 message: "Passive voice obscures agency: '%s'. Rewrite in active voice: subject + verb + object."
 link: "https://github.com/DavidSouther/domain-driven-design"
-level: suggestion
+level: warning
 scope: text
 raw:
   - '\b(is|are|was|were|be|being|been)\s+\w+(ed|en)\b'

@@ -1,4 +1,4 @@
-# Entities, Value Objects, and Domain Service Functions — Python Reference
+# Entities, value objects, and domain service functions: Python reference
 
 ```python
 from dataclasses import dataclass

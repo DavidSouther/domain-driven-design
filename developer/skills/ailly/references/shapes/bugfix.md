@@ -1,10 +1,10 @@
-# Bugfix Shape
+# Bugfix shape
 
 When the research refine pass sizes a topic as a bug, smaller than a feature or a project, the five-phase lifecycle still runs unchanged. Only the design content and the role of the feature test differ. This reference provides the vocabulary for bugfixes instead of features. The coordinator `developer:ailly` and its design phase (`references/phases/design.md`) consult it when the task is bug-shaped.
 
-## The Three Statements
+## The three statements
 
-A bug is specified by three statements, not a problem-and-solution narrative.
+Three statements specify a bug, not a problem-and-solution narrative.
 
 - **Observed.** What the system does today, stated as a fact a reader can reproduce. Include the trigger, the inputs, and the wrong result. Avoid speculation about cause; describe the symptom.
 - **Expected.** What the system should do instead, stated as the single corrected behavior. This is the acceptance criterion the reproduction test asserts.
@@ -12,27 +12,27 @@ A bug is specified by three statements, not a problem-and-solution narrative.
 
 Write all three before proposing a change. A fix that cannot name its Unchanged set is a fix that does not know its own blast radius.
 
-## The Reproduction Test
+## The reproduction test
 
-The bug's feature test is a failing **reproduction** test. It fills the exact slot the design's feature test fills in the feature flow: one executable test, placed in the project test tree, linked from `design.md`, written behind the same hard gate (write only the test, no fix).
+The bug's feature test is a failing **reproduction** test. It fills the exact slot the design's feature test fills in the feature flow: it is one executable test, placed in the project test tree, linked from `design.md`. Like feature tests, it is written behind the same hard gate (write only the test, no fix).
 
 - It encodes the **Observed** behavior as a failing assertion: run the trigger, assert the **Expected** result, and watch it fail because the bug is present.
 - It must fail for the right reason (the bug), not a typo or a missing import.
-- It stays red until the fix lands, then turns green. It is the proof the bug is fixed and the guard against its return.
+- It stays red until the fix lands, then turns green. It proves the fix resolves the bug and guards against its return.
 
 A bugfix never qualifies for skipping the reproduction test. Without it, the fix is a rubber stamp and the regression is free to come back.
 
-## Design Content for a Bug
+## Design content for a bug
 
 The design doc keeps its six sections, read through the bug lens:
 
 - **Purpose** states the bug as Observed and Expected.
 - **Prior Art** notes prior occurrences, related fixes, or the commit that introduced the regression (use `research:archaeology` to find it).
-- **User Journey and Metrics** describes the user path that hits the bug and how you will know it is fixed (the reproduction test passing, plus any monitoring).
+- **User Journey and Metrics** describes the user path that hits the bug and how you know the fix works. The reproduction test passing and any monitoring demonstrate the fix.
 - **Specification** is the fix, scoped against the Unchanged set, with the root cause named. Contains the Observed, Expected, and Unchanged portions.
 - **Alternatives** weighs targeted fix versus broader refactor; prefer the smallest change that makes the reproduction test pass without breaking the Unchanged set.
 - **Summary** records anything deferred.
 
-## Defense in Depth
+## Defense in depth
 
-After the reproduction test is green, consider whether the bug can be made structurally impossible rather than only patched: trace backward from the symptom to the original trigger and fix at the source, then add validation at each layer the bad data passed through. A single patch is "fixed"; source plus layered guards is "cannot recur."
+Once the reproduction test passes, consider whether the bug can be made structurally impossible rather than only patched. Trace backward from the symptom to the original trigger and fix at the source. Add validation at each layer the bad data passed through. A single patch is "fixed"; source plus layered guards is "cannot recur."

@@ -1,6 +1,6 @@
 # Crossref
 
-The canonical DOI-metadata service. First stop for DOI→metadata, references-from-DOI, journal and publisher lookups.
+The canonical DOI-metadata service. First stop for DOI→metadata, references-from-DOI, journal, and publisher lookups.
 
 ## What it provides
 
@@ -17,15 +17,15 @@ Example payload (`/works/{doi}`):
 
 ## MCP option
 
-None canonical first-party. Use HTTP; the multi-source aggregators (`xingyulu23/Academix`, `openags/paper-search-mcp`, `benedict2310/Scientific-Papers-MCP`) include Crossref alongside other sources.
+None canonical first-party. Use HTTP. Multi-source aggregators such as `xingyulu23/Academix`, `openags/paper-search-mcp`, and `benedict2310/Scientific-Papers-MCP` include Crossref alongside other sources.
 
 ## HTTP fallback
 
 - Base URL: `https://api.crossref.org`
 - Endpoints: `/works/{doi}`, `/works?query=...&rows=...`, `/journals/{issn}`, `/members/{id}`
 - Auth: none.
-- **Polite pool: pass `mailto=you@example.org`** as a query parameter or `User-Agent` header. See [`etiquette.md`](etiquette.md).
-- Rate limits: returned in `x-rate-limit-limit`/`x-rate-limit-interval` headers; 429 on overage. Revised downward on 1 December 2025.
+- **Polite requests: pass `mailto=you@example.org`** as a query parameter or `User-Agent` header. See [`etiquette.md`](etiquette.md).
+- Rate limits: returned in `x-rate-limit-limit`/`x-rate-limit-interval` headers; 429 on overage. Revised downward on December 1, 2025.
 
 ## Query shapes
 
@@ -35,10 +35,10 @@ None canonical first-party. Use HTTP; the multi-source aggregators (`xingyulu23/
 
 ## Licensing
 
-Crossref metadata is **CC0**. Freely usable. The underlying full-text content lives at the publisher's domain and is licensed per the publisher (the `license` field carries the URL of the applicable license).
+Crossref metadata is **CC0**. Freely usable. The underlying full-text content lives at the publisher's domain and the publisher licenses it per their terms. The `license` field carries the URL of the applicable license.
 
 ## Failure modes
 
-- **Polite-pool not entered** — without `mailto=`, requests share an anonymous pool with stricter limits.
+- **Polite requests not entered** — without `mailto=`, requests share an anonymous quota with stricter limits.
 - **Missing references** — many publishers do not deposit reference lists; the `reference` field is absent or partial. Cross-check Semantic Scholar's citation graph.
 - **DOI not found** — Crossref hosts ~150M DOIs but not every publisher participates. Fall back to DataCite for dataset DOIs, MEDLINE for older biomedical, or OpenAlex's broader index.

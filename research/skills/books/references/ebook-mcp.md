@@ -1,4 +1,4 @@
-# Ebook-MCP / bookreader-mcp
+# Ebook-mcp / bookreader-mcp
 
 The user's local EPUB or PDF directory. `bookreader-mcp` adds ChromaDB semantic vector search across the directory. Use for a corpus the user has assembled outside Calibre or Apple Books.
 
@@ -7,7 +7,7 @@ The user's local EPUB or PDF directory. `bookreader-mcp` adds ChromaDB semantic 
 - **EPUB and PDF reading** — `get_metadata`, `get_toc`, `get_chapter_markdown` (ebook-mcp).
 - **Semantic search** over an EPUB directory (bookreader-mcp).
 
-## MCP options
+## Mcp options
 
 `onebirdrocks/ebook-mcp` (Apache-2.0). Tools: `get_metadata`, `get_toc`, `get_chapter_markdown`. Query-driven, not vector-indexed. Configuration: the path to the EPUB/PDF directory.
 
@@ -15,15 +15,15 @@ The user's local EPUB or PDF directory. `bookreader-mcp` adds ChromaDB semantic 
 
 Both are local-only; no auth.
 
-## HTTP fallback
+## Http fallback
 
 None. These are local file-system tools.
 
 ## Query shapes
 
-- *"Semantic search across my EPUB folder for any mention of Aggregate consistency"* → `bookreader-mcp` semantic query.
-- *"Open the table of contents for one of my PDFs"* → `ebook-mcp` `get_toc`.
-- *"Quote chapter 3 from one of my technical EPUBs"* → `ebook-mcp` `get_chapter_markdown`.
+- *"Semantic search across an EPUB folder for any mention of Aggregate consistency"* → `bookreader-mcp` semantic query.
+- *"Open the table of contents for a PDF"* → `ebook-mcp` `get_toc`.
+- *"Quote section 3 from a technical EPUB"* → `ebook-mcp` `get_chapter_markdown`.
 
 ## Licensing
 
@@ -32,5 +32,5 @@ Per the original work. The user owns the files; quotation rights depend on the u
 ## Failure modes
 
 - **Path not configured** — the MCP cannot find the directory. Configure with an absolute path.
-- **Mixed-language EPUBs** — Chroma's semantic embeddings degrade across language boundaries; route to ebook-mcp's exact-match TOC when the language is mixed.
+- **Mixed-language EPUBs** — Chroma's semantic embeddings degrade across language boundaries; route to ebook-mcp's exact-match TOC when the EPUB mixes languages.
 - **Index out of date** — bookreader-mcp's ChromaDB index does not refresh automatically; trigger a re-index when the directory changes.

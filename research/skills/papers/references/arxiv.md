@@ -1,4 +1,4 @@
-# ArXiv
+# Arxiv
 
 The canonical preprint archive: physics, mathematics, computer science, quantitative biology, statistics, finance. Strong for any pre-publication or open-licensed version of a research paper.
 
@@ -20,7 +20,7 @@ Example payload (Atom):
 </entry>
 ```
 
-## MCP options
+## Mcp options
 
 - `blazickjp/arxiv-mcp-server` — search, download to local markdown, analysis prompts. Most-referenced.
 - `shoumikdc/arXiv-mcp` — latest-paper polling.
@@ -28,14 +28,14 @@ Example payload (Atom):
 
 All wrap the public ArXiv API; no auth required.
 
-## HTTP fallback
+## Http fallback
 
 - Base URL: `http://export.arxiv.org/api/query`
 - Auth: none.
 - Output: Atom/XML.
 - Pagination: `start`/`max_results` with a hard cap of 2,000 items per slice, 30,000 max results overall.
 - **Etiquette: one request per three seconds, single connection** (see [`etiquette.md`](etiquette.md)).
-- OAI-PMH at `https://oaipmh.arxiv.org/oai` is preferred for bulk metadata harvesting.
+- Use OAI-PMH at `https://oaipmh.arxiv.org/oai` for bulk metadata harvesting.
 
 ## Query shapes
 

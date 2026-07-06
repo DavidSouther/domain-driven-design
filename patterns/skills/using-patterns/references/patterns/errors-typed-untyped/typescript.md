@@ -1,12 +1,12 @@
-# Errors: Typed vs Untyped — TypeScript Reference
+# Errors: typed vs untyped, TypeScript reference
 
-Each language has its own grammar for failure. The pattern is constant: typed at library boundaries, stringly at application boundaries, with a translation step between. The idioms differ. Use the variant native to your language; do not transliterate one into another.
+Each language has its own grammar for failure. The pattern is constant: typed at library boundaries, stringly at app boundaries, with a translation step between. The idioms differ. Use the variant native to your language; do not transliterate one into another.
 
-A shared scenario runs through every example: a `users` library that fetches a user by id, and an application that exposes that library through an HTTP handler.
+A shared scenario runs through every example: a `users` library that fetches a user by id, and an app that exposes that library through an HTTP handler.
 
-### Library, Typed Error
+### Library, typed error
 
-A discriminated union with a literal `kind` field is the idiomatic typed error. The compiler exhausts the cases at the call site through `switch` or `if` narrowing. A plain `Result<T, E>` shape avoids the conflation of "throwable Error" with "domain failure".
+A discriminated union with a literal `kind` field is the idiomatic typed error. The compiler exhausts the cases at the call site through `switch` or `if` narrowing. A plain `Result<T, E>` shape avoids the conflation of "throwable Error" with "domain failure."
 
 ```ts
 // users/errors.ts
@@ -40,9 +40,9 @@ export async function fetchUser(id: string): Promise<Result<User, FetchError>> {
 }
 ```
 
-The caller is forced to handle every variant, and the compiler will complain if a new variant is added and a `switch` is not updated. Libraries such as `neverthrow` or `ts-results` provide an ergonomic `Result` type with combinators if hand-rolling the union becomes tedious.
+Callers must manage every variant, and the compiler reports an error if a new variant appears without a corresponding `switch` case. Libraries such as `neverthrow` or `ts-results` provide an ergonomic `Result` type with combinators if hand-rolling the union becomes tedious.
 
-### Application, Stringly Error
+### Application, stringly error
 
 The HTTP handler does not return `Result`. Its caller is a human reading a response body or a log line. Throw `Error` with the full context formatted into the message.
 
@@ -67,9 +67,9 @@ app.get("/users/:id", async (req, reply) => {
 });
 ```
 
-The library's typed variants drive the translation. The application's response strings are the user-facing surface.
+The library's typed variants drive the translation. The app's response strings are the user-facing surface.
 
-### Translation Rules
+### Translation rules
 
 - Never `throw` a `FetchError`. Throwing a discriminated union erases the type at the catch site, where it becomes `unknown`.
 - Never `JSON.stringify` a typed error and ship the result as the human message. Format each variant deliberately.

@@ -1,11 +1,11 @@
-# HathiTrust
+# Hathitrust
 
-Research-library digitized holdings. Bibliographic API is open; full-text Data API requires institutional OAuth. Use for academic library-catalog questions or confirming that a consortium copy exists.
+Research-library digitized holdings. The Bibliographic API provides unrestricted access; the full-text Data API requires institutional OAuth. Use for academic library-catalog questions or confirming that a consortium copy exists.
 
 ## What it provides
 
-- **Bibliographic API** (open) — volume info, rights tier, member-holding records.
-- **Data API** (OAuth) — page images, per-page OCR, METS metadata; subject to copyright-tier restrictions.
+- **Bibliographic API** (open)—volume info, rights tier, member-holding records.
+- **Data API** (OAuth)—page images, per-page OCR, METS metadata; subject to copyright-tier restrictions.
 
 ## MCP option
 
@@ -34,11 +34,11 @@ None first-party. Use HTTP.
 ## Licensing
 
 - **Public-domain tier** — quotable.
-- **In-copyright tier** — Data API access is **non-consumptive only**; results may inform research but the full text cannot be relayed to the user as quoted prose.
+- **In-copyright tier** — Data API access is **non-consumptive only**; results may inform research, but you cannot relay the full text to users as quoted prose.
 - **Member-only** items require the user's institutional affiliation.
 
 ## Failure modes
 
-- **Item not held** — HathiTrust's catalog is limited to member-library holdings. For broader coverage, fall back to Open Library + Internet Archive.
+- **Item not held** — HathiTrust restricts its catalog to member-library holdings. For broader coverage, fall back to Open Library + Internet Archive.
 - **OAuth not configured** — Data API requests fail with 401. Bibliographic API remains usable.
 - **Rights tier denies full text** — the practice skill returns a typed Not-Available for the open-full-text capability and continues with the bibliographic result.

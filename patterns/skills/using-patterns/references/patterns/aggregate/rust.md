@@ -1,4 +1,4 @@
-# Aggregate — Rust Reference
+# Aggregate, Rust reference
 
 ```rust
 pub struct LineItem {

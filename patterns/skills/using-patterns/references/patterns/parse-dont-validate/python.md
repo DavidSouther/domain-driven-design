@@ -1,4 +1,4 @@
-# Parse, Don't Validate — Python Reference
+# Parse, don't validate. Python reference
 
 ```python
 import re

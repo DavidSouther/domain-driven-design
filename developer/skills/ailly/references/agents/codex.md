@@ -1,4 +1,4 @@
-# Codex Tool Mapping
+# Codex tool mapping
 
 Codex adapter for the harness contract in `developer:ailly`. When a skill reference names a tool that Codex calls something else, use this table:
 
@@ -9,15 +9,15 @@ Codex adapter for the harness contract in `developer:ailly`. When a skill refere
 | Task returns result | `wait` |
 | Task completes automatically | `close_agent` to free slot |
 | `TodoWrite` (task tracking) | `update_plan` |
-| `Skill` tool (invoke a skill) | Skills load natively — just follow the instructions |
+| `Skill` tool (invoke a skill) | Skills load natively, just follow the instructions |
 | `Read`, `Write`, `Edit` (files) | Use your native file tools |
 | `Bash` (run commands) | Use your native shell tools |
 
-## Model Mandate
+## Model mandate
 
-Each `spawn_agent` call accepts a per-agent `model` field in its TOML configuration — a confirmed model-selection mechanism. Per `general/skills/dispatching-agents/model-selection.md`'s mandate-with-announce rule: set that field directly from that guidance on every `spawn_agent` dispatch this skill package performs — the phase-level dispatch and any qualifying within-phase sub-dispatch alike; announce the model chosen to the developer either way.
+Each `spawn_agent` call accepts a per-agent `model` field in its TOML configuration. This is a confirmed model-selection mechanism. Follow the mandate-with-announce rule in `general/skills/dispatching-agents/model-selection.md`. Set that field directly from that guidance on every `spawn_agent` dispatch this skill package performs, including phase-level dispatch and any qualifying within-phase sub-dispatch. Announce the model chosen to the developer.
 
-## Subagent dispatch requires multi-agent support
+## Subagent dispatch requires multi-agent features
 
 Add to your Codex config (`~/.codex/config.toml`):
 
@@ -36,7 +36,7 @@ from built-in roles (`default`, `explorer`, `worker`).
 
 When a skill says to dispatch a named agent type:
 
-1. Find the agent's prompt file (e.g., `agents/code-reviewer.md` or the skill's
+1. Find the agent's prompt file (for example, `agents/code-reviewer.md` or the skill's
    local prompt template like `code-quality-reviewer-prompt.md`)
 2. Read the prompt content
 3. Fill any template placeholders (`{BASE_SHA}`, `{WHAT_WAS_IMPLEMENTED}`, etc.)
@@ -63,18 +63,18 @@ Execute this now. Output ONLY the structured response following the format
 specified in the instructions above.
 ```
 
-- Use task-delegation framing ("Your task is...") rather than persona framing ("You are...")
-- Wrap instructions in XML tags — the model treats tagged blocks as authoritative
+- Use task-delegation framing ('Your task is') rather than persona framing ('You are')
+- Wrap instructions in XML tags, which the model treats as authoritative
 - End with an explicit execution directive to prevent summarization of the instructions
 
-### When this workaround can be removed
+### How to remove this workaround
 
 This approach compensates for Codex's plugin system not yet supporting an `agents`
 field in `plugin.json`. When `RawPluginManifest` gains an `agents` field, the
 plugin can symlink to `agents/` (mirroring the existing `skills/` symlink) and
 skills can dispatch named agent types directly.
 
-## Environment Detection
+## Environment detection
 
 Skills that create worktrees or finish branches should detect their
 environment with read-only git commands before proceeding:
@@ -91,7 +91,7 @@ BRANCH=$(git branch --show-current)
 See `using-git-worktrees` Step 0 and `finishing-a-development-branch`
 Step 1 for how each skill uses these signals.
 
-## Codex App Finishing
+## Codex app finishing
 
 When the sandbox blocks branch/push operations (detached HEAD in an
 externally managed worktree), the agent commits all work and informs

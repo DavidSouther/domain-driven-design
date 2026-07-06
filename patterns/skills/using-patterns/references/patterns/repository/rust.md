@@ -1,4 +1,4 @@
-# Repository — Rust Reference
+# Repository, Rust reference
 
 ```rust
 use async_trait::async_trait;

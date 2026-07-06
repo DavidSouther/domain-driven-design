@@ -1,4 +1,4 @@
-# Unit of Work — TypeScript Reference
+# Unit of Work, TypeScript reference
 
 TypeScript uses `Symbol.asyncDispose` (ES2023 `await using`) for automatic rollback on scope exit.
 

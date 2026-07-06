@@ -39,7 +39,7 @@ This repository lints prose with [Vale](https://vale.sh/), configured in `.vale.
 
 1. Sync the base styles once (and again after any `.vale.ini` change): `vale sync`
 2. Lint a file: `vale README.md`
-3. Lint the whole repo: `vale --glob='!{**/skills/**}' .` — skill/agent definition files under any `skills/` directory carry YAML frontmatter that isn't prose (and can crash Vale's frontmatter parser), so they're excluded
+3. Lint the whole repo: `vale --glob='!{**/e2e/**}' .` — e2e test/eval fixtures may deliberately contain the prose patterns Vale flags, so they're excluded; skill definitions and reference docs are linted like any other prose
 
 ### Severity levels
 

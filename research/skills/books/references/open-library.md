@@ -1,4 +1,4 @@
-# Open Library
+# Open library
 
 Bibliographic anchor for any printed book. First stop for ISBN resolution, edition disambiguation, and author normalization.
 

@@ -1,4 +1,4 @@
-# Emitting Logs — Rust Reference
+# Emitting logs, Rust reference
 
 `tracing` macros (`info!`, `error!`) attach structured fields directly. `#[instrument(skip_all, fields(...))]` opens a span; events emitted inside inherit `TraceId` and `SpanId` from it. Newtype `Display` impls produce semantic-convention-shaped attribute values; `Secret<T>` `Debug` impls render `[REDACTED]` so the type, not the call site, carries the safety property.
 
@@ -130,4 +130,4 @@ pub async fn process_batch(items: &[String]) {
 async fn process_one(_: &str) -> Result<(), ()> { Ok(()) }
 ```
 
-`#[instrument(skip_all, fields(...))]` opts every argument out of the span by default and re-attaches only the values the convention asks for. `skip(...)` exists for *large* arguments, never to suppress secrets — wrapped secrets are already safe by their type's `Debug` impl.
+`#[instrument(skip_all, fields(...))]` opts every argument out of the span by default and re-attaches only the values the convention asks for. `skip(...)` exists for *large* arguments, never to suppress secrets, wrapped secrets are already safe by their type's `Debug` impl.

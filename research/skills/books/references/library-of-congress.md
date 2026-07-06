@@ -1,4 +1,4 @@
-# Library of Congress
+# Library of congress
 
 Digitized federal collection: rare books, manuscripts, government publications, Chronicling America historical newspapers. Use for primary-source historical documents and Americana.
 
@@ -10,11 +10,11 @@ Digitized federal collection: rare books, manuscripts, government publications, 
 
 The catalog scope is the **digitized subset** of LoC's holdings, not the full card catalog. Non-digitized items appear in the LoC online catalog at `catalog.loc.gov` but not in the JSON API.
 
-## MCP option
+## Mcp option
 
 None first-party. Use HTTP.
 
-## HTTP fallback
+## Http fallback
 
 - Base URL: `https://www.loc.gov`
 - Endpoint pattern: `/{endpoint}/?fo=json&q=...`
@@ -29,9 +29,9 @@ None first-party. Use HTTP.
 
 ## Licensing
 
-- US Government works are typically in the **public domain**. Most LoC-created records and digitizations are public-domain or `usgov` rights.
+- United States Government works are typically in the **public domain**. Most LoC-created records and digitizations are public-domain or `usgov` rights.
 - Donated and acquired collections retain their original copyright; the per-item `rights` field carries the exact statement.
-- Chronicling America newspapers are public domain in the US.
+- Chronicling America newspapers are public domain in the United States.
 
 ## Failure modes
 

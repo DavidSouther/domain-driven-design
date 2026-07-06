@@ -1,4 +1,4 @@
-# Unit of Work — Rust Reference
+# Unit of work, Rust reference
 
 Rust uses the `Drop` trait for guaranteed rollback when the UoW goes out of scope without an explicit commit.
 
