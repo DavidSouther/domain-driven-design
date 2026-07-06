@@ -7,7 +7,7 @@ The code-collaboration surface. First stop for issues, pull requests, and the te
 - **GitHub issue/PR search** — issue and PR hits with number and URL, filterable by repo and label.
 - **GitHub issue/PR fetch** — the body, comments, and diff threads where exposed, given a repo + number.
 
-## MCP / connector
+## MCP/connector
 
 Two transports, probed in order:
 

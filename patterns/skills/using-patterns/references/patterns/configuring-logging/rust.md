@@ -1,4 +1,4 @@
-# Configuring logging - Rust reference
+# Configuring logging - rust reference
 
 `tracing` plus `tracing-subscriber` provides the five-layer stack. `tracing-opentelemetry` bridges spans to OpenTelemetry; `opentelemetry-otlp` exports them. The bootstrap function below is `bootstrap_logging()` for a service; the command-line tool variant follows.
 

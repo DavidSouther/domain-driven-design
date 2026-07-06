@@ -92,4 +92,4 @@ mod tests {
 }
 ```
 
-A Cargo feature is appropriate when the toggle must not change without a rebuild: an optional backend adapter, a platform-specific code path, or a capability that has no runtime-flip requirement. It is not appropriate for release gates or experiments that need to change without a redeploy. Use the runtime `Flags` port for those. See `references/patterns/configuring-feature-flags/rust.md` for the full comparison.
+A Cargo feature is appropriate when the toggle must not change without a rebuild. Examples include optional backend adapters, platform-specific code paths, or capabilities that have no runtime-flip requirement. It is not appropriate for release gates or experiments that need to change without a redeploy. Use the runtime `Flags` port for those. See `references/patterns/configuring-feature-flags/rust.md` for the full comparison.

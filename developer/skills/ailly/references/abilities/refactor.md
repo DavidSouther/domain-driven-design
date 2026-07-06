@@ -29,7 +29,7 @@ Code smells are patterns for applying refactoring.
 
 ### Code smells within classes
 
-- **Three-Strikes Refactor** Duplicated code is an aroma, but has its place. Triplicate code is a smell. If you wait until you have three scenarios, each might be slightly different, and it gives you a better view for what the common feature is. If you refactor too early, you may find that the third use case doesn’t quite fit with your refactored code.
+- **Three-Strikes Refactor** Duplicated code is an aroma, but has its place. Triplicate code is a smell. If you wait until you have three scenarios, each might be slightly different, and it gives you a better view for what the common feature is. If you refactor too early, you may find that the third scenario doesn’t quite fit with your refactored code.
 - **Comments** There’s a fine line between comments that illuminate and comments that obscure. Are the comments necessary? Do they explain “why” and not “what”? Can you refactor the code so the comments aren’t required? And remember, you’re writing comments for people, not machines.
 - **Conditional Complexity** Watch out for large conditional logic blocks, particularly blocks that tend to grow larger or change significantly over time. Consider alternative object-oriented approaches such as decorator, strategy, or type state.
 - **Combinatorial Explosion** You have lots of code that does almost the same task but with tiny variations in data or behavior. This can be difficult to refactor, perhaps using generics or an interpreter.

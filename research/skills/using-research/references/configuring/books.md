@@ -7,7 +7,9 @@
 
 ## Overview
 
-This skill installs the harness that `research:books` consumes. A books research stack is a set of named **capabilities** reached through **transports**. Capabilities include ISBN lookup, full-text retrieval, and library search. Transports are MCP first, with HTTP as a fallback. The wiring probes each source, installs marketplace plugins where required, records the active transport, and confirms that each named capability returns the shape the practice skill expects. Re-running the wiring on a configured system confirms the contract or surfaces drift; it never destroys state.
+This skill installs the harness that `research:books` consumes. A books research stack is a set of named **capabilities** reached through **transports**. Capabilities include ISBN lookup, full-text retrieval, and library search. Transports are MCP first, with HTTP as a fallback.
+
+The wiring probes each source and installs marketplace plugins where required. It records the active transport and confirms that each named capability returns the shape the practice skill expects. Re-running the wiring on a configured system confirms the contract or surfaces drift; it never destroys state.
 
 The harness this skill installs is the **books capability contract** below. The practice skill `research:books` cites the contract and dispatches capabilities; it never re-teaches the configuration.
 
@@ -36,7 +38,9 @@ Once you configure the books sources (see this `books.md` reference), callers of
 
 The practice skill treats Not-Available as a routing signal, not as an error.
 
-**Apply the following etiquette rules:** include a contact email in the user-agent, hold the Google Books key in env, respect per-host rate limits, and install marketplace plugins where required. The shared rules live in [`books/references/etiquette.md`](../../../books/references/etiquette.md); each per-source reference cites that file for the rules it inherits.
+**Apply the following etiquette rules:** include a contact email in the user-agent, hold the Google Books key in env, respect per-host rate limits, and install marketplace plugins where required.
+
+The shared rules live in [`books/references/etiquette.md`](../../../books/references/etiquette.md). Each per-source reference cites that file for the rules it inherits.
 
 ## When to use
 
@@ -73,9 +77,9 @@ Opt-in sources: user's own corpus and aggregators. Configure these when the user
 - [ ] **HathiTrust** — HTTP against `catalog.hathitrust.org/api/volumes/...` per [`books/references/hathitrust.md`](../../../books/references/hathitrust.md). The Bibliographic API is publicly available; the full-text Data API requires OAuth, configure when institutional access is available.
 - [ ] **Library of Congress** — HTTP against `loc.gov/{endpoint}/?fo=json` per [`books/references/library-of-congress.md`](../../../books/references/library-of-congress.md). Smoke-test: digitized primary-source query.
 
-**Marketplace plugins.** Books currently uses no Anthropic-curated marketplace plugins, but we call out the configure step for parity with the papers setup reference (`papers.md`). The shape is the same when you add one later: `/plugin marketplace add anthropics/<marketplace>` then `/plugin install <plugin>@<marketplace>`, complete SSO if prompted.
+**Marketplace plugins.** Books currently uses no Anthropic-curated marketplace plugins, but the configure step is called out for parity with the papers setup reference (`papers.md`). The shape is the same when you add one later: `/plugin marketplace add anthropics/<marketplace>` then `/plugin install <plugin>@<marketplace>`, complete SSO if prompted.
 
-**Out-of-scope sources** appear in [`books/references/out-of-scope.md`](../../../books/references/out-of-scope.md) with the reasons we exclude each.
+**Out-of-scope sources** appear in [`books/references/out-of-scope.md`](../../../books/references/out-of-scope.md) with the reasons for excluding each.
 
 ## Re-verification triggers
 

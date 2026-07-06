@@ -38,7 +38,7 @@ Example payload (`/works/{doi}`):
 
 ## Licensing
 
-OpenAlex metadata is **CC0**. OpenAlex provides links to full text, though the text is hosted at the original repository; quote per the original license. Concept and institution data is freely usable.
+OpenAlex metadata is **CC0**. OpenAlex provides links to full text; the original repository hosts the text. Quote per the original license. Concept and institution data is freely usable.
 
 ## Failure modes
 

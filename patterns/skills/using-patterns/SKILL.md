@@ -1,6 +1,6 @@
 ---
 name: using-patterns
-description: Bootstrap and routing skill for design patterns. Loaded at session start to decide which pattern applies to a design pressure — wrapping a primitive as a domain type (newtype), modeling entities and value objects (domain-objects), constructing many-field objects (builder), encapsulating fields (visibility), parsing untrusted input (parse-dont-validate), signalling failure with typed or stringly errors (errors-typed-untyped), encoding lifecycle phases (type-states), persisting without coupling to storage (repository), holding a transactional consistency boundary (aggregate), flushing changes atomically (unit-of-work), wiring a testable service layer (bootstrap-and-service), structuring tests (arrange-act-assert), forcing a real implementation (triangulate), converting between domain types (type-conversion), bootstrapping a logging pipeline (configuring-logging) versus emitting a log record (emitting-logs), and standing up a feature-flag harness (configuring-feature-flags) versus putting one feature behind a flag (using-feature-flags). Names the applicable pattern and points at its reference under references/patterns/.
+description: Bootstrap and routing skill for design patterns. Loaded at session start to decide which pattern applies to a design pressure, wrapping a primitive as a domain type (newtype), modeling entities and value objects (domain-objects), constructing many-field objects (builder), encapsulating fields (visibility), parsing untrusted input (parse-dont-validate), signalling failure with typed or stringly errors (errors-typed-untyped), encoding lifecycle phases (type-states), persisting without coupling to storage (repository), holding a transactional consistency boundary (aggregate), flushing changes atomically (unit-of-work), wiring a testable service layer (bootstrap-and-service), structuring tests (arrange-act-assert), forcing a real implementation (triangulate), converting between domain types (type-conversion), bootstrapping a logging pipeline (configuring-logging) versus emitting a log record (emitting-logs), and standing up a feature-flag harness (configuring-feature-flags) versus putting one feature behind a flag (using-feature-flags). Names the applicable pattern and points at its reference under references/patterns/.
 ---
 
 # Design patterns workflow
@@ -18,12 +18,12 @@ immediate design pressure.
 
 | Situation (discriminator) | Pattern and reference |
 |---------------------------|-----------------------|
-| A single primitive (string, number, UUID) carries NO behavior and just needs a distinct type. You cannot accidentally use an `OrderId` where a `UserId` is expected or add `Miles` to `Kilometers` | newtype: `references/patterns/newtype.md` |
+| A single primitive (string, number, UUID) carries NO behavior and just needs a distinct type. You cannot accidentally use an `OrderId` where you expect a `UserId` or add `Miles` to `Kilometers` | newtype: `references/patterns/newtype.md` |
 | An object carries behavior or calculations (for example an `OrderLine` doing price math), or you are deciding what has identity (Entity), what is equal by value (Value Object), and what is a free function (Domain Service) | domain-objects: `references/patterns/domain-objects.md` |
 | Constructing an object with many fields, a required-vs-optional distinction, or partial-initialization risk that a many-parameter constructor makes error-prone | builder — `references/patterns/builder.md` |
 | A domain object exposes public fields, leaks mutable collections, or allows state changes via direct assignment instead of named methods | visibility — `references/patterns/visibility.md` |
 | Untyped or untrusted data crosses a boundary (HTTP, user input, file, message queue, storage) and you encode validity proofs in the type system rather than re-checking them with scattered null/boolean guards | parse-dont-validate: `references/patterns/parse-dont-validate.md` |
-| Designing how a library function or API signals failure. A typed error hierarchy the caller can match on (a function failing several ways the caller must match on routes HERE) versus a stringly typed message for a human reader | errors-typed-untyped: `references/patterns/errors-typed-untyped.md` |
+| Designing how a library function or API signals failure. A typed error hierarchy the caller can match on versus a stringly typed message for a human reader. Apply the typed version when a function can fail in multiple ways the caller must distinguish. | errors-typed-untyped: `references/patterns/errors-typed-untyped.md` |
 | A domain object has distinct lifecycle phases (open/closed, draft/published) and only a subset of operations is valid in each, so illegal state-plus-data combinations should be unrepresentable | type-states — `references/patterns/type-states.md` |
 | You persist and retrieve domain objects while the domain stays decoupled from a specific storage technology (in-memory, SQL, API, CSV), and tests run without a real database | repository: `references/patterns/repository.md` |
 | An invariant requires that a cluster of entities change together through one entry point, protecting a transactional consistency boundary where a partial mid-operation write would leave an illegal state | aggregate — `references/patterns/aggregate.md` |
@@ -52,10 +52,10 @@ These pairs route to different patterns. State the discriminator before choosing
 
 - **aggregate vs unit-of-work.** An invariant across multiple objects protected by a single root is aggregate (`references/patterns/aggregate.md`). You ensure atomic, durable flushing that wraps the aggregate operation at commit time through unit-of-work (`references/patterns/unit-of-work.md`).
 
-- **type-states vs parse-dont-validate.** A field present only after a lifecycle transition (a `shippingAddress` that exists only once you confirm a cart) is a distinct phase and routes to type-states (`references/patterns/type-states.md`). Untrusted data crossing a boundary routes to parse-dont-validate (`references/patterns/parse-dont-validate.md`).
+- **type-states vs parse-dont-validate.** A field present only after a lifecycle transition is a distinct phase and routes to type-states (`references/patterns/type-states.md`). A `shippingAddress` that exists only once you confirm a cart exemplifies this. Untrusted data crossing a boundary routes to parse-dont-validate (`references/patterns/parse-dont-validate.md`).
 
 - **type-conversion vs newtype.** Reshaping or rewrapping an existing typed value into
-  another type — extract-and-rewrap, duplicated `to_X`/`from_X` — routes to
+  another type, such as extract-and-rewrap or duplicated `to_X`/`from_X`, routes to
   type-conversion (`references/patterns/type-conversion.md`). First wrapping a bare
   primitive routes to newtype (`references/patterns/newtype.md`).
 

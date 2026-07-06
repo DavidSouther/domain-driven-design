@@ -16,7 +16,7 @@ Application services orchestrate use cases, parsing input, calling domain logic,
 Four layers, each with a strict mandate:
 
 - **Domain** — pure business rules, aggregates, value objects, domain services, and domain errors as values; no I/O
-- **Application Service** — orchestrates a single use case: parses input, calls domain and repository ports, returns typed results; no HTTP or DB knowledge
+- **Application Service** — orchestrates a single use scenario: parses input, calls domain and repository ports, returns typed results; no HTTP or DB knowledge
 - **Adapter** — implements a port interface defined by the service layer; translates protocol details (HTTP status codes, command-line tool flags) to and from service calls; contains no business logic
 - **Composition Root (Bootstrap)** — the only place that imports concrete classes; constructs and injects all dependencies; runs once at startup
 

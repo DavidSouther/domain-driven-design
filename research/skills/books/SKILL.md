@@ -7,7 +7,7 @@ description: Use when a research question targets a citable book, including ISBN
 
 ## Overview
 
-Per-query research against the configured books capability contract. Pick the **capability** the question needs: ISBN lookup, table-of-contents, library search, or full-text retrieval. Dispatch to it, write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, and re-verification belong in [the books setup reference](../using-research/references/configuring/books.md); this skill consumes the contract that skill publishes.
+Per-query research against the configured books capability contract. Pick the **capability** the question needs: isbn lookup, table-of-contents, library search, or full-text retrieval. Dispatch to it, write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, and re-verification belong in [the books setup reference](../using-research/references/configuring/books.md); this skill consumes the contract that skill publishes.
 
 ## When to use / When not to use
 
@@ -15,7 +15,7 @@ Per-query research against the configured books capability contract. Pick the **
 
 - Citable book content: edition resolution, full-text retrieval, table-of-contents fetch, table-of-contents+section selection.
 - The user's own library (Kindle, Apple Books, Calibre, Zotero, Ebook-MCP) when you configure it.
-- Technical book and course content via O'Reilly Learning when access is configured.
+- Technical book and course content via O'Reilly Learning when you configure access.
 - Reading-community signal (reviews, comparable titles) via Hardcover.
 
 **When not to use:**
@@ -26,7 +26,7 @@ Per-query research against the configured books capability contract. Pick the **
 - For domain-model questions (entities, bounded contexts, ubiquitous language). Use `research:domain`.
 - For academic papers, preprints, DOIs, citation graphs. Use `research:papers`.
 
-## Query expansion (Jeopardy search)
+## Query expansion (jeopardy search)
 
 Before dispatching to a capability, expand the question into 3-5 variants; see [`research/references/jeopardy.md`](../../references/jeopardy.md) for the general technique. Books-specific axes:
 
@@ -88,7 +88,7 @@ Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/books.md`. If the caller
 [2] Author/Org. "Title." Date. [Online]. Available: <URL>
 ```
 
-Excerpts only; do not stage cached PDFs or full bodies. For passages from copyrighted or licensed sources—O'Reilly, Kindle, Apple Books, Calibre, and HathiTrust gated content—quote within the session for the user's own work and cite-and-link. Do not stage to public artifacts.
+Excerpts only; do not stage cached PDFs or full bodies. For passages from copyrighted or licensed sources—O'Reilly, Kindle, Apple Books, Calibre, and HathiTrust gated content—quote within the session for the user's own work. Cite-and-link instead of staging to public artifacts.
 
 ## Common mistakes
 

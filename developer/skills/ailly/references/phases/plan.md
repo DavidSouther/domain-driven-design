@@ -20,12 +20,12 @@ Middle-loop planning skill. Given a cleared design and its failing feature test,
 ## Behavior
 
 1. Read the cleared design and its recorded feature test (and user story) from the session folder. If `design.md` (or `research.md`) names skills to load under a **Libraries & Skills** directive, load them via the active harness's skill-loading mechanism before planning, and carry that directive into `plan.md` so every red-green-refactor step loads the framework's skill while implementing.
-2. Consider the API surface area changes needed (step 0 — see below).
+2. Consider the API surface area changes needed (step 0—see below).
 3. Break the path to a passing feature test into several (no more than 7) incremental steps.
   - If it seems a plan would require more than a few steps, encourage the user to go back to the design and simplify the size of the step.
   - If it seems a plan would require more than 7 steps, insist that the user go back to the design.
-3a. If the path from the failing test to a passing test isn't obvious, apply the forward-backward method. Work backward from the passing test state (what must be true just before the failing assertion passes?) and forward from the current code (what can be derived or added without breaking anything?) until the two sides connect into a complete sequence of steps. Write each candidate step to a map file as you generate it. Do not hold steps only in context. See `developer/skills/ailly/references/abilities/forward-backward.md`.
-4. For each step: name it, describe what it builds, and identify which assertion in the feature test it enables. Steps may include type/API sketches and notes on critical areas as orientation for the builder, but no implementation code — each step is a description of what to build, not how to build it.
+3a. If the path from the failing test to a passing test isn't obvious, apply the forward-backward method. Work backward from the passing test state, asking what must be true just before the failing assertion passes. Work forward from the current code, identifying what you can derive or add without breaking anything, until the two sides connect into a complete sequence of steps. Write each candidate step to a map file as you generate it. Do not hold steps only in context. See `developer/skills/ailly/references/abilities/forward-backward.md`.
+4. For each step: name it, describe what it builds, and identify which assertion in the feature test it enables. Steps may include type/API sketches and notes on critical areas as orientation for the builder, but no implementation code. Each step is a description of what to build, not how to build it.
 5. Save the plan as a draft. Perform a general review of the plan, including the intent-review ability (a recommended, dismissible default) per `references/abilities/intent-review.md`. Then stop.
 
 ## Step 0: API surface area
@@ -33,7 +33,7 @@ Middle-loop planning skill. Given a cleared design and its failing feature test,
 Before implementation steps, define the type and API surface area the feature test requires. Step 0 establishes all new types and public function signatures as stubs:
 
 - Introduce new entities, value objects, or services needed
-- Run the dedicated "look for applicable patterns" beat (`.ailly/prompts/plan-use-patterns.md`): consult `patterns:using-patterns` and name the patterns that apply before fixing the surface. The domain-objects pattern (`patterns:using-patterns`, `references/patterns/domain-objects.md`), the newtype pattern (`references/patterns/newtype.md`), and the type-states pattern (`references/patterns/type-states.md`) provide guidance.
+- Run the dedicated "look for applicable patterns" beat (`.ailly/prompts/plan-use-patterns.md`): consult `patterns:using-patterns` and name the patterns that apply before fixing the surface. See domain-objects (`patterns:using-patterns`, `references/patterns/domain-objects.md`), newtype (`references/patterns/newtype.md`), and type-states (`references/patterns/type-states.md`) patterns for guidance.
 - Show type signatures and function signatures (not implementations) for new objects
 - Keep this focused on the domain model, not persistence or UI
 
@@ -77,7 +77,7 @@ New types and function signatures (stubs only, no bodies):
 
 Describe what this step builds. The feature test still fails but `<specific assertion>` no longer throws.
 
-[Optional: API sketch or note on a critical interface–re-derive during build.]
+[Optional API sketch or note on a critical interface–re-derive during build.]
 
 **Tests**
 

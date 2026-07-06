@@ -4,7 +4,7 @@
 
 You compose a logging pipeline once, at startup, as a stack of layers over a single subscriber registry. Each layer owns one concern: format, filter, enrichment, export. The order stays fixed; later code only emits records into it. Bootstrap is also where you install the W3C `traceparent` propagator, so every call site inherits the active trace context without touching headers.
 
-Two deployment shapes drive every decision below: a long-running **service** with one process serving many requests, and a short-lived **command-line tool** with one invocation per outcome. The five-layer skeleton is the same. The defaults at every layer differ. Choose the shape first, then walk down the stack.
+Two deployment shapes drive every decision below: a long-running **service** and a short-lived **command-line tool**. Services have one process serving many requests. Command-line tools handle one invocation per outcome. The five-layer skeleton is the same. The defaults at every layer differ. Choose the shape first, then walk down the stack.
 
 ## When to use
 
@@ -71,13 +71,13 @@ Command-line tools do not sample. Verbosity replaces sampling: `-q`/`-v`/`-vv`/`
 
 ### Redaction layer
 
-The redaction layer is **defense-in-depth**, not the primary control. The primary control is upstream typing via the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`): secrets arrive at any log call site already wrapped in `Secret<T>`, whose `Debug` impl renders `[REDACTED]`. The redaction layer exists for the leak that typing cannot prevent. A free-text message body might include a credit-card number, or a third-party library might log raw payloads. Configure it as an **allowlist** that denies everything except known fields in services where the field set is stable. Add a blocklist regular expression as a backstop, never as the primary policy.
+The redaction layer is **defense-in-depth**, not the primary control. The primary control is upstream typing via the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`). Secrets arrive at any log call site already wrapped in `Secret<T>`, whose `Debug` impl renders `[REDACTED]`. The redaction layer exists for the leak that typing cannot prevent. A free-text message body might include a credit-card number, or a third-party library might log raw payloads. Configure it as an **allowlist** that denies everything except known fields in services where the field set is stable. Add a blocklist regular expression as a backstop, never as the primary policy.
 
-In command-line tool shape the analogous boundary is the `--bug-report` bundling step or a telemetry uploader; scrub at the share/upload edge rather than installing a collector processor. Both shapes follow the same `Secret<T>` parse-boundary discipline.
+In command-line tool shape, the analogous boundary is the `--bug-report` bundling step or a telemetry uploader. Scrub at the share/upload edge rather than installing a collector processor. Both shapes follow the same `Secret<T>` parse-boundary discipline.
 
 ### TTY and format selection
 
-Format selection in command-line tool shape depends on two inputs: the `--log-format` flag and whether stderr is a TTY. JSON wins if the flag asks for it or stderr is non-TTY (piped, redirected, captured by an orchestrator); otherwise pretty. Honor `NO_COLOR` (no-color.org) and `CLICOLOR` or `CLICOLOR_FORCE` for color. When the command-line tool uses a progress UI, coordinate with logs via `tracing-indicatif`'s writer wrappers or `ProgressBar::suspend()` so log lines do not corrupt the bar. Service shape is simpler: JSON always.
+Format selection in command-line tool shape depends on two inputs: the `--log-format` flag and whether stderr is a TTY. JSON wins if the flag asks for it or stderr is non-TTY (piped, redirected, captured by an orchestrator); otherwise pretty. Honor `NO_COLOR` (no-color.org) and `CLICOLOR` or `CLICOLOR_FORCE` for color. When the command-line tool uses a progress UI, coordinate with logs via `tracing-indicatif`'s writer wrappers or `ProgressBar::suspend()` so log lines do not corrupt the bar. Service shape is simpler: json always.
 
 ### Graceful shutdown
 

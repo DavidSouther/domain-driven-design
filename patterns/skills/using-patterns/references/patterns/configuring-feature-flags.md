@@ -2,7 +2,7 @@
 
 ## Overview
 
-Assemble a feature-flag system once at the composition root as a single evaluation entry point. The rest of the code reads through it. The setup fixes the decisions every flag inherits: which provider backs evaluation, what a flag resolves to when the provider is unreachable, how you name and own flags, and when they expire. Code against a vendor-neutral interface, the CNCF OpenFeature standard or a thin internal `Flags` port, so the provider is swappable and no call site imports a vendor SDK.
+Assemble a feature-flag system once at the composition root as a single evaluation entry point. The rest of the code reads through it. The setup fixes the decisions every flag inherits. These are: which provider backs evaluation, what a flag resolves to when the provider is unreachable, how you name and own flags, and when they expire. Code against a vendor-neutral interface: the CNCF OpenFeature standard or a thin internal `Flags` port. This ensures the provider is swappable and no call site imports a vendor SDK.
 
 This skill is the general flag harness. One app of this harness is the project loop's single release gate, which hides a whole multi-feature project until its Closing Bell completes. For details, see `developer/skills/ailly/references/shapes/project/release-flags.md`.
 

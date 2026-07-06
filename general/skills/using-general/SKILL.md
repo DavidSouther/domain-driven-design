@@ -76,7 +76,8 @@ digraph skill_flow {
 
 ## Intermediate files
 
-Write intermediate files judiciously, both to share results across tasks and to enable users to edit findings directly. Write intermediate files to `docs/<plugin>/<skill>/YYYY-MM-DD-A-<topic>.md`, where YYYY-MM-DD-A is the year, month, day, and AA incrementing value starting at `A`, then `B`, then `C`, and so on for topics started on the same day. Some plugins may modify this layout, but `docs/<plugin>/` should always be the directory and `YYYY-MM-DD-A-<topic>` as part of the path.
+Write intermediate files judiciously, both to share results across tasks and to enable users to edit findings directly. Write intermediate files to `docs/<plugin>/<skill>/YYYY-MM-DD-A-<topic>.md`.
+The YYYY-MM-DD-A component is the year, month, day, and an incrementing letter starting at `A`, then `B`, then `C`, and so on for topics started on the same day. Some plugins may modify this layout, but `docs/<plugin>/` should always be the directory and `YYYY-MM-DD-A-<topic>` as part of the path.
 
 ## User Instructions
 

@@ -1,6 +1,6 @@
-# Codebase: LSP setup
+# Codebase: lsp setup
 
-Per-language priming rules for the codebase stack. The wiring SKILL (see [`../configuring-codebase/SKILL.md`](../configuring-codebase/SKILL.md)) cites this file at configure time. Per-language reference files (`lsp-rust.md`, `lsp-python.md`, `lsp-typescript.md`) cite it for the priming step each inherits.
+Per-language priming rules for the codebase stack. The wiring SKILL (codebase configuration system, see [`../configuring-codebase/SKILL.md`](../configuring-codebase/SKILL.md)) cites this file at configure time. Per-language reference files (`lsp-rust.md`, `lsp-python.md`, `lsp-typescript.md`) cite it for the priming step each inherits.
 
 Priming is the codebase analog of the books/papers `etiquette.md`: a shared-rules file. The concern is not host politeness or credential handling, but project resolution. Language servers are toolchain installs with no auth. Unprimed servers answer `goToDefinition` with nothing. The rules below make each language server resolve the project before the contract holds.
 
@@ -17,7 +17,7 @@ Priming is the codebase analog of the books/papers `etiquette.md`: a shared-rule
 - **Activate the venv and match the pyright config to it.** A `pyrightconfig.json` or a `[tool.pyright]` block in `pyproject.toml` must point `venvPath`/`pythonPath` at the active virtual environment. A mismatched or absent venv causes import-resolution failures and `hover` returns `Unknown`.
 - After the venv is correct, `hover` on a typed symbol returns a concrete type. If it returns `Unknown`, the priming is incomplete (wrong venv) or the code is genuinely untyped.
 
-## TypeScript / JavaScript (typescript-language-server)
+## TypeScript / javascript (typescript-language-server)
 
 - tsserver ships with TypeScript; no separate install beyond the project's dependencies.
 - **Run `npm install` (or equivalent) to populate `node_modules`.** Until you install dependencies, imports into third-party packages and `.d.ts` declarations do not resolve.

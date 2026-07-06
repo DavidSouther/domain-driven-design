@@ -10,13 +10,13 @@ The user's reference manager scoped to academic papers, preprints, and conferenc
 
 For book items (`book`, `bookSection`), see [`../../books/references/zotero.md`](../../books/references/zotero.md). This file focuses on paper item types and identifier types. Duplication is intentional per design §Reference file layout, as citation linkage differs (DOI, PMID, PMCID rather than ISBN).
 
-## MCP Option
+## MCP option
 
 `54yyyu/zotero-mcp` adds semantic search. Choose `kujenga/zotero-mcp` or `cookjohn/zotero-mcp` for ID-based lookup by DOI, ISBN, arXiv, PMID, title, author, year, or tag filters.
 
 Install per the chosen repo's README. Auth: `ZOTERO_API_KEY` and `ZOTERO_LIBRARY_ID`.
 
-## HTTP Fallback
+## HTTP fallback
 
 - Base URL: `https://api.zotero.org`
 - Endpoints: `/users/{libraryId}/items?q=...&itemType=journalArticle||preprint||conferencePaper`, `/users/{libraryId}/items/{itemKey}`

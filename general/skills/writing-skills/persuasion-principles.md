@@ -4,7 +4,7 @@
 
 LLMs respond to the same persuasion principles as humans. Understanding this psychology helps you design more effective skills - not to manipulate, but to ensure you implement critical practices even under pressure.
 
-**Research foundation:** Meincke et al. (2025) tested 7 persuasion principles with N=28,000 AI conversations. Persuasion techniques more than doubled compliance rates (33% → 72%, p < .001).
+**Research foundation:** meincke et al. (2025) tested 7 persuasion principles with N=28,000 AI conversations. Persuasion techniques more than doubled compliance rates (33% → 72%, p < .001).
 
 ## The seven principles
 
@@ -166,11 +166,11 @@ LLMs respond to the same persuasion principles as humans. Understanding this psy
 
 ## Research citations
 
-**Cialdini, R. B. (2021).** *Influence: The Psychology of Persuasion (New and Expanded).* Harper Business.
+**Cialdini, R. B. (2021).** *Influence: the psychology of persuasion (New and Expanded).* Harper Business.
 - Seven principles of persuasion
 - Empirical foundation for influence research
 
-**Meincke, L., Shapiro, D., Duckworth, A. L., Mollick, E., Mollick, L., & Cialdini, R. (2025).** Call Me A Jerk: Persuading AI to Comply with Objectionable Requests. University of Pennsylvania.
+**Meincke, L., Shapiro, D., Duckworth, A. L., Mollick, E., Mollick, L., & Cialdini, R. (2025).** "Call me a jerk: persuading AI to comply with objectionable requests." University of Pennsylvania.
 - Tested 7 principles with N=28,000 LLM conversations
 - Compliance increased 33% → 72% with persuasion techniques
 - Authority, commitment, scarcity most effective
@@ -182,6 +182,6 @@ When designing a skill, ask:
 
 1. **What type is it?** (Discipline vs. guidance vs. reference)
 2. **What behavior should change?**
-3. **Which principles apply?** (In most cases authority + commitment for discipline)
+3. **Which principles apply?** In most cases authority and commitment for discipline.
 4. **Are too many combined?** (Don't use all seven)
 5. **Is this ethical?** (Serves user's genuine interests?)

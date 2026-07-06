@@ -13,7 +13,7 @@ Apply the glossary ability (`references/glossary.md`) to ensure all field names,
 For each operation, specify:
 
 - **Input contract:** required fields, types, allowed values, and preconditions (conditions the caller must ensure before invoking)
-- **Output contract:** response shape, postconditions, and error cases. Postconditions guarantee what the operation provides after completion; error cases may include, for example: "400 if X is missing, 409 if Y already exists".
+- **Output contract:** response shape, postconditions, and error cases. Postconditions guarantee what the operation provides after completion; error cases may include, for example: "400 if X is missing, 409 if Y already exists."
 
 Contracts describe the observable data shape at boundaries. Invariants (Step 3) are different: they are business rules that must always be true, not just at operation boundaries.
 

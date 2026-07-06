@@ -1,4 +1,4 @@
-# Type conversion. Python reference
+# Type conversion: Python reference
 
 Python uses `classmethod` factories as the conversion entry points. The `from_x` name marks a total conversion. The `parse` or `try_from` name marks a partial conversion that may raise or return a union.
 

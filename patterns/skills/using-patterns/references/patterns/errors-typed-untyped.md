@@ -1,4 +1,4 @@
-# Errors: typed vs untyped
+# Errors: typed vs. untyped
 
 ## Overview
 
@@ -6,7 +6,7 @@ An error type is part of an API. Choose its shape by who is on the other side of
 
 Other code consumes a library. Its callers must dispatch on failure programmatically: retry on `Network`, surface to the user on `NotFound`, give up on `Parse`. The error type must therefore be a tagged, structured value the compiler can exhaust. This is the **typed** style.
 
-A human consumes an app. Its "callers" are eyes on a screen or a log line on a dashboard. The reader needs context, not a discriminator. It answers "who, what, where." When it comes from logging, why and how are up to the incident reviewer. This is the **stringlytyped** style: a rich message, frequently with a cause chain, and rarely matched on programmatically.
+A human consumes an app. Its "callers" are eyes on a screen or a log line on a dashboard. The reader needs context, not a discriminator. It answers "who, what, where." When it comes from logging, why, and how are up to the incident reviewer. This is the **stringlytyped** style: a rich message, frequently with a cause chain, and rarely matched on programmatically.
 
 The boundary between the two is a translation step. Typed library errors arrive at the app edge. The edge formats them, adds context, and emits a human-readable string.
 

@@ -1,4 +1,4 @@
-# LSP reference: Python (pylsp / pyright)
+# LSP reference: python (pylsp / pyright)
 
 > Priming rules (venv activation, pyright config) live in [`lsp-setup.md`](lsp-setup.md).
 

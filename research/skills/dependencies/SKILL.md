@@ -1,6 +1,6 @@
 ---
 name: dependencies
-description: Use when answering questions about a project's declared dependencies, library versions, package constraints, module requirements, or third-party imports. The dependency source must not already be loaded in context.
+description: Use when answering questions about a project's declared dependencies, library versions, package constraints, module requirements, or third-party imports. You must not have already loaded the dependency source in context.
 ---
 
 # Dependencies research
@@ -18,7 +18,7 @@ Answers research questions about a project's declared dependencies. Reads main c
 - Asked about transitive/resolved deps. Those live in lock files, which this skill ignores
 - Asked about internal usage patterns. Use the `codebase` skill for that
 
-## Query expansion (Jeopardy search)
+## Query expansion (jeopardy search)
 
 Before any search, generate 3–5 variant queries covering:
 - Different phrasings: "latest version" / "current release" / "newest tag"
@@ -30,7 +30,7 @@ Run the best 2–3 variants. Stop when results converge.
 
 ## Search strategy
 
-Follow this order and stop as soon as the question is answered:
+Follow this order and stop as soon as you answer the question:
 
 1. **Read main config** — identify declared dependencies and version constraints
 2. **LSP hover** — on relevant import statements to get resolved type signatures

@@ -17,7 +17,7 @@ The harness this skill installs is the **codebase capability contract** below. T
 
 ## Contract
 
-Once you configure the codebase language servers using this reference, callers of `research:codebase` may assume the following LSP operations are available **for each language whose server resolved**. Operation names match the built-in `LSP` tool surface:
+Once you configure the codebase language servers using this reference, callers of `research:codebase` may assume the following LSP operations are available for each language whose server resolved. Operation names match the built-in `LSP` tool surface.
 
 | Capability | Inputs | Returns | Conditional |
 |---|---|---|---|
@@ -41,7 +41,7 @@ The practice skill treats Not-Available as a routing signal, not as an error.
 
 **Note on operation surface.** The built-in `LSP` tool exposes `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, and `outgoingCalls`. It does **not** expose `completions` or `diagnostics`. The preceding contract lists only operations the tool actually exposes. The per-language `lsp-*.md` references footnote `completions` and `diagnostics` as not on the current `LSP` tool surface.
 
-**Toolchain is primed:** for each language the server resolves, the project is ready. The Rust crate graph has been built via `cargo check`. The Python venv has been activated and matches the pyright config. TypeScript has `node_modules` populated and project references built.
+**Prime the toolchain:** for each language the server resolves, the project is ready. The `cargo check` command builds the Rust crate graph. Activate the Python venv and it matches the pyright config. The `npm install` command populates `node_modules` and builds project references.
 
 The shared rules live in [`../codebase/lsp-setup.md`](../../../codebase/lsp-setup.md), which contains the priming and configuration rules shared across this stack. Each per-language `lsp-*.md` file cites this for the priming step it inherits.
 
@@ -55,9 +55,9 @@ The shared rules live in [`../codebase/lsp-setup.md`](../../../codebase/lsp-setu
 
 ## Configure checklist
 
-Walk the checklist top-to-bottom on a fresh environment. Each item detects whether the language is present, confirms or installs its server, primes the project so the server resolves, and smoke-tests one operation. Smoke-test means a minimal LSP operation that confirms the server returns the contract shape.
+Walk the checklist top-to-bottom on a fresh environment. Each item detects whether the language is present, confirms, or installs its server, primes the project so the server resolves, and smoke-tests one operation. Smoke-test means a minimal LSP operation that confirms the server returns the contract shape.
 
-Default languages (detect from the checkout; configure each that is present):
+Default languages: detect from the checkout and configure each that is present:
 
 - [ ] **Rust** — present when `Cargo.toml` exists. rust-analyzer is the standard server and activates automatically. Prime with `cargo check` so the crate graph resolves, per the priming rules in [`../codebase/lsp-setup.md`](../../../codebase/lsp-setup.md) and [`../codebase/lsp-rust.md`](../../../codebase/lsp-rust.md). Smoke-test: `goToDefinition` on a known `pub fn`. If `cargo check` fails, mark the Rust capabilities Not-Available and fall back to Bash.
 - [ ] **Python** — present when `pyproject.toml`, `setup.py`, or `*.py` exists. Install pyright (`pip install pyright` or `npm install -g pyright`); pylsp is the alternative. Activate the venv and point the pyright config at it, per [`../codebase/lsp-setup.md`](../../../codebase/lsp-setup.md). Per [`../codebase/lsp-python.md`](../../../codebase/lsp-python.md). Smoke-test: `hover` on a typed symbol returns a concrete type (not `Unknown`). If the venv is wrong or absent, mark the Python capabilities Not-Available.
@@ -65,13 +65,13 @@ Default languages (detect from the checkout; configure each that is present):
 
 Priority languages (configure when present and the user works in them):
 
-- [ ] **Go, Java, C#, C++** and other compiled languages. Detect from the project's manifest (`go.mod`, `pom.xml`, `build.gradle`, `.csproj`, or `CMakeLists.txt`). For each language, confirm the standard server is installed (gopls for Go, jdtls for Java, OmniSharp for C#, clangd for C++). Prime the build so the server resolves, add the language to the contract, and smoke-test one operation. Document per a new `../codebase/lsp-<lang>.md` file created when first configured.
+- [ ] **Go, Java, C#, C++** and other compiled languages. Detect from the project's manifest (`go.mod`, `pom.xml`, `build.gradle`, `.csproj`, or `CMakeLists.txt`). For each language, install the standard server: gopls for Go, jdtls for Java, OmniSharp for C#, clangd for C++. Prime the build so the server resolves, add the language to the contract, and smoke-test one operation. Create a new `../codebase/lsp-<lang>.md` file when you first configure it.
 
 Opt-in languages (configure on demand):
 
 - [ ] **Any other language with an LSP** — same shape: detect, install the server, prime, smoke-test, add to the contract. If no server exists for the language, mark its capabilities Not-Available; the practice skill uses Bash search for that language.
 
-**No marketplace plugins and no env vars** are required for the default stack. Language servers are toolchain installs, not credentialed MCPs. This item is called out for parity with the sibling skills. The codebase stack has no auth to configure, which is the structural opposite of the internal setup reference (`internal.md`).
+You don't need **marketplace plugins and no env vars** for the default stack. Language servers are toolchain installs, not credentialed MCPs. I call this out for parity with the sibling skills. The codebase stack has no auth to configure, which is the structural opposite of the internal setup reference (`internal.md`).
 
 ## Re-verification triggers
 
@@ -81,7 +81,7 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 - A language server upgrade that changes its operation surface or response shape.
 - **The crate graph or `node_modules` goes stale** — you added a dependency, moved a workspace member, or have not re-run `cargo check` or `npm install` since the last pull. A previously resolving `goToDefinition` now returns nothing.
 - You add a new language to the checkout that should sit in the contract.
-- A practice run reports drift: an operation returned nothing where it previously resolved, often due to an unactivated venv or an unbuilt project.
+- A practice run reports drift: an operation returned nothing where it previously resolved, frequently due to an unactivated venv or an unbuilt project.
 
 ## Composes with
 

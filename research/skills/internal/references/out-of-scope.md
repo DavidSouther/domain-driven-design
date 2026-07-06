@@ -1,4 +1,4 @@
-# Internal: out of scope
+# Internal: Out of scope
 
 Sources deliberately excluded from the internal contract, with the reason each belongs elsewhere. The wiring configuration ([`../../configuring-internal/SKILL.md`](../../configuring-internal/SKILL.md)) points here so the boundary between the internal stack and its siblings stays explicit.
 

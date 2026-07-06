@@ -16,7 +16,7 @@ This is the difference from a feature test. Feature tests fail until code makes 
 
 Write only the study at the start, not the features. The agent drafts the Closing Bell, helps script the scenarios, and records the outcome. The agent does not pass it on the user's behalf. A passing Closing Bell is evidence from a human study, not from automated checks.
 
-## What the Closing Bell records
+## What the closing bell records
 
 A Closing Bell is a usability test plan. It records:
 

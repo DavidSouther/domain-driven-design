@@ -28,7 +28,7 @@ For skills that rely on reviewer or thinking subagents, use the same dispatch di
 
 ## Model mandate
 
-Gemini command-line tool's subagent dispatch has no confirmed model-selection field today. This is not a separate, bespoke rule. It is `general/skills/dispatching-agents/model-selection.md`'s single mandate-with-announce rule degrading automatically wherever no mechanism exists: the mandate half becomes a no-op, so only the announce half applies. Name the recommended model verbatim and invite a switch through Gemini's own equivalent of `/model`; never gate. Continue on the current model either way.
+Gemini command-line tool's subagent dispatch has no confirmed model-selection field today. This is not a separate, bespoke rule. It is `general/skills/dispatching-agents/model-selection.md`'s single mandate-with-announce rule, which degrades automatically wherever no mechanism exists. When degraded, the mandate half becomes a no-op, so only the announce half applies. Name the recommended model verbatim and invite a switch through Gemini's own equivalent of `/model`; never gate. Continue on the current model either way.
 
 ## Additional Gemini command-line tools
 

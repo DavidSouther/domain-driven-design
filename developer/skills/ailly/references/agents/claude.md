@@ -12,4 +12,4 @@ Claude Code supports subagent dispatch through `Task`, so phase isolation uses o
 
 ## Model mandate
 
-`Task`'s `model` parameter (`sonnet | opus | haiku | fable`) is a confirmed model-selection mechanism. Per `general/skills/dispatching-agents/model-selection.md`'s mandate-with-announce rule, set it directly from that guidance on every `Task` dispatch this skill package performs, including the phase-level dispatch and any qualifying within-phase sub-dispatch alike. Announce the model chosen to the developer either way.
+`Task`'s `model` parameter (`sonnet | opus | haiku | fable`) is a confirmed model-selection mechanism. Per `general/skills/dispatching-agents/model-selection.md`'s mandate-with-announce rule, set it directly from that guidance on every `Task` dispatch this skill package performs. Include both phase-level dispatch and any qualifying within-phase sub-dispatch. Announce the model chosen to the developer.

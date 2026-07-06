@@ -2,6 +2,8 @@
 # Vale autofix (Code Mode): run vale over the skills/references docs, and
 # dispatch one path-scoped headless Claude Haiku session per flagged file to
 # fix the findings. See .ailly/developer/2026-07-05-B-vale-autofix/plan.md.
+# Pass a single file path as $1 to test the dispatch flow against just that
+# file instead of scanning the whole corpus.
 set -uo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -10,9 +12,13 @@ cd "$REPO_ROOT" || exit 1
 WORKDIR="$(mktemp -d)"
 trap 'rm -rf "$WORKDIR"' EXIT
 
-FILES="$(find developer/skills domain/skills patterns/skills research/skills general/skills \
-     research/references \
-     -name "*.md" -not -path "*/e2e/*")"
+if [ "$#" -gt 0 ]; then
+  FILES="${1#"$REPO_ROOT"/}"
+else
+  FILES="$(find developer/skills domain/skills patterns/skills research/skills general/skills \
+       research/references \
+       -name "*.md" -not -path "*/e2e/*")"
+fi
 
 manifest_list="$WORKDIR/manifests.list"
 : > "$manifest_list"

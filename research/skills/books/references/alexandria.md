@@ -1,6 +1,6 @@
 # Alexandria (aggregator)
 
-Broad keyless aggregation across 46 public-domain digital libraries: Project Gutenberg, Oxford ORA, Cambridge Apollo, Wikisource, Library of Congress, HathiTrust public-domain tier, Smithsonian, NASA ADS, and CourtListener. Use for cross-corpus queries when the user does not know which library holds a text or wants the broadest sweep.
+Broad keyless aggregation across 46 public-domain digital libraries. Sources include project Gutenberg, Oxford ORA, Cambridge Apollo, Wikisource, Library of Congress, HathiTrust public-domain tier, Smithsonian, NASA ADS, and CourtListener. Use for cross-corpus queries when the user does not know which library holds a text or wants the broadest sweep.
 
 ## What it provides
 
@@ -11,7 +11,7 @@ Alexandria serves as a **supplement** to the per-source capabilities, not a repl
 
 ## MCP option
 
-`suavecito585/alexandria-mcp`. Install per the repo README. Free keys for 15 of the 61 sources (CORE, Semantic Scholar, NASA ADS, Smithsonian, Springer Nature, Google Books, CourtListener); the other 46 run keyless.
+`suavecito585/alexandria-mcp`. Install per the repo README. Free keys for 15 of the 61 sources. These include CORE, Semantic Scholar, NASA ADS, Smithsonian, Springer Nature, Google Books, and CourtListener. The other 46 run keyless.
 
 **Does not include** O'Reilly, Wiley journals, or Oxford/Cambridge commercial presses. The per-source skills in this stack cover those separately.
 
@@ -29,7 +29,7 @@ For ISBN lookup, edition disambiguation, or technical-book search, route to the 
 
 ## Licensing
 
-Per-source. Alexandria does not re-license; the originating source's terms apply. Most of the 46 keyless sources are public domain or CC. The 15 keyed sources vary: CORE is OA, Springer Nature is metadata-only without subscription, and so forth.
+Per-source. Alexandria does not re-license; the originating source's terms apply. Most of the 46 keyless sources are public domain or CC. The 15 keyed sources vary: core is OA, Springer Nature is metadata-only without subscription, and so forth.
 
 ## Failure modes
 

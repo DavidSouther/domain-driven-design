@@ -1,4 +1,4 @@
-# LSP reference: Rust (rust-analyzer)
+# LSP reference: rust (rust-analyzer)
 
 > Priming rules (`cargo check` so the crate graph resolves) live in [`lsp-setup.md`](lsp-setup.md).
 

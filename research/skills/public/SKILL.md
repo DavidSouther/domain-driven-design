@@ -1,6 +1,6 @@
 ---
 name: public
-description: Use when a research question requires publicly available information. This includes external library documentation, language specifications, API references, community knowledge, or any topic not contained in the local codebase or internal documents. The answer must live on the public internet and be obtained via web search or URL retrieval. Do not use for codebase structure questions (use `research:codebase`) or internal document questions (use `research:internal`).
+description: Use when a research question requires publicly available information. This includes external library documentation, language specifications, API references, community knowledge, or any topic not contained in the local codebase or internal documents. You obtain the answer from the public internet via web search or URL retrieval. Do not use for codebase structure questions (use `research:codebase`) or internal document questions (use `research:internal`).
 ---
 
 # Overview
@@ -23,7 +23,7 @@ Etiquette, allowed/blocked-domain policy, and any augmentation provider belong i
 - Questions answered entirely from git history. Use `research:archaeology` instead.
 - Configuring sources. Setting the contact User-Agent, recording allowed/blocked domains, adjusting rate limits, or wiring an augmentation provider belong in [the public setup reference](../using-research/references/configuring/public.md).
 
-# Query expansion (Jeopardy search)
+# Query expansion (jeopardy search)
 
 Before issuing any search, generate 3-5 variant queries:
 
@@ -96,7 +96,7 @@ Corroboration alone is insufficient for load-bearing claims. Confirmation bias c
 3. Search specifically for those negations.
 4. If any search returns a counterexample, narrow, qualify, or retract the original claim.
 
-Report which tiers support each finding. Include whether a falsification pass ran, what it found (or where it looked), any conflicts between sources, and which source you preferred.
+Report which tiers corroborate each finding. Include whether a falsification pass ran, what it found (or where it looked), any conflicts between sources, and which source you preferred.
 
 # Output format
 

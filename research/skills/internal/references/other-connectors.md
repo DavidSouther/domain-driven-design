@@ -4,11 +4,11 @@ The pattern for adding any additional authenticated org MCP beyond the five name
 
 ## Which connectors
 
-Any authenticated org source the user runs, for example Gmail, Google Calendar, Salesforce, Datadog, incident.io, Figma, Microsoft 365. Each is an opt-in source; we don't assume any are present.
+Any authenticated org source the user runs, for example Gmail, Google Calendar, Salesforce, Datadog, incident.io, Figma, Microsoft 365. Each is an opt-in source; not all are assumed to be present.
 
 ## The add-a-connector pattern
 
-For each additional connector, follow the five steps below. These follow the same shape as the five named sources; we present them here once so the opt-in row stays a pattern rather than a list.
+For each additional connector, follow the five steps below. These follow the same shape as the five named sources; they are presented here once so the opt-in row stays a pattern rather than a list.
 
 1. **Probe** — probe the configured MCP for that source. Do not assume a package slug; discover the tool surface with `ListMcpResourcesTool`. Where the source has no MCP, look for an HTTP/command-line tool fallback; where neither exists, mark its capability Not-Available.
 2. **Auth** — complete the connector's OAuth/SSO handshake. The Anthropic connectors expose the `authenticate` → `complete_authentication` pair described in [`auth.md`](auth.md).
@@ -19,4 +19,4 @@ For each additional connector, follow the five steps below. These follow the sam
 ## Notes
 
 - A connector that exposes only search, or only fetch, gets only that half of the row; mark the missing half Not-Available.
-- We reference sources whose MCP tool names are not known as "probe the configured MCP for <source>" rather than a fabricated slug, matching the rest of the internal stack.
+- Reference sources whose MCP tool names are not known as "probe the configured MCP for <source>" rather than a fabricated slug, matching the rest of the internal stack.

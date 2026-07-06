@@ -13,7 +13,7 @@ Start by understanding the current project context, then ask questions one at a 
 
 **Trigger:** a cleared `research.md` in the session folder. Alternatively, your topic is clear enough that research added nothing to gather.
 
-**Announce at start:** "Designing a feature to [summary of the prompt]. Per `general/skills/dispatching-agents/model-selection.md`, I match to the active provider with its effort qualifier verbatim. I set the model directly when the harness's dispatch call allows it; I announce the model chosen either way. I continue on the current model either way."
+**Announce at start:** "Designing a feature to [summary of the prompt]. Per `general/skills/dispatching-agents/model-selection.md`, match the active provider with its effort qualifier verbatim. Set the model directly when the harness's dispatch call allows it; announce the model chosen either way. Continue on the current model either way."
 
 ## Anti-patterns
 
@@ -69,9 +69,9 @@ Create a task for each of these items and complete them in order:
 
 ## Sub-dispatch
 
-Per `developer/skills/ailly/SKILL.md`'s Phase Isolation mandate (item 7) and the delegation signals in `general/skills/dispatching-agents/SKILL.md`, two Checklist steps qualify for their own subagent dispatch rather than running inline. These steps are **Explore project context** (step 1) and **Propose 2-3 approaches** (step 4). Both are independently scoped with a clear input/output boundary and can proceed in parallel with other design work. Dispatch each through the harness's subagent mechanism wherever it is available, following the mandate-with-announce rule for the model.
+Per `developer/skills/ailly/SKILL.md`'s Phase Isolation mandate and delegation signals in `general/skills/dispatching-agents/SKILL.md`, two Checklist steps qualify for their own subagent dispatch rather than running inline. These are **Explore project context** (step 1) and **Propose 2-3 approaches** (step 4). Both are independently scoped with a clear input/output boundary and can proceed in parallel with other design work. Dispatch each through the harness's subagent mechanism wherever it is available, following the mandate-with-announce rule for the model.
 
-The remaining steps stay inline, deliberately, not by omission. **Research additional context** (step 2) is conditional and tightly coupled to whatever gap step 1 surfaces. **Ask clarifying questions** (step 3) and **Collaborate on the written draft** (step 9) require synchronous, multi-turn exchange with the user that a subagent cannot hold. **Write the design doc draft** (step 5), **Surface open artifact decisions** (step 6), and **Write the feature test** (step 7) need low-latency access to the full context accumulated in-session up to that point. **Review** (step 8) already routes through the named `general:review` skill's own dispatch conventions, not through inline work this mandate targets.
+The remaining steps stay inline, deliberately, not by omission. **Research additional context** (step 2) is conditional and tightly coupled to whatever gap step 1 surfaces. **Ask clarifying questions** (step 3) require synchronous, multi-turn exchange with the user that a subagent cannot hold. **Collaborate on the written draft** (step 9) also requires this synchronous exchange. **Write the design doc draft** (step 5) needs low-latency access to the context accumulated in-session. **Surface open artifact decisions** (step 6) and **Write the feature test** (step 7) also need this access. **Review** (step 8) already routes through the named `general:review` skill's own dispatch conventions, not through inline work this mandate targets.
 
 ## Process flow
 
@@ -107,7 +107,7 @@ digraph brainstorming {
 
 - Check out the current project state first (files, docs, recent commits) and the cleared `research.md`.
 - Fill in only the context `research.md` did not already settle. If the requested API has a known missing feature, or a library already does this, surface it now.
-- Before asking detailed questions, assess scope. If the request describes multiple independent subsystems (for example, "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that you need to decompose first.
+- Before asking detailed questions, assess scope. If the request describes multiple independent subsystems, flag this immediately. For example, a request to "build a platform with chat, file storage, billing, and analytics" involves multiple independent systems. Don't spend questions refining details of a project that you need to decompose first.
 - If the project is too large for a single spec, enable the user to decompose into smaller modules: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first module through the normal design flow. Each further module gets its own design → plan → implementation cycle; record this in `.ailly/developer/YYYY-MM-DD-A-<topic>/TODO.md`.
 - For appropriately scoped projects, ask questions one at a time to refine the idea.
 - Present summaries of research results with links to sources to justify options.

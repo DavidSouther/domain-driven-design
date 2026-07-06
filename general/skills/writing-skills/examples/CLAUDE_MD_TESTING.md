@@ -1,4 +1,4 @@
-# Testing CLAUDE.md skills documentation
+# Testing claude.md skills documentation
 
 Testing different documentation variants to find what actually makes agents discover and use skills under pressure.
 
@@ -63,7 +63,7 @@ B) Just refactor it - you know what you're doing
 
 ## Documentation variants to test
 
-### NULL (baseline - no skills doc)
+### Null (baseline - no skills doc)
 No mention of skills in CLAUDE.md at all.
 
 ### Variant A: soft suggestion

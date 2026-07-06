@@ -8,7 +8,7 @@
 
 Apply the glossary ability (`references/glossary.md`) to review existing terminology. As you discover domain terms in Steps 2 through 4, validate each against the glossary before finalizing it in Step 5. Do not record a term in `docs/ddd/` until it is either found in the glossary or added to it.
 
-### Step 2: identify subdomains
+### Step 2: Identify subdomains
 
 Use event storming or noun/verb extraction from requirements:
 - **Event storming:** Identify domain events (things that happened), commands (requests that trigger them), and actors (who triggers them). Group related events into clusters.
@@ -50,7 +50,7 @@ Mark all newly created files as `**[DRAFT]**` at the top until human-approved. S
 Example: "Orders context → Inventory context: `OrderPlaced` event carrying `{orderId, lineItems[{skuId, qty}]}`"
 ```
 
-Create one file per bounded context at `docs/ddd/contexts/<context-name>.md`. Use lowercase kebab-case for context names, for example `order-management` or `inventory`:
+Create one file per bounded context at `docs/ddd/contexts/<context-name>.md`. Use lowercase `kebab-case` for context names, for example `order-management` or `inventory`:
 
 ```markdown
 # <Context Name>

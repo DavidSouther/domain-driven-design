@@ -7,7 +7,7 @@ description: "Use when a research question targets an academic paper, preprint, 
 
 ## Overview
 
-Per-query research against the configured papers capability contract. Pick the **capability** the question needs: DOI metadata, OA-PDF retrieval, topic search, citation graph, preprint search, biomedical search, citation-context classification. Dispatch to it and write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, marketplace-plugin installs, and SSO handshakes belong in [the papers setup reference](../using-research/references/configuring/papers.md). This skill consumes the contract that skill publishes.
+Per-query research against the configured papers capability contract. Pick the **capability** the question needs: doi metadata, OA-PDF retrieval, topic search, citation graph, preprint search, biomedical search, citation-context classification. Dispatch to it and write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, marketplace-plugin installs, and SSO handshakes belong in [the papers setup reference](../using-research/references/configuring/papers.md). This skill consumes the contract that skill publishes.
 
 ## When to use / when not to use
 
@@ -29,14 +29,14 @@ Per-query research against the configured papers capability contract. Pick the *
 - For domain-model questions (entities, bounded contexts, ubiquitous language): use `research:domain`.
 - For citable book content (ISBN, table of contents, public-domain full text): use `research:books`.
 
-## Query expansion (Jeopardy search)
+## Query expansion (jeopardy search)
 
 Before dispatching to a capability, expand the question into 3-5 variants. See [`research/references/jeopardy.md`](../../references/jeopardy.md) for the general technique. Papers-specific axes:
 
 - **DOI-vs-title** — when a DOI is in hand, prefer DOI-keyed capabilities; when only the title is known, run title-and-author queries against the topic-search capability.
 - **Author-name normalization** — first-author-last-name forms, ORCID id when known, common transliteration variants for non-English author names.
 - **Venue and year** — preprint year (ArXiv) vs. published year (Crossref); conference name (`PLDI 2024`) vs. journal name.
-- **Identifier variants** — DOI, PMID, PMCID, arXiv id; the same paper often has multiple identifiers and the *DOI fan-out* capability resolves disagreement.
+- **Identifier variants** — DOI, PMID, PMCID, arXiv id; the same paper frequently has multiple identifiers and the *DOI fan-out* capability resolves disagreement.
 - **Topic-and-keyword variants** — narrow (specific technique with technology), broad (the field name), synonyms (`backpropagation` / `gradient descent` / `optimizer`).
 
 Run the variants in the order that the routing table below dictates. Union the result sets before deciding which capability has the highest-quality hit.
@@ -73,11 +73,11 @@ The routing table is the lookup. The heuristic below is what to apply when the q
 - **Biomedical** → `pubmed@life-sciences` when you install the plugin; Europe PMC for full-text coverage beyond PubMed.
 - **Publisher-specific** → Wiley Scholar Gateway when you configure SSO.
 
-For conditional capabilities that the contract marks Not-Available, accept the typed result as a routing signal and continue with the next capability in the heuristic. Not-Available indicates: you haven't installed the plugin, completed SSO, or maintained your subscription. The free stack (OpenAlex + Semantic Scholar + Crossref + Unpaywall + ArXiv) covers the majority of queries without any conditional source.
+For conditional capabilities that the contract marks Not-Available, accept the typed result as a routing signal and continue with the next capability in the heuristic. Not-Available indicates you haven't installed the plugin, completed SSO, or maintained your subscription. The free stack (OpenAlex + Semantic Scholar + Crossref + Unpaywall + ArXiv) covers the majority of queries without any conditional source.
 
 ## Output format
 
-Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/papers.md`, unless the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`; in that case write `papers.md` there. Cite per the loose IEEE style in [`research/references/citations.md`](../../references/citations.md). One consolidated `papers.md` per session topic (per Decision 6: no per-source split, no cache).
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/papers.md`. If the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `papers.md` there instead. Cite per the loose IEEE style in [`research/references/citations.md`](../../references/citations.md). One consolidated `papers.md` per session topic (per Decision 6: no per-source split, no cache).
 
 ```
 # Papers: <question>
@@ -104,7 +104,7 @@ Excerpts only. Do not stage cached PDFs or full bodies. For passages from licens
 
 ## Composes with
 
-- **the papers setup reference** (`research:using-research` and `references/configuring/papers.md`): the wiring partner. Publishes the contract this skill consumes.
+- **the papers setup reference** (`research:using-research` and `references/configuring/papers.md`). This is the wiring partner that publishes the contract this skill consumes.
 - **`research:books`** — sibling practice skill for citable books.
 - **`research/references/jeopardy.md`** — query expansion technique.
 - **`research/references/citations.md`** — IEEE citation format.

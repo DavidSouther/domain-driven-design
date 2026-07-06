@@ -71,7 +71,7 @@ Opt-in sources (configure when the user supplies access):
 
 **MCP install and OAuth.** The install shape mirrors the papers setup reference (`papers.md`). Run `/plugin marketplace add <marketplace>` then `/plugin install <connector>`. Complete the OAuth/SSO handshake when the connector prompts. The listed connectors expose an `authenticate`-`complete_authentication` pair. Tokens land in env vars named per source in [`internal/references/auth.md`](../../../internal/references/auth.md); never commit them.
 
-We document out-of-scope sources in [`internal/references/out-of-scope.md`](../../../internal/references/out-of-scope.md). This file explains why we exclude each source. Public sources belong to `research:public`. The local checkout belongs to `research:codebase`. Git history belongs to `research:archaeology`.
+Out-of-scope sources are documented in [`internal/references/out-of-scope.md`](../../../internal/references/out-of-scope.md). This file explains why each source is excluded. Public sources belong to `research:public`. The local checkout belongs to `research:codebase`. Git history belongs to `research:archaeology`.
 
 ## Re-verification triggers
 

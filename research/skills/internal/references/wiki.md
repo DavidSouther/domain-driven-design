@@ -7,7 +7,7 @@ The org knowledge base. First stop for specs, ADRs, runbooks, and any long-form 
 - **Confluence/Notion search** — page hits with their space (Confluence) or workspace (Notion) and a URL.
 - **Confluence/Notion fetch** — the page body, and comments where the connector exposes them, given a page id or URL.
 
-## MCP / connector
+## MCP / Connector
 
 Two wiki shapes share this contract row:
 

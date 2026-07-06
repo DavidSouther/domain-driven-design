@@ -1,4 +1,4 @@
-# Gutendex / project Gutenberg
+# Gutendex / Project Gutenberg
 
 Public-domain classics: literature, philosophy, classical, and Enlightenment-era science and mathematics, historical documents through roughly the early twentieth century. Use when the query targets an out-of-copyright text or its full passage.
 

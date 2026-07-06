@@ -18,7 +18,7 @@ Search configured MCP servers to answer questions from internal organizational k
 - Searching public documentation or the internet → use `research:public`
 - Searching the local codebase → use `research:codebase`
 
-## Query expansion (Jeopardy search)
+## Query expansion (jeopardy search)
 
 Before running any search, generate 3-5 variant queries using different phrasings, synonyms, and topic angles. Run all variants across every relevant MCP server.
 
@@ -26,7 +26,7 @@ Example: topic "deployment freeze policy":
 1. "deployment freeze"
 2. "release freeze policy"
 3. "code freeze process"
-4. "when can I deploy to production"
+4. "when can we deploy to production"
 5. "deploy blocked announcement"
 
 ## Strategy
@@ -38,7 +38,7 @@ The contract published by [the internal setup reference](../using-research/refer
 3. **Search broadly** — run every variant against every relevant server.
 4. **Synthesize** — consolidate results, resolve conflicts, note gaps.
 
-## Common MCP server types
+## Common mcp server types
 
 | Server | Best for |
 |--------|----------|

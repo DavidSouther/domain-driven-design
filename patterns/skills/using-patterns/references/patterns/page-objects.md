@@ -2,7 +2,7 @@
 
 ## Overview
 
-A page object encapsulates one UI surface (a screen, a page, or a console) behind an object that exposes verb-phrase, user-intent methods (`System_findObject`, `Helm_setManeuver`) instead of raw selectors. The object owns every locator and wait for that surface. A test drives the surface only through the object's methods, never through a direct selector. The core principle, from Fowler's `PageObject` bliki: when the UI changes, exactly one file changes with it. The acceptance tests that read like user journeys never see the difference.
+A page object encapsulates one UI surface (a screen, a page, or a console) behind an object. That object exposes verb-phrase, user-intent methods like `System_findObject` and `Helm_setManeuver` instead of raw selectors. The object owns every locator and wait for that surface. A test drives the surface only through the object's methods, never through a direct selector. The core principle, from Fowler's `PageObject` bliki: when the UI changes, exactly one file changes with it. The acceptance tests that read like user journeys never see the difference.
 
 ## When to use
 
@@ -49,7 +49,7 @@ def test_system_console_finds_object():
     assert result == "Sol-3"
 ```
 
-Naming follows one pattern: one page object per screen or console (`SystemConsole`, `HelmConsole`). Methods are named as verb phrases describing the user's intent (`System_findObject`, `Helm_setManeuver`), never the DOM or console structure the method happens to tap.
+Naming follows one pattern: one page object per screen or console (`SystemConsole`, `HelmConsole`). Name methods as verb phrases describing the user's intent (`System_findObject`, `Helm_setManeuver`), never the DOM or console structure the method happens to tap.
 
 ## Quick reference
 

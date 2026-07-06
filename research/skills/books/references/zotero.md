@@ -10,13 +10,13 @@ The user's reference manager. Strong for books the user has cited, annotated, or
 
 For papers items (`journalArticle`, `preprint`, `conferencePaper`), see [`../../papers/references/zotero.md`](../../papers/references/zotero.md). This copy focuses on book items (`book`, `bookSection`).
 
-## MCP option
+## Mcp option
 
 `54yyyu/zotero-mcp` adds semantic search. `cookjohn/zotero-mcp` provides ID-based lookup by DOI, ISBN, arXiv, PMID, title, author, year, and tag filters. `kujenga/zotero-mcp` is a third option.
 
-Install per the chosen repo's README. Auth: `ZOTERO_API_KEY` (generated at `zotero.org/settings/keys`) and `ZOTERO_LIBRARY_ID` (numeric, found at the same page).
+Install per the chosen repo's README. Auth: `ZOTERO_API_KEY` (generated at `zotero.org/settings/keys`) and `ZOTERO_LIBRARY_ID`, the numeric ID found at the same page.
 
-## HTTP fallback
+## Http fallback
 
 - Base URL: `https://api.zotero.org`
 - Endpoints: `/users/{libraryId}/items?q=...&itemType=book||bookSection`, `/users/{libraryId}/items/{itemKey}`

@@ -1,4 +1,4 @@
-# Public: etiquette
+# public: etiquette
 
 Shared rules for the public-web stack. The wiring in [`../../configuring-public/SKILL.md`](../../configuring-public/SKILL.md) cites this file at configure time. The per-provider reference file at [`augmented-search.md`](augmented-search.md) cites it for the shared rules it inherits.
 
@@ -24,7 +24,7 @@ The core transport — `WebSearch` and `WebFetch` — is built in and needs no i
 ## Blocked-domain list
 
 - The system honors the blocked-domain list unconditionally. **Blocked hosts reject all fetches** before the request travels, even when the allowed list is empty.
-- Use the blocked list for hosts the project must not touch. Include paywalled mirrors that violate terms, hosts operators request you to avoid, and known-malicious domains.
+- Use the blocked list for hosts the project must not tap. Include paywalled mirrors that violate terms, hosts operators request you to avoid, and known-malicious domains.
 - A fetch that should block but succeeds signals drift and triggers re-verification in [`../../configuring-public/SKILL.md`](../../configuring-public/SKILL.md).
 
 ## Key handling

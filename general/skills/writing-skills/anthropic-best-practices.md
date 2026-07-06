@@ -30,7 +30,7 @@ Only add context Claude doesn't already have. Challenge each piece of informatio
 **Good example: concise** (approximately 50 tokens):
 
 ````markdown  theme={null}
-## Extract PDF text
+## Extract pdf text
 
 Use pdfplumber for text extraction:
 
@@ -315,7 +315,7 @@ bigquery-skill/
 
 **Finance**: revenue, ARR, billing → See [reference/finance.md](reference/finance.md)
 **Sales**: opportunities, pipeline, accounts → See [reference/sales.md](reference/sales.md)
-**Product**: API usage, features, adoption → See [reference/product.md](reference/product.md)
+**Product**: api usage, features, adoption → See [reference/product.md](reference/product.md)
 **Marketing**: campaigns, attribution, email → See [reference/marketing.md](reference/marketing.md)
 
 ## Quick search
@@ -455,7 +455,7 @@ Check that every claim references the correct source document. If citations are 
 
 This example shows how workflows apply to analysis tasks that don't require code. The checklist pattern works for any complex, multi-step process.
 
-**Example 2: PDF form filling workflow** (for Skills with code):
+**Example 2: pdf form filling workflow** (for Skills with code):
 
 ````markdown  theme={null}
 ## PDF form filling workflow
@@ -750,12 +750,12 @@ This approach ensures you're solving actual problems rather than anticipating re
 ```
 
 <Note>
-  This example demonstrates a data-driven evaluation with a simple testing rubric. We do not currently provide a built-in way to run these evaluations. Users can create their own evaluation system. Evaluations are your source of truth for measuring Skill effectiveness.
+  This example demonstrates a data-driven evaluation with a simple testing rubric. There is no built-in way to run these evaluations, so users can create their own evaluation system. Evaluations are your source of truth for measuring Skill effectiveness.
 </Note>
 
 ### Develop skills iteratively with Claude
 
-The most effective Skill development process involves Claude itself. Use one instance of Claude ("Claude A") to create a Skill that other instances ("Claude B") can use. Claude A helps you design and refine instructions, while Claude B tests them in real tasks. This works because Claude models understand both how to write effective agent instructions and what information agents need.
+The most effective Skill development process involves Claude itself. Use one instance of Claude, called Claude A, to create a Skill that other instances (called Claude B) can use. Claude A helps you design and refine instructions, while Claude B tests them in real tasks. This works because Claude models understand both how to write effective agent instructions and what information agents need.
 
 **Creating a new Skill:**
 
@@ -763,10 +763,10 @@ The most effective Skill development process involves Claude itself. Use one ins
 
 2. **Identify the reusable pattern**: After completing the task, identify what context you provided that would be useful for similar future tasks. If you worked through a BigQuery analysis, you might have provided table names, field definitions, and filtering rules (like "always exclude test accounts"). You may also have documented common query patterns.
 
-3. **Ask Claude A to create a Skill**: "Create a Skill that captures this BigQuery analysis pattern we just used. Include the table schemas, naming conventions, and the rule about filtering test accounts."
+3. **Ask Claude A to create a Skill**: "Create a Skill that captures this BigQuery analysis pattern you just used. Include the table schemas, naming conventions, and the rule about filtering test accounts."
 
    <Tip>
-     Claude models understand the Skill format and structure natively. You don't need special system prompts or a "writing skills" skill to get Claude to help create Skills. Simply ask Claude to create a Skill and it generates properly structured `SKILL.md` content with appropriate frontmatter and body content.
+     Claude models understand the Skill format and structure natively. You don't need special system prompts or a "writing skills" skill to enable Skill creation with Claude. Simply ask Claude to create a Skill and it generates properly structured `SKILL.md` content with appropriate frontmatter and body content.
    </Tip>
 
 4. **Review for conciseness**: Check that Claude A hasn't added unnecessary explanations. Ask: "Remove the explanation about what win rate means - Claude already knows that."
@@ -789,11 +789,11 @@ The same hierarchical pattern continues when improving Skills. You alternate bet
 
 2. **Observe Claude B's behavior**: Note where it struggles, succeeds, or makes unexpected choices
 
-   **Example observation**: "When I asked Claude B for a regional sales report, it wrote the query but forgot to filter out test accounts, even though the Skill mentions this rule."
+   **Example observation**: "When requesting a regional sales report from Claude B, it wrote the query but forgot to filter out test accounts, even though the Skill mentions this rule."
 
-3. **Return to Claude A for improvements**: Share the current `SKILL.md` and describe what you observed. Ask: "I noticed Claude B forgot to filter test accounts when I asked for a regional report. The Skill mentions filtering, but possibly it's not prominent enough?"
+3. **Return to Claude A for improvements**: Share the current `SKILL.md` and describe what you observed. Ask: "Claude B neglected to filter test accounts when generating the regional report. The Skill mentions filtering, but possibly it's not prominent enough?"
 
-4. **Review Claude A's suggestions**: Claude A might suggest reorganizing to make rules more prominent, using stronger language like "MUST filter" instead of "always filter", or restructuring the workflow section.
+4. **Review Claude A's suggestions**: Claude A might suggest reorganizing to make rules more prominent, using stronger language like "MUST filter" instead of "always filter," or restructuring the workflow section.
 
 5. **Apply and test changes**: Update the Skill with Claude A's refinements, then test again with Claude B on similar requests
 
@@ -816,7 +816,7 @@ As you iterate on Skills, pay attention to how Claude actually uses them in prac
 * **Overreliance on certain sections**: If Claude repeatedly reads the same file, consider whether that content should be in the main `SKILL.md` instead
 * **Ignored content**: If Claude never accesses a bundled file, it might be unnecessary or poorly signaled in the main instructions
 
-Iterate based on these observations rather than assumptions. The 'name' and 'description' in your Skill's metadata are particularly critical. Claude uses these to decide whether to trigger the Skill in response to the current task. Make sure they clearly describe what the Skill does and when it should be used.
+Iterate based on these observations rather than assumptions. The 'name' and 'description' in your Skill's metadata are particularly critical. Claude uses these to decide whether to trigger the Skill in response to the current task. Make sure they clearly describe what the Skill does and when to use it.
 
 ## Anti-patterns to avoid
 
@@ -1021,7 +1021,7 @@ Skills run in a code execution environment with filesystem access, bash commands
 3. **Scripts executed efficiently**: Utility scripts can be executed via bash without loading their full contents into context. Only the script's output consumes tokens
 4. **No context penalty for large files**: Reference files, data, or documentation don't consume context tokens until actually read
 
-* **File paths matter**: Claude navigates your skill directory like a filesystem. Use forward slashes (`reference/guide.md`), not backslashes
+* **File paths matter**: always use forward slashes (`reference/guide.md`), not backslashes, as Claude navigates your skill directory like a filesystem
 * **Name files descriptively**: Use names that indicate content: `form_validation_rules.md`, not `doc2.md`
 * **Organize for discovery**: Structure directories by domain or feature
   * Good: `reference/finance.md`, `reference/sales.md`
@@ -1090,7 +1090,7 @@ reader = PdfReader("file.pdf")
 
 ### YAML frontmatter requirements
 
-The `SKILL.md` frontmatter requires `name` (64 characters max) and `description` (1024 characters max) fields. See the [Skills overview](/en/docs/agents-and-tools/agent-skills/overview#skill-structure) for complete structure details.
+The `SKILL.md` frontmatter requires `name` (up to 64 characters) and `description` fields. The description field can be up to 1024 characters. See the [Skills overview](/en/docs/agents-and-tools/agent-skills/overview#skill-structure) for complete structure details.
 
 ### Token budgets
 

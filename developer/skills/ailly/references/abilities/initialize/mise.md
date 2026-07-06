@@ -95,7 +95,7 @@ run = "echo 'Override with service-specific commands'"
 
 ## Validation checklist
 
-- [ ] Verify `mise` is installed (run `mise --version`)
+- [ ] Verify you have installed `mise` (run `mise --version`)
 - [ ] Root `mise.toml` exists with `format`, `check`, `test`, `lint` tasks
 - [ ] `mise trust` has been run (or `MISE_TRUSTED_CONFIG_PATHS` is set)
 - [ ] Each sub-project has its own language reference validated

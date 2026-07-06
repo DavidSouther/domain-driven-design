@@ -24,7 +24,7 @@ The four criteria below are the always-present member of every composed set. The
 - **Clarity** ensures no filler terms or weasel words. Jargon is acceptable when the context is appropriate. Vague hedges are not. Tone is professional but cordial. Favor complete, clear sentences and clauses, and read atypical punctuation as a symptom of where that fails. When an em-dash, colon, semicolon, parenthetical aside, or comma splice fuses two independent ideas, buries the subject behind qualifiers, or smuggles a list of full clauses into prose, the sentence structure is weak. Flag the entire sentence and its paragraph for restructuring, not just the punctuation. A colon introducing a real list and a parenthetical carrying a genuine cross-reference are not crutches.
 - **Conciseness** requires tightening longer passages without losing meaning. Defer to correctness and clarity first, and do not shorten everything. Look for the tells of padding: a trailing clause that only restates the subject, an intensifier that adds nothing, a summary that repeats what a detail already said, or a clause kept for rhythm. Cut what does not change the meaning. Necessary depth is not padding.
 
-## Recording: the `reviews/` folder
+## Recording the `reviews/` folder
 
 A reviewer that poses falsifiable questions rather than deciding or editing directly notates
 its findings instead of writing them in place into the artifact under review. Ailly's
@@ -36,9 +36,7 @@ Reuse long-loop's dispatch shape and dated-block entry format
 (`developer/skills/ailly/references/shapes/long-loop.md`), adapted for posing rather than
 deciding. In a session-folder harness such as Ailly's, this lands in a `reviews/` folder sibling
 to the session's `research/` folder (`.ailly/developer/<session>/reviews/`); notate each finding
-there as a dated entry. Once the human answers a finding (by revising the artifact, replying, or
-dismissing it), mark that entry **resolved** and **closed** in place. It does not remain an open
-item inside the artifact under review.
+there as a dated entry. Once the human answers a finding, mark that entry **resolved** and **closed** in place. This can happen by revising the artifact, replying, or dismissing it. It does not remain an open item inside the artifact under review.
 
 ## Common mistakes
 

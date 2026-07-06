@@ -15,7 +15,7 @@ An Aggregate is a cluster of associated domain objects treated as a single unit 
 
 ## Core pattern
 
-An `Order` aggregate owns its `LineItem`s. The root validates and enforces the invariant: "a placed order must have at least one item and a positive total", entirely inside one method. Callers never touch internals directly.
+An `Order` aggregate owns its `LineItem`s. The root validates and enforces the invariant: "a placed order must have at least one item and a positive total." entirely inside one method. Callers never tap internals directly.
 
 ```
 // Caller: load one aggregate, call one method, persist the result
@@ -45,7 +45,7 @@ For complete examples, see [`aggregate/typescript.md`](aggregate/typescript.md),
 
 **Cross-aggregate mutation:** calling `inventoryAggregate.decrement(...)` from inside `Order.place` spans a consistency boundary and couples two aggregates in one transaction. Use domain events to trigger that update after the order transaction commits.
 
-**Multiple aggregate calls per request:** calling `order.addLine(...)` then `order.confirm(...)` as separate top-level operations re-introduces the partial-failure window the aggregate is meant to eliminate. Design one operation per business intent.
+**Multiple aggregate calls per request:** calling `order.addLine(...)` then `order.confirm(...)` as separate top-level operations re-introduces the partial-failure window. The aggregate pattern exists to eliminate this window. Design one operation per business intent.
 
 ## Composes with
 

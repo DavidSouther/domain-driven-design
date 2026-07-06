@@ -1,13 +1,13 @@
-# Linear and Jira (tracker)
+# Linear and jira (tracker)
 
-The issue tracker. First stop for requirements, bug reports, and the history of why we scoped features the way we did.
+The issue tracker. First stop for requirements, bug reports, and the history of feature scoping decisions.
 
 ## What it provides
 
 - **Linear/Jira search** — issue hits with id, state, and assignee, filterable by team and status.
 - **Linear/Jira fetch** — the issue body, its comments, and linked documents, given an issue id.
 
-## MCP connector
+## MCP Connector
 
 Two tracker shapes share this contract row:
 

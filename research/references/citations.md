@@ -2,7 +2,7 @@
 
 All factual claims should contain a reference. When citing sources inline, follow a loose IEEE style [1]: place the citation number in square brackets immediately after the statement. Assign numbers sequentially at first usage; subsequent references to the same source reuse the same number. This is not an academic publication, so strict adherence is not required.
 
-## URL references
+## Url references
 
 Most references are URLs. Mark public web resources as `[Online]` and internal documents (Slack, Confluence, Linear, Notion) as `[Internal]`:
 

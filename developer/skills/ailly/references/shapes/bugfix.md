@@ -14,7 +14,7 @@ Write all three before proposing a change. A fix that cannot name its Unchanged 
 
 ## The reproduction test
 
-The bug's feature test is a failing **reproduction** test. It fills the exact slot the design's feature test fills in the feature flow: it is one executable test, placed in the project test tree, linked from `design.md`. Like feature tests, it is written behind the same hard gate (write only the test, no fix).
+The bug's feature test is a failing **reproduction** test. It fills the exact slot the design's feature test fills in the feature flow: it is one executable test, placed in the project test tree, linked from `design.md`. Like feature tests, place it behind the same hard gate (write only the test, no fix).
 
 - It encodes the **Observed** behavior as a failing assertion: run the trigger, assert the **Expected** result, and watch it fail because the bug is present.
 - It must fail for the right reason (the bug), not a typo or a missing import.

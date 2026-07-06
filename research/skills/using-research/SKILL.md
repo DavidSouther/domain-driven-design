@@ -24,7 +24,7 @@ You are working in a project with structured research skills. When asked a resea
 
 ## Configuring sources
 
-Source wiring is a once-per-environment setup task, not a per-query research move, so it lives as on-demand references rather than always-on skills. When bootstrapping or revising a source stack on a fresh checkout, take these steps: probe MCP servers, fall back to HTTP, install marketplace plugins, complete OAuth/SSO handshakes, set auth env vars and contact details, and smoke-test each capability against its published contract. Read the matching setup reference and follow it. Each reference publishes the capability contract the per-query skill preceding this consumes. Do NOT run these inside a research session.
+Source wiring is a once-per-environment setup task, not a per-query research move, so it lives as on-demand references rather than always-on skills. When bootstrapping or revising a source stack on a fresh checkout, take these steps. Probe MCP servers, fall back to HTTP, and install marketplace plugins. Complete OAuth/SSO handshakes and set auth env vars and contact details. Smoke-test each capability against its published contract. Read the matching setup reference and follow it. Each reference publishes the capability contract the per-query skill preceding this consumes. Do NOT run these inside a research session.
 
 | Setting up sources for | Read |
 |---|---|

@@ -64,7 +64,7 @@ The newtype's `Display` impl renders the user identifier. See the newtype patter
 | 5–8   | DEBUG | Decisions a developer needs while diagnosing. Off in production by default. | `-vvv` |
 | 9–12  | INFO  | One per unit of work: request handled, command completed, job finished. | `-vv` |
 | 13–16 | WARN  | Recoverable surprise: retry hit, fallback used, deprecated path. | `-v` |
-| 17–20 | ERROR | A use case failed. The exit code reports; the log explains. | default |
+| 17–20 | ERROR | A use scenario failed. The exit code reports; the log explains. | default |
 | 21–24 | FATAL | Process cannot continue. Followed by exit. | default |
 
 Command-line tool defaults follow `clap-verbosity-flag` and clig.dev §Output: error is the surfaced floor; `-q` silences. A two-level policy (INFO + ERROR only) is also fine for services that prefer span attributes over WARN/DEBUG records. Choose this for the project and record it in the project's DEVELOPER.md or similar documentation.
@@ -80,7 +80,7 @@ Command-line tool defaults follow `clap-verbosity-flag` and clig.dev §Output: e
 | Exception | `exception.type`, `exception.message`, `exception.stacktrace` |
 | Errors (general) | `error.type` |
 | Identity (your domain) | `user.id`, `session.id`, `tenant.id` (or your bounded-context equivalent) |
-| Business event | `EventName` (for example `order.placed`, `payment.declined`, `auth.denied`) |
+| Business event | `EventName`. Examples: `order.placed`, `payment.declined`, `auth.denied`. |
 
 Hard-code nothing in the response, the framework, or the domain object can supply. `http.response.status_code` reads from the actual `StatusCode` value; `user.id` reads through a `UserId` newtype's `Display` impl. Drift between log fields and reality starts the moment a call site embeds a literal `201` next to a response that may someday return `202`.
 
@@ -94,7 +94,7 @@ Open a span at every unit of work: request entry, RPC call, DB transaction, back
 
 ### Error chains
 
-Log the full chain once at the boundary where the error escapes the use case. When you pass the structured `error` field, the subscriber walks `Error::source()` in Rust, `cause` in TypeScript, or `__cause__` in Python. For TypeScript, use the `Error` interface with the `cause:` option; for Python, use `raise X from e`. Attach `error.type` and `exception.type` explicitly so the backend can group failures without parsing the message.
+Log the full chain once at the boundary where the error escapes the use scenario. When you pass the structured `error` field, the subscriber walks `Error::source()` in Rust, `cause` in TypeScript, or `__cause__` in Python. For TypeScript, use the `Error` interface with the `cause:` option; for Python, use `raise X from e`. Attach `error.type` and `exception.type` explicitly so the backend can group failures without parsing the message.
 
 Do not log-and-rethrow. Each emit duplicates the chain; the second copy is grep-noise and the dashboards count one failure as two. If a caller needs context, attach it via the error type's `from`/`context` constructor, not via a second log call.
 
@@ -104,16 +104,16 @@ A business event carries a stable name in the ubiquitous language: `order.placed
 
 ### Hot loops
 
-Never emit per iteration. Aggregate to one summary log per batch with the per-item count, success/failure breakdown, and total duration as fields. Pair the per-batch summary with a per-item progress UI when the user is watching: `indicatif` or `tracing-indicatif` on the command-line tool side, a metric counter on the service side.
+Never emit per iteration. Aggregate to one summary log per batch with the per-item count, success/failure breakdown, and total duration as fields. Pair this summary with a progress UI: `indicatif` or `tracing-indicatif` for command-line tools, or a metric counter for services.
 
 ### Severity policy
 
-Pick a policy and write it down. Two policies are common. The full ladder of TRACE/DEBUG/INFO/WARN/ERROR/FATAL is useful when WARN is operationally meaningful. A two-level version uses INFO and ERROR and is useful when WARN is just "we don't want to think about it". Reviewing severities is easier when "level by mood" is not on the table.
+Pick a policy and write it down. Two policies are common. The full ladder of TRACE/DEBUG/INFO/WARN/ERROR/FATAL is useful when WARN is operationally meaningful. A two-level version uses INFO and ERROR and is useful when WARN is not worth distinguishing. Reviewing severities is easier when "level by mood" is not on the table.
 
 ## Common mistakes
 
 - **String interpolation in the message body.** `info!("handled {} for {}", req.path, user_id)` flattens the structured event into a free-text line. Move the values to fields under semantic-convention keys; keep the body stable.
-- **Ad-hoc field names.** `method = "POST"` is invented vocabulary; `http.request.method` is the OpenTelemetry semantic convention. The backend knows the latter; metrics derive from it. Use the table preceding this as the lookup.
+- **Ad-hoc field names.** You invent `method = "POST"` as custom vocabulary; `http.request.method` is the OpenTelemetry semantic convention. The backend knows the latter; metrics derive from it. Use the table preceding this as the lookup.
 - **Hard-coded literals where the value is in scope.** `status = 201` next to a response that *might* return `202` desyncs silently. Read `http.response.status_code` from the actual response value.
 - **Logging an unwrapped secret.** `expose_secret()` near a logger is evidence of an upstream parse-boundary failure. Fix it at the boundary; secrets carry their `[REDACTED]` `Debug` impl through to every emit site. Refer to the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`).
 - **Log-and-rethrow.** A failure logged at the inner layer and again at the outer layer counts twice on the dashboard. Log the chain once at the boundary that owns the scenario or situation.
@@ -121,7 +121,7 @@ Pick a policy and write it down. Two policies are common. The full ladder of TRA
 - **Per-iteration in hot loops.** A million-row loop emitting one log per row is a denial of service against your own backend. Aggregate to one summary; pair with a progress UI.
 - **Defaulting command-line tool output to INFO.** `clap-verbosity-flag` and clig.dev §Output put ERROR at the floor for command-line tools. INFO is `-vv`, not the default.
 - **Embedding non-deterministic fields in command-line tool stdout.** Timestamps, trace IDs, and durations turn snapshot tests into flake generators. Honor `SOURCE_DATE_EPOCH` or expose `--no-timestamps` for tests; keep diagnostics on stderr where they belong.
-- **Treating `error!` as the failure signal.** A command-line tool's failure signal is the exit code (per sysexits.h: `EX_USAGE=64`, `EX_DATAERR=65`, `EX_NOINPUT=66`, …). The log explains the problem; the exit code is the final output.
+- **Treating `error!` as the failure signal.** A command-line tool's failure signal is the exit code. Refer to sysexits.h for conventions: `EX_USAGE=64`, `EX_DATAERR=65`, `EX_NOINPUT=66`, and others. The log explains the problem; the exit code is the final output.
 - **Skipping `EventName` on a business outcome.** Without an `EventName`, the event has a body but no name; the backend cannot count it as a specific object or concept without parsing strings. Name it in the ubiquitous language.
 
 ## Composes with

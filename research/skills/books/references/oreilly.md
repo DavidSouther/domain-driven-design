@@ -1,6 +1,6 @@
 # O'Reilly learning
 
-Technical content from O'Reilly Media and partner publishers (Manning, Pragmatic Programmers, Packt, No Starch, Wiley tech imprints). Plus video courses and live events. First stop for any hands-on technical question routing through this skill.
+Technical content from O'Reilly Media and partner publishers: Manning, Pragmatic Programmers, Packt, No Starch, and Wiley tech imprints. Plus video courses and live events. First stop for any hands-on technical question routing through this skill.
 
 ## What it provides
 
@@ -19,7 +19,7 @@ Technical content from O'Reilly Media and partner publishers (Manning, Pragmatic
 
 - Wraps the O'Reilly Platform Search API at `oreilly.com/online-learning/integration-docs/search.html`.
 - Requires a personal O'Reilly Learning subscription; auth details are not publicly documented.
-- Small project (≈4 stars at May 2026); the official MCP will likely deprecate it when it opens to individuals.
+- Small project (≈4 stars at May 2026); the official MCP likely deprecates it when it opens to individuals.
 
 **Not-Available** when neither is reachable. The wiring skill returns a typed Not-Available result for the *O'Reilly library search* capability; the practice skill degrades to Google Books and Open Library for the same query.
 

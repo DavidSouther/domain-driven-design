@@ -45,6 +45,6 @@ For complete examples, see [`builder/typescript.md`](builder/typescript.md), [`b
 
 ## Composes with
 
-- **the newtype pattern (`references/patterns/newtype.md`)** as you will frequently use newtypes for fields; the builder's factory method is the natural place to call the newtype constructor and validate in one step.
+- **the newtype pattern (`references/patterns/newtype.md`)** since you frequently use newtypes for fields; the builder's factory method is the natural place to call the newtype constructor and validate in one step.
 - **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** can use builders during parsing to "build up" the domain object, defering final validation until completing the builder.
 - **the domain-objects pattern (`references/patterns/domain-objects.md`)** — use a builder when constructing an entity or value object with three or more required fields to prevent partial initialization.

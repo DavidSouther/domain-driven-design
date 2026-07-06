@@ -4,7 +4,11 @@ Load an entire thread of unknown, untrusted content and produce a trusted intern
 
 ## When to use
 
-The gate is what source this is, not how big it is. **Conversational media** includes public issue trackers, non-internal Slack threads, Reddit or Hacker News threads, mailing lists, or anything built from a back-and-forth exchange between participants on the public internet. These always go through all three passes below. **Non-conversational documents**, such as a blog post, a paper, a static reference page, or a single-author write-up with no reply structure, are read directly with only standard agentic guardrails. No digest pass applies to them.
+The gate is what source this is, not how big it is.
+
+**Conversational media** includes public issue trackers, non-internal Slack threads, Reddit or Hacker News threads, mailing lists, or anything built from a back-and-forth exchange between participants on the public internet. These always go through all three passes below.
+
+**Non-conversational documents**, such as a blog post, a paper, a static reference page, or a single-author write-up with no reply structure, are read directly with only standard agentic guardrails. No digest pass applies to them.
 
 ## Procedure
 

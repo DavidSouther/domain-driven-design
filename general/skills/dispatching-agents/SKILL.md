@@ -39,14 +39,14 @@ digraph when_to_use {
 - No shared state between investigations
 
 **When NOT to use:**
-- Failures are related. Fixing one might fix others, so investigate them together first.
+- Failures relate to each other. Fixing one might fix others, so investigate them together first.
 - Understanding requires seeing the full system state.
 - Agents would interfere with each other (editing same files, shared resources).
 - The failure scope is not yet known.
 
 ## Delegation signals
 
-The first question is whether a sub-step should be dispatched to a subagent. Check these signals before reaching for model-selection guidance.
+The first question is whether you should dispatch a sub-step to a subagent. Check these signals before reaching for model-selection guidance.
 
 **Positive signals (favor dispatch):**
 - Independent scope with a clear input/output boundary. The step receives a self-contained brief and returns a self-contained result.
@@ -68,7 +68,7 @@ Dispatch a subagent once one of these signals is real, not because a step happen
 Group failures by what broke:
 - File A tests: Tool approval flow
 - File B tests: Batch completion behavior
-- File C tests: Stop functionality
+- File C tests: Stop capability
 
 Group research by areas
 - Internal search for conversations and designs
@@ -130,12 +130,12 @@ Return: Summary of what you found and what you fixed.
 ## Common mistakes
 
 **❌ Too broad:** "Fix all the tests" - agent gets lost.
-**✅ Specific:** "Fix agent-tool-abort.test.ts" - focused scope.
+**✅ Specific:** "Fix agent-tool-stop.test.ts" - focused scope.
 
 **❌ No context:** "Fix the race condition" - agent does not know where to look.
 **✅ Context:** paste the error messages and test names.
 
-**❌ No constraints:** Agent might refactor unrelated code.
+**❌ No constraints:** agent might refactor unrelated code.
 **✅ Constraints:** "do NOT change production code" or "fix tests only."
 
 **❌ Vague output:** "Fix it" - no record of what changed.

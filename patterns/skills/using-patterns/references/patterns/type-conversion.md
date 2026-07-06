@@ -2,7 +2,7 @@
 
 ## Overview
 
-A conversion is a named operation that takes a value of one type and produces a value of another. Make every conversion explicit, total, or partial, and defined exactly once. Domain code does not extract a primitive, cast it, and rewrap it; it asks the source type to convert itself, or asks the target type to construct from the source. Conversions live in the language's standard mechanism so callers find them where they expect: rust's `From`, `Into`, and `TryFrom` traits; a TypeScript static `from` or `tryFrom` method; a Python `classmethod` factory.
+A conversion is a named operation that takes a value of one type and produces a value of another. Make every conversion explicit, total, or partial, and defined exactly once. Domain code does not extract a primitive, cast it, and rewrap it; it asks the source type to convert itself, or asks the target type to construct from the source. Conversions live in the language's standard mechanism so callers find them where they expect. Rust uses `From`, `Into`, and `TryFrom` traits. TypeScript uses a static `from` or `tryFrom` method. Python uses a `classmethod` factory.
 
 A total conversion never fails. Every value of the source type maps to a value of the target. A partial conversion can fail and must surface that fact in its return type. The two are different operations and must not share a name.
 

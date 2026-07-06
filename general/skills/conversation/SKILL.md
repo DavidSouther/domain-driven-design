@@ -21,7 +21,7 @@ If you have a recommendation, always suggest a simple "y," or "yes," or affirmat
 
 ## External actions
 
-Before taking any action with effects outside the repository (pushing to a remote, posting to an external service, sending a message, modifying shared infrastructure), first look for an alternative approach that stays within the repository. If none exists, state what should happen and why. Then ask a single yes/no before proceeding.
+Before taking any action with effects outside the repository, first look for an alternative approach that stays within the repository. This includes pushing to a remote, posting to an external service, sending a message, or modifying shared infrastructure. If none exists, state what should happen and why. Then ask a single yes/no before proceeding.
 
 ## One question at a time
 

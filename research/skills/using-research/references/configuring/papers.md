@@ -35,7 +35,7 @@ Once you configure the papers sources (see this `papers.md` reference), callers 
 
 The practice skill treats Not-Available as a routing signal, not as an error.
 
-**Apply these etiquette rules:** Use Crossref polite requests with `mailto=`, set the OpenAlex API key in env, space ArXiv requests three seconds apart on a single connection, use exponential backoff on 429 s responses from Semantic Scholar, add the Unpaywall email param, and install marketplace plugins where required. The shared rules live in [`papers/references/etiquette.md`](../../../papers/references/etiquette.md). Each per-source reference cites that file for the rules it inherits.
+**Apply these etiquette rules:** use Crossref polite requests with `mailto=`, set the OpenAlex API key in env, space ArXiv requests three seconds apart on a single connection, and use exponential backoff on 429 s responses from Semantic Scholar. Add the Unpaywall email parameter and install marketplace plugins where required. The shared rules live in [`papers/references/etiquette.md`](../../../papers/references/etiquette.md). Each per-source reference cites that file for the rules it inherits.
 
 ## When to use
 
@@ -53,7 +53,7 @@ Default sources for wide adoption:
 
 - [ ] **Crossref** — HTTP against `api.crossref.org` per [`papers/references/crossref.md`](../../../papers/references/crossref.md). Set `CROSSREF_MAILTO` to a contact email to route requests through polite channels. Smoke-test: DOI to metadata for a known DOI.
 - [ ] **Unpaywall** — HTTP against `api.unpaywall.org/v2/{doi}?email=` per [`papers/references/unpaywall.md`](../../../papers/references/unpaywall.md). Set `UNPAYWALL_EMAIL`. Smoke-test: DOI→OA-PDF for a known open-access DOI.
-- [ ] **OpenAlex** — probe an OpenAlex MCP (for example, `oksure/openalex-research-mcp`) per [`papers/references/openalex.md`](../../../papers/references/openalex.md); fall back to HTTP against `api.openalex.org`. Set `OPENALEX_API_KEY` (post-February 2026, `$1/day` free credit). Smoke-test: topic search for "domain-driven design".
+- [ ] **OpenAlex** — probe an OpenAlex MCP (for example, `oksure/openalex-research-mcp`) per [`papers/references/openalex.md`](../../../papers/references/openalex.md); fall back to HTTP against `api.openalex.org`. Set `OPENALEX_API_KEY` (post-February 2026, `$1/day` free credit). Smoke-test: topic search for "domain-driven design."
 - [ ] **Semantic Scholar** — probe `FujishigeTemma/semantic-scholar-mcp` per [`papers/references/semantic-scholar.md`](../../../papers/references/semantic-scholar.md); fall back to HTTP against `api.semanticscholar.org`. Set `SEMANTIC_SCHOLAR_API_KEY` (strongly preferred for better limits). With a key, you get 1 RPS; anonymous access allows 5,000 requests per 5 minutes with mandatory exponential backoff on 429 s. Smoke-test: citation graph for a known paper.
 
 Priority sources (personal-default):
@@ -74,7 +74,7 @@ Opt-in sources (configure when the user supplies access):
 - [ ] **CORE** — HTTP against `core.ac.uk/services/api` per [`papers/references/core.md`](../../../papers/references/core.md). Set `CORE_API_KEY`. Smoke-test: full-text search for a known phrase.
 - [ ] **Zotero** — probe `54yyyu/zotero-mcp` (or `cookjohn/zotero-mcp`) per [`papers/references/zotero.md`](../../../papers/references/zotero.md). Set `ZOTERO_API_KEY` and `ZOTERO_LIBRARY_ID`. Smoke-test: item-type filter for `journalArticle`.
 
-You can find **out-of-scope sources** documented in [`papers/references/out-of-scope.md`](../../../papers/references/out-of-scope.md) with the reason each is excluded. These include Wiley TDM (contractual license), per-publisher institutional MCPs (Web of Science, ScienceDirect, Springer, Scopus), Google Scholar (ToS-forbidden), and Connected Papers (official clients only).
+You can find **out-of-scope sources** in [`papers/references/out-of-scope.md`](../../../papers/references/out-of-scope.md), which documents why we exclude each. These include Wiley TDM (contractual license), per-publisher institutional MCPs, Google Scholar (ToS-forbidden), and Connected Papers. The institutional MCPs comprise Web of Science, ScienceDirect, Springer, and Scopus, while Connected Papers requires official clients.
 
 ## Re-verification triggers
 

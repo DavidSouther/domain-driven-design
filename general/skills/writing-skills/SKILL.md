@@ -27,6 +27,8 @@ A **skill** is a reference guide for proven techniques, patterns, or tools. Skil
 
 ## TDD mapping for skills
 
+Each skill is documented in a primary file named SKILL.md. Here's how TDD concepts map to skill creation:
+
 | TDD Concept | Skill Creation |
 |-------------|----------------|
 | **Test scenario** | Pressure scenario with subagent |
@@ -54,7 +56,7 @@ The entire skill creation process follows RED-GREEN-REFACTOR.
 - One-off solutions
 - Standard practices well-documented elsewhere
 - Project-specific conventions (put in CLAUDE.md)
-- Mechanical constraints (if enforceable with regular expressions and validation, automate instead)
+- Mechanical constraints. If enforceable with regular expressions and validation, automate instead.
 
 ## Skill types
 
@@ -419,9 +421,9 @@ Make it easy to self-check:
 - "This is different because..."
 ```
 
-## RED-GREEN-REFACTOR for skills
+## Red-green-refactor for skills
 
-### RED: write failing test (baseline)
+### Red: write failing test (baseline)
 
 Run a pressure scenario with a subagent without the skill. Document exact behavior:
 - What choices did the agent make?
@@ -430,13 +432,13 @@ Run a pressure scenario with a subagent without the skill. Document exact behavi
 
 This is "watch the test fail"—you must see what agents naturally do before writing the skill.
 
-### GREEN: write minimal skill
+### Green: write minimal skill
 
 Write a skill that addresses those specific rationalizations. Do not add content for hypothetical cases.
 
 Run the same scenarios with the skill present. The agent should now comply.
 
-### REFACTOR: close loopholes
+### Refactor: close loopholes
 
 If the agent finds a new rationalization, add an explicit counter and re-test until the skill holds.
 

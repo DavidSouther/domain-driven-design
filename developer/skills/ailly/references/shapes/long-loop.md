@@ -6,7 +6,7 @@ When a topic is run autonomously at project scale, the five-phase lifecycle stil
 
 ## 1. When the long loop applies
 
-The long loop is opt-in at session start, declared once and applied for the run, recognized via phrasings like "run a long loop," "dynamic workflow," or "run \<project\> to completion." It is the inverse trade from quick-loop. Quick-loop skips the deliberation for small, low-stakes work with a narrow surface. The long loop **keeps** the deliberation and the full-fidelity artifacts and only removes the human intervention. Both run every phase through the active harness's isolation path. The long loop therefore does not inherit quick-loop's forbidden list. Ambiguous, high-blast-radius, and security-sensitive work is exactly what it is for.
+The long loop is opt-in at session start, declared once and applied for the run, recognized via phrasings like "run a long loop," "dynamic workflow," or "run \<project\> to completion." It is the inverse trade from quick-loop. Quick-loop skips the deliberation for small, low-stakes, narrowly-scoped work. The long loop **keeps** the deliberation and the full-fidelity artifacts and only removes the human intervention. Both run every phase through the active harness's isolation path. The long loop therefore does not inherit quick-loop's forbidden list. Ambiguous, high-blast-radius, and security-sensitive work is exactly what it is for.
 
 ## 2. The research-and-decide reviewer contract
 
@@ -17,7 +17,7 @@ At each draft gate the coordinator dispatches a fresh reviewer runner, scoped to
 - Decide the conservative default for each item.
 - Record each decision with rationale in the artifact (format below).
 - Escalate rather than decide when a trigger fires (rule in section 4): leave the gate uncleared and flag the item `ESCALATE: <why>`.
-- Remove the `*Draft*` marker once every blocking item is decided.
+- Remove the `*Draft*` marker once you have decided every blocking item.
 
 This is a single cheap isolated reviewer per gate, not a fan-out ensemble. A standalone LLM reviewer suggests candidates for the human to validate rather than providing final truth. Use one conservative decide-runner with a recorded audit trail to keep costs low and risk minimal. The coordinator chooses the model; the reference stays model-agnostic.
 
@@ -43,13 +43,13 @@ A worked entry, taken from this session's own `research.md` (entry 1, "Where do 
 > points to from a short "Long-loop Mode" section.** This matches the verified
 > reference-delegation convention. Bugfix Shape points to `bugfix.md`, and Project Shape points to
 > `project-cycle.md`. The contract, recording format, and gate mapping
-> together exceed what a section can hold, and including them would bloat SKILL.md.
+> together exceed what a section can hold, and including them would bloat `developer/skills/ailly/SKILL.md`.
 
 The cleanup phase already extracts deferred decisions from `design.md` into `TASKS.md`. When you wire the program-management using reference `developer/skills/ailly/references/abilities/program-management/using.md`, it uses the configured tracker instead. The in-place block feeds that existing path. A separate decision log would split the audit trail.
 
 ## 4. The escalation rule (three concrete triggers)
 
-The reviewer decides the conservative default unless a trigger fires, in which case it leaves the gate uncleared and flags `ESCALATE:`. The triggers:
+The reviewer decides the conservative default unless a trigger fires, in which situation it leaves the gate uncleared and flags `ESCALATE:`. The triggers:
 
 - (a) **Irreversible.** The decision cannot be undone or cheaply reversed if wrong.
 - (b) **Out of recorded scope.** The decision exceeds what the artifact itself records as its scope. For example, the decision might change a system that the artifact's Scope section explicitly excludes.
@@ -81,7 +81,7 @@ Two gates are never auto-cleared by any reviewer, in any mode.
 
 When the run reaches the human merge gate or otherwise finishes, the coordinator emits a report with three components:
 
-- **What was decided.** Per gate, the recorded-decision entries (or a pointer to each artifact's block).
+- **Decisions.** Per gate, the recorded-decision entries (or a pointer to each artifact's block).
 - **What was done.** Per phase, the artifact produced and its location.
 - **Where it stopped.** The merge gate (awaiting human approval).
 

@@ -36,7 +36,7 @@ variations silently. Report, in plain terms:
 - **Why that remediation is correct** — the reasoning that connects the error to the fix,
   so the user can judge it rather than apply it blindly.
 
-## Finally: retry and continue
+## Finally: Retry and continue
 
 After the user remediates, or explicitly gives permission to apply the suggested
 remediation, retry the command that failed and continue the task from where it stopped.

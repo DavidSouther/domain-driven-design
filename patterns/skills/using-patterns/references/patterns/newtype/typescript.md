@@ -1,4 +1,4 @@
-# NewType: TypeScript reference
+# NewType: typescript reference
 
 Branded types erase at runtime, zero performance overhead.
 

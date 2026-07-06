@@ -8,11 +8,11 @@ The user's local Calibre catalog with curated metadata and DRM-stripped full-tex
 - **Library metadata** — title, author, publisher, series, tags, custom columns.
 - **Passage retrieval** from indexed books.
 
-## MCP Option
+## MCP option
 
 `trieloff/calibre-mcp` — searches a local Calibre catalog and returns matching passages. Install per the repo README. Configuration: a path to the Calibre library directory (typically `~/Calibre Library`). No external auth required.
 
-## HTTP Fallback
+## HTTP fallback
 
 If the user runs Calibre's content server (`calibre-server`), it exposes a local HTTP API at the configured port. Treat it as opt-in; most users do not have it running.
 
@@ -23,7 +23,7 @@ If the user runs Calibre's content server (`calibre-server`), it exposes a local
 
 - *"Search the Calibre library for any book mentioning Conway's law"* — Calibre full-text search.
 - *"All books in the `architecture` Calibre tag"* — metadata query on `tags:architecture`.
-- *"Find the passage where Brooks discusses the Mythical Man-Month concept"* — full-text search with a phrase query.
+- *"Find the passage where Brooks discusses team scaling and productivity"* — full-text search with a phrase query.
 
 ## Licensing
 

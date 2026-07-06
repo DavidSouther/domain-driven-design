@@ -1,4 +1,4 @@
-# Visibility, Rust reference
+# Visibility, rust reference
 
 Rust's module system enforces visibility at compile time. Fields default to private; `pub` is opt-in. Borrowing rules give reference-only getters for free: `&T` cannot mutate, `&mut T` is the only way to mutate, and the compiler decides who has which.
 

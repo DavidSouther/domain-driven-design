@@ -1,4 +1,4 @@
-# Repository. Python reference
+# Repository. python reference
 
 ```python
 # domain/repositories.py — lives in the domain layer; no ORM imports here

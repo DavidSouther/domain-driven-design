@@ -1,4 +1,4 @@
-# Books: etiquette
+# Books: Etiquette
 
 Per-host rules for the books stack. The wiring skill ([`../../configuring-books/SKILL.md`](../../configuring-books/SKILL.md)) cites this file at configure time; the per-source reference files cite it for the shared rules.
 
@@ -20,7 +20,7 @@ Per-host rules for the books stack. The wiring skill ([`../../configuring-books/
 - Read-only access requires no auth; S3 keys exist for upload only.
 - Check the `rights` field per item before quoting full text.
 
-## Gutendex / Project gutenberg
+## Gutendex / Project Gutenberg
 
 - Do not fetch `gutenberg.org` format URLs directly at scale; the host blocks bots. Use a local mirror via `bobbyhouse/project-gutenberg` MCP, or route through `gutendex.com` for metadata and fetch format URLs sparingly with a polite User-Agent.
 - Strip the Gutenberg header and trailer before quoting; the boilerplate carries the trademark and license, neither of which is public domain.
@@ -47,12 +47,12 @@ Per-host rules for the books stack. The wiring skill ([`../../configuring-books/
 - Group libraries use `/groups/{id}` instead of `/users/{id}`.
 - Published bandwidth budget is 50 GB/month per key; back off on 429.
 
-## O'Reilly learning
+## O'Reilly Learning
 
 - Auth is enterprise SSO (official MCP) or a personal Platform Search session (community MCP). Both expire; treat expiration as a re-verification trigger.
 - Cite-and-link with the platform URL; do not redistribute passages outside the user's own session.
 
-## Calibre / Claude reader / Ebook-mcp / Kindle
+## Calibre / Claude Reader / ebook-mcp / Kindle
 
 - Local-only sources. No network etiquette applies, but the user's licensing applies, personal-use licensed; do not stage passages from copyrighted personal imports into public artifacts.
 - DRM stripping (Calibre + Kindle plugin) is jurisdictionally varied; the user is the licensee and the responsibility holder.

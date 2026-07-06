@@ -7,11 +7,11 @@ Research-library digitized holdings. The Bibliographic API provides unrestricted
 - **Bibliographic API** (open)—volume info, rights tier, member-holding records.
 - **Data API** (OAuth)—page images, per-page OCR, METS metadata; subject to copyright-tier restrictions.
 
-## MCP option
+## Mcp option
 
 None first-party. Use HTTP.
 
-## HTTP fallback
+## Http fallback
 
 **Bibliographic API**:
 

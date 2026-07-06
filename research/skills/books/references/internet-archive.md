@@ -33,9 +33,9 @@ None first-party. Use HTTP.
 
 ## Query shapes
 
-- *"1970s IBM System/360 manuals"* → `/advancedsearch.php?q=System/360+manual&fl[]=identifier,title,year&output=json`
+- *"1970&nbsp;s IBM System/360 manuals"* → `/advancedsearch.php?q=System/360+manual&fl[]=identifier,title,year&output=json`
 - *"Full text of a public-domain nineteenth-century chemistry textbook"* → search → fetch the `_djvu.txt` file from the item's file listing.
-- *"Page number where Knuth defines a knuth-bendix completion in a digitized 1970s monograph"* → beta full-text search.
+- *"Page number where Knuth defines a knuth-bendix completion in a digitized 1970&nbsp;s monograph"* → beta full-text search.
 
 ## Licensing
 

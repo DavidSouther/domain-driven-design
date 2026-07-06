@@ -11,7 +11,7 @@ Make illegal states unrepresentable by encoding each variant of a domain object 
 - Invalid combinations of fields exist but are only caught today by runtime guards or null checks.
 - An object owns resources that you must release or act on only once (for example, a network connection or file).
 
-**When not to use:** Purely dynamic data where the set of variants remains open-ended at compile time. Use a runtime discriminant and validation instead.
+**When not to use:** purely dynamic data where the set of variants remains open-ended at compile time. Use a runtime discriminant and validation instead.
 
 ## Core pattern
 
@@ -39,7 +39,7 @@ For complete examples, see [`type-states/typescript.md`](type-states/typescript.
 
 **Shared mutable state across states:** storing all possible fields in one object and leaving some `undefined` recreates the flat-type problem. Each state type should carry only the fields relevant to that state.
 
-**Reusing a resource after transition:** if a transition function takes the connection by reference instead of by value, the caller keeps a reference to the pre-transition object and can still call methods on the wrong state. Transition functions must consume (take ownership of) the old resource. In TypeScript, reassign and never alias: `conn = open(conn)`.
+**Reusing a resource after transition:** if a transition function takes the connection by reference instead of by value, the caller keeps a reference to the pre-transition object. The caller can then still call methods on the wrong state. Transition functions must consume (take ownership of) the old resource instead. In TypeScript, reassign, and never alias: `conn = open(conn)`.
 
 ## Composes with
 

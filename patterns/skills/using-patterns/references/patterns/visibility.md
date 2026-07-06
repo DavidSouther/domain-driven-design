@@ -2,7 +2,7 @@
 
 ## Overview
 
-A domain object's invariants are only as strong as the surface it exposes. If a field is public, every caller is now a co-author of the rules that govern it. Visibility controls collapse that surface to a small, named, intentional API: private internals, read-only views, explicit mutation methods, and construction through a builder or factory. The object becomes the sole keeper of its rules.
+A domain object's invariants are only as strong as the surface it exposes. If a field is public, every caller is now a co-author of the rules that govern it. Visibility controls collapse that surface to a small, named, intentional API. This comprises private internals, read-only views, explicit mutation methods, and construction through a builder or factory. The object becomes the sole keeper of its rules.
 
 ## When to use
 

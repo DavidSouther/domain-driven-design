@@ -40,7 +40,7 @@ export async function fetchUser(id: string): Promise<Result<User, FetchError>> {
 }
 ```
 
-Callers must manage every variant, and the compiler reports an error if a new variant appears without a corresponding `switch` case. Libraries such as `neverthrow` or `ts-results` provide an ergonomic `Result` type with combinators if hand-rolling the union becomes tedious.
+Callers must manage every variant, and the compiler reports an error if a new variant appears without a corresponding `switch` scenario. Libraries such as `neverthrow` or `ts-results` provide an ergonomic `Result` type with combinators if hand-rolling the union becomes tedious.
 
 ### Application, stringly error
 

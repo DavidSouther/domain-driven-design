@@ -1,4 +1,4 @@
-# Newtype: rust reference
+# Newtype: Rust reference
 
 Rust tuple structs are zero-cost newtypes. The compiler treats `AccountId` as distinct from `String` with no runtime overhead. Use `TryFrom` for fallible construction.
 

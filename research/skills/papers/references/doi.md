@@ -14,7 +14,7 @@ Parallel DOI resolution across 9+ sources. Use when a DOI must resolve to author
 
 ## Http fallback
 
-There is no single endpoint. DOI fan-out is the capability the MCP server implements on top of the per-source HTTP APIs documented in [`crossref.md`](crossref.md), [`openalex.md`](openalex.md), [`semantic-scholar.md`](semantic-scholar.md), [`pubmed.md`](pubmed.md), [`dblp.md`](dblp.md), and [`europe-pmc.md`](europe-pmc.md). If the MCP is absent, the practice skill issues the fan-out itself in parallel.
+There is no single endpoint. DOI fan-out is the capability the MCP server implements on top of per-source HTTP APIs. These are documented in [`crossref.md`](crossref.md), [`openalex.md`](openalex.md), [`semantic-scholar.md`](semantic-scholar.md), [`pubmed.md`](pubmed.md), [`dblp.md`](dblp.md), and [`europe-pmc.md`](europe-pmc.md). If the MCP is absent, the practice skill issues the fan-out itself in parallel.
 
 ## Query shapes
 

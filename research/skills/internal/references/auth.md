@@ -2,7 +2,7 @@
 
 Shared credential and handshake rules for the internal stack. The wiring skill (see [`../../configuring-internal/SKILL.md`](../../configuring-internal/SKILL.md)) cites this file at configure time. Per-source reference files cite it for the shared rules they inherit. This is the internal-stack analog of `etiquette.md` in books/papers. For an all-authenticated stack, the shared file focuses on credentials and handshakes rather than per-host politeness.
 
-## OAuth / SSO handshake pattern
+## OAuth/SSO handshake pattern
 
 Every internal source authenticates before the contract holds; there is no anonymous fallback. The Anthropic-style connectors expose a two-call handshake:
 

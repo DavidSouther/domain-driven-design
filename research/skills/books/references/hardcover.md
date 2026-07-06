@@ -1,6 +1,6 @@
 # Hardcover
 
-Reviews and reading-community signal. Replaces the retired Goodreads API. Use for "what do other readers say about this book.", rating snippets, comparable-titles queries.
+Reviews and reading-community signal. Replaces the retired Goodreads API. Use for "what do other readers say about this book?", rating snippets, comparable-titles queries.
 
 ## What it provides
 

@@ -1,4 +1,4 @@
-# Builder. Rust reference
+# Builder Rust reference
 
 Rust's ownership model makes the consuming builder pattern natural: calling `build()` moves the builder, preventing any further mutation.
 

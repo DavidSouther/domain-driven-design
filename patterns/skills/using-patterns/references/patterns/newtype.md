@@ -6,12 +6,12 @@ Wrap primitive types in named domain types so the type system enforces correct u
 
 ## When to use
 
-- Two or more domain identifiers share the same primitive type (for example, `UserId`, `OrderId`, `ProductId` are all UUIDs).
+- Two or more domain identifiers share the same primitive type. For example, `UserId`, `OrderId`, and `ProductId` are all UUIDs.
 - A numeric quantity has units whose mixing would be incorrect (for example, `Meters` vs `Feet`, `Euros` vs `Dollars`).
 - A string has a constrained format or security implications; validate them once at construction (`EmailAddress`, `Slug`, `SqlQuery`), preventing injection by making unsanitized strings unacceptable to domain APIs.
 - A value crosses a bounded context boundary and its meaning must be explicit.
 
-**when NOT to use:** Purely internal scratch variables, loop counters, or values that have no domain meaning and are never passed between functions.
+**when NOT to use:** purely internal scratch variables, loop counters, or values that have no domain meaning and are never passed between functions.
 
 ## Core pattern
 

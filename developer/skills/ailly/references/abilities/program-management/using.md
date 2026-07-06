@@ -10,7 +10,7 @@
 
 The per-session partner of the [configuring reference](configuring.md). It reads the contract that reference recorded in `DEVELOPMENT.md` and selects the next task from the configured tracker. It creates and labels tasks, links parent/child issues, records phase progress, and writes deferred work back. On Project acceptance it replicates long-lived notes to the document system as docs.
 
-We define three artifact types. **Notes** are always-local working files in `.ailly/developer/`. **Tasks** use the configured tracker with fallback to `TASKS.md`. **Docs** use the configured document system for Project-shape only. The tracker and docs layer on top of the notes floor only when configured. Each degrades independently to `TASKS.md` and local notes when the tier is not configured.
+Three artifact types exist. **Notes** are always-local working files in `.ailly/developer/`. **Tasks** use the configured tracker with fallback to `TASKS.md`. **Docs** use the configured document system for Project-shape only. The tracker and docs layer on top of the notes floor only when configured. Each degrades independently to `TASKS.md` and local notes when the tier is not configured.
 
 Setup, MCP install, OAuth/SSO handshakes, and recording the term mapping belong to the [configuring reference](configuring.md). This reference consumes the contract that reference publishes; it never re-teaches the wiring.
 
@@ -35,7 +35,7 @@ Read the three types. The notes tier is always active; the task and doc tiers la
 
 ## Capability routing
 
-The [configuring reference](configuring.md) publishes a capability table that lists each capability with its inputs, returns, and conditions. Read that table for the schema; this section covers routing only. Each capability requires the active tracker's MCP as its key and works only when that MCP is authenticated.
+The [configuring reference](configuring.md) publishes a capability table that lists each capability with its inputs, returns, and conditions. Read that table for the schema; this section covers routing only. Each capability requires the active tracker's MCP as its key and works only when you authenticate that MCP.
 
 MCP capabilities are asymmetric. First-class parent/child linking (`sub_issue_write`) exists only in GitHub. Dedicated status transitions (`transitionJiraIssue`) exist only in Jira. Where no dedicated tool exists, express both as field writes on the task.
 
@@ -60,4 +60,4 @@ When `DEVELOPMENT.md` has no `## Program Management` section, or its **Active tr
 - **[the configuring reference](configuring.md)** — the wiring partner. Publishes the contract this reference consumes; owns tracker detection, MCP install, OAuth/SSO, and the term mapping.
 - **`developer:ailly`** — the coordinator defers next-task selection and deferred-work writing here when you configure a tracker.
 - **The cleanup phase** (`references/phases/cleanup.md`) defers deferred-work write-back and Project doc publication at the end of a topic.
-- **[the internal sources setup reference](../../../../../research/skills/using-research/references/configuring/internal.md)** (see `research:using-research` and `references/configuring/internal.md`) owns the MCP transport and auth for the same tracker MCPs.
+- **[the internal sources setup reference](../../../../../research/skills/using-research/references/configuring/internal.md)** owns the MCP transport and auth for the same tracker MCPs. See `research:using-research` and `references/configuring/internal.md`.

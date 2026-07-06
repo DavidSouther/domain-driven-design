@@ -13,7 +13,7 @@ The innermost development loop. Type-first TDD: write signatures before tests, t
 
 ## Before the loop: load framework skills
 
-If `plan.md` (or the design it came from) carries a **Libraries & Skills** directive, load every skill it names via the active harness's skill-loading mechanism before writing any signatures. Load these skills here to ensure your implementation leverages the framework's idioms instead of reinventing what the library already provides.
+If `plan.md` (or the design it came from) carries a **Libraries & Skills** directive, load every skill it names via the active harness's skill-loading mechanism. Do this before writing any signatures. Load these skills here to ensure your implementation leverages the framework's idioms instead of reinventing what the library already provides.
 
 ## The loop
 
@@ -76,7 +76,7 @@ Run check. Fix all type errors before writing any tests. A clean type check mean
 Add one test per iteration using the arrange-act-assert pattern. See `patterns:using-patterns` and `references/patterns/arrange-act-assert.md` for details. The test should:
 - Target one behavior of the current plan step
 - Fail for the right reason (the implementation is a stub, not a type error)
-- Triangulate implementation and edge cases following the triangulate pattern (see `patterns:using-patterns` and `references/patterns/triangulate.md`)
+- Triangulate implementation and edge cases following the triangulate pattern. See `patterns:using-patterns` and `references/patterns/triangulate.md` for details.
 
 Run check, then run tests. Confirm the test fails as expected.
 
@@ -99,7 +99,7 @@ Pass to the thinking runner:
 - The code added or changed in this step
 - The plan step you are implementing
 
-## Loop abort
+## Loop stop
 
 If you have already consulted `references/abilities/thinking.md` for the current error and the same or equivalent error reappears after following its plan, do **not** consult it again. Stop immediately and report:
 

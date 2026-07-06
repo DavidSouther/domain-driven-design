@@ -19,7 +19,7 @@ Per-host rules for the papers stack. The wiring process (see [`../../configuring
 - API key strongly preferred. Request via the developer portal; pass as `x-api-key` header. Set `SEMANTIC_SCHOLAR_API_KEY`.
 - **With key**: 1 RPS dedicated.
 - **Anonymous**: global shared quota capped at 5,000 requests per 5 minutes.
-- **Mandatory exponential backoff on 429s.**
+- **Mandatory exponential backoff on 429 s.**
 
 ## Arxiv
 
@@ -58,7 +58,7 @@ Per-host rules for the papers stack. The wiring process (see [`../../configuring
 - Group libraries use `/groups/{id}` instead of `/users/{id}`.
 - 50 GB/month bandwidth per key; back off on 429.
 
-## Dblp / Europe pmc
+## DBLP / Europe PMC
 
 - No auth required. Be polite (≤2 req/s for DBLP). Default to a similar posture for Europe PMC unless the user is institutional.
 

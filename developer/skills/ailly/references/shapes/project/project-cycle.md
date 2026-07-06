@@ -58,7 +58,7 @@ Record the Closing Bell's location in the project design doc, the way a feature 
 
 A project lands its features over time, so the half-built whole must not reach users before the Closing Bell passes. Gate it behind a single project-level release flag. Deploy continuously, but release to users only when the project is done. In most cases, that one flag is enough. A feature-step earns its own only when it changes what users see on its own.
 
-See `developer/skills/ailly/references/shapes/project/release-flags.md` for how this decouples deploy from release, how to run the Closing Bell behind the flag, when a step needs its own flag, and how you enable and retire the flag.
+See `developer/skills/ailly/references/shapes/project/release-flags.md` for how this decouples deploy from release and how to run the Closing Bell behind the flag. That reference also describes when a step needs its own flag and how to enable and retire it.
 
 ## Plan steps are features
 

@@ -1,5 +1,5 @@
 # The forward/backward method for developing algorithms
-## Example: circular linked list
+## Example: Circular linked list
 
 Part three of a series on [technical whiteboarding](/blog/interview_01_whiteboard).
 
@@ -33,7 +33,7 @@ After some number of steps working backwards, an intermediate data structure sho
 
 Having moved backwards to needing a visited set, the programmer asks the forward key question: what information becomes available to fill in? The visited set from step B3 answers this. A traversal storing each list item in the set defines forward step A2.
 
-At this point, a complete logical thread connects all the steps from A1 (the input) through A2 (maintaining a visited list during traversal), B3 (checking the visited list), and B2 (recognizing or not recognizing a duplicate item) to B1 (returning immediately when the code encounters a duplicate or when the traversal completes).
+At this point, a complete logical thread connects all the steps from A1 to B1. A1 is the input. A2 maintains a visited list during traversal. B3 checks the visited list. B2 recognizes or does not recognize a duplicate item. B1 returns immediately when the code encounters a duplicate or when the traversal completes.
 
 When the forward and backward steps line up in the visualization using specific values, it’s time to write a general plain language description of each step. These steps should not be specific to any programming language. They should use “big picture” holistic operations, like “traverse the list”, “compare the values”, or “check the set”. Calling out intermediate data structures by variable name is appropriate, but describing the changes to a loop counter is too detailed for a general algorithm.
 
@@ -41,7 +41,7 @@ When the forward and backward steps line up in the visualization using specific 
 
 This write up describes the forward and backward steps in an algorithmic way. It doesn’t deal with details of the function name or argument variables, but does call out specific names for the set and the traversal variable for the set. It uses concise If statements, and generic operations on the intermediate data structures.
 
-This approach works best with a good understanding of common data structures, their methods, and algorithms. While any problem may require specific domain knowledge, a developer benefits from knowing how to construct and traverse arrays, linked lists, binary trees, n-ary child trees, and hashmaps. Understanding how stacks, queues, and sets augment traversals for these structures provides a solid foundation.
+This approach works best with a good understanding of common data structures, their methods, and algorithms. While any problem may require specific domain knowledge, a developer benefits from knowing how to construct and traverse arrays, linked lists, and binary trees. Knowledge of n-ary child trees and hashmaps provides additional skills. Understanding how stacks, queues, and sets augment traversals for these structures provides a solid foundation.
 
 ## Recursive algorithms
 
@@ -49,7 +49,7 @@ A problem may have a very clear recursive solution. When the problem rephrases t
 
 Identify the base scenario or situation first. In most cases, this is either an empty data structure or a single item. Also identify the recursion on one or more parts of the data structure and any logic necessary to combine those results.
 
-In recursion, the empty scenario or situation becomes critical to identify. This scenario or situation (and possibly the one or two item scenario or situation) defines the base scenario or situation of the recursion. Failure to identify the base scenario or situation at this time greatly increases the difficulty in the remainder of the interview.
+In recursion, the empty scenario or situation becomes critical to identify. This scenario or situation defines the base scenario or situation of the recursion. Also consider the one or two item scenario or situation as potential base cases. Failure to identify the base scenario or situation at this time greatly increases the difficulty in the remainder of the interview.
 
 ## References
 

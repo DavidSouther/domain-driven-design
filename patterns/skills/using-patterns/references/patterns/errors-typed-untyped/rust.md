@@ -1,4 +1,4 @@
-# Errors: typed vs untyped, Rust reference
+# Errors: typed vs untyped, rust reference
 
 Each language has its own grammar for failure. The pattern is constant: typed at library boundaries, stringly at app boundaries, with a translation step between. The idioms differ. Use the variant native to your language; do not transliterate one into another.
 

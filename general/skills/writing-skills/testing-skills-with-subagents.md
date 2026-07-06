@@ -6,7 +6,7 @@
 
 **Testing skills is just TDD applied to process documentation.**
 
-You run scenarios without the skill to watch agent fail (RED), write a skill addressing those failures (GREEN), and close loopholes to stay compliant (REFACTOR).
+You run three phases: RED (watch agent fail), GREEN (write skill), and REFACTOR (close loopholes).
 
 **Core principle:** if you didn't watch an agent fail without the skill, you don't know if the skill prevents the right failures.
 
@@ -19,7 +19,7 @@ You run scenarios without the skill to watch agent fail (RED), write a skill add
 Test skills that:
 - Enforce discipline (TDD, testing requirements)
 - Have compliance costs (time, effort, rework)
-- Could be rationalized away ("just this once")
+- Agents can rationalize away ("just this once")
 - Contradict immediate goals (speed over quality)
 
 Don't test:
@@ -40,7 +40,7 @@ Don't test:
 
 Same cycle as code TDD, different test format.
 
-## RED phase: baseline testing (watch it fail)
+## Red phase: baseline testing (watch it fail)
 
 **Goal:** run test WITHOUT the skill - watch agent fail, document exact failures.
 
@@ -79,7 +79,7 @@ Run this WITHOUT a TDD skill. Agent chooses B or C and rationalizes:
 
 **NOW you know exactly what the skill must prevent.**
 
-## GREEN phase: write minimal skill (make it pass)
+## Green phase: write minimal skill (make it pass)
 
 Write skill addressing the specific baseline failures you documented. Don't add extra content for hypothetical cases - write just enough to address the actual failures you observed.
 
@@ -87,7 +87,7 @@ Run same scenarios WITH skill. Agent should now comply.
 
 If agent still fails: skill is unclear or incomplete. Revise and re-test.
 
-## VERIFY GREEN: pressure testing
+## Verify green: pressure testing
 
 **Goal:** confirm agents follow rules when they want to break them.
 
@@ -160,7 +160,7 @@ You have access to: [skill-being-tested]
 
 Make agent believe it's real work, not a quiz.
 
-## REFACTOR phase: close loopholes (stay green)
+## Refactor phase: close loopholes (stay green)
 
 Agent violated rule despite having the skill? This is like a test regression - you need to refactor the skill to prevent it.
 
@@ -250,7 +250,7 @@ it crystal clear that Option A was the only acceptable answer?
 
 **Three possible responses:**
 
-1. **"The skill was clear; it was ignored anyway"**
+1. **"The skill was clear; the agent ignored it anyway"**
    - Not documentation problem
    - Need stronger foundational principle
    - Add "Violating letter is violating spirit"
@@ -271,7 +271,7 @@ it crystal clear that Option A was the only acceptable answer?
 1. **Agent chooses correct option** under maximum pressure
 2. **Agent cites skill sections** as justification
 3. **Agent acknowledges temptation** but follows rule anyway
-4. **Meta-testing reveals** "the skill was clear and should have been followed"
+4. **Meta-testing reveals** "the skill was clear and I should have followed it"
 
 **Not bulletproof if:**
 - Agent finds new rationalizations
