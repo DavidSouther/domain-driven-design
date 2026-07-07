@@ -2,51 +2,51 @@
 
 ## When Code Mode Applies
 
-Code Mode is for a small standalone script or automation, not an application
-feature: a file-system loop, an orchestration wrapper over tools that already
-exist, minimal logic and no application-feature surface. Before condensing
-anything, apply the routing test — is this task script-shaped? An ambiguous
-*feature* inside an app is not for Code Mode; it belongs to the standard loop
-(or quick-loop once disambiguated). This script-vs-feature boundary is the
-load-bearing distinction between Code Mode and every other shape here.
+Code Mode is for a "few-off" script or automation, rather than
+an application feature.
 
-Code Mode is opt-in at session start, entered by a distinct trigger phrase, the
-same way quick-loop and long-loop are entered ("code mode", "write a script to
-..."). It is also reachable through `developer:ailly`'s Routing table, which
-carries a row pointing back at this reference.
+Examples of script-shaped tasks for codemode include a file-system loop over existing tools, a read-and-compute pass over scattered inputs,
+filtering and counting log entries by date range,
+or querying a SQL-backed dataset. Code mode is too much for a truly one-off task, 
+summing a column across six reports,
+cross-referencing two CSVs for mismatched IDs,
+pulling config values from scattered files into a byte budget, or calling a tool with a few files.
 
-## Cursory Research
+When deciding code mode vs directly LLM task, can the LLM both perform the task and verify its
+own answer? Weigh three angles: how large and clean the source materials
+are, how much data the computation requires once extracted, and how complex
+the computation itself is. Cost and rerun count apply when all three
+are small and clean, and only past roughly five reruns; everywhere else
+correctness or feasibility decides, sometimes at a single run, since a real
+statistical computation an LLM cannot verify by reasoning belongs in a script
+from its first run. A readable script also beats opaque reasoning on
+auditability. Judgment-heavy work, such as fuzzy text matching or messy
+entity resolution, usually calls for a hybrid: a script handles the
+mechanical bulk and the LLM adjudicates the ambiguous residual.
 
-Before writing anything, make one `research:public` call to check whether an
-off-the-shelf tool already fits the specific task, keeping Python, Shell, or PowerShell for
-orchestration only and wrapping the tool that fits rather than hand-rolling it.
-"Check spelling across these dozen files" should surface `vale.sh` as the tool
-the script wraps, not a from-scratch spell checker. Record the finding — the
-tool chosen, or "hand-written because none fits" — in the combined planning doc
-below rather than a separate `research.md`.
+## Condensed Ailly Loop
 
-## Combined Planning Doc
+Make one `research:public` call to check whether an
+existing tool already fits, using SQL for data tasks against a database;
+shell (or powershell) for filesystem scripting, or Python for light complexity tasks. 
+"Check spelling across these dozen files" should surface `vale.sh` or `hunspell`
+as the tool the script wraps, not a from-scratch spell checker; for data in
+a database connection, run SQL query run directly,
+Record the
+finding, either the tool chosen or "hand-written because none fits", in the
+combined planning doc.
+Add the design and plan into a single short document in the session
+folder, in place of the standard loop's three separate artifacts.
 
-Research, design, and plan collapse into a single short document in the
-session folder, in place of the standard loop's three separate artifacts. It
-records what the script does, the tool it wraps (or why it is hand-written),
-the model / tool-restriction / concurrency choices for any sub-sessions it
-dispatches, and any clarifications. Genuine ambiguity is raised through
-`intent-review.md`, worked backward from the original prompt exactly as the
-standard loop uses it; the developer resolves each question at the single
-draft gate below (intent-review never auto-clears a gate on its own). Code
-Mode reuses `intent-review.md` as-is — it does not add a new sibling mechanism
-for ambiguity.
 
-## Gates
-
-One human-cleared draft gate covers the combined planning doc; once the
-developer clears it, Build runs. The standard human merge gate still applies
+One human-cleared draft gate covers the combined planning doc. Apply review skills,
+including `intent-review.md` to find intent gaps.
+The developer resolves each question at the single draft gate below.
+Once the
+developer clears it, the build runs. The standard human merge gate still applies
 and is never auto-cleared. Code Mode does not auto-clear like quick-loop —
 keeping this one human beat is precisely what lets Code Mode take on ambiguous
 work that quick-loop must refuse.
-
-## Build
 
 Write the script, run it once, and inspect the output. There is no feature test
 and no red-green-refactor TDD loop: Code Mode scripts stay trivial enough by
@@ -57,8 +57,7 @@ conventions put standalone automation.
 
 ## Guidance for Spawned Sessions
 
-Any generated script that spawns further headless Claude sessions (the
-vale-autofix shape this document's Worked Example walks through) follows four
+Any generated script that spawns further headless agent sessions follows four
 concrete rules:
 
 - **Headless dispatch.** Dispatch each session with `claude --print` (`-p`) in
