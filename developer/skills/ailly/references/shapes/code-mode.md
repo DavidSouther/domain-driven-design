@@ -3,11 +3,15 @@
 ## When Code Mode Applies
 
 Code Mode is for a "few-off" script or automation, rather than
-an application feature.
+an application feature. Before treating anything as script-shaped, apply the
+routing test — is this task script-shaped, or is it an ambiguous *feature*
+inside an app? A feature is not for Code Mode; it belongs to the standard
+loop (or quick-loop once disambiguated). This script-vs-feature boundary is
+the load-bearing distinction between Code Mode and every other shape here.
 
 Examples of script-shaped tasks for codemode include a file-system loop over existing tools, a read-and-compute pass over scattered inputs,
 filtering and counting log entries by date range,
-or querying a SQL-backed dataset. Code mode is too much for a truly one-off task, 
+or querying a SQL-backed dataset. Code mode is too much for a truly one-off task,
 summing a column across six reports,
 cross-referencing two CSVs for mismatched IDs,
 pulling config values from scattered files into a byte budget, or calling a tool with a few files.
@@ -22,22 +26,27 @@ statistical computation an LLM cannot verify by reasoning belongs in a script
 from its first run. A readable script also beats opaque reasoning on
 auditability. Judgment-heavy work, such as fuzzy text matching or messy
 entity resolution, usually calls for a hybrid: a script handles the
-mechanical bulk and the LLM adjudicates the ambiguous residual.
+mechanical bulk and the LLM adjudicates the ambiguous residual. See
+`code-mode-thresholds.md` in this directory for the full threshold tables,
+cost grounding, and worked examples behind this test.
+
+Code Mode is opt-in at session start, entered by a distinct trigger phrase,
+the same way quick-loop and long-loop are entered ("code mode", "write a
+script to ..."). It is also reachable through `developer:ailly`'s Routing
+table, which carries a row pointing back at this reference.
 
 ## Condensed Ailly Loop
 
 Make one `research:public` call to check whether an
 existing tool already fits, using SQL for data tasks against a database;
-shell (or powershell) for filesystem scripting, or Python for light complexity tasks. 
+shell (or powershell) for filesystem scripting, or Python for light complexity tasks.
 "Check spelling across these dozen files" should surface `vale.sh` or `hunspell`
 as the tool the script wraps, not a from-scratch spell checker; for data in
-a database connection, run SQL query run directly,
-Record the
+a database connection, run the SQL query directly. Record the
 finding, either the tool chosen or "hand-written because none fits", in the
 combined planning doc.
 Add the design and plan into a single short document in the session
 folder, in place of the standard loop's three separate artifacts.
-
 
 One human-cleared draft gate covers the combined planning doc. Apply review skills,
 including `intent-review.md` to find intent gaps.

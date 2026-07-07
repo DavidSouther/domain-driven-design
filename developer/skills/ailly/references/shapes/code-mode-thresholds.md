@@ -10,7 +10,7 @@ neither pure LLM nor pure script suffices: split the work (Angle 3).
 ## Angle 1: Source Materials
 
 | Band | Rough total | Direct-LLM verdict |
-|---|---|---|
+| --- | --- | --- |
 | Trivial | 1 to 2 files, under ~20K tokens | Fits comfortably, no reliability concern. |
 | Small | a handful of files, tens of thousands of tokens | Direct by default; script only if the format is clean and it reruns. |
 | Moderate | many or large files, ~100K to 500K tokens | Code Mode is appropriate on input cost and on "lost in the middle" reliability. |
@@ -28,7 +28,7 @@ over large clean input drops mid-context records without flagging it.
 Volume after extraction, not source size (a small query can return 50K rows).
 
 | Band | Rough size | Direct-LLM verdict |
-|---|---|---|
+| --- | --- | --- |
 | Trivial | a few values, a handful of rows | Reliable and instant. |
 | Small | tens of rows, a few columns | Borderline: exact arithmetic across dozens of numbers starts to accumulate error. |
 | Moderate | hundreds to low thousands of rows | Code Mode on correctness: exact counting, summing, and grouping become unreliable regardless of cost. |
@@ -43,7 +43,7 @@ aggregates. A script at trivial volume is just overkill.
 ## Angle 3: The Task / Computation
 
 | Band | Examples | Verdict |
-|---|---|---|
+| --- | --- | --- |
 | Trivial op | single lookup, reformat, extract one value | Direct LLM. |
 | Simple aggregate | sum, count, min/max, group-by | Unreliable at volume; script once there is any real row count. |
 | Multi-step transform | joins, pivots, multi-stage filters, exact-key dedup | Code Mode strongly favored even at n=1: error-prone and unverifiable by hand. |
@@ -59,14 +59,14 @@ under-merges silently.
 Claude API list pricing June 2026 per 1M tokens:
 
 | Model | Input ($/1M) | Output ($/1M) | Context |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Haiku 4.5 | $1 | $5 | 200K |
 | Sonnet 5 / 4.6 | $3 | $15 | 1M |
 | Opus 4.6-4.8 | $5 | $25 | 1M |
 | Fable 5 | $10 | $50 | 1M |
 
 | Input size | Haiku | Sonnet | Opus | Fable |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | Small (~10K in, ~500 out) | $0.01 | $0.04 | $0.06 | $0.13 |
 | Large (~500K in, ~1K out) | n/a (over 200K ctx) | $1.52 | $2.53 | $5.05 |
 
@@ -80,7 +80,7 @@ halves every figure; prompt caching cuts repeated-prefix input to about 0.1x.
 ## Worked Examples
 
 | Case | Deciding axis | Verdict |
-|---|---|---|
+| --- | --- | --- |
 | Summing a dataset vs. a regression on dataset | Task complexity | Sum: script past a few dozen rows. Regression: script at any size, no cost argument needed. |
 | Column data extracted from logs | Source structure and dataset volume together | Script: semi-structured parsing and row volume both favor it; parameterize the date range and rerun. |
 | Dense data in a spreadsheet or database | Dataset volume; source size is a red herring | Script: a single SQL query the LLM writes is itself the win. The data never touches the context window. |
@@ -97,5 +97,6 @@ trade-off toward scripting. When judgment is irreducible, split the work
 rather than choosing a side. The tie-breaker is never run count. It is
 whether the LLM can verify its own answer.
 
-For the full derivation, failure-mode detail, and the reasoning behind each
-number, see `code-mode-thresholds.md` in this directory.
+This reference is the detailed backing for the trigger test in
+`code-mode.md`'s "When Code Mode Applies" section; read that section first
+for the one-line decision rule this expands on.
