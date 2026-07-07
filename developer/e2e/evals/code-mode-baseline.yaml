@@ -1,0 +1,24 @@
+name: code-mode-baseline
+cases:
+  - name: code-mode
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_code_mode.py } }
+      - type: judge
+        prompt: |
+          The user explicitly asked for Code Mode on a small standalone
+          script. The response runs the condensed Code Mode loop, not the
+          standard five-phase ceremony and not quick-loop: it makes a
+          cursory research:public-style check for an off-the-shelf tool
+          (grep/ripgrep) before writing anything, collapses research +
+          design + plan into one combined document rather than three
+          separate artifacts with three stop-and-wait gates, and treats the
+          build step as run-it-once-and-inspect with no feature test. The
+          prompt's "resolve them" is genuinely ambiguous (auto-fix vs.
+          triage/report), and the response surfaces that ambiguity through
+          intent-review.md or an explicit clarifying question rather than
+          silently guessing. For the spawned per-file sessions, the response
+          normalizes the prompt's verbatim "haiku-4.5" to the bare alias
+          "haiku", restricts tool access with --allowedTools, dispatches
+          headlessly with claude --print/-p, and caps concurrency at the
+          prompt's stated 5 via xargs -P or a semaphore.
+      - { type: tokens, metric: output, op: "<", value: 6000 }
