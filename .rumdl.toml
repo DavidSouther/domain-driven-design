@@ -1,0 +1,7 @@
+[global]
+enable = ["MD013"]
+
+[MD013]
+line-length = 1000
+reflow = true
+reflow-mode = "sentence-per-line"
