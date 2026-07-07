@@ -2,7 +2,7 @@
 
 ## Selection principle
 
-Match the model to task complexity, not to the phase or skill dispatching it. Favor stronger reasoners when tasks need deep reasoning, strict constraint-following, specialized domain knowledge, or have high generation-vs-evaluation asymmetry. Production is much harder than evaluation in these cases. Lower-complexity work such as rote tasks, orchestration over settled lists, or narrow scope favors cheaper, faster models. Ensure that cheaper model clears an eval suite scoped to the work it performs.
+Match the model to task complexity, not the requesting phase. Use stronger models for complex reasoning, strict rules, special knowledge, or when output is harder to create than to check. Use cheaper, faster models for simple tasks: rote work, orchestration, or narrow scope. Make sure cheaper models pass tests for their work.
 
 Express this as a bare alias, never a dated pinned version: `opus`, `sonnet`, or `haiku` for Anthropic, and the equivalent bare-alias tier for any other provider. A bare alias should point to a provider's own "recommended" or "latest" pointer, not a specific dated release. Aliases track a provider's own current recommendation over time. A pinned version stays frozen the day you write it and goes stale the moment the provider ships a new generation. The dated table below represents the one deliberate, clearly stamped exception to this rule. See Frontier-model caution.
 

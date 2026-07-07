@@ -16,7 +16,7 @@ Answers research questions about the current codebase state by using LSP queries
 - Understanding interface implementations or trait bounds
 - Reading a module's public surface without opening every file
 
-**Do NOT use** for questions about why code changed (use `archaeology` instead) or for dependency origins (use `dependencies` instead). To install or prime a language server, or to add a new language to the contract, use [the codebase setup reference](../using-research/references/configuring/codebase.md), not this skill.
+**Do NOT use** for questions about why code changed or for dependency origins. Use `archaeology` for the former and `dependencies` for the latter. To install or prime a language server, or to add a new language to the contract, use [the codebase setup reference](../using-research/references/configuring/codebase.md), not this skill.
 
 ## Query expansion (Jeopardy search)
 

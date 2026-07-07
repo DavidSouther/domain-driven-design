@@ -1,12 +1,12 @@
 # Initialize
 
-> The `developer:ailly` coordinator loads this when setting up a new project
-> or language environment. There is no standalone `developer:initialize` skill; the
+> The `developer:ailly` coordinator uses this when setting up new projects and
+> language environments. There is no separate `developer:initialize` skill. The
 > coordinator and tool-failure reference both route here for local environment fixes.
 
 ## Overview
 
-Prepares a project folder for development by using language-agnostic orchestration with language-specific details in reference files. Validates existing layout before scaffolding.
+Prepares a project folder for development using language-specific details from reference files. Checks the existing layout before adding needed files.
 
 **Announce at start:** "Using the developer:ailly initialize reference to set up the project."
 

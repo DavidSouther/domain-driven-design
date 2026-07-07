@@ -93,7 +93,7 @@ digraph refactor {
     apply -> run_checks;
     run_checks -> pass;
     pass -> more_smells [label="yes"];
-    pass -> fix_causes_error [label="no — fix error first"];
+    pass -> fix_causes_error [label="no: fix error first"];
     fix_causes_error -> tried_thinking [label="yes"];
     fix_causes_error -> fix_error [label="no"];
     tried_thinking -> abort [label="yes"];
@@ -114,7 +114,7 @@ If you've already consulted `references/abilities/thinking.md` for this error an
 
 ## Deferred smells
 
-If smells remain that are too risky to address now (for example, would require changing multiple modules, or encountered repeated failures while fixing), record them:
+If smells remain that are too risky to address now, record them. Examples include changes that would require modifying multiple modules or situations where you encountered repeated failures while fixing:
 
 Save to `.ailly/developer/YYYY-MM-DD-A-<topic>/deferred-refactoring.md`:
 

@@ -9,7 +9,7 @@ The org document store. First stop for documents, spreadsheets, and presentation
 
 ## MCP / connector capabilities
 
-The Anthropic Google Drive connector exposes `search_files` and `read_file_content`. Additional capabilities (`get_file_metadata`, `list_recent_files`, and `download_file_content`) enable richer access when you need it. If this connector is not the one installed, probe the configured Drive MCP for this org.
+The Anthropic Google Drive connector exposes `search_files` and `read_file_content`. Additional capabilities are available: `get_file_metadata`, `list_recent_files`, and `download_file_content`. These enable richer access when you need it. If this connector is not the one installed, probe the configured Drive MCP for this org.
 
 ## Auth
 

@@ -1,4 +1,4 @@
-# Discriminated unions, type states, and protocols
+# State types, variants, and protocols
 
 ## Overview
 

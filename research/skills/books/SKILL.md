@@ -1,13 +1,13 @@
 ---
 name: books
-description: Use for research about books. Covers ISBN lookups, public-domain texts, technical references, personal libraries, and cross-corpus searches.
+description: Research books via ISBN lookups, public-domain texts, technical references, personal libraries, and cross-corpus searches.
 ---
 
 # Books
 
 ## Overview
 
-Per-query research against the configured books capability contract. Pick the **capability** the question needs: isbn lookup, table-of-contents, library search, or full-text retrieval. Dispatch to it, write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, and re-verification belong in [the books setup reference](../using-research/references/configuring/books.md); this skill consumes the contract that skill publishes.
+Research books by using the configured capability contract. Pick the capability your question needs: ISBN lookup, table-of-contents, library search, or full-text retrieval. Dispatch to it and write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, and re-verification belong in [the books setup reference](../using-research/references/configuring/books.md). This skill consumes the contract that skill publishes.
 
 ## When to use / When not to use
 
@@ -30,11 +30,11 @@ Per-query research against the configured books capability contract. Pick the **
 
 Before dispatching to a capability, expand the question into 3-5 variants; see [`research/references/jeopardy.md`](../../references/jeopardy.md) for the general technique. Books-specific axes:
 
-- **ISBN variants** — ISBN-10 and ISBN-13; edition-specific vs work-level (Open Library `/works/{olid}` vs `/books/{olid}`).
-- **Title-and-author variants** — full title, subtitle, abbreviated title, common short forms (`DDD` for *Domain-Driven Design*); first-author-only vs. all-authors.
-- **Edition-disambiguation variants** — original-edition year and publisher, anniversary or annotated editions, paperback vs. hardcover, translated editions.
-- **Topic-and-keyword variants** — when the user does not know the title; pair the domain keyword with the publisher's known imprint (for example, O'Reilly for Linux administration).
-- **Author-name normalization** — anglicized vs. native script, initials vs. full first name, common pen-name aliases.
+- **ISBN variants**: ISBN-10 and ISBN-13; edition-specific vs work-level (Open Library `/works/{olid}` vs `/books/{olid}`).
+- **Title-and-author variants**: full title, subtitle, abbreviated title, common short forms (`DDD` for *Domain-Driven Design*); first-author-only vs. all-authors.
+- **Edition-disambiguation variants**: original-edition year and publisher, anniversary or annotated editions, paperback vs. hardcover, translated editions.
+- **Topic-and-keyword variants**: when the user does not know the title, pair the domain keyword with the publisher's known imprint (for example, O'Reilly for Linux administration).
+- **Author-name normalization**: anglicized vs. native script, initials vs. full first name, common pen-name aliases.
 
 Run the variants in the order that the routing table below dictates. Union the result sets before deciding which capability has the highest-quality hit.
 
@@ -88,7 +88,7 @@ Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/books.md`. If the caller
 [2] Author/Org. "Title." Date. [Online]. Available: <URL>
 ```
 
-Excerpts only; do not stage cached PDFs or full bodies. For passages from copyrighted or licensed sources (O'Reilly, Kindle, Apple Books, Calibre, and HathiTrust gated content), quote within the session for the user's own work. Cite-and-link instead of staging to public artifacts.
+Excerpts only; do not stage cached PDFs or full bodies. For passages from copyrighted or licensed sources, quote within the session for the user's own work. These sources include O'Reilly, Kindle, Apple Books, Calibre, and HathiTrust gated content. Cite-and-link instead of staging to public artifacts.
 
 ## Common mistakes
 

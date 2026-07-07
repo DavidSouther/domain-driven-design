@@ -1,13 +1,13 @@
 ---
 name: writing-pattern-skills
-description: Use when authoring a new skill for the patterns plugin or revising an existing one. Applies when a design pressure calls for a named, reusable pattern with specific frontmatter and file structure.
+description: Use when writing a pattern skill or revising one. Applies when you need a named, reusable pattern with specific frontmatter and file structure.
 ---
 
 # Writing pattern skills
 
 ## Overview
 
-A pattern skill captures one named, reusable solution to a recurring design pressure. The patterns plugin follows a reduced Alexandrian form, refined by Fowler in *Patterns of Enterprise Application Architecture* and Evans in *Domain-Driven Design*. Each pattern comprises a name, the forces that call for it, the solution itself, and its relationships to neighbouring patterns. Every skill in `patterns/skills/` conforms to that template. This consistency lets a reader scan any pattern and know where to look for the answer.
+A pattern skill is a reusable solution to a common design problem. The patterns plugin uses the Alexandrian form, refined by Fowler in *Patterns of Enterprise Application Architecture* and Evans in *Domain-Driven Design*. Each pattern includes a name, the forces that drive it, the solution, and its connections to other patterns. Every skill in `patterns/skills/` follows this structure. This consistency lets readers quickly find what they need.
 
 This skill describes that template, and the editorial choices that keep the catalog coherent. Use it before opening a new `SKILL.md` in the patterns plugin.
 

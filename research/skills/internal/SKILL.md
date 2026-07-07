@@ -1,13 +1,13 @@
 ---
 name: internal
-description: Use to search internal sources like Slack, wikis, tickets, and ADRs. Do not use for public internet searches or codebase research.
+description: Search internal sources like Slack, wikis, tickets, and ADRs. Do not use for public internet or code searches.
 ---
 
 # Internal research
 
 ## Overview
 
-Search configured MCP servers to answer questions from internal organizational knowledge. Different projects have different integrations; discover what is available before searching. Setup, MCP install, OAuth/SSO handshakes, and token rotation belong in [the internal setup reference](../using-research/references/configuring/internal.md); this skill consumes the contract that skill publishes.
+Search configured MCP servers to find answers in internal organizational knowledge. Different projects use different integrations; discover what is available before searching. Setup and token rotation belong in [the internal setup reference](../using-research/references/configuring/internal.md); this skill uses the contract that skill defines.
 
 ## When to use / When not to use
 

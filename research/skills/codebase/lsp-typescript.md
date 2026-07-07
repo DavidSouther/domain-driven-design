@@ -1,8 +1,8 @@
 # TypeScript LSP (tsserver)
 
-> Priming rules live in [`lsp-setup.md`](lsp-setup.md): run `npm install` to populate `node_modules`, then `tsc --build` for project references.
+> See [`lsp-setup.md`](lsp-setup.md) for setup. Run `npm install` to get dependencies. Then run `tsc --build` for monorepo packages.
 >
-> **Note:** `completions` and `diagnostics` are *not* on the current `LSP` tool surface. The LSP tool exposes `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, and `outgoingCalls`. Where they appear below they describe a server-specific path not reachable through the `LSP` tool. To enumerate members, use `hover` on the value. To check type-correctness, run `tsc` via Bash.
+> **Note:** `completions` and `diagnostics` are not in the LSP tool. The LSP tool has `goToDefinition`, `findReferences`, `hover`, `documentSymbol`, `workspaceSymbol`, `goToImplementation`, `prepareCallHierarchy`, `incomingCalls`, and `outgoingCalls`. The methods below use server paths instead of the LSP tool. Use `hover` to list members. Run `tsc` via Bash to check types.
 
 ## Configuration
 

@@ -1,6 +1,6 @@
 # NewType: TypeScript
 
-Branded types erase at runtime, zero performance overhead.
+Branded types erase at runtime, no overhead.
 
 ```typescript
 // Before: primitives leak domain intent

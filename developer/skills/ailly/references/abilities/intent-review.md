@@ -1,15 +1,12 @@
 # Intent review
 
-> This ability runs at the draft gate of each `developer:ailly` phase. It uses the active harness's isolation path and reviews alongside `general:review`. There is no standalone `developer:intent-review` skill.
+> This ability runs when each `developer:ailly` phase reaches the draft gate. It uses the active harness's isolation path and reviews alongside `general:review`. There is no standalone `developer:intent-review` skill.
 
 ## Intent alignment gap
 
-The alignment gap occurs when the research, design, plan, or implementation developed across Ailly's phases differ from the expectations and intent of the user.
-Ailly's five phases each accumulate a "theory of the program" across their artifacts, but
-that theory may drift from the user's original request, which precedes all of them. Intent review works **backward** from that
-original prompt through the accumulated phase artifacts,
-checking whether the theory built up along the way has quietly drifted from what was actually
-asked for. It generates falsifiable questions of the form:
+An alignment gap happens when Ailly's research, design, plan, or code doesn't match what the user wanted.
+
+Each of Ailly's five phases builds a "theory of the program" from its work. But this theory can drift from the user's intent. Intent review works **backward** from that original request through the phase artifacts. It checks if the theory has drifted from the original intent. It generates falsifiable questions of the form:
 
 > As [designed / planned / implemented], the program **[X]**. The original request asked
 > for **[Y]**. Do they align?

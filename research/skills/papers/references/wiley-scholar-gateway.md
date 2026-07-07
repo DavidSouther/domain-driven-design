@@ -1,6 +1,6 @@
 # Wiley scholar gateway
 
-Semantic search across 3 million articles in 1,300 Wiley journals. Returns **passage snippets with DOI links**, not full PDFs.
+Search across 3 million articles in 1,300 Wiley journals. Returns **snippets with DOI links**, not full PDFs.
 
 ## What it provides
 

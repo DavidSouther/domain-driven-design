@@ -1,6 +1,6 @@
 # Library of congress
 
-A digitized federal collection of rare books, manuscripts, government publications, and historical newspapers. Use it for primary-source historical documents and Americana.
+A searchable collection of rare books, manuscripts, government documents, and historical newspapers. Use it for primary sources and Americana.
 
 ## What it provides
 

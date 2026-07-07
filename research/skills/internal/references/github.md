@@ -14,7 +14,7 @@ Two transports, probed in order:
 - **GitHub MCP**: probe the configured GitHub MCP for this org first; tool names vary by which server you install, so discover the surface rather than assuming a slug.
 - **`gh` command-line tool fallback**: if you haven't configured an MCP, fall back to the `gh` command-line tool: `gh issue list`/`gh issue view`, `gh pr list`/`gh pr view`, `gh search issues`. Authenticated by `GH_TOKEN` / `GITHUB_TOKEN` or an existing `gh auth login` session.
 
-If no token is set and no MCP authenticates, GitHub capabilities will not function.
+If you haven't set a token and no MCP authenticates, GitHub capabilities will not function.
 
 ## Auth
 

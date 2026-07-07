@@ -6,7 +6,7 @@
 
 **Testing skills is just TDD applied to process documentation.**
 
-You run three phases: RED (watch agent fail), GREEN (write skill), and REFACTOR. Refactoring closes loopholes.
+You run three phases: RED watches the agent fail, GREEN writes the skill, and REFACTOR closes loopholes.
 
 **Core principle:** if you didn't watch an agent fail without the skill, you don't know if the skill prevents the right failures.
 

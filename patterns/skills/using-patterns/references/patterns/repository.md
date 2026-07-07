@@ -2,9 +2,9 @@
 
 ## Overview
 
-The Repository pattern puts an interface between domain objects and storage. The domain layer defines the interface. The infrastructure layer implements it. Domain objects hold business logic. Repositories handle all I/O. Storage implementations can change without affecting domain code.
+The Repository pattern separates storage from domain objects. The domain layer defines the interface. The infrastructure layer implements it. Domain objects hold business logic. Repositories manage all I/O. Storage approaches can change without changing domain code.
 
-Repositories differ from DAOs. A DAO maps to a single table and exposes raw CRUD. A Repository maps to an **aggregate root** and exposes collection-like semantics (`add`, `get`, `list`). Only aggregate roots get repositories. Child entities are only reached through their root.
+Repositories differ from DAOs. A DAO maps to one table and shows basic CRUD. A Repository maps to an **aggregate root** and has collection methods like `add`, `get`, and `list`. Only aggregate roots have repositories. Child objects are reached only through their root.
 
 ## When to use
 

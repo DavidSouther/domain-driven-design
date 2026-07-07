@@ -1,6 +1,6 @@
 # Claude Code tools
 
-Claude Code is the native adapter for Ailly's canonical tool vocabulary. When a skill reference names `Read`, `Edit`, `Bash`, `Task`, `Skill`, `TodoWrite`, `WebSearch`, or `WebFetch`, use the matching Claude Code tool directly.
+Claude Code is Ailly's primary tool interface. Use the Claude Code tool for these skills: `Read`, `Edit`, `Bash`, `Task`, `Skill`, `TodoWrite`, `WebSearch`, and `WebFetch`.
 
 ## Packaging adapter
 

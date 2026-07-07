@@ -2,7 +2,7 @@
 
 ## Overview
 
-An Aggregate is a group of related objects treated as one unit. One object in the group, the **Aggregate Root**, is the sole entry point for mutations. Every operation moves the group from one valid state to another. No intermediate state can be seen outside the group. One aggregate means one transaction. Never span a transaction across aggregate boundaries.
+An Aggregate groups related objects as one unit. One object, the **Aggregate Root**, is the sole entry point for mutations. Each operation moves the group from one valid state to another. The group never shows intermediate states. One aggregate means one transaction. Never span a transaction across aggregate boundaries.
 
 ## When to use
 

@@ -1,13 +1,13 @@
 ---
 name: papers
-description: "Use when a research question targets an academic paper, preprint, or citation: DOI lookup, DOI→OA-PDF retrieval, topic search across OpenAlex / Semantic Scholar / DBLP, citation graphs, ArXiv preprints, PubMed biomedical literature, or Wiley journal content. Applies every time a research question targets academic papers, preprints, or citations."
+description: "Use for research on academic papers, preprints, and citations. Find papers by DOI or topic. Track citations. Access biomedical papers and Wiley journals."
 ---
 
 # Papers
 
 ## Overview
 
-Conduct per-query research against your configured papers capability contract. Identify which capability answers the question: doi metadata, OA-PDF retrieval, topic search, citation graph, preprint search, biomedical search, or citation-context classification. Dispatch to it and write results with IEEE citations. The transport layer (MCP or HTTP) is the wiring's responsibility. For setup, key rotation, marketplace-plugin installs, and SSO configuration, see [the papers setup reference](../using-research/references/configuring/papers.md).
+Conduct per-query research against your configured papers capability contract. Identify which capability answers the question. Capabilities include DOI metadata, OA-PDF retrieval, topic search, citation graph, preprint search, biomedical search, and citation-context classification. Dispatch to it and write results with IEEE citations. The transport layer (MCP or HTTP) is the wiring's responsibility. For setup, key rotation, marketplace-plugin installs, and SSO configuration, see [the papers setup reference](../using-research/references/configuring/papers.md).
 
 ## When to use / when not to use
 

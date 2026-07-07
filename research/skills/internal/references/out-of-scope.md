@@ -1,6 +1,6 @@
 # Internal: Out of scope
 
-This section covers sources deliberately excluded from the internal contract and why. The wiring configuration ([`../../configuring-internal/SKILL.md`](../../configuring-internal/SKILL.md)) points here to keep the boundary between the internal stack and its siblings clear.
+This section lists sources we exclude from internal research and why. The configuration at [`../../configuring-internal/SKILL.md`](../../configuring-internal/SKILL.md) marks the boundary between the internal stack and other research skills.
 
 ## Out-of-scope sources
 

@@ -1,6 +1,6 @@
 # Visibility: Python reference
 
-Python has no enforced privacy. The convention has multiple layers: leading underscores signal "do not tap," `@property` provides read-only views, and `MappingProxyType` or tuples give immutable collections. Frozen dataclasses fully handle value objects.
+Python doesn't enforce privacy. The convention has multiple ways: leading underscores mark "do not tap," `@property` gives read-only access, `MappingProxyType` or tuples give immutable collections, and frozen dataclasses protect value objects.
 
 ```python
 from dataclasses import dataclass, field

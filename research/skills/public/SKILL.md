@@ -1,11 +1,11 @@
 ---
 name: public
-description: Use for research about public information, such as external library docs, specs, APIs, or community knowledge. Search the public internet via web search or URL fetch. Do not use for codebase or internal document questions.
+description: Research public information using web search and URL fetch. Use for library docs, specs, APIs, and community knowledge. Do not use for codebase or internal documents.
 ---
 
 # Overview
 
-Public research answers questions by using `WebSearch` and `WebFetch` against the open internet. It expands each query into multiple variants before searching, fetches high-value sources, and synthesizes findings with inline citations.
+Public research finds answers on the open internet using `WebSearch` and `WebFetch`. It makes query variants, finds top sources, and adds inline citations to findings.
 
 Etiquette, allowed/blocked-domain policy, and any augmentation provider belong in [the public setup reference](../using-research/references/configuring/public.md); this skill consumes the contract that skill publishes. The cross-reference makes the pairing symmetric.
 
@@ -30,7 +30,7 @@ Before issuing any search, generate 3-5 variant queries:
 - **Synonyms**: different words for the same concept (`timeout` / `deadline` / `cancellation`)
 - **Narrow**: specific term plus technology/version context (`tokio timeout rust 1.78`)
 - **Broad**: general concept without specifics (`async cancellation rust`)
-- **Alternate phrasing**: question form vs. keyword form (`how to set request timeout` vs. `http client timeout configuration`)
+- **Alternate phrasing**: question form vs. keyword form. For example: `how to set request timeout` vs. `http client timeout configuration`
 - **Related terms**: adjacent concepts that appear in relevant docs (`select!`, `CancellationToken`, `AbortSignal`)
 
 Run all variants. Union the result sets before deciding which URLs to fetch.

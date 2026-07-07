@@ -1,6 +1,6 @@
-# O'Reilly learning
+# O'Reilly
 
-O'Reilly Media provides technical content. Partner publishers include Manning, Pragmatic Programmers, Packt, No Starch, and Wiley. Find books, videos, and live events. Use this for hands-on technical questions.
+O'Reilly publishes technical content. Partner publishers include Manning, Pragmatic Programmers, Packt, No Starch, and Wiley. Books, videos, and live events are available. Use this for hands-on questions.
 
 ## What it provides
 

@@ -1,6 +1,6 @@
 # Claude reader (Apple Books)
 
-DRM-free imports to the user's Apple Books library on macOS. Typically self-uploaded EPUBs and PDFs, including academic theses, technical reports, and self-published work. Use for personally curated material outside Kindle.
+Import DRM-free books to your Apple Books library on macOS. You can upload EPUBs and PDFs, such as academic theses, technical reports, and self-published work. Use this for your own collection outside Kindle.
 
 ## What it provides
 

@@ -2,7 +2,7 @@
 
 ## Overview
 
-Wrap primitive types in named domain types so the type system enforces correct usage. Scalar types describe what data looks like. Domain types describe what data means. The compiler checks shape, not meaning. Two fields that are both floatint point numbers look identical without wrapping in a newtype. Using brands, the compiler erases the brand at runtime with zero performance overhead.
+Wrap primitive types in named domain types. This makes the type system enforce correct usage. Primitive types describe shape; domain types describe meaning. The compiler checks shape, not meaning. Two numeric fields look the same without wrapping. Brands let the compiler remove the wrapper at runtime with zero cost.
 
 ## When to use
 

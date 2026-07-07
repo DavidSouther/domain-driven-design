@@ -1,6 +1,6 @@
 # Gemini CLI tool mapping
 
-Gemini command-line tool adapter for the harness contract in `developer:ailly`. When a skill reference names a tool that Gemini calls something else, use this table:
+Gemini command-line tool adapter for `developer:ailly`. Use this table when a tool name differs in Gemini:
 
 | Skill references | Gemini command-line tool equivalent |
 |-----------------|----------------------|

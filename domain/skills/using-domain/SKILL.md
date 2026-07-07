@@ -1,6 +1,6 @@
 ---
 name: using-domain
-description: Bootstrap and routing skill for Domain-Driven Design. Loaded when brainstorming, researching, or designing, to decide which domain ability applies.
+description: Helps you pick the right domain skill for Domain-Driven Design work.
 ---
 
 # Domain-driven design workflow

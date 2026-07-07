@@ -1,13 +1,13 @@
 # Alexandria (aggregator)
 
-Search across 46 public-domain digital libraries. These include Project Gutenberg, Oxford ORA, Cambridge Apollo, Wikisource, Library of Congress, HathiTrust, Smithsonian, NASA ADS, and CourtListener. Use it for broad searches when you don't know which library has the text you need.
+Search across 46 public-domain digital libraries. These include Project Gutenberg, Wikisource, the Library of Congress, and HathiTrust. Use it when you're not sure which library has your text.
 
 ## What it provides
 
-- **Aggregated public-domain search** across 61 sources total: 46 keyless, 15 free-key.
-- Source-level routing. Alexandria exposes which underlying source returned each hit.
+- **Public-domain search across 61 sources**: 46 keyless, 15 free-key.
+- Source-level routing. You can see which source returned each result.
 
-Alexandria serves as a **supplement** to the per-source capabilities, not a replacement. For targeted source-specific queries, the per-source capabilities remain primary. These queries include ISBN lookup, edition resolution, and public-domain full-text retrieval.
+Alexandria adds to the per-source tools, not replace them. For focused searches—like ISBN lookup or finding specific editions—use the per-source tools instead.
 
 ## MCP option
 
@@ -25,14 +25,14 @@ None. Alexandria is the aggregator; the per-source HTTP endpoints are reachable 
 - *"Where might one find a digitized copy of this 1810 botanical monograph"*: when the source is unknown.
 - *"Sweep all public-domain digital libraries for any mention of <topic>"*: broad cross-corpus.
 
-For ISBN lookup, edition disambiguation, or technical-book search, route to the targeted per-source capability instead. Alexandria's aggregated results are noisier than a focused per-source query.
+For ISBN lookups, finding specific editions, or technical book searches, use the per-source tools instead. Alexandria's results mix more sources and may be noisier.
 
 ## Licensing
 
-Per-source. Alexandria does not re-license; the originating source's terms apply. Most of the 46 keyless sources are public domain or CC. The 15 keyed sources vary: core is OA, Springer Nature is metadata-only without subscription, and so forth.
+Per-source. Alexandria does not re-license; the source's terms apply. Most of the 46 keyless sources are public domain or CC. The 15 keyed sources vary: CORE is open access, Springer is metadata only without a subscription, and so on.
 
 ## Failure modes
 
-- **Source-level outage**: one underlying source failing degrades aggregated coverage. Alexandria reports which sources returned hits.
-- **Duplicate hits across sources**: the same public-domain work may appear from multiple libraries. Dedupe by canonical identifier (ISBN, OL work id, Gutenberg id).
-- **Quality variance**: aggregated search hides source-specific etiquette and licensing. For high-stakes queries, route to the per-source capability after Alexandria narrows the candidate.
+- **Source-level outage**: if one source goes down, coverage drops. Alexandria tells you which sources returned results.
+- **Duplicate hits across sources**: the same public-domain work may show up from multiple sources. Remove duplicates by matching ISBN, OL work id, or Gutenberg id.
+- **Quality variance**: combining many sources can hide differences in how they work and their rules. For important searches, use the per-source tools after Alexandria narrows the options.

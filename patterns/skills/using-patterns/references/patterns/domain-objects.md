@@ -1,8 +1,8 @@
-# Entities, values, and domain services
+# Entities, values, and services
 
 ## Overview
 
-Not all domain objects play the same role. Treating identity-bearing objects the same as value snapshots produces models that are hard to reason about and error-prone to modify. Scattering cross-entity logic into arbitrary places creates the same problem. This pattern names and separates three distinct roles so each carries exactly the responsibility that fits its nature.
+Not all domain objects play the same role. When you treat identity-bearing objects as value snapshots, your models become hard to understand and fragile. When you scatter cross-entity logic everywhere, you face similar problems. This pattern names three distinct roles, each with the responsibility that fits it.
 
 ## When to use
 

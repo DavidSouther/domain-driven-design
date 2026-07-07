@@ -1,6 +1,6 @@
 ---
 name: archaeology
-description: Use to answer why code changed. Traces intent from git history for questions about deleted code, renamed files, reverted changes, or past decisions. Not for current codebase state or dependencies.
+description: Use to answer why code changed. Look at git history for deleted code, renamed files, and past decisions. Not for current code or dependencies.
 ---
 
 # Overview

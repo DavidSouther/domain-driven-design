@@ -1,11 +1,11 @@
 ---
 title: Forward/Backward Method for Algorithms
-summary: "The Forward/Backward method is a pattern for developing a plan to get from a starting point to an ending point through unknown intermediate challenges. The technique relies on asking two key questions: what information can be immediately derived from forward steps, and what information would lead to backward steps?"
+summary: "The Forward/Backward method helps you plan a path when you face unknown challenges. It uses two key questions: what can you learn moving forward, and what must be true before each backward step?"
 ---
 
-The forward-backward technique plans a path from a starting point to an ending point. For short distances, you can probably do this without much of a plan. As distance and complexity increase, the risks mount. Without a plan, you're likely to get lost if you just move in a straight line.
+The forward-backward technique plans a path from start to end. For short distances, little planning is needed. As distance and complexity grow, risks increase. Without a plan, moving straight ahead gets you lost.
 
-A direct walk aims towards the goal, takes an appropriately sized step forward, and tries again. If there's terrain or challenges in the way, it might noe be possible to take the next step directly towards the goal. Still, it should be in a direction that continues making progress. This approach is great when the terrain is relatively flat or there are few challenges along the way. But if there's a chasm or impossible gap to traverse, the course is likely to meander very far afield.
+A direct walk aims at the goal and takes a sized step forward. If terrain or challenges block the way, you might not reach the next step toward the goal. Still, you should go in a direction that makes progress. This works well when terrain is flat or there are few challenges. But if there's a chasm or impossible gap, the course will meander far afield.
 
 The forward-backward method changes this during the planning phase. Instead of only going from the starting point towards the destination, it brainstorms several possible steps that would _end_ at the destination point. Note these down, and then possibly do this again for the two or three best candidates that are "closer" to the starting point. Now there's a wider map of possible places to get to, since getting to any of those steps means there's a known path to the ending point.
 

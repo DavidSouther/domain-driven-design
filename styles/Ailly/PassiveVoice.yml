@@ -1,9 +1,8 @@
 ---
 extends: existence
 ignorecase: true
-level: suggestion
-link: https://redhat-documentation.github.io/vale-at-red-hat/reference-guide.html#passive-voice
-message: "'%s' is passive voice. In general, use active voice. Consult the style guide for acceptable use of passive voice."
+level: warning
+message: "'%s' is passive voice."
 raw:
   - \b(am|are|were|being|is|been|was|be)\b\s*
 tokens:

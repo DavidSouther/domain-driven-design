@@ -54,24 +54,9 @@ script asserts the conversation counts, that every assistant slot was filled,
 that a per-run report landed, and finally that the baseline-vs-invocation
 comparison clears the falsification gate.
 
-## What the harness exercises, and what it does not
-
-`ailly run` fills one assistant turn per conversation with a single model
-completion and **no live tool execution**. Every case is therefore a text task:
-the model writes the research note or configuration plan it would produce, and
-the assertions score the *structure and convention* the skill teaches — the
-research-note path, the IEEE Sources block, the `## Timeline`, the four-stage
-per-source wiring, the typed Not-Available routing signal. Because nothing is
-fetched, external-transport credentials (Crossref mailto, Open Library
-User-Agent, internal-source tokens) change nothing about the produced text, so
-there is no per-case credential gating — see `AGENTS.md`.
-
 ## Reading the result
 
-`report <baseline-id> <invocation-id>` writes a comparison markdown sorting
+`report <baseline-id> <invocation-id>` writes a report bucketing 
 every paired assertion into `improved` / `regressed` / `unchanged_pass` /
 `unchanged_fail`. A null result (an assertion that fails on both arms) is a true
-statement about the model, not a defect — do not weaken a checker to manufacture
-a pass. See the design doc at
-`.ailly/developer/2026-05-29-G-research-e2e/design.md` for the build
-reconciliation and the committed results.
+statement about the model, not a defect.

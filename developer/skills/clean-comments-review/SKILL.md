@@ -9,56 +9,58 @@ description: Use when reviewing comments in coding artifacts. Produces a critiqu
 
 Review comments to see if they explain intent and key rules to the right reader. Create a critique document, not code edits.
 
-Comments explain why this exists, what contract callers may rely on, what invariant a future reader must protect, or why an unusual choice is correct.
-A comment explains what the code, signatures, type names, editor navigation, and git history cannot say clearly enough.
+Comments explain why this exists, what callers can trust, what a future reader must protect, or why a choice is right.
+A comment tells readers what code, names, and history alone cannot explain.
 
 ## Comments Explain Intent and Invariants
 
 The review’s core question is: what can this comment tell a future reader that the code and tools cannot?
 
-Good comments name durable things: intent, invariants, contracts, constraints, tradeoffs, surprising decisions, compatibility requirements, and domain meaning.
-They remain useful after code moves, engineers rename files, callers change, maintainers rearrange helper functions, and teams forget the original project plan.
+Good comments capture intent, constraints, tradeoffs, and domain meaning.
+They stay useful after code moves, names change, and teams forget the original plan.
 
 ## Public docblocks serve external readers
 
-A public DocBlock addresses someone by using the symbol without reading its implementation. It should explain why the symbol exists, what behavior callers may rely on, and any constraints that shape correct use.
+A public DocBlock reaches readers by using the symbol. It explains why it exists, what callers can rely on, and what constraints matter.
 
-A public DocBlock can include module-level intent, stable contracts, important edge cases, and worked examples.
-It should trust the reader’s tools for signatures, parameter names, return types, definitions, and reference searches.
+A public DocBlock can name intent, contracts, edge cases, and examples.
+Trust the reader’s tools for types and signatures.
 
 ## Internal comments preserve maintainer judgment
 
-An internal comment addresses a future maintainer who can read the code, jump to definitions, find usages, and inspect history.
-Its job is to preserve judgment that future maintainers would otherwise lose. It explains why this path is surprising but intentional, what invariant the next edit must protect, or what external constraint shaped the implementation.
+An internal comment speaks to a future maintainer who can read code and check history.
+It saves judgment they cannot recover alone. It explains why a path is right, what invariant the next edit must protect, or what constraint shaped the code.
 
-The strongest inline comments sit near the decision they explain and survive a caller reshuffle.
+Strong comments sit near the decision they explain and stay true when callers change.
 
 ## Comments trust the tooling
 
-Treat the editor and repository as part of the reader’s context.
-Signatures, types, field names, visibility, cfg attributes, definitions, references, blame, and file history are already available.
+Trust the editor and repository to show readers what they need.
+Types, names, visibility, definitions, references, blame, and history are already at hand.
 
-A comment like “split out of restir.wgsl” is history.
-A comment like “this layout must remain byte-compatible with the ReSTIR shader buffer” is an invariant.
-A comment like “used by testing_events.rs” is a reference search.
-A comment like “the test harness and production path must share this gather rule” may be a contract if preserving that shared rule is the important concept.
+Consider these comment types:
+
+History: “split out of restir.wgsl”
+Invariant: “this layout must remain byte-compatible with the ReSTIR shader buffer”
+Reference: “used by testing_events.rs”
+Contract: “the test harness and production path must share this gather rule”
 
 ## Output format
 
 Produce a critique document. For each comment or comment group:
 
-1. Identify the audience: public DocBlock or internal maintainer note.
-2. State the durable intent or invariant the comment should carry.
-3. Assess whether the current comment serves that purpose.
-4. Recommend an action: keep, reduce to intent, rewrite around the invariant, or remove.
+1. Identify the audience: public DocBlock or internal note.
+2. Name the intent or invariant the comment should carry.
+3. Check if the current comment serves that goal.
+4. Suggest an action: keep, simplify, rewrite, or remove.
 
-The review artifact names the problem and the desired shape of the comment; it does not edit the code directly.
+The review document names the problem and suggests how the comment should change. It does not edit code.
 
 ## Review signals
 
-- **Durable intent:** Keep comments that explain why the code exists, what must remain true, or what contract readers may rely on.
-- **Audience fit:** Shape public DocBlocks around caller contracts and internal comments around maintainer judgment.
-- **Tooling duplication:** Reduce comments that repeat signatures, field names, type names, obvious control flow, or LSP-findable relationships.
-- **Usage-site drift:** Replace “called by,” “used from,” and fixture-provenance prose with the stable rule those usages depend on, if one exists.
-- **History breadcrumbs:** Replace “split out of,” “originally part of,” feature IDs, design-doc links, and TDD notes with the current invariant, or remove them.
-- **Over-complete prose:** Prefer the smallest comment that preserves the intent a future reader cannot recover from code alone.
+- **Durable intent:** Keep comments that explain why code exists or what readers must protect.
+- **Audience fit:** Write for callers (public) or maintainers (internal).
+- **Tooling duplication:** Remove comments that repeat signatures, names, or control flow.
+- **Usage-site drift:** Replace call lists with the stable rule they depend on.
+- **History breadcrumbs:** Remove “split out of” or “originally from” notes.
+- **Over-complete prose:** Use the smallest comment that saves future readers from guessing.

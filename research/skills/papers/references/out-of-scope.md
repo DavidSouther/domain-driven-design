@@ -1,6 +1,6 @@
 # Papers, out of scope
 
-Paper sources we exclude and why. When a user asks for one of these, we cite this file and suggest a better alternative.
+Why we exclude these sources. When you ask for one, we cite this page and suggest an alternative.
 
 ## Wiley text and data mining API
 

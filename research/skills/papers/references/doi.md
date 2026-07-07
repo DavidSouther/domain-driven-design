@@ -1,6 +1,6 @@
 # DOI lookup
 
-Parallel DOI resolution across 9+ sources. Use when a DOI must resolve to authoritative metadata and the source is unknown, or when one source's outage should not stall the lookup.
+Parallel DOI lookup across 9+ sources. Use when you need reliable metadata from an unknown source, or when one source failing shouldn't stop the lookup.
 
 ## What it provides
 

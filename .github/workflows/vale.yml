@@ -14,5 +14,5 @@ jobs:
           # patterns that Vale flags, so they're excluded from linting. Skill
           # definitions and reference docs are linted like any other prose.
           vale_flags: "--glob=!{**/e2e/**}"
-          fail_on_error: false # warnings don't fail; errors do
+          fail_on_error: false
           reporter: github-pr-review

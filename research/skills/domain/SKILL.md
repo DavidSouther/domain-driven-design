@@ -1,11 +1,11 @@
 ---
 name: domain
-description: "Use for questions about the conceptual model. Include entities, relationships, rules, and DDD concepts. Don't use it for implementation questions or external research."
+description: "Use for questions about what the domain means. Include entities, relationships, rules, and DDD concepts. Don't use it for code questions or outside research."
 ---
 
 # Overview
 
-Domain answers research questions about the conceptual model: what things exist, what they mean, how they relate, and what rules govern them. It draws on `domain:` DDD skills when available, or on domain artifacts found in the codebase when they are not.
+Domain answers research questions about the conceptual model. It covers what exists, what things mean, how they relate, and what rules apply. It uses `domain:` DDD skills when available, or domain artifacts from the codebase otherwise.
 
 # When to use
 

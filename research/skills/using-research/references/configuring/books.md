@@ -64,7 +64,7 @@ Default sources for wide adoption:
 Priority sources (personal-default; conditional on access):
 
 - [ ] **O'Reilly Learning**: probe order per [`books/references/oreilly.md`](../../../books/references/oreilly.md): official O'Reilly Learning MCP (enterprise SSO) first; if absent, `odewahn/orm-discovery-mcp` against the Platform Search API (personal subscription). If neither is reachable, mark the *O'Reilly library search* capability Not-Available. Smoke-test: search for "Kafka stream processing."
-- [ ] **Amazon Kindle**: no public MCP today; configure the user-supplied MCP path (expected capability shape: `search-by-title`, `fetch-passage`) or the `calibre-mcp` + Kindle plugin fallback per [`books/references/kindle.md`](../../../books/references/kindle.md). If neither is reachable, mark the *Kindle library search* capability Not-Available. Smoke-test: search the user's Kindle library for a known title.
+- [ ] **Amazon Kindle**: no public MCP today; configure the user-supplied MCP path or the `calibre-mcp` + Kindle plugin fallback per [`books/references/kindle.md`](../../../books/references/kindle.md). Expected capability shape: `search-by-title`, `fetch-passage`. If neither is reachable, mark the *Kindle library search* capability Not-Available. Smoke-test: search the user's Kindle library for a known title.
 
 Opt-in sources: user's own corpus and aggregators. Configure these when the user supplies access:
 

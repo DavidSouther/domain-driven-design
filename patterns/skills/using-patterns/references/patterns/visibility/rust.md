@@ -1,6 +1,6 @@
-# Visibility, rust reference
+# Visibility in Rust
 
-Rust enforces visibility at compile time. Fields are private by default; `pub` makes them public. Borrowing rules handle getters for you: `&T` cannot mutate, `&mut T` allows mutation, and the compiler controls access.
+Rust enforces visibility at compile time. Fields are private by default. `pub` makes them public. Borrowing rules control access like getters. `&T` prevents mutation. `&mut T` allows mutation. The compiler enforces both.
 
 ```rust
 mod order {
@@ -104,4 +104,4 @@ Key details:
 - `add_line` and `cancel` require `&mut self`. The borrow checker prevents calling them while another reference is alive.
 - `Order::new` is module-private. Outside `mod order`, `Order::builder` is the only construction path.
 - `OrderId` uses `TryFrom` to validate at the boundary, composing visibility with the newtype pattern (`references/patterns/newtype.md`) and the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`).
-- For pure value objects, prefer a `pub struct` with `pub` fields *and* no mutation methods; immutability replaces visibility as the protection mechanism.
+- For pure value objects, prefer a `pub struct` with `pub` fields and no mutation methods. Immutability protects the data, not visibility.

@@ -1,6 +1,6 @@
-# Arrow of maturity
+# Maturity arrow
 
-**Trigger:** architecture reviews, persistence changes, scaling discussions, or when architecture causes friction.
+**Trigger:** architecture reviews, data changes, scaling talks, or when architecture causes friction.
 
 For full stage descriptions, see `../../../references/arrow-of-maturity-stages.md`.
 

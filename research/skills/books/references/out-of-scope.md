@@ -1,6 +1,6 @@
 # Books out of scope
 
-Excluded book sources with reasons. When a user asks for one of these, the practice skill cites this file and routes to the closest alternative.
+Excluded book sources. Find why and suggested alternatives below.
 
 ## Worldcat
 
@@ -9,7 +9,7 @@ Excluded book sources with reasons. When a user asks for one of these, the pract
 
 ## Goodreads
 
-- **Reason:** Goodreads retired its public API in **December 2020**. Current Goodreads MCPs (`getgather-hub/goodreads`, `faisal-burhanudin/goodreads`) scrape logged-in user pages. They require `GOODREADS_EMAIL` and `GOODREADS_PASSWORD` in environment variables. This violates Goodreads ToS. Storing credentials in environment variables is a security smell this stack does not endorse.
+- **Reason:** Goodreads retired its public API in **December 2020**. Current Goodreads MCPs scrape logged-in user pages through tools like `getgather-hub/goodreads` and `faisal-burhanudin/goodreads`. They require `GOODREADS_EMAIL` and `GOODREADS_PASSWORD` in environment variables. This violates Goodreads ToS. Storing credentials in environment variables is a security smell this stack does not endorse.
 - **Closest alternative:** Hardcover for reviews and reading-community signal.
 
 ## Amazon Kindle (no public mcp)

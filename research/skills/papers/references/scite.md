@@ -1,6 +1,6 @@
 # Scite
 
-Full-text search across 280M+ articles with **Smart Citations** that classify results as supporting, disputing, or mentioning. Useful when you ask "what evidence supports this claim?"
+Search 280M+ articles with **Smart Citations**. They sort results into three types: supporting, disputing, or mentioning. Use this to find evidence for any claim.
 
 ## What it provides
 

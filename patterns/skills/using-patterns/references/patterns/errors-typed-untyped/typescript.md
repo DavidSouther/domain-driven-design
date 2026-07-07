@@ -1,6 +1,6 @@
 # Typed and untyped errors in TypeScript
 
-Each language has its own grammar for failure. The pattern is constant: typed at library boundaries, stringly at app boundaries, with a translation step between. The idioms differ. Use the variant native to your language; do not transliterate one into another.
+Every language has its own way to handle errors. The pattern is always the same: types at library edges, strings at app edges, with translation between. The details differ by language. Use what fits your language. Don't copy error patterns from other languages.
 
 A shared scenario runs through every example: a `users` library that fetches a user by id, and an app that exposes that library through an HTTP handler.
 

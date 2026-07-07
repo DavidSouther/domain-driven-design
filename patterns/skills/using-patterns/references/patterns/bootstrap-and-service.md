@@ -2,7 +2,7 @@
 
 ## Overview
 
-Application services handle use cases by parsing input, calling domain logic, and persisting results. Domain services capture business rules that span aggregates. External adapters translate protocol details (HTTP, command-line tools, queues) to and from service calls. A single Composition Root wires all concrete implementations at startup, isolating infrastructure knowledge to one place.
+Application services organize use cases: they parse input, call domain logic, and persist results. Domain services capture business rules across aggregates. External adapters translate protocol details (HTTP, command-line tools, queues) to and from service calls. A Composition Root wires all implementations at startup and isolates infrastructure knowledge in one place.
 
 ## When to use
 

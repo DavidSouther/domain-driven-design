@@ -2,7 +2,7 @@
 
 ## Overview
 
-Use a builder object to accumulate configuration step-by-step and validate it before producing the final object. This prevents incomplete objects from entering the system and clarifies which fields are required versus optional.
+Use a builder to accumulate configuration step-by-step and validate before creating the final object. This prevents incomplete objects and makes clear which fields are required versus optional.
 
 ## When to use
 

@@ -1,6 +1,6 @@
 # Hathitrust
 
-Research-library digitized holdings. The Bibliographic API is open to anyone. The Data API requires institutional login. Use it to find books in academic library catalogs or check if a copy is available in consortium libraries.
+Digital holdings from research libraries. The Bibliographic API is open to all. The Data API requires organization login. Search academic library catalogs or find which member libraries hold copies.
 
 ## What it provides
 

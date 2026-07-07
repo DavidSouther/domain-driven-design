@@ -1,8 +1,8 @@
 # Falsification guide
 
-A single negative example disproves a claim. This is the asymmetry Karl Popper named in *The Logic of Scientific Discovery*: no number of confirming observations can prove a universal claim. Yet one well-found counterexample can refute it [1]. Confirmation is suggestive. Refutation is decisive.
+A single negative example disproves a claim. Karl Popper described this in *The Logic of Scientific Discovery*. Many positive examples cannot prove a universal claim. Yet one counterexample can refute it [1]. Confirmation is suggestive. Refutation is decisive.
 
-Most research instinctively gathers evidence *for* a claim. The research instinct biases the search toward confirmation. A positively framed query surfaces confirming hits and skips past contradictions because the contradictions do not match the search terms. Falsification flips the search: instead of "where is this true," ask "where would this be false, and is that there."
+Most research gathers evidence *for* a claim. This instinct biases the search toward confirmation. A positively framed query finds confirming hits and misses contradictions because they don't match the search terms. Falsification flips the search: instead of "where is this true," ask "where would this be false, and is that there."
 
 ## When to use
 

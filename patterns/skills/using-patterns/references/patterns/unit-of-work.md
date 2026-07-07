@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Unit of Work pattern bundles an Aggregate and Repository inside one transactional boundary. All mutations defer until `commit()`. A failed operation reverts entirely via `rollback()`. This approach keeps durability concerns out of app-layer code and leaves row locks, optimistic-concurrency tokens, and session lifecycle details to the pattern. Handlers become testable without a real database.
+The Unit of Work pattern wraps an Aggregate and Repository in a single transaction. All changes wait until `commit()`. If an operation fails, `rollback()` reverts everything. This keeps database concerns out of app code. Row locks, tokens, and sessions stay in the pattern. Handlers become testable without a real database.
 
 ## When to use
 
