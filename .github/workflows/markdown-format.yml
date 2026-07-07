@@ -1,0 +1,10 @@
+name: Markdown Format
+
+on: [push, pull_request]
+
+jobs:
+  markdown-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: rvben/rumdl@v0
