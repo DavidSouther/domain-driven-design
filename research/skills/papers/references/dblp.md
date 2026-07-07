@@ -1,12 +1,12 @@
 # Dblp
 
-Authoritative CS publication index. Strong for computer-science author disambiguation, conference, journal, and exact-match publication listings.
+Authoritative CS publication index. Reliable for author disambiguation and exact-match publication searches.
 
 ## What it provides
 
 - **CS publication search** by keyword, author, venue.
-- **Author disambiguation** — DBLP's strong invariant; the per-author token gives exact-match publication lists.
-- **Venue listings** — conference proceedings, journal volumes.
+- **Author disambiguation:** DBLP's strong invariant. The per-author token gives exact-match publication lists.
+- **Venue listings:** conference proceedings, journal volumes.
 
 ## Mcp option
 
@@ -22,8 +22,8 @@ None first-party. The multi-source aggregators (`xingyulu23/Academix`, `tfscharf
 
 ## Query shapes
 
-- *"All publications by `Eric Evans` in software-engineering venues"* — author search → resolve to the canonical DBLP author key → publication list.
-- *"Programming Language Design and Implementation 2024 papers"* — venue search for `PLDI/2024`.
+- *"All publications by `Eric Evans` in software-engineering venues".* Use author search to resolve to the canonical DBLP author key, then get the publication list.
+- *"Programming Language Design and Implementation 2024 papers".* Venue search for `PLDI/2024`.
 - *"Software engineering papers on bounded contexts"* → `/publ/api?q=bounded+contexts&format=json`
 
 ## Licensing
@@ -32,6 +32,6 @@ Dblp data is **CC0** for metadata. The underlying full text lives at the publish
 
 ## Failure modes
 
-- **Author ambiguity** — common names resolve to multiple author records. DBLP exposes a disambiguation page; prefer the canonical `pid` over the human name.
-- **Coverage gap outside CS** — DBLP is CS-only. For broader topic search route to OpenAlex or Semantic Scholar.
-- **Rate-limit (429)** — no specific limit published; back off on 429.
+- **Author ambiguity:** common names resolve to multiple author records. DBLP exposes a disambiguation page; prefer the canonical `pid` over the human name.
+- **Coverage gap outside CS.** DBLP is CS-only. For broader topic search, route to OpenAlex or Semantic Scholar.
+- **Rate-limit (429).** No specific limit published; back off on 429.

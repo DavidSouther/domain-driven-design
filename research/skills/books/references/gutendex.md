@@ -5,8 +5,8 @@ Public-domain classics: literature, philosophy, classical, and Enlightenment-era
 ## What it provides
 
 - **Title+author search** over the Project Gutenberg catalog.
-- **Open full text** — plain text, HTML, or EPUB for any cataloged work.
-- **Subject and language filtering** — `topic=`, `languages=`.
+- **Open full text**: plain text, HTML, or EPUB for any cataloged work.
+- **Subject and language filtering**: `topic=`, `languages=`.
 
 Example payload (`/books/{id}`):
 
@@ -18,7 +18,7 @@ Example payload (`/books/{id}`):
 
 ## MCP option
 
-`bobbyhouse/project-gutenberg` — exposes `search_books`, `get_book_metadata`, `fetch_book_text`, `list_passages`, `get_passage`. **Requires a local Gutenberg mirror.** Gutenberg blocks bots against `gutenberg.org`; the operator points `GUTENBERG_BASE_URL` at the mirror.
+`bobbyhouse/project-gutenberg` (exposes `search_books`, `get_book_metadata`, `fetch_book_text`, `list_passages`, `get_passage`) **requires a local Gutenberg mirror.** Gutenberg blocks bots against `gutenberg.org`; the operator points `GUTENBERG_BASE_URL` at the mirror.
 
 `happyfhantum/project-gutenberg-research-scraper` (Apify) is a hosted alternative for bulk search but inherits the same scraping-vs-policy concerns; document as opt-in.
 
@@ -42,6 +42,6 @@ Project Gutenberg texts are **public domain in the United States**. Quote freely
 
 ## Failure modes
 
-- **Bot block on gutenberg.org direct fetch** — when fetching format URLs directly without the MCP mirror. Route through `gutendex.com` results and the mirror.
-- **Encoding ambiguity** — some older texts have multiple encodings. Prefer `text/plain; charset=utf-8`.
-- **Edition mismatch** — Gutenberg's edition may not match the printed edition the user asked about. Disambiguate via Open Library first when the query is edition-sensitive.
+- **Bot block on gutenberg.org direct fetch** (when fetching format URLs directly without the MCP mirror). Route through `gutendex.com` results and the mirror.
+- **Encoding ambiguity**: some older texts have multiple encodings. Prefer `text/plain; charset=utf-8`.
+- **Edition mismatch**: Gutenberg's edition may not match the printed edition the user asked about. Disambiguate via Open Library first when the query is edition-sensitive.

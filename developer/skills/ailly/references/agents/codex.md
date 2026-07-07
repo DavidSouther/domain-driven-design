@@ -31,7 +31,7 @@ This enables `spawn_agent`, `wait`, and `close_agent` for skills like `dispatchi
 ## Named agent dispatch
 
 Some legacy or third-party skills reference named agent types like `superpowers:code-reviewer`.
-Codex does not have a named agent registry — `spawn_agent` creates generic agents
+Codex does not have a named agent registry. `spawn_agent` creates generic agents
 from built-in roles (`default`, `explorer`, `worker`).
 
 When a skill says to dispatch a named agent type:
@@ -97,8 +97,8 @@ When the sandbox blocks branch/push operations (detached HEAD in an
 externally managed worktree), the agent commits all work and informs
 the user to use the App's native controls:
 
-- **"Create branch"** — names the branch, then commit/push/PR via App UI
-- **"Hand off to local"** — transfers work to the user's local checkout
+- **"Create branch"**: names the branch, then commit/push/PR via App UI
+- **"Hand off to local"**: transfers work to the user's local checkout
 
 The agent can still run tests, stage files, and output suggested branch
 names, commit messages, and PR descriptions for the user to copy.

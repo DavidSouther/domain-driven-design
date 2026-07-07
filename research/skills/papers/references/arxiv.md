@@ -1,6 +1,6 @@
 # Arxiv
 
-The canonical preprint archive: physics, mathematics, computer science, quantitative biology, statistics, finance. Strong for any pre-publication or open-licensed version of a research paper.
+The main preprint archive for physics, mathematics, computer science, quantitative biology, statistics, and finance. Good for finding pre-publication and open-licensed research papers.
 
 ## What it provides
 
@@ -22,8 +22,8 @@ Example payload (Atom):
 
 ## Mcp options
 
-- `blazickjp/arxiv-mcp-server` — search, download to local markdown, analysis prompts. Most-referenced.
-- `shoumikdc/arXiv-mcp` — latest-paper polling.
+- `blazickjp/arxiv-mcp-server`: search, download to local markdown, analysis prompts. Most-referenced.
+- `shoumikdc/arXiv-mcp`: latest-paper polling.
 - `win4r/arxiv-search-MCP-Server` and `Tejas242/arxiv-mcp` with Docker image `mcp/arxiv-mcp-server`.
 
 All wrap the public ArXiv API; no auth required.
@@ -49,6 +49,6 @@ Most ArXiv preprints carry a non-exclusive ArXiv license; many additionally carr
 
 ## Failure modes
 
-- **HTTP 503 / rate-limit** — exceeded the three-second spacing. Back off; serialize requests to a single connection.
-- **Atom XML parse** — Atom is verbose; prefer the MCP for structured output if the request volume is high.
-- **Version mismatch** — `?id_list=2401.01234` returns the latest version; pin with `2401.01234v2` for reproducibility.
+- **HTTP 503 / rate-limit**: exceeded the three-second spacing. Back off; serialize requests to a single connection.
+- **Atom XML parse**: Atom is verbose. Prefer the MCP for structured output if the request volume is high.
+- **Version mismatch**: `?id_list=2401.01234` returns the latest version. Pin with `2401.01234v2` for reproducibility.

@@ -3,7 +3,7 @@
 One toggle point reads the injected `Flags` port and branches. The default branch is today's behavior. The targeting stays in the provider behind the port. The test exercises both branches.
 
 ```rust
-// checkout.rs — one toggle point, at the edge of the new path
+// checkout.rs: one toggle point, at the edge of the new path
 use crate::flags::{FlagContext, Flags}; // installed by configuring-feature-flags
 
 pub fn checkout(flags: &dyn Flags, ctx: &FlagContext, cart: &Cart) -> Receipt {
@@ -53,16 +53,16 @@ When the new flow is fully rolled out, delete the flag, the `if`, and `current_c
 
 ## Cargo features: compile-time toggle points
 
-When the decision is made at build time rather than runtime, a Cargo feature replaces the runtime `Flags` port. The toggle point uses `#[cfg(feature = "...")]` instead of reading the injected port. The same discipline applies: one toggle point, default to current behavior, test both states.
+When you decide at build time rather than runtime, a Cargo feature replaces the runtime `Flags` port. The toggle point uses `#[cfg(feature = "...")]` instead of reading the injected port. The same discipline applies: one toggle point, default to current behavior, test both states.
 
 ```toml
-# Cargo.toml — declare the feature before gating code on it
+# Cargo.toml: declare the feature before gating code on it
 [features]
 new-checkout = []
 ```
 
 ```rust
-// checkout.rs — one compile-time toggle point
+// checkout.rs: one compile-time toggle point
 pub fn checkout(cart: &Cart) -> Receipt {
     #[cfg(feature = "new-checkout")]
     return new_checkout(cart);
@@ -73,8 +73,8 @@ pub fn checkout(cart: &Cart) -> Receipt {
 
 ```rust
 // Both states ship, so test both in CI by running:
-//   cargo test                             (feature absent — current path)
-//   cargo test --features new-checkout     (feature present — new path)
+//   cargo test                             (feature absent: current path)
+//   cargo test --features new-checkout     (feature present: new path)
 #[cfg(test)]
 mod tests {
     use super::*;

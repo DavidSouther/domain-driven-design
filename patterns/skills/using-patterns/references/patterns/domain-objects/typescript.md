@@ -1,10 +1,10 @@
 # Entities, value objects, and domain service functions. TypeScript reference
 
 ```typescript
-// ENTITY — identity via id, mutable state, equality by id
+// ENTITY: identity via id, mutable state, equality by id
 class Batch {
   constructor(
-    readonly id: string,           // identity — survives all mutations
+    readonly id: string,           // identity: survives all mutations
     readonly sku: string,
     readonly eta: Date,
     private available: number,
@@ -20,7 +20,7 @@ class Batch {
   }
 }
 
-// VALUE OBJECT — no identity, equality by value, all fields readonly
+// VALUE OBJECT: no identity, equality by value, all fields readonly
 class OrderLine {
   constructor(
     readonly orderId: string,
@@ -40,7 +40,7 @@ class OrderLine {
   }
 }
 
-// DOMAIN SERVICE FUNCTION — stateless; coordinates logic spanning multiple entities
+// DOMAIN SERVICE FUNCTION: stateless; coordinates logic spanning multiple entities
 function allocate(line: OrderLine, batches: Batch[]): string {
   const sorted = batches
     .filter(b => b.canAllocate(line))

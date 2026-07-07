@@ -35,7 +35,7 @@ digraph when_to_use {
 **Use when:**
 - Three or more test files failing with different root causes
 - Multiple subsystems broken independently
-- Each problem can be understood without context from others
+- Each problem remains independent of others
 - No shared state between investigations
 
 **When NOT to use:**
@@ -144,7 +144,7 @@ Return: Summary of what you found and what you fixed.
 ## Verification
 
 After agents return:
-1. **Review each summary** — understand what changed and why
-2. **Check for conflicts** — did agents edit the same code?
-3. **Run full suite** — verify all fixes work together
-4. **Spot check** — agents can make systematic errors; read key diffs
+1. **Review each summary**: understand what changed and why
+2. **Check for conflicts**: Did agents edit the same code?
+3. **Run full suite**: verify all fixes work together
+4. **Spot check**: agents can make systematic errors; read key diffs

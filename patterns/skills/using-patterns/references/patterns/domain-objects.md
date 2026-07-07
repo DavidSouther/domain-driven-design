@@ -1,4 +1,4 @@
-# Entities, value objects, and domain service functions
+# Entities, values, and domain services
 
 ## Overview
 
@@ -15,9 +15,9 @@ Not all domain objects play the same role. Treating identity-bearing objects the
 
 ## Core pattern
 
-- **Entity** (`Batch`)—carries an `id`; two batches with the same SKU and quantity are still different batches. State changes; identity persists. Equality by `id`.
-- **Value Object** (`OrderLine`)—no identity; replace it with another `OrderLine` carrying identical data and the domain doesn't care. "Mutation" returns a new instance.
-- **Domain Service Function** (`allocate`)—spans multiple `Batch` entities, is stateless itself, and does not belong to any single entity.
+- **Entity** (`Batch`): carries an `id`. Two batches with the same SKU and quantity are still different batches. State changes; identity persists. Equality by `id`.
+- **Value Object** (`OrderLine`): no identity. Replace it with another `OrderLine` carrying identical data and the domain doesn't care. "Mutation" returns a new instance.
+- **Domain Service Function** (`allocate`): spans multiple `Batch` entities, is stateless, and does not belong to any single entity.
 
 For complete examples, see [`domain-objects/typescript.md`](domain-objects/typescript.md), [`domain-objects/python.md`](domain-objects/python.md), and [`domain-objects/rust.md`](domain-objects/rust.md).
 
@@ -43,7 +43,7 @@ For complete examples, see [`domain-objects/typescript.md`](domain-objects/types
 
 ## Composes with
 
-- **the newtype pattern (`references/patterns/newtype.md`)** — brand entity IDs and constrained value object fields (`UserId`, `Cents`) to prevent mixing at the type level.
-- **the builder pattern (`references/patterns/builder.md`)** — when constructing an entity with many required fields, a builder prevents partial initialization.
-- **the aggregate pattern (`references/patterns/aggregate.md`)** — the root entity of a cluster becomes the Aggregate Root; the aggregate boundary owns its internal value objects.
-- **the repository pattern (`references/patterns/repository.md`)** — a repository loads and saves aggregate roots (entities); the repository interface belongs to the domain layer.
+- **the newtype pattern (`references/patterns/newtype.md`)**. Brands entity IDs and constrained value object fields (`UserId`, `Cents`) to prevent mixing at the type level.
+- **the builder pattern (`references/patterns/builder.md`)**. When constructing an entity with many required fields, a builder prevents partial initialization.
+- **the aggregate pattern (`references/patterns/aggregate.md`)**. The root entity of a cluster becomes the Aggregate Root; the aggregate boundary owns its internal value objects.
+- **the repository pattern (`references/patterns/repository.md`)**. A repository loads and saves aggregate roots (entities); the repository interface belongs to the domain layer.

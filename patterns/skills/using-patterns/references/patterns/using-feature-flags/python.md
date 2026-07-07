@@ -3,7 +3,7 @@
 One toggle point reads the injected `Flags` port and branches. The default branch is today's behavior. The targeting stays in the provider behind the port. The test exercises both branches.
 
 ```python
-# checkout.py — one toggle point, at the edge of the new path
+# checkout.py: one toggle point, at the edge of the new path
 from flags import Flags, FlagContext  # installed by configuring-feature-flags
 
 
@@ -14,7 +14,7 @@ def checkout(flags: Flags, ctx: FlagContext, cart: Cart) -> Receipt:
 ```
 
 ```python
-# test_checkout.py — both states ship, so both states are tested
+# test_checkout.py: both states ship, so both states are tested
 from checkout import checkout
 from flags import FlagContext
 

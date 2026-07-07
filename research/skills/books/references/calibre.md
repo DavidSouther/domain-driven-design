@@ -5,12 +5,12 @@ The user's local Calibre catalog with curated metadata and DRM-stripped full-tex
 ## What it provides
 
 - **Calibre full-text search** via Calibre's built-in full-text engine.
-- **Library metadata** — title, author, publisher, series, tags, custom columns.
+- **Library metadata**: title, author, publisher, series, tags, custom columns.
 - **Passage retrieval** from indexed books.
 
 ## MCP option
 
-`trieloff/calibre-mcp` — searches a local Calibre catalog and returns matching passages. Install per the repo README. Configuration: a path to the Calibre library directory (typically `~/Calibre Library`). No external auth required.
+`trieloff/calibre-mcp`: searches a local Calibre catalog and returns matching passages. Install per the repo README. Configuration: a path to the Calibre library directory (typically `~/Calibre Library`). No external auth required.
 
 ## HTTP fallback
 
@@ -21,9 +21,9 @@ If the user runs Calibre's content server (`calibre-server`), it exposes a local
 
 ## Query shapes
 
-- *"Search the Calibre library for any book mentioning Conway's law"* — Calibre full-text search.
-- *"All books in the `architecture` Calibre tag"* — metadata query on `tags:architecture`.
-- *"Find the passage where Brooks discusses team scaling and productivity"* — full-text search with a phrase query.
+- *"Search the Calibre library for any book mentioning Conway's law"*: Calibre full-text search.
+- *"All books in the `architecture` Calibre tag"*: metadata query on `tags:architecture`.
+- *"Find the passage where Brooks discusses team scaling and productivity"*: full-text search with a phrase query.
 
 ## Licensing
 
@@ -31,6 +31,6 @@ Books in the user's Calibre library are **personal-use licensed**. The user is t
 
 ## Failure modes
 
-- **Library path wrong** — the MCP cannot find the catalog. Re-configure with the absolute path.
-- **Full-text index out of date** — Calibre rebuilds the index in the background; recently added books may be invisible until the index catches up. The Calibre UI has a "Reindex now" action.
-- **DRM-locked book** — full-text search does not match the body; only metadata is searchable.
+- **Library path wrong**: the MCP cannot find the catalog. Re-configure with the absolute path.
+- **Full-text index out of date**: Calibre rebuilds the index in the background; recently added books may be invisible until the index catches up. The Calibre UI has a "Reindex now" action.
+- **DRM-locked book**: full-text search does not match the body; only metadata is searchable.

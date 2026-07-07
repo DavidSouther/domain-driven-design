@@ -56,7 +56,7 @@ Record the Closing Bell's location in the project design doc, the way a feature 
 
 ## Release flagging
 
-A project lands its features over time, so the half-built whole must not reach users before the Closing Bell passes. Gate it behind a single project-level release flag. Deploy continuously, but release to users only when the project is done. In most cases, that one flag is enough. A feature-step earns its own only when it changes what users see on its own.
+A project lands its features over time, so the half-built whole must not reach users before the Closing Bell passes. Gate it behind a single project-level release flag. Deploy continuously, but release to users only when the project completes. In most cases, that one flag is enough. A feature-step earns its own only when it changes what users see on its own.
 
 See `developer/skills/ailly/references/shapes/project/release-flags.md` for how this decouples deploy from release and how to run the Closing Bell behind the flag. That reference also describes when a step needs its own flag and how to enable and retire it.
 
@@ -71,7 +71,7 @@ A project plan may list more entries than a feature plan's 3 to 7, but keep it b
 State each feature-step's dependency relationship explicitly. A reader must be able to tell, at a glance, what can start now and what must wait.
 
 - **Sequential.** The step depends on an earlier step's output or interface. Mark it `Depends on: <step>` and say why the dependency exists.
-- **Parallel.** The step shares no dependency with its siblings and can be built concurrently, by different people or in different sessions. Mark it `Parallel with: <steps>` and name any shared interface the parallel steps must agree on first.
+- **Parallel.** The step shares no dependency with its siblings and your team can build it concurrently in different sessions. Mark it `Parallel with: <steps>` and name any shared interface the parallel steps must agree on first.
 
 Before parallel work begins, settle the shared interfaces and contracts the parallel features depend on. This is the project-altitude equivalent of the feature plan's Step 0. Parallel features that have agreed on their boundaries integrate; parallel features that have not collide.
 

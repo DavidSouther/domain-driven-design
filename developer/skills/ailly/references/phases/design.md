@@ -1,15 +1,12 @@
 # Design phase
 
-> Phase reference loaded by the coordinator (`developer:ailly`) when entered as
-> `/ailly design ...`. The coordinator hands this to an isolated phase runner
-> that reads only this one reference through the active harness's isolation path. There is no standalone `developer:design`
-> skill; the coordinator enters the phase by argument.
+> The `developer:ailly` coordinator loads this phase when you run `/ailly design ...`. The phase runs in isolation. There is no standalone `developer:design` skill; the coordinator enters the phase by argument.
 
 ## Overview
 
 Facilitate turning ideas into fully formed designs and specs through natural collaborative dialogue, then capture the one feature test that defines "done" for the design.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, write the design draft, then collaborate with the user on the written draft. Focus the design on the problem and solution, stated from outside the code. Describe what the system does from the user's perspective; leave what it is made of for the plan. API designs may describe call shapes from the user's perspective in prose or pseudocode as the exception, but not implementation code. The single exception to the no-code rule is the feature test, which the design phase writes (see "The Feature Test").
+Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, write the design draft, then collaborate with the user on the written draft. Focus the design on the problem and solution, stated from outside the code. Describe what the system does from the user's perspective; leave implementation details for the plan. API designs may describe call shapes from the user's perspective in prose or pseudocode as the exception, but not implementation code. The single exception to the no-code rule is the feature test, which the design phase writes (see "The Feature Test").
 
 **Trigger:** a cleared `research.md` in the session folder. Alternatively, your topic is clear enough that research added nothing to gather.
 
@@ -19,7 +16,7 @@ Start by understanding the current project context, then ask questions one at a 
 
 **"This Is Too Simple To Need A Design"**
 
-Every project goes through this process. A todo list, a single-function utility, a config change—all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for simple projects), but you MUST present it and get approval.
+Every project goes through this process. A todo list, a single-function utility, a config change. All of them need a design. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for simple projects), but you MUST present it and get approval.
 
 **""I can just write a little code to explore"**
 
@@ -41,7 +38,7 @@ A design doc has these sections.
 
 ## The feature test
 
-The design phase produces **one executable feature test** that encodes the primary user story end-to-end. This is the acceptance test that stays red until the feature is done. You write it here, alongside the design that motivates it, behind a single review gate.
+The design phase produces **one executable feature test** that encodes the primary user story end-to-end. This is the acceptance test that stays red until implementation completes the feature. You write it here, alongside the design that motivates it, behind a single review gate.
 
 **Hard gate:** write **only** the test. Do not write any implementation code, and do not scaffold project structure beyond the test file itself. Decline any request to implement in this session.
 
@@ -65,13 +62,13 @@ Create a task for each of these items and complete them in order:
 6. **Surface open artifact decisions.** For any concrete artifact choice not prescribed by a skill template, an existing project convention, or the cleared `research.md`, record it in an **Open Artifact Decisions** subsection under **Summary** in the draft. Do this before writing the feature test, since the test binds to the artifacts the draft settles.
 7. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
 8. **Review** the design doc and the feature test using the `general:review` skill, including the intent-review ability (a recommended, dismissible default) in `references/abilities/intent-review.md`. When preparing the general review rubric, additionally include checks for placeholders, contradictions, ambiguity, and scope.
-9. **Collaborate on the written draft** — refer the user to the design, the test and the intent review, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
+9. **Collaborate on the written draft.** Refer the user to the design, the test and the intent review. Work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
 
 ## Sub-dispatch
 
-Per `developer/skills/ailly/SKILL.md`'s Phase Isolation mandate and delegation signals in `general/skills/dispatching-agents/SKILL.md`, two Checklist steps qualify for their own subagent dispatch rather than running inline. These are **Explore project context** (step 1) and **Propose 2-3 approaches** (step 4). Both are independently scoped with a clear input/output boundary and can proceed in parallel with other design work. Dispatch each through the harness's subagent mechanism wherever it is available, following the mandate-with-announce rule for the model.
+Per `developer/skills/ailly/SKILL.md`'s Phase Isolation mandate and `general/skills/dispatching-agents/SKILL.md`'s delegation signals, two Checklist steps qualify for their own subagent dispatch rather than running inline. These are **Explore project context** and **Propose 2-3 approaches** (steps 1 and 4). Both are independently scoped with a clear input/output boundary and can proceed in parallel with other design work. Dispatch each through the harness's subagent mechanism wherever it is available, following the mandate-with-announce rule for the model.
 
-The remaining steps stay inline, deliberately, not by omission. **Research additional context** (step 2) is conditional and tightly coupled to whatever gap step 1 surfaces. **Ask clarifying questions** (step 3) require synchronous, multi-turn exchange with the user that a subagent cannot hold. **Collaborate on the written draft** (step 9) also requires this synchronous exchange. **Write the design doc draft** (step 5) needs low-latency access to the context accumulated in-session. **Surface open artifact decisions** (step 6) and **Write the feature test** (step 7) also need this access. **Review** (step 8) already routes through the named `general:review` skill's own dispatch conventions, not through inline work this mandate targets.
+The remaining steps stay inline, deliberately, not by omission. **Research additional context** (step 2) is conditional and tightly coupled to whatever gap step 1 surfaces. **Ask clarifying questions** (step 3) require synchronous, multi-turn exchange with the user that a subagent cannot hold. **Collaborate on the written draft** (step 9) also requires this synchronous exchange. **Write the design doc draft** (step 5) needs low-latency access to the context accumulated in-session. **Surface open artifact decisions** and **Write the feature test** (steps 6 and 7) also need this access. **Review** (step 8) already routes through the named `general:review` skill's own dispatch conventions, not through inline work this mandate targets.
 
 ## Process flow
 
@@ -108,7 +105,7 @@ digraph brainstorming {
 - Check out the current project state first (files, docs, recent commits) and the cleared `research.md`.
 - Fill in only the context `research.md` did not already settle. If the requested API has a known missing feature, or a library already does this, surface it now.
 - Before asking detailed questions, assess scope. If the request describes multiple independent subsystems, flag this immediately. For example, a request to "build a platform with chat, file storage, billing, and analytics" involves multiple independent systems. Don't spend questions refining details of a project that you need to decompose first.
-- If the project is too large for a single spec, enable the user to decompose into smaller modules: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first module through the normal design flow. Each further module gets its own design → plan → implementation cycle; record this in `.ailly/developer/YYYY-MM-DD-A-<topic>/TODO.md`.
+- If the project is too large for a single spec, enable the user to decompose into smaller modules: what are the independent pieces, how do they relate, in what order should you build them? Then brainstorm the first module through the normal design flow. Each further module gets its own design → plan → implementation cycle; record this in `.ailly/developer/YYYY-MM-DD-A-<topic>/TODO.md`.
 - For appropriately scoped projects, ask questions one at a time to refine the idea.
 - Present summaries of research results with links to sources to justify options.
 - Prefer multiple choice questions when possible, with room for open ended responses.

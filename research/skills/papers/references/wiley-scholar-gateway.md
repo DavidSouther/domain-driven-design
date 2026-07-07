@@ -1,16 +1,16 @@
 # Wiley scholar gateway
 
-Semantic search across ~3M articles in 1,300+ Wiley journals. Returns **passage snippets with DOI link-out**, not full PDFs.
+Semantic search across 3 million articles in 1,300 Wiley journals. Returns **passage snippets with DOI links**, not full PDFs.
 
 ## What it provides
 
-- **Wiley journal search** — semantic-snippet hits.
+- **Wiley journal search**: semantic-snippet hits.
 - **DOI link-out** to the article on `onlinelibrary.wiley.com`.
 - Coverage explicitly **excludes figures, charts, and multimedia**.
 
 ## MCP option (primary)
 
-**`wiley-scholar-gateway@life-sciences`** — Anthropic-curated marketplace plugin. Install:
+**`wiley-scholar-gateway@life-sciences`**: Anthropic-curated marketplace plugin. Install:
 
 ```
 /plugin marketplace add anthropics/life-sciences
@@ -32,8 +32,8 @@ The wiring checklist marks the *Wiley journal search* capability available only 
 
 ## Query shapes
 
-- *"Semantic search across Wiley journals for `transformer attention`"* — primary capability.
-- *"DOI link-out for the most relevant Wiley article on a topic"* — read the `doi` field of the snippet result.
+- *"Semantic search across Wiley journals for `transformer attention`"* is the primary capability.
+- *"DOI link-out for the most relevant Wiley article on a topic"*: read the `doi` field of the snippet result.
 - Snippets are short; for the full body, **link the user to the DOI** and let them open the article in their authenticated session.
 
 ## Licensing
@@ -42,9 +42,9 @@ Snippets are **for display within the user's session**. Full text remains gated 
 
 ## Failure modes
 
-- **SSO not configured** — the *Wiley journal search* capability returns Not-Available. The re-verification trigger "Wiley SSO token expired" applies.
-- **Trial expired** — for free-trial users past June 30, 2026, access lapses unless the user configures an institutional subscription.
-- **Excluded media** — figures and charts are not returned by Scholar Gateway; the practice skill cannot retrieve them. Link to the DOI for the user's authenticated session.
+- **SSO not configured**: the *Wiley journal search* capability returns Not-Available. The re-verification trigger "Wiley SSO token expired" applies.
+- **Trial expired**: For free-trial users past June 30, 2026, access lapses unless the user configures an institutional subscription.
+- **Excluded media**: Figures and charts are not returned by Scholar Gateway; the practice skill cannot retrieve them. Link to the DOI for the user's authenticated session.
 
 ## Out-of-scope (related)
 

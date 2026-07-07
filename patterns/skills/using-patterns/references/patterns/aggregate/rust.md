@@ -45,7 +45,7 @@ impl Order {
         }
     }
 
-    /// One method — enforces all invariants atomically or returns Err.
+    /// One method: enforces all invariants atomically or returns Err.
     pub fn place(&mut self, items: Vec<(&str, u32, u64)>) -> Result<(), String> {
         if self.status != OrderStatus::Pending {
             return Err("Order already placed".into());

@@ -123,4 +123,4 @@ async function processOne(_: string): Promise<void> {
 }
 ```
 
-`logger.child({...})` is the canonical way to bind unit-of-work context once; the per-event call adds only the outcome fields. `event_name` is the field name the OTel JS SDK uses for the log record's `EventName`. The underlying logs spec calls it `event.name`. Pin the field name to whatever the configured exporter understands.
+`logger.child({...})` is the canonical way to bind unit of work context once; the per-event call adds only the outcome fields. `event_name` is the field name the OTel JS SDK uses for the log record's `EventName`. The underlying logs spec calls it `event.name`. Pin the field name to whatever the configured exporter understands.

@@ -1,6 +1,6 @@
 ---
 name: books
-description: Use when a research question targets a citable book, including ISBN-keyed editions, public-domain full text, technical reference content (O'Reilly), the user's own library (Kindle, Apple Books, Calibre, Zotero), or aggregated public-domain digital libraries. Applies every time a research question targets books.
+description: Use for research about books. Covers ISBN lookups, public-domain texts, technical references, personal libraries, and cross-corpus searches.
 ---
 
 # Books
@@ -88,7 +88,7 @@ Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/books.md`. If the caller
 [2] Author/Org. "Title." Date. [Online]. Available: <URL>
 ```
 
-Excerpts only; do not stage cached PDFs or full bodies. For passages from copyrighted or licensed sources—O'Reilly, Kindle, Apple Books, Calibre, and HathiTrust gated content—quote within the session for the user's own work. Cite-and-link instead of staging to public artifacts.
+Excerpts only; do not stage cached PDFs or full bodies. For passages from copyrighted or licensed sources (O'Reilly, Kindle, Apple Books, Calibre, and HathiTrust gated content), quote within the session for the user's own work. Cite-and-link instead of staging to public artifacts.
 
 ## Common mistakes
 
@@ -102,7 +102,7 @@ Excerpts only; do not stage cached PDFs or full bodies. For passages from copyri
 
 ## Composes with
 
-- **the books setup reference**—The wiring partner that publishes the contract this skill consumes. Located at `research:using-research` and `references/configuring/books.md`.
-- **`research:papers`** — sibling practice skill for academic papers.
-- **`research/references/jeopardy.md`** — query expansion technique.
-- **`research/references/citations.md`** — IEEE citation format.
+- **the books setup reference**: The wiring partner that publishes the contract this skill consumes. Located at `research:using-research` and `references/configuring/books.md`.
+- **`research:papers`**: sibling practice skill for academic papers.
+- **`research/references/jeopardy.md`**: query expansion technique.
+- **`research/references/citations.md`**: IEEE citation format.

@@ -1,6 +1,6 @@
 # Newtype, Python reference
 
-Python lacks compile-time branding, so newtypes use frozen dataclasses. mypy enforces the distinction; the `value` field carries the underlying primitive.
+Python lacks compile-time branding. Newtypes use frozen dataclasses instead. mypy enforces the distinction between types. The `value` field carries the underlying primitive.
 
 ```python
 from dataclasses import dataclass
@@ -30,7 +30,7 @@ def transfer(from_account: AccountId, to_account: AccountId, amount: Cents) -> N
     ...
 
 
-# Type error (mypy) — plain str is not AccountId:
+# Type error (mypy): plain str is not AccountId:
 transfer("acc-123", "acc-456", 5000)  # mypy error
 
 # Correct:

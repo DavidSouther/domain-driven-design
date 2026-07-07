@@ -3,7 +3,7 @@
 The composition root builds one evaluation client behind a vendor-neutral port and injects it. Call sites receive the port, never a vendor SDK.
 
 ```python
-# flags.py — the vendor-neutral port every call site reads through
+# flags.py: the vendor-neutral port every call site reads through
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -19,7 +19,7 @@ class Flags(Protocol):
 ```
 
 ```python
-# fail_safe.py — an unreachable backing resolves to the default (current behavior)
+# fail_safe.py: an unreachable backing resolves to the default (current behavior)
 class FailSafeFlags:
     def __init__(self, inner: Flags) -> None:
         self._inner = inner
@@ -32,7 +32,7 @@ class FailSafeFlags:
 ```
 
 ```python
-# static_flags.py — a fully runnable backing for local and CI
+# static_flags.py: a fully runnable backing for local and CI
 class StaticFlags:
     def __init__(self, values: dict[str, bool] | None = None) -> None:
         self._values = values or {}
@@ -42,7 +42,7 @@ class StaticFlags:
 ```
 
 ```python
-# bootstrap.py — built once at the composition root, then injected
+# bootstrap.py: built once at the composition root, then injected
 def build_flags(environment: str) -> Flags:
     # Production backs the port with a vendor SDK that evaluates a locally cached
     # ruleset (LaunchDarkly, Unleash), or with an OpenFeature client, whose

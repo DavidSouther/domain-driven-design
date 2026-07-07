@@ -5,10 +5,10 @@ description: Bootstrap and routing skill for Domain-Driven Design. Loaded when b
 
 # Domain-driven design workflow
 
-You are working in a project that uses Domain-Driven Design practices. This skill is the
-routing surface for the whole domain ability catalog. During brainstorming, research, and
-design, read the situation, name the ability that fits, and open its reference under
-`references/<name>.md` for the full teaching (trigger, process, and output format).
+You are working in a project that uses Domain-Driven Design. This skill routes you to the
+right ability. During brainstorming, research, and design, read the situation, name the
+matching ability, and open its reference under `references/<name>.md` for the full details
+(trigger, process, and output).
 
 **Glossary-first gate:** before introducing, naming, or changing any domain term, apply
 the glossary ability (`references/glossary.md`) first. All other domain abilities defer to

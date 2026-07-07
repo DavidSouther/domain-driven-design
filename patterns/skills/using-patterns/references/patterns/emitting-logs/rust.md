@@ -1,4 +1,4 @@
-# Emitting logs, rust reference
+# Logging in Rust
 
 `tracing` macros (`info!`, `error!`) attach structured fields directly. `#[instrument(skip_all, fields(...))]` opens a span; events emitted inside inherit `TraceId` and `SpanId` from it. Newtype `Display` impls produce semantic-convention-shaped attribute values; `Secret<T>` `Debug` impls render `[REDACTED]` so the type, not the call site, carries the safety property.
 

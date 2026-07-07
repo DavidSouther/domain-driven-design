@@ -3,7 +3,7 @@ title: Forward/Backward Method for Algorithms
 summary: "The Forward/Backward method is a pattern for developing a plan to get from a starting point to an ending point through unknown intermediate challenges. The technique relies on asking two key questions: what information can be immediately derived from forward steps, and what information would lead to backward steps?"
 ---
 
-The forward-backward technique is a pattern for developing a plan to get from "here" to "there." It starts by having a known starting point and an expected ending point. If this is a short distance, that's not a substantial problem, and can probably be done without much of a plan. But as the distance increases and the terrain or challenges between those points grows, the risks mount. It becomes much more likely to get lost or stuck if you just start going in a straight line.
+The forward-backward technique plans a path from a starting point to an ending point. For short distances, you can probably do this without much of a plan. As distance and complexity increase, the risks mount. Without a plan, you're likely to get lost if you just move in a straight line.
 
 A direct walk aims towards the goal, takes an appropriately sized step forward, and tries again. If there's terrain or challenges in the way, it might noe be possible to take the next step directly towards the goal. Still, it should be in a direction that continues making progress. This approach is great when the terrain is relatively flat or there are few challenges along the way. But if there's a chasm or impossible gap to traverse, the course is likely to meander very far afield.
 
@@ -26,13 +26,13 @@ At each iteration, choose which frontier to extend based on which side currently
 
 ## Written record is not optional
 
-Write each step down as you generate it, not holding it in working memory. The value of the method comes from accumulating a map, not from tracking a single candidate path. For an LLM agent, this means externalizing steps to a file or scratchpad before continuing. A step held only in context can drift or be silently dropped; a written step can be read back and evaluated precisely.
+Write each step down as you generate it, not holding it in working memory. The value of the method comes from accumulating a map, not from tracking a single candidate path. For an LLM agent, this means externalizing steps to a file or scratchpad before continuing. A step held only in context can drift or be silently dropped; you can read back a written step and evaluate it precisely.
 
 > Follow project conventions for where to put this map. In projects using the developer: skills, it should go in `.ailly/developer/YYYY-MM-DD-A-<topic>/maps/<path>.md`.
 
 ## Convergence and failure modes
 
-If, after 6 or 7 iterations, the points line up, you've found a plausible path from the starting to the ending point, and you can record that as the plan to take. The steps are already there, and you can focus on expanding those steps more fully.
+After 6 or 7 iterations, if the points line up, you've found a plausible path from start to end. Record this as your plan. The steps are already there, and you can focus on expanding those steps more fully.
 
 If there's still not a clear path after 8 or 9 steps, one of two things might be happening. First, the points might be too far apart. Stop making this plan, record the map thus far, and suggest creating a plan that instead starts over from intermediate points on this map. Second, if the points seem close together and the steps have gotten small or are going orthogonal to the main path, this is a signal of an unpassable chasm. Stop this plan and suggest a new plan exploring the contours of the chasm. There might be a hidden path, or some place to build a bridge, or it may be worth choosing a different ending point entirely.
 
@@ -52,4 +52,4 @@ A bug is a known bad output with an unknown cause. Debugging is inherently backw
 
 ### Migrating a legacy system
 
-Given a current architecture as start and a target architecture as goal, the direct-walk failure mode is well-known. Incremental changes accumulate technical debt and the codebase spends months in an inconsistent intermediate state. Forward-backward planning works better: backward from the target, identify what interfaces must exist for the target to be achievable. Forward from current, identify what you can extract or isolate without breaking anything. The meeting point is a stable intermediate architecture—a seam—that you can reach from current code and from which you can straightforwardly reach the target. Plan that seam as its own milestone, not as an invisible waypoint.
+Given a current architecture as start and a target architecture as goal, the direct-walk failure mode is well-known. Incremental changes accumulate technical debt and the codebase spends months in an inconsistent intermediate state. Forward-backward planning works better: backward from the target, identify what interfaces must exist for the target to be achievable. Forward from current, identify what you can extract or isolate without breaking anything. The meeting point is a stable intermediate architecture (a seam) that you can reach from current code and from which you can straightforwardly reach the target. Plan that seam as its own milestone, not as an invisible waypoint.

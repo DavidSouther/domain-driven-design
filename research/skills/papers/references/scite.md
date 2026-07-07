@@ -1,16 +1,16 @@
 # Scite
 
-Full-text search across 280M+ articles with **Smart Citations** classified as supporting, disputing, or mentioning. Uniquely valuable for "what evidence supports this claim?"
+Full-text search across 280M+ articles with **Smart Citations** that classify results as supporting, disputing, or mentioning. Useful when you ask "what evidence supports this claim?"
 
 ## What it provides
 
-- **Citation-context classification** — Smart Citations: supporting, disputing, mentioning.
+- **Citation-context classification**: Smart Citations are supporting, disputing, or mentioning.
 - **Full-text search** across the Scite corpus.
 - **Institutional-link-resolver integration** for delivery; falls back to Article Galaxy.
 
 ## MCP option
 
-`scite.ai/mcp` — hosted MCP endpoint by Research Solutions / Scite. Alternative: `scitedotai/scite-mcp-skill`.
+`scite.ai/mcp` is a hosted MCP endpoint by Research Solutions/Scite. Alternative: `scitedotai/scite-mcp-skill`.
 
 Auth: **scite subscription**. Obtain a subscription at `scite.ai` and configure the MCP per the repo or the hosted endpoint's instructions.
 
@@ -21,8 +21,8 @@ The Scite API exists but requires the same subscription. Most individual-develop
 ## Query shapes
 
 - *"Smart Citations for DOI 10.1145/3603287"* → returns lists of supporting, disputing, and mentioning citations with the citation context (the surrounding sentence).
-- *"What evidence supports claim X"* — search the corpus; filter to supporting citations.
-- *"Which papers contradict this paper"* — citation-context classification; check the `disputing` set.
+- *"What evidence supports claim X"*. Search the corpus, then filter to supporting citations.
+- *"Which papers contradict this paper"*. Use citation-context classification to check the `disputing` set.
 
 ## Licensing
 
@@ -32,6 +32,6 @@ The Scite API exists but requires the same subscription. Most individual-develop
 
 ## Failure modes
 
-- **Subscription lapsed** — the *Citation-context classification* capability returns Not-Available. The wiring skill's re-verification trigger "Scite subscription lapses" applies.
-- **DOI not indexed** — Scite indexes published articles; very recent or non-indexed preprints may be absent.
-- **Article Galaxy fallback** — full-text delivery may route through Article Galaxy with its own access posture; treat as a separate delivery surface.
+- **Subscription lapsed**. The *Citation-context classification* capability returns Not-Available. The wiring skill's re-verification trigger "Scite subscription lapses" applies.
+- **DOI not indexed**. Scite indexes published articles. Very recent or non-indexed preprints may be absent.
+- **Article Galaxy fallback**. Full-text delivery may route through Article Galaxy with its own access posture. Treat this as a separate delivery surface.

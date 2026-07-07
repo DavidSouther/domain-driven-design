@@ -4,8 +4,8 @@ Org communication channel. First stop for decisions, incident context, announcem
 
 ## What it provides
 
-- **Slack search** — message and thread hits with permalink, filterable by channel, user, and date.
-- **Slack fetch** — the full contents of a thread or a canvas, given a channel + ts or a permalink.
+- **Slack search**: message and thread hits with permalink, filterable by channel, user, and date.
+- **Slack fetch**: the full contents of a thread or a canvas, given a channel + ts or a permalink.
 
 ## MCP/Connector
 
@@ -13,7 +13,7 @@ The Anthropic Slack connector. Search tools are `slack_search_*`, including `sla
 
 ## Auth
 
-Workspace OAuth install. The connector holds the session after the install completes; see [`auth.md`](auth.md). No env var is set for the OAuth path. The session lives in the connector. If OAuth is not completed, *Slack search* and *Slack fetch* return Not-Available.
+Workspace OAuth install. The connector holds the session after the install completes; see [`auth.md`](auth.md). The connector does not use env vars for the OAuth path. The session lives in the connector. If OAuth is not completed, *Slack search* and *Slack fetch* return Not-Available.
 
 ## Contract mapping
 

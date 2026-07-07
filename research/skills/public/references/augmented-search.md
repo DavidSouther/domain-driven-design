@@ -6,9 +6,9 @@ Inherits the shared rules in [`etiquette.md`](etiquette.md): contact User-Agent,
 
 ## What it provides
 
-- **Augmented search** — a provider-ranked result list (title, URL, snippet), keyed off the same query the built-in search takes, optionally scoped to a provider or domain. Returns hits ranked by the provider's index rather than the built-in ranker.
+- **Augmented search:** a provider-ranked result list (title, URL, snippet), keyed off the same query the built-in search takes, optionally scoped to a provider or domain. Returns hits ranked by the provider's index rather than the built-in ranker.
 
-This is the single conditional capability in the public contract. The two unconditional capabilities (`WebSearch`, `WebFetch`) are built in and described in the contract directly. They have no provider reference because there is nothing to configure.
+This is the single conditional capability in the public contract. The contract includes the two unconditional capabilities (`WebSearch`, `WebFetch`) and describes them directly. They have no provider reference because there is nothing to configure.
 
 ## Probe order
 
@@ -48,7 +48,7 @@ Set the provider's API key env var if it has one, then smoke-test.
 
 ## Failure modes
 
-- **No provider configured** — expected on most checkouts; mark Not-Available and use built-in `WebSearch`. This is the default state, not a failure.
-- **Provider key missing or rotated** — the MCP is present but unauthenticated. Set or refresh the env var; this is a re-verification trigger.
-- **Provider MCP upgraded** — the tool surface or response shape may have shifted; re-run the smoke-test to confirm the contract still holds.
-- **Provider response shape drift** — an augmented search returned a shape the practice skill did not expect; widen the contract in [`../../configuring-public/SKILL.md`](../../configuring-public/SKILL.md) rather than patching the practice body.
+- **No provider configured:** expected on most checkouts; mark Not-Available and use built-in `WebSearch`. This is the default state, not a failure.
+- **Provider key missing or rotated:** the MCP is present but unauthenticated. Set or refresh the env var; this is a re-verification trigger.
+- **Provider MCP upgraded:** the tool surface or response shape may have shifted; re-run the smoke-test to confirm the contract still holds.
+- **Provider response shape drift:** an augmented search returned a shape the practice skill did not expect; widen the contract in [`../../configuring-public/SKILL.md`](../../configuring-public/SKILL.md) rather than patching the practice body.

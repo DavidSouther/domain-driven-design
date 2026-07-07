@@ -56,7 +56,7 @@ Each `raise ... from cause` preserves the underlying exception in `__cause__`. C
 
 ### App, stringly error
 
-In the HTTP handler, the typed exceptions are caught at the boundary and translated into a user-facing string. The app does not propagate `UsersError`; it formats and either returns or logs.
+The HTTP handler catches the typed exceptions at the boundary and translates them into a user-facing string. The app does not propagate `UsersError`; it formats and either returns or logs.
 
 ```python
 # app/http/users.py

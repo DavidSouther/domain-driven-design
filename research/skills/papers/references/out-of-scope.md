@@ -1,6 +1,6 @@
 # Papers, out of scope
 
-Documented-but-excluded papers sources with reasons. When a user asks for one of these, the practice skill cites this file and routes to the closest in-scope alternative.
+Paper sources we exclude and why. When a user asks for one of these, we cite this file and suggest a better alternative.
 
 ## Wiley text and data mining API
 

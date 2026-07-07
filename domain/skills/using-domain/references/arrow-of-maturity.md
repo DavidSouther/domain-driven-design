@@ -1,6 +1,6 @@
 # Arrow of maturity
 
-**Trigger:** architecture reviews, adding persistence, scaling discussions, or any time the current architecture creates friction.
+**Trigger:** architecture reviews, persistence changes, scaling discussions, or when architecture causes friction.
 
 For full stage descriptions, see `../../../references/arrow-of-maturity-stages.md`.
 
@@ -26,6 +26,6 @@ For full stage descriptions, see `../../../references/arrow-of-maturity-stages.m
 ## Output
 
 Provide:
-1. **Current stage** — which stage the codebase is at and the evidence
-2. **Signal** — the friction or trigger that justifies advancing (or the reason to stay)
-3. **Next concrete step** — the specific refactoring or architectural change to make next (if advancing)
+1. **Current stage**: which stage the codebase is at and the evidence
+2. **Signal**: the friction or trigger that justifies advancing (or the reason to stay)
+3. **Next concrete step**: the specific refactoring or architectural change to make next (if advancing)

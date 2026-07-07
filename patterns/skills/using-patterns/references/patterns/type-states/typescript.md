@@ -12,7 +12,7 @@ interface RomeAtWar   { status: "war";   ruler: "dictator"; }
 
 type Rome = RomeAtPeace | RomeAtWar;
 
-// Compiler error — { status: "peace", ruler: "dictator" } is not assignable to Rome
+// Compiler error: { status: "peace", ruler: "dictator" } is not assignable to Rome
 const invalid: Rome = { status: "peace", ruler: "dictator" }; // TS error
 ```
 
@@ -29,7 +29,7 @@ function open(conn: Connection<Closed>): Connection<Open>   { /* ... */ return c
 function send(conn: Connection<Open>, data: string): void   { /* ... */ }
 function close(conn: Connection<Open>): Connection<Closed>  { /* ... */ return conn as any; }
 
-// Type error — Connection<Closed> is not assignable to Connection<Open>
+// Type error: Connection<Closed> is not assignable to Connection<Open>
 const c = new Connection<Closed>();
 send(c, "hello"); // TS2345
 ```

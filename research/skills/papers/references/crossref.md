@@ -4,8 +4,8 @@ The canonical DOI-metadata service. First stop for DOI→metadata, references-fr
 
 ## What it provides
 
-- **DOI→metadata** — title, authors, year, venue, type, license, container ISSN/ISBN.
-- **References-from-DOI** — the cited works of a paper, when the publisher deposits them.
+- **DOI→metadata**: title, authors, year, venue, type, license, container ISSN/ISBN.
+- **References-from-DOI**: the cited works of a paper, when the publisher deposits them.
 - **Journal and publisher search**.
 
 Example payload (`/works/{doi}`):
@@ -30,7 +30,7 @@ None canonical first-party. Use HTTP. Multi-source aggregators such as `xingyulu
 ## Query shapes
 
 - *"Metadata for DOI 10.1145/3603287"* → `/works/10.1145/3603287`
-- *"What does Eric Evans cite in the original DDD paper"* — Crossref reference list (when the publisher deposits references) → check the `reference` field.
+- *"What does Eric Evans cite in the original DDD paper"*: Crossref reference list (when the publisher deposits references) → check the `reference` field.
 - *"All papers in this journal"* → `/journals/{issn}/works?query=...`
 
 ## Licensing
@@ -39,6 +39,6 @@ Crossref metadata is **CC0**. Freely usable. The underlying full-text content li
 
 ## Failure modes
 
-- **Polite requests not entered** — without `mailto=`, requests share an anonymous quota with stricter limits.
-- **Missing references** — many publishers do not deposit reference lists; the `reference` field is absent or partial. Cross-check Semantic Scholar's citation graph.
-- **DOI not found** — Crossref hosts ~150M DOIs but not every publisher participates. Fall back to DataCite for dataset DOIs, MEDLINE for older biomedical, or OpenAlex's broader index.
+- **Polite requests not entered**: without `mailto=`, requests share an anonymous quota with stricter limits.
+- **Missing references**: many publishers do not deposit reference lists; the `reference` field is absent or partial. Cross-check Semantic Scholar's citation graph.
+- **DOI not found**: Crossref hosts ~150M DOIs but not every publisher participates. Fall back to DataCite for dataset DOIs, MEDLINE for older biomedical, or OpenAlex's broader index.

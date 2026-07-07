@@ -1,6 +1,6 @@
 # Contracts and Invariants
 
-**Trigger:** designing any API boundary, service interface, or domain operation signature.
+**Trigger:** when defining contracts for API operations and service boundaries.
 
 ## Process
 
@@ -23,7 +23,7 @@ List states that must hold true at all times at the API edge.
 
 - Example: "An Order must always have at least one line item."
 - Invariants may be **transiently violated** during transaction processing.
-- Violations must **never be observable externally** — effects are only visible once the transaction is complete.
+- Violations must never be observable externally. Effects are only visible once the transaction is complete.
 
 ### Step 4: Record in bounded context file
 

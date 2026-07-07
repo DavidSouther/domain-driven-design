@@ -10,7 +10,7 @@ The four layers and their mandates:
 | **Composition Root** | The only place that imports concrete classes; constructs and injects all dependencies; runs once at startup |
 
 ```rust
-// domain.rs — pure logic, no I/O
+// domain.rs: pure logic, no I/O
 #[derive(Debug, serde::Serialize)]
 pub struct Order { pub id: String, pub total: f64 }
 
@@ -28,7 +28,7 @@ pub fn place_order(order: Order, balance: f64) -> PlaceResult {
     }
 }
 
-// ports.rs — traits owned by the service crate (not the adapter)
+// ports.rs: traits owned by the service crate (not the adapter)
 use async_trait::async_trait;
 
 #[async_trait]
@@ -36,7 +36,7 @@ pub trait OrderRepository: Send + Sync {
     async fn get_balance(&self, customer_id: &str) -> anyhow::Result<f64>;
 }
 
-// service.rs — application service: orchestrates, does not own rules
+// service.rs: application service: orchestrates, does not own rules
 use std::sync::Arc;
 
 pub struct OrderService {
@@ -58,7 +58,7 @@ impl OrderService {
     }
 }
 
-// adapter.rs — thin Axum handler; maps protocol, calls service
+// adapter.rs: thin Axum handler; maps protocol, calls service
 use axum::{extract::State, http::StatusCode, response::IntoResponse, Json};
 use serde_json::json;
 
@@ -76,7 +76,7 @@ pub async fn handle_place_order(
     }
 }
 
-// main.rs — Composition Root; the only file that knows about Postgres
+// main.rs: Composition Root; the only file that knows about Postgres
 #[tokio::main]
 async fn main() {
     let repo = Arc::new(PostgresOrderRepository::new(

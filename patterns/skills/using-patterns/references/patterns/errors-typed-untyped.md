@@ -35,7 +35,7 @@ type FetchError =
 throw new Error(`Could not load user ${id}: upstream returned 503 after 3 retries`);
 ```
 
-**Translation at the boundary.** Library errors are caught at the app edge, such as an HTTP handler, a command-line tool, or a job worker, and rendered to a string with the local context attached.
+**Translation at the boundary.** HTTP handlers, command-line tools, and job workers catch library errors at the app edge and render them to a string with the local context attached.
 
 ```
 try {
@@ -62,7 +62,7 @@ For complete examples, see [`errors-typed-untyped/typescript.md`](errors-typed-u
 
 While discovering a library's failure modes, untyped errors are acceptable scaffolding. Throw, log, panic. Get the shape of the happy path right first.
 
-When the library's surface stabilises, sweep the untyped throws into a tagged union. Each surviving call site that inspects the message becomes a variant. Each call site that ignores the error becomes a variant callers must process. The review pass is where the type is born; do not skip it.
+When the library's surface stabilises, sweep the untyped throws into a tagged union. Each surviving call site that inspects the message becomes a variant. Each call site that ignores the error becomes a variant callers must process. The review pass finalizes the type; do not skip it.
 
 ## Cross-cutting notes
 

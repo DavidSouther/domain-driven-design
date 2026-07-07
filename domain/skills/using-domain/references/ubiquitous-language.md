@@ -25,7 +25,7 @@ For each term not resolved by research, categorize:
 | **Ask a domain expert** | Core domain specifics unique to this organization; business rules not recorded anywhere |
 | **Confirm with domain expert** | Generic/Supporting domain terms that are likely standard but warrant human sign-off |
 
-When in doubt, use **Ask** rather than **Confirm** — over-confirming is safe; under-asking risks incorrect domain language.
+When in doubt, use **Ask** rather than **Confirm**. Over-confirming is safe. Under-asking risks incorrect domain language.
 
 ### Step 4: Present for human review
 
@@ -40,5 +40,5 @@ For each confirmed term, apply the glossary ability (`references/glossary.md`) t
 
 ## Output
 
-1. **Candidate terms list** — each term with a draft definition and its research source
-2. **Categorized question list** — questions for domain experts, grouped by category (Ask vs. Confirm)
+1. **Candidate terms list**: each term with a draft definition and its research source
+2. **Categorized question list**: questions for domain experts, grouped by category (Ask vs. Confirm)

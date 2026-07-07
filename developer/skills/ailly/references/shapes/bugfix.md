@@ -35,4 +35,4 @@ The design doc keeps its six sections, read through the bug lens:
 
 ## Defense in depth
 
-Once the reproduction test passes, consider whether the bug can be made structurally impossible rather than only patched. Trace backward from the symptom to the original trigger and fix at the source. Add validation at each layer the bad data passed through. A single patch is "fixed"; source plus layered guards is "cannot recur."
+Once the reproduction test passes, consider making the bug structurally impossible rather than only patching it. Trace backward from the symptom to the original trigger and fix at the source. Add validation at each layer the bad data passed through. A single patch is "fixed"; source plus layered guards is "cannot recur."

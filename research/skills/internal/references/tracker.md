@@ -4,15 +4,15 @@ The issue tracker. First stop for requirements, bug reports, and the history of 
 
 ## What it provides
 
-- **Linear/Jira search** — issue hits with id, state, and assignee, filterable by team and status.
-- **Linear/Jira fetch** — the issue body, its comments, and linked documents, given an issue id.
+- **Linear/Jira search**: issue hits with id, state, and assignee, filterable by team and status.
+- **Linear/Jira fetch**: the issue body, its comments, and linked documents, given an issue id.
 
 ## MCP Connector
 
 Two tracker shapes share this contract row:
 
-- **Linear** — the Anthropic Linear connector exposes `list_issues`, `get_issue`, and `search_documentation`. It completes OAuth via its `authenticate` / `complete_authentication` pair.
-- **Jira** — probe the configured Jira MCP for this org; tool names vary depending on which server you install, so discover the surface rather than assuming a slug.
+- **Linear**: the Anthropic Linear connector exposes `list_issues`, `get_issue`, and `search_documentation`. It completes OAuth via its `authenticate` / `complete_authentication` pair.
+- **Jira**: probe the configured Jira MCP for this org; tool names vary depending on which server you install, so discover the surface rather than assuming a slug.
 
 If OAuth is not completed, the tracker capabilities are Not-Available.
 

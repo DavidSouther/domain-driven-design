@@ -5,7 +5,7 @@ Reviews and reading-community signal. Replaces the retired Goodreads API. Use fo
 ## What it provides
 
 - **Reader reviews** for cataloged books.
-- **Ratings and ranked-list data** — what users have shelved, rated, or compared.
+- **Ratings and ranked-list data**: what users have shelved, rated, or compared.
 - **Comparable-titles** queries.
 
 ## Mcp option
@@ -27,9 +27,9 @@ query { books(where: { isbn_13: "9780321125217" }) {
 
 ## Query shapes
 
-- *"Reader reviews of the Stripe Press edition of The Soul of a New Machine"* — GraphQL query selecting `users_reviews` filtered by ISBN.
-- *"What are people comparing this book to"* — `comparable_titles` field.
-- *"Average rating for this book"* — aggregated rating field.
+- *"Reader reviews of the Stripe Press edition of The Soul of a New Machine"*: GraphQL query selecting `users_reviews` filtered by ISBN.
+- *"What are people comparing this book to"*: `comparable_titles` field.
+- *"Average rating for this book"*: aggregated rating field.
 
 ## Licensing
 
@@ -37,6 +37,6 @@ Hardcover reviews are user-generated; the platform terms govern redistribution. 
 
 ## Failure modes
 
-- **API key missing** — 401. Set `HARDCOVER_API_KEY`.
-- **Schema drift** — GraphQL schema evolves; refresh the schema reference when fields stop resolving.
-- **Empty review set** — newer or obscure titles may have no reviews yet. The practice skill returns the empty result rather than failing.
+- **API key missing**: 401. Set `HARDCOVER_API_KEY`.
+- **Schema drift**: GraphQL schema evolves; refresh the schema reference when fields stop resolving.
+- **Empty review set**: newer or obscure titles may have no reviews yet. The practice skill returns the empty result rather than failing.

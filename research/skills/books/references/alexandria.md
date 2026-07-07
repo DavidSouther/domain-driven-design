@@ -1,6 +1,6 @@
 # Alexandria (aggregator)
 
-Broad keyless aggregation across 46 public-domain digital libraries. Sources include project Gutenberg, Oxford ORA, Cambridge Apollo, Wikisource, Library of Congress, HathiTrust public-domain tier, Smithsonian, NASA ADS, and CourtListener. Use for cross-corpus queries when the user does not know which library holds a text or wants the broadest sweep.
+Search across 46 public-domain digital libraries. These include Project Gutenberg, Oxford ORA, Cambridge Apollo, Wikisource, Library of Congress, HathiTrust, Smithsonian, NASA ADS, and CourtListener. Use it for broad searches when you don't know which library has the text you need.
 
 ## What it provides
 
@@ -21,9 +21,9 @@ None. Alexandria is the aggregator; the per-source HTTP endpoints are reachable 
 
 ## Query shapes
 
-- *"Digitized eighteenth-century treatises on celestial mechanics across institutional repositories"* — cross-corpus query.
-- *"Where might one find a digitized copy of this 1810 botanical monograph"* — when the source is unknown.
-- *"Sweep all public-domain digital libraries for any mention of <topic>"* — broad cross-corpus.
+- *"Digitized eighteenth-century treatises on celestial mechanics across institutional repositories"*: cross-corpus query.
+- *"Where might one find a digitized copy of this 1810 botanical monograph"*: when the source is unknown.
+- *"Sweep all public-domain digital libraries for any mention of <topic>"*: broad cross-corpus.
 
 For ISBN lookup, edition disambiguation, or technical-book search, route to the targeted per-source capability instead. Alexandria's aggregated results are noisier than a focused per-source query.
 
@@ -33,6 +33,6 @@ Per-source. Alexandria does not re-license; the originating source's terms apply
 
 ## Failure modes
 
-- **Source-level outage** — one underlying source failing degrades aggregated coverage. Alexandria reports which sources returned hits.
-- **Duplicate hits across sources** — the same public-domain work may appear from multiple libraries. Dedupe by canonical identifier (ISBN, OL work id, Gutenberg id).
-- **Quality variance** — aggregated search hides source-specific etiquette and licensing; for high-stakes queries, route to the per-source capability after Alexandria narrows the candidate.
+- **Source-level outage**: one underlying source failing degrades aggregated coverage. Alexandria reports which sources returned hits.
+- **Duplicate hits across sources**: the same public-domain work may appear from multiple libraries. Dedupe by canonical identifier (ISBN, OL work id, Gutenberg id).
+- **Quality variance**: aggregated search hides source-specific etiquette and licensing. For high-stakes queries, route to the per-source capability after Alexandria narrows the candidate.

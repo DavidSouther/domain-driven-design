@@ -4,17 +4,17 @@ The code-collaboration surface. First stop for issues, pull requests, and the te
 
 ## What it provides
 
-- **GitHub issue/PR search** — issue and PR hits with number and URL, filterable by repo and label.
-- **GitHub issue/PR fetch** — the body, comments, and diff threads where exposed, given a repo + number.
+- **GitHub issue/PR search**: issue and PR hits with number and URL, filterable by repo and label.
+- **GitHub issue/PR fetch**: the body, comments, and diff threads where exposed, given a repo + number.
 
 ## MCP/connector
 
 Two transports, probed in order:
 
-- **GitHub MCP** — probe the configured GitHub MCP for this org first; tool names vary by which server you install, so discover the surface rather than assuming a slug.
-- **`gh` command-line tool fallback** — if you haven't configured an MCP, fall back to the `gh` command-line tool: `gh issue list`/`gh issue view`, `gh pr list`/`gh pr view`, `gh search issues`. Authenticated by `GH_TOKEN` / `GITHUB_TOKEN` or an existing `gh auth login` session.
+- **GitHub MCP**: probe the configured GitHub MCP for this org first; tool names vary by which server you install, so discover the surface rather than assuming a slug.
+- **`gh` command-line tool fallback**: if you haven't configured an MCP, fall back to the `gh` command-line tool: `gh issue list`/`gh issue view`, `gh pr list`/`gh pr view`, `gh search issues`. Authenticated by `GH_TOKEN` / `GITHUB_TOKEN` or an existing `gh auth login` session.
 
-If no token is set and no MCP authenticates, the GitHub capabilities are Not-Available.
+If no token is set and no MCP authenticates, GitHub capabilities will not function.
 
 ## Auth
 

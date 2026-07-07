@@ -20,7 +20,7 @@ Middle-loop planning skill. Given a cleared design and its failing feature test,
 ## Behavior
 
 1. Read the cleared design and its recorded feature test (and user story) from the session folder. If `design.md` (or `research.md`) names skills to load under a **Libraries & Skills** directive, load them via the active harness's skill-loading mechanism before planning, and carry that directive into `plan.md` so every red-green-refactor step loads the framework's skill while implementing.
-2. Consider the API surface area changes needed (step 0—see below).
+2. Consider the API surface area changes needed. See step 0 below.
 3. Break the path to a passing feature test into several (no more than 7) incremental steps.
   - If it seems a plan would require more than a few steps, encourage the user to go back to the design and simplify the size of the step.
   - If it seems a plan would require more than 7 steps, insist that the user go back to the design.
@@ -33,7 +33,7 @@ Middle-loop planning skill. Given a cleared design and its failing feature test,
 Before implementation steps, define the type and API surface area the feature test requires. Step 0 establishes all new types and public function signatures as stubs:
 
 - Introduce new entities, value objects, or services needed
-- Run the dedicated "look for applicable patterns" beat (`.ailly/prompts/plan-use-patterns.md`): consult `patterns:using-patterns` and name the patterns that apply before fixing the surface. See domain-objects (`patterns:using-patterns`, `references/patterns/domain-objects.md`), newtype (`references/patterns/newtype.md`), and type-states (`references/patterns/type-states.md`) patterns for guidance.
+- Run the dedicated "look for applicable patterns" beat. See `.ailly/prompts/plan-use-patterns.md`. Consult `patterns:using-patterns` and name the patterns that apply before fixing the surface. See domain-objects (`patterns:using-patterns`, `references/patterns/domain-objects.md`), newtype (`references/patterns/newtype.md`), and type-states (`references/patterns/type-states.md`) patterns for guidance.
 - Show type signatures and function signatures (not implementations) for new objects
 - Keep this focused on the domain model, not persistence or UI
 

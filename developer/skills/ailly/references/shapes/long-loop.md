@@ -2,7 +2,7 @@
 
 *Ailly with Dynamic Workflows*
 
-When a topic is run autonomously at project scale, the five-phase lifecycle still runs unchanged. Only the crossing of each draft gate differs. Where the normal loop stops and waits for a human to clear the `*Draft*` marker, the long loop dispatches a research-and-decide reviewer through the active harness's isolation path. That reviewer resolves the gate's open questions and clears the marker, so the run proceeds without user intervention. It is the autonomous counterpart reached for instead of quick-loop when the work has ambiguities to resolve, which quick-loop is not built for. `developer:ailly` consults this reference when acting autonomously over project durations.
+When the long loop runs a topic autonomously at project scale, the five-phase lifecycle still runs unchanged. Only the crossing of each draft gate differs. Where the normal loop stops and waits for a human to clear the `*Draft*` marker, the long loop dispatches a research-and-decide reviewer through the active harness's isolation path. That reviewer resolves the gate's open questions and clears the marker, so the run proceeds without user intervention. It is the autonomous counterpart reached for instead of quick-loop when the work has ambiguities to resolve, which quick-loop is not built for. `developer:ailly` consults this reference when acting autonomously over project durations.
 
 ## 1. When the long loop applies
 
@@ -82,7 +82,7 @@ Two gates are never auto-cleared by any reviewer, in any mode.
 When the run reaches the human merge gate or otherwise finishes, the coordinator emits a report with three components:
 
 - **Decisions.** Per gate, the recorded-decision entries (or a pointer to each artifact's block).
-- **What was done.** Per phase, the artifact produced and its location.
+- **What each phase produced.** Per phase, the artifact produced and its location.
 - **Where it stopped.** The merge gate (awaiting human approval).
 
 The destination follows the loop's retention rule. For a feature loop, keep the report inline only, because the feature cleanup removes the session folder and a persisted file would serve no purpose. For a project loop, the coordinator also writes a `report.md` that becomes a supporting sub-page in the long-lived documents. See `project-cycle.md` under "Long-Lived Documentation." Store it alongside the design and the Closing Bell.

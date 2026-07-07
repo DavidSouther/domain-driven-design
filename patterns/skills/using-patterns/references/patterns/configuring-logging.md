@@ -4,7 +4,7 @@
 
 You compose a logging pipeline once, at startup, as a stack of layers over a single subscriber registry. Each layer owns one concern: format, filter, enrichment, export. The order stays fixed; later code only emits records into it. Bootstrap is also where you install the W3C `traceparent` propagator, so every call site inherits the active trace context without touching headers.
 
-Two deployment shapes drive every decision below: a long-running **service** and a short-lived **command-line tool**. Services have one process serving many requests. Command-line tools handle one invocation per outcome. The five-layer skeleton is the same. The defaults at every layer differ. Choose the shape first, then walk down the stack.
+Two deployment shapes drive every decision below: a long-running **service** and a short-lived **command-line tool**. Services have one process serving many requests. Command-line tools process one invocation per outcome. The five-layer skeleton is the same. The defaults at every layer differ. Choose the shape first, then walk down the stack.
 
 ## When to use
 
@@ -17,17 +17,17 @@ Two deployment shapes drive every decision below: a long-running **service** and
 
 ## Core pattern
 
-A subscriber registry is built once in `main` and assembled as five layers, in order:
+You build a subscriber registry once in `main` and assemble it as five layers, in order:
 
 ```
 Registry → Format → Filter → Enrich → Export
 ```
 
-- **Registry** — the single global subscriber. Built once. `tracing_subscriber::registry()`.
-- **Format** — how records render. JSON for service shape (per 12-Factor); pretty-on-TTY plus a `--log-format` override for command-line tool shape.
-- **Filter** — which records pass. `EnvFilter` reading `RUST_LOG` for services; `clap-verbosity-flag` for command-line tools. The default is ERROR; `-v`/`-vv`/`-vvv`/`-vvvv` raise it, and `-q` silences it. Suppress noisy dependencies with directives like `hyper=warn,h2=warn,reqwest=warn`.
-- **Enrich** — what every record carries: resource attributes (`service.*` for services, `process.*` for CLIs), the active span's `TraceId`/`SpanId`, and the W3C `traceparent` propagator that lets those IDs flow across processes.
-- **Export** — where records go. Service default: JSON to stdout, OTLP to a collector. Command-line tool default: human-readable to stderr (per clig.dev §Output); structured records to `$XDG_STATE_HOME/<app>/log` per XDG Base Directory Specification 0.8; OTLP only under explicit `--telemetry` opt-in. **Never** default to JSON-to-stdout in a command-line tool; stdout exists for program output.
+- **Registry**: the single global subscriber, built once. `tracing_subscriber::registry()`.
+- **Format**: how records render. JSON for service shape (per 12-Factor); pretty-on-TTY plus a `--log-format` override for command-line tool shape.
+- **Filter**: which records pass. `EnvFilter` reading `RUST_LOG` for services; `clap-verbosity-flag` for command-line tools. The default is ERROR; `-v`/`-vv`/`-vvv`/`-vvvv` raise it, and `-q` silences it. Suppress noisy dependencies with directives like `hyper=warn,h2=warn,reqwest=warn`.
+- **Enrich**: what every record carries. Resource attributes (`service.*` for services, `process.*` for CLIs), the active span's `TraceId`/`SpanId`, and the W3C `traceparent` propagator let those IDs flow across processes.
+- **Export**: where records go. Service default: JSON to stdout, OTLP to a collector. Command-line tool default: human-readable to stderr (per clig.dev §Output); structured records to `$XDG_STATE_HOME/<app>/log` per XDG Base Directory Specification 0.8; OTLP only under explicit `--telemetry` opt-in. Never default to JSON-to-stdout in a command-line tool because stdout exists for program output.
 
 A complete bootstrap function takes about fifteen lines. For full, runnable examples, see [`configuring-logging/rust.md`](configuring-logging/rust.md), [`configuring-logging/typescript.md`](configuring-logging/typescript.md), and [`configuring-logging/python.md`](configuring-logging/python.md).
 
@@ -59,13 +59,13 @@ Services pay the bootstrap cost once and amortize it across the process lifetime
 Resource attributes attach once, at the resource layer, and never per record. The keys differ by deployment shape:
 
 - **Service shape.** `service.name`, `service.version`, `service.instance.id`, `deployment.environment`, `host.name`. Together they let the backend split a metric by version or by environment without changing call-site code.
-- **Command-line tool shape.** `process.executable.name`, `process.executable.path`, `process.command_args`, `process.pid`, `process.runtime.name`, `process.runtime.version` from the OTel `process` semantic conventions. `service.name` may still be set to the binary name as a degenerate convention.
+- **Command-line tool shape.** `process.executable.name`, `process.executable.path`, `process.command_args`, `process.pid`, `process.runtime.name`, `process.runtime.version` from the OTel `process` semantic conventions. You may still use the binary name for `service.name` as a degenerate convention.
 
 Command-line tools typically inject `traceparent` on outbound calls and have nothing to extract from on inbound; configure the propagator for outbound only.
 
 ### Sampling
 
-Sampling is a service-shape concern. Head sampling decides at span start; tail sampling decides at span end, after error or latency is known. Hybrid combines them. The choice is a trade-off between cost, completeness, and operational complexity. Head sampling is cheap but tail sampling buffers spans. Tail sampling keeps interesting traces but head may drop them. Whichever approach you choose, the log sampler and the trace sampler must reach coordinated decisions or the wide-event recovery property breaks.
+Sampling is a service-shape concern. Head sampling decides at span start; tail sampling decides at span end, after observing the error or latency. Hybrid combines them. The choice is a trade-off between cost, completeness, and operational complexity. Head sampling is cheap but tail sampling buffers spans. Tail sampling keeps interesting traces but head may drop them. Whichever approach you choose, the log sampler and the trace sampler must reach coordinated decisions or the wide-event recovery property breaks.
 
 Command-line tools do not sample. Verbosity replaces sampling: `-q`/`-v`/`-vv`/`-vvv`/`-vvvv` selects which records the EnvFilter passes through. This is the entire surface a user has for tuning a command-line tool's output volume.
 
@@ -100,6 +100,6 @@ Both shapes need a flush before exit, and both need a hard timeout so a stuck ex
 
 ## Composes with
 
-- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)** — bootstrap is where you call `init_logging()`; the configuration skill defines the layered shape, the bootstrap-and-service skill defines where it sits in the wiring.
-- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — the upstream control for sensitive data. The redaction layer here is a backstop; secrets are already wrapped by the time any log call site runs.
-- **the emitting-logs pattern (`references/patterns/emitting-logs.md`)** — the call-site partner. Configuration sets the envelope, the exporter, and the propagator; emission attaches the per-event fields the configuration enforces. Run them together.
+- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)**: bootstrap is where you call `init_logging()`. The configuration skill defines the layered shape, and the bootstrap-and-service skill defines where it sits in the wiring.
+- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)**: the upstream control for sensitive data. The redaction layer here is a backstop; secrets are already wrapped by the time any log call site runs.
+- **the emitting-logs pattern (`references/patterns/emitting-logs.md`)**: the call-site partner. Configuration sets the envelope, the exporter, and the propagator; emission attaches the per-event fields the configuration enforces. Run them together.

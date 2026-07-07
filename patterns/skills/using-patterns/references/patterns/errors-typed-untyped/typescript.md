@@ -1,4 +1,4 @@
-# Errors: typed vs untyped, TypeScript reference
+# Typed and untyped errors in TypeScript
 
 Each language has its own grammar for failure. The pattern is constant: typed at library boundaries, stringly at app boundaries, with a translation step between. The idioms differ. Use the variant native to your language; do not transliterate one into another.
 

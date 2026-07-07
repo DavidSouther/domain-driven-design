@@ -1,7 +1,7 @@
 # Aggregate, TypeScript reference
 
 ```typescript
-// Value object — no identity, equality by fields
+// Value object: no identity, equality by fields
 class LineItem {
   constructor(
     readonly productId: string,
@@ -14,7 +14,7 @@ class LineItem {
   get subtotal() { return this.qty * this.unitPrice; }
 }
 
-// Aggregate Root — single entry point for all mutations
+// Aggregate Root: single entry point for all mutations
 class Order {
   private lines: LineItem[] = [];
   private status: "pending" | "placed" = "pending";
@@ -23,7 +23,7 @@ class Order {
 
   static create(id: string): Order { return new Order(id); }
 
-  // One method — enforces all invariants atomically or throws
+  // One method: enforces all invariants atomically or throws
   place(items: { productId: string; qty: number; unitPrice: number }[]): void {
     if (this.status !== "pending") throw new Error("Order already placed");
     if (items.length === 0) throw new Error("Order must have at least one item");

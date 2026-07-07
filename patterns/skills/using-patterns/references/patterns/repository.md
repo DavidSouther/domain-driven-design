@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Repository pattern inserts an interface between domain objects and storage. The domain layer defines this interface, while the infrastructure layer implements it. Domain objects contain business logic; the Repository handles all I/O. Storage implementations can change without touching domain code.
+The Repository pattern puts an interface between domain objects and storage. The domain layer defines the interface. The infrastructure layer implements it. Domain objects hold business logic. Repositories handle all I/O. Storage implementations can change without affecting domain code.
 
 Repositories differ from DAOs. A DAO maps to a single table and exposes raw CRUD. A Repository maps to an **aggregate root** and exposes collection-like semantics (`add`, `get`, `list`). Only aggregate roots get repositories. Child entities are only reached through their root.
 
@@ -20,18 +20,18 @@ Repositories differ from DAOs. A DAO maps to a single table and exposes raw CRUD
 The domain layer defines the interface: `AbstractProductRepository` / `ProductRepository` trait. Domain code receives the repository through dependency injection and calls only the abstract interface, never ORM sessions, file handles, or HTTP clients. Concrete implementations live in the infrastructure layer.
 
 ```
-# domain/repositories.py — interface only; no ORM imports
+# domain/repositories.py: interface only; no ORM imports
 class AbstractProductRepository(ABC):
     @abstractmethod
     def get(self, sku: str) -> Optional[Product]: ...
     @abstractmethod
     def add(self, product: Product) -> None: ...
 
-# infrastructure/repositories.py — implements the interface
+# infrastructure/repositories.py: implements the interface
 class InMemoryProductRepository(AbstractProductRepository): ...
 class SqlProductRepository(AbstractProductRepository): ...
 
-# domain/services.py — depends only on the interface
+# domain/services.py: depends only on the interface
 def allocate(order_line, repo: AbstractProductRepository) -> str: ...
 ```
 
@@ -57,6 +57,6 @@ For complete examples, see [`repository/typescript.md`](repository/typescript.md
 
 ## Composes with
 
-- **the aggregate pattern (`references/patterns/aggregate.md`)** — one repository per aggregate root; child entities are always reached through the root, never fetched directly.
-- **the unit-of-work pattern (`references/patterns/unit-of-work.md`)** — the Unit of Work owns the repository instance and coordinates when it flushes writes; always access the repository through a UoW in transactional handlers.
-- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)** — the Composition Root is the only place that constructs concrete repository implementations and injects them into services or UoW factories.
+- **the aggregate pattern (`references/patterns/aggregate.md`).** One repository per aggregate root. Child entities are always reached through the root, never fetched directly.
+- **the unit of work pattern (`references/patterns/unit-of-work.md`).** The Unit of Work owns the repository instance and coordinates when it flushes writes. Always access the repository through a UoW in transactional handlers.
+- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`).** The Composition Root is the only place that constructs concrete repository implementations and injects them into services or UoW factories.

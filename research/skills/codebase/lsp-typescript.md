@@ -1,4 +1,4 @@
-# LSP reference: typescript (tsserver)
+# TypeScript LSP (tsserver)
 
 > Priming rules live in [`lsp-setup.md`](lsp-setup.md): run `npm install` to populate `node_modules`, then `tsc --build` for project references.
 >

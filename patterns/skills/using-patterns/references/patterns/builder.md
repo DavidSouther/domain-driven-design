@@ -2,7 +2,7 @@
 
 ## Overview
 
-Use a dedicated builder object to accumulate configuration step-by-step and validate completeness before producing the final object. This prevents half-initialized objects from entering the system and makes required vs optional fields explicit in the API.
+Use a builder object to accumulate configuration step-by-step and validate it before producing the final object. This prevents incomplete objects from entering the system and clarifies which fields are required versus optional.
 
 ## When to use
 
@@ -15,9 +15,9 @@ Use a dedicated builder object to accumulate configuration step-by-step and vali
 
 ## Core pattern
 
-**Before** — positional constructor hides intent: `new HttpRequest("POST", url, undefined, body, 30000)` — easy to swap arguments, impossible to tell which `undefined` is headers.
+**Before:** A positional constructor hides intent. The code `new HttpRequest("POST", url, undefined, body, 30000)` makes it easy to swap arguments and impossible to tell which `undefined` is headers.
 
-**After** — Builder makes required fields mandatory at construction time and optional fields discoverable:
+**After:** A builder makes required fields mandatory at construction time and optional fields discoverable.
 
 ```
 const req = HttpRequest.builder("POST", "https://api.example.com/orders")
@@ -47,4 +47,4 @@ For complete examples, see [`builder/typescript.md`](builder/typescript.md), [`b
 
 - **the newtype pattern (`references/patterns/newtype.md`)** since you frequently use newtypes for fields; the builder's factory method is the natural place to call the newtype constructor and validate in one step.
 - **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** can use builders during parsing to "build up" the domain object, defering final validation until completing the builder.
-- **the domain-objects pattern (`references/patterns/domain-objects.md`)** — use a builder when constructing an entity or value object with three or more required fields to prevent partial initialization.
+- **the domain-objects pattern (`references/patterns/domain-objects.md`)**. Use a builder when constructing an entity or value object with three or more required fields to prevent partial initialization.

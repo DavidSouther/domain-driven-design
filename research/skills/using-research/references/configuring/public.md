@@ -7,7 +7,7 @@
 
 ## Overview
 
-This skill installs the harness that `research:public` consumes. The core transport — `WebSearch` and `WebFetch` — is **built in**: it needs no install, no key, and no handshake. 
+This skill installs the harness that `research:public` consumes. The core transport (`WebSearch` and `WebFetch`) comes built in: it needs no install, no key, and no handshake. 
 
 The harness here is **policy, not plumbing**. It includes a contact User-Agent, per-host rate limits, an allowed/blocked-domain list, and an optional **augmented-search** provider for higher-recall or domain-scoped search. The wiring records that policy and confirms the built-in tools. It smoke-tests them plus any augmentation. Re-running confirms the policy and the optional provider; it never destroys state.
 
@@ -50,15 +50,15 @@ Walk top-to-bottom on a fresh environment. The default items are **policy, not i
 
 Default (policy, no install):
 
-- [ ] **Built-in WebSearch / WebFetch** — confirm both tools are available in the environment (they are built in, no install). Set `RESEARCH_USER_AGENT` (or the environment's equivalent) to a string containing a contact email per [`public/references/etiquette.md`](../../../public/references/etiquette.md). Smoke-test: a web search for a known term, then a fetch of one result.
-- [ ] **Domain policy** — record the allowed-domain list (empty means unrestricted) and the blocked-domain list in [`public/references/etiquette.md`](../../../public/references/etiquette.md). Smoke-test: fetching from a blocked host fails, and fetching from an allowed host succeeds.
-- [ ] **Rate limits** — record per-host request spacing and backoff-on-429 per the etiquette file. Smoke-test: confirm backoff behavior on a host that signals 429, or document the limit if none is hit.
+- [ ] **Built-in WebSearch / WebFetch**: confirm both tools are available in the environment (they come built-in, no install). Set `RESEARCH_USER_AGENT` (or the environment's equivalent) to a string containing a contact email per [`public/references/etiquette.md`](../../../public/references/etiquette.md). Smoke-test: a web search for a known term, then a fetch of one result.
+- [ ] **Domain policy**: record the allowed-domain list (empty means unrestricted) and the blocked-domain list in [`public/references/etiquette.md`](../../../public/references/etiquette.md). Smoke-test: fetching from a blocked host fails, and fetching from an allowed host succeeds.
+- [ ] **Rate limits**: record per-host request spacing and backoff-on-429 per the etiquette file. Smoke-test: confirm backoff behavior on a host that signals 429, or document the limit if you do not encounter it.
 
 Priority (none). The public stack has no priority-tier installs. The default tier is complete on its own. We list this item for parity with the sibling skills.
 
 Opt-in (configure when the user supplies access):
 
-- [ ] **Search-augmentation provider** — probe the configured search-augmentation MCP for this project, which may be a hosted search-API connector or a domain-scoped index the user runs. Otherwise fall back to built-in `WebSearch`. Set the provider's API key env var if it has one. Per [`public/references/augmented-search.md`](../../../public/references/augmented-search.md). Smoke-test: an augmented search for a known term returns provider-ranked hits. If you don't configure a provider, mark *augmented search* Not-Available.
+- [ ] **Search-augmentation provider**: probe the configured search-augmentation MCP for this project, which may be a hosted search-API connector or a domain-scoped index the user runs. Otherwise fall back to built-in `WebSearch`. Set the provider's API key env var if it has one. Per [`public/references/augmented-search.md`](../../../public/references/augmented-search.md). Smoke-test: an augmented search for a known term returns provider-ranked hits. If you don't configure a provider, mark *augmented search* Not-Available.
 
 **Marketplace plugins are not required** for the default stack. The augmentation provider, if present, installs via the `/plugin marketplace add … / /plugin install …` commands for parity with the sibling skills.
 
@@ -76,10 +76,10 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 
 ## Composes with
 
-- **`research:public`** — the per-query partner. Wiring publishes the contract and the etiquette/domain policy; practice consumes them.
-- **the internal setup reference (`internal.md`)** and **the codebase setup reference (`codebase.md`)** — sibling wiring for the other two stacks. Disjoint at the source level; shared cadence convention.
-- **the books setup reference (`books.md`)** and **the papers setup reference (`papers.md`)** — the established sibling wiring references in the family.
-- **`research/references/citations.md`** — the IEEE `[Online]` citation form the practice skill writes against.
-- **`research/references/jeopardy.md`** — the 3-5 variant query expansion the practice skill runs before searching.
-- **`research/references/falsify.md`** — the falsification pass the practice skill runs on load-bearing claims (its Source Quality section already cites this).
-- **`research/references/thread-digest.md`** — the three-pass digest the practice skill routes a fetched conversational thread (a forum, Reddit/HN, or mailing-list thread) through before treating it as scoped.
+- **`research:public`**: the per-query partner. Wiring publishes the contract and the etiquette/domain policy; practice consumes them.
+- **the internal setup reference (`internal.md`)** and **the codebase setup reference (`codebase.md`)**: sibling wiring for the other two stacks. Disjoint at the source level; shared cadence convention.
+- **the books setup reference (`books.md`)** and **the papers setup reference (`papers.md`)**: the established sibling wiring references in the family.
+- **`research/references/citations.md`**: the IEEE `[Online]` citation form the practice skill writes against.
+- **`research/references/jeopardy.md`**: the 3-5 variant query expansion the practice skill runs before searching.
+- **`research/references/falsify.md`**: the falsification pass the practice skill runs on load-bearing claims (its Source Quality section already cites this).
+- **`research/references/thread-digest.md`**: the three-pass digest the practice skill routes a fetched conversational thread (a forum, Reddit/HN, or mailing-list thread) through before treating it as scoped.

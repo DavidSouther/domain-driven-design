@@ -35,6 +35,6 @@ Personal library metadata is the user's own. Quotation rights depend on the orig
 
 ## Failure modes
 
-- **Invalid API key** — rotate at `zotero.org/settings/keys` and re-run [`../../configuring-books/SKILL.md`](../../configuring-books/SKILL.md).
-- **Library ID mismatch** — for group libraries, swap `/users/{id}` for `/groups/{id}`.
-- **Missing item type filter** — without `itemType=book||bookSection`, results may include papers and web pages.
+- **Invalid API key**: rotate at `zotero.org/settings/keys` and re-run [`../../configuring-books/SKILL.md`](../../configuring-books/SKILL.md).
+- **Library ID mismatch**: for group libraries, swap `/users/{id}` for `/groups/{id}`.
+- **Missing item type filter**: without `itemType=book||bookSection`, results may include papers and web pages.

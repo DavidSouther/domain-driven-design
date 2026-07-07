@@ -6,7 +6,7 @@ The Closing Bell is the exit criterion of a project loop. It is a summative usab
 
 ## Written once, run once
 
-You author the Closing Bell once, at the start of the project, before designing the features. Nothing is built yet, so it cannot pass or fail. It is a statement of intent. It describes, in qualitative terms, what the finished project should let a competent user do.
+You author the Closing Bell once, at the start of the project, before designing the features. You have not built anything yet, so it cannot pass or fail. It is a statement of intent. It describes, in qualitative terms, what the finished project should let a competent user do.
 
 Near completion, you schedule and run it once. A real participant attempts the tasks, and an evaluator judges against the recorded criteria whether the project delivered what it intended.
 

@@ -1,4 +1,4 @@
-# Unit of Work, TypeScript reference
+# TypeScript Unit of Work
 
 TypeScript uses `Symbol.asyncDispose` (ES2023 `await using`) for automatic rollback on scope exit.
 
@@ -10,7 +10,7 @@ interface UnitOfWork extends AsyncDisposable {
   collectEvents(): DomainEvent[];
 }
 
-// In-memory fake — fast unit tests without a database
+// In-memory fake: fast unit tests without a database
 class InMemoryUnitOfWork implements UnitOfWork {
   readonly products = new InMemoryProductRepository();
   committed = false;

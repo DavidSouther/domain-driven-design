@@ -1,13 +1,13 @@
 ---
 name: ailly
-description: "Use when starting, resuming, or routing any software development task. The single bootstrap and session coordinator for the developer skill package: it directs which developer ability applies and drives the five-phase development loop. You enter each phase (research, design, plan, red-green-refactor/build, cleanup) by passing a phase argument. It creates and manages the session folder, enforces the draft gates between phases, runs the phase-entry model and tool-readiness checks, and resumes an existing session at the right phase. It routes the coordinator's progressive abilities: thinking (stuck on a compiler/test/lint error during build), refactor (clean up green code before finishing), initialize (set up a new project or language environment), and program-management (read the next task or wire the team's issue tracker and document system). It also drives quick-loop, long-loop, bugfix, and project-shape variants."
+description: "Use when starting, resuming, or routing any software development task. The single bootstrap and session coordinator for the developer skill package: it directs which developer ability applies and drives the five-phase development loop. You enter each phase by passing a phase argument: research, design, plan, red-green-refactor/build, or cleanup. It creates and manages the session folder, enforces the draft gates between phases, runs the phase-entry model and tool-readiness checks, and resumes an existing session at the right phase. It routes the coordinator's progressive abilities: thinking (stuck on a compiler/test/lint error during build), refactor (clean up green code before finishing), initialize (set up a new project or language environment), and program-management (read the next task or wire the team's issue tracker and document system). It also drives quick-loop, long-loop, bugfix, and project-shape variants."
 ---
 
 # Developer:ailly
 
 ## Overview
 
-The developer skill package's bootstrap and session coordinator. It routes every developer task to the right ability, creates and manages the session folder, drives each of the five lifecycle phases, enforces draft gates, and determines where to resume when re-entering an existing session.
+The developer skill package's bootstrap and session coordinator. It routes every developer task to the right ability and manages the session folder. It drives each of the five lifecycle phases, enforces draft gates, and determines where to resume when re-entering an existing session.
 
 The five phases are **research**, **design**, **plan**, **red-green-refactor** (the Build phase), and **cleanup**. You enter them by argument, not by selecting a standalone skill. `/ailly design ...` runs the design phase. `/ailly` with no phase resumes the session at the correct phase (see Phase Argument and Resume). Each phase body lives in `developer/skills/ailly/references/phases/<phase>.md`. The coordinator never inlines all five phase bodies: it selects the one reference for the current phase and runs it through the active harness's isolation mechanism.
 
@@ -40,10 +40,10 @@ The coordinator's other abilities are progressive references it consults when th
 
 Ailly's shared references use a canonical tool vocabulary. These tools include `Read`, `Edit`, `Bash`, `Task`, `Skill`, `TodoWrite`, and related names. This keeps the workflow stable across agent ecosystems. Before executing any instruction whose tool name differs in the active environment, consult `references/agents/<harness>.md`. The supported harness adapters are:
 
-- `references/agents/claude.md` — Claude Code, where the canonical vocabulary is native.
-- `references/agents/codex.md` — Codex tool and subagent mappings.
-- `references/agents/copilot.md` — Copilot command-line tool and async-session mappings.
-- `references/agents/gemini.md` — Gemini command-line tool and subagent mappings.
+- `references/agents/claude.md`: Claude Code, where the canonical vocabulary is native.
+- `references/agents/codex.md`: Codex tool and subagent mappings.
+- `references/agents/copilot.md`: Copilot command-line tool and async-session mappings.
+- `references/agents/gemini.md`: Gemini command-line tool and subagent mappings.
 
 ```dot
 digraph phases {
@@ -109,14 +109,14 @@ If the folder already exists for the current topic, determine resume point:
 
 | Files present | Draft marker cleared? | Resume at (phase reference) |
 |---|---|---|
-| No files | — | Research phase (`references/phases/research.md`) |
+| No files | N/A | Research phase (`references/phases/research.md`) |
 | `research.md` | No | Wait, ask user to clear the draft |
 | `research.md` | Yes | Design phase (`references/phases/design.md`) |
 | `design.md` | No | Wait, ask user to clear the draft |
 | `design.md` | Yes | Plan phase (`references/phases/plan.md`) |
 | `plan.md` | No | Wait, ask user to clear the draft |
 | `plan.md` | Yes | Build (`references/phases/red-green-refactor.md`) |
-| `plan.md` cleared, all steps done, feature test green | — | Cleanup phase (`references/phases/cleanup.md`) |
+| `plan.md` cleared, all steps done, feature test green | N/A | Cleanup phase (`references/phases/cleanup.md`) |
 
 A file has its draft cleared when it no longer contains the `*Draft` marker.
 
@@ -166,7 +166,7 @@ digraph run {
 
 ## Draft gate enforcement
 
-When first hitting a draft gate, perform a review using `references/abilities/intent-review.md` (a recommended, dismissible default) through the harness isolation path. Working backward from the original prompt through the accumulated artifacts, it notates probative intent questions in the session's `reviews/` folder. The human weighs these questions alongside their own draft-gate review. When requested, the session can use `general:conversation` to walk through the questions with the user.
+When first hitting a draft gate, perform a review by using `references/abilities/intent-review.md` (a recommended, dismissible default) through the harness isolation path. Working backward from the original prompt through the accumulated artifacts, it notates probative intent questions in the session's `reviews/` folder. The human weighs these questions alongside their own draft-gate review. When requested, the session can use `general:conversation` to walk through the questions with the user.
 
 After any research, design, or plan phase produces a draft, stop the session and tell the user:
 
@@ -237,7 +237,7 @@ When first starting an Ailly task, the user may ask to "run a long loop," a "dyn
 - Unlike quick-loop, the long loop does **not** inherit the forbidden list. Use it as the intended substitute precisely where you must forbid quick-loop. Apply it to ambiguous work, high-blast-radius decisions, and security-sensitive tasks while keeping full-fidelity artifacts and deliberation.
 - The human merge gate and the Closing Bell are **never** auto-cleared by any reviewer.
 
-See `developer/skills/ailly/references/shapes/long-loop.md` for the reviewer contract, the recording format, the escalation rule, the project-cycle interaction, and the end-of-run report.
+See `developer/skills/ailly/references/shapes/long-loop.md` for the reviewer contract and recording format. It covers the escalation rule, project-cycle interaction, and end-of-run report.
 
 ## Bugfix shape
 

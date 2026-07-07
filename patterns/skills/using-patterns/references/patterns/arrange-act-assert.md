@@ -2,7 +2,7 @@
 
 ## Overview
 
-Structure every test as three distinct, visually separated phases: **arrange** the preconditions, **act** by invoking the code under test exactly once, then **assert** the outcomes. The blank lines between phases are not style. They make the test's intent immediately readable and force each test to exercise one behavior.
+Structure every test as three distinct, visually separated phases: **arrange** the preconditions, **act** by calling the code under test once, then **assert** the outcomes. The blank lines between phases are not style. They make the test's intent immediately readable and force each test to exercise one behavior.
 
 An equivalent framing from BDD: **given** the system is in a known state, **when** an operation occurs, **then** observable behavior changes in a specific way. GWT nudges phrasing toward user-visible behavior rather than internal mechanics.
 
@@ -17,7 +17,7 @@ An equivalent framing from BDD: **given** the system is in a known state, **when
 
 ## Core pattern
 
-**Before** — phases interleave, intent hides:
+**Before:** phases interleave, intent hides.
 
 ```python
 def test_checkout():
@@ -30,7 +30,7 @@ def test_checkout():
     assert cart.total() == 0          # which behavior does this test?
 ```
 
-**After** — one blank line per boundary, one behavior per test:
+**After:** one blank line per boundary, one behavior per test.
 
 ```python
 def test_checkout_clears_cart():
@@ -78,6 +78,6 @@ Given-When-Then maps directly: given → arrange, when → act, then → assert.
 
 ## Composes with
 
-- **the builder pattern (`references/patterns/builder.md`)** — long Arrange phases frequently signal a missing builder; replace multi-line object construction with a fluent builder call.
-- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — tests for parse functions have a natural AAA shape: Arrange raw input, Act by parsing, Assert the domain type.
-- **the type-states pattern (`references/patterns/type-states.md`)** — tests for state-machine transitions map directly: Arrange the object in its starting state, Act to trigger the transition, Assert the resulting state.
+- **the builder pattern (`references/patterns/builder.md`)**: Long Arrange phases frequently signal a missing builder. Replace multi-line object construction with a fluent builder call.
+- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)**: Tests for parse functions have a natural AAA shape. Arrange raw input, Act by parsing, Assert the domain type.
+- **the type-states pattern (`references/patterns/type-states.md`)**: Tests for state-machine transitions map directly. Arrange the object in its starting state, Act to trigger the transition, Assert the resulting state.

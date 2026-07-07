@@ -21,7 +21,7 @@ Use it when you have faked an implementation and are unsure how to generalize. A
 
 ## Core pattern
 
-**Step 1—Write a failing test and fake it:**
+**Step 1: Write a failing test and fake it:**
 
 ```python
 def test_sum_first():
@@ -34,7 +34,7 @@ def sum(a, b):
 
 The test passes, but the implementation is wrong for any other inputs.
 
-**Step 2—Add a second test that the fake cannot satisfy:**
+**Step 2: Add a second test that the fake cannot satisfy:**
 
 ```python
 def test_sum_second():
@@ -43,7 +43,7 @@ def test_sum_second():
 
 The second test now exposes the fake implementation. It triangulates the position of the real implementation: you must generalize.
 
-**Step 3—Write the real implementation:**
+**Step 3: Write the real implementation:**
 
 ```python
 def sum(a, b):

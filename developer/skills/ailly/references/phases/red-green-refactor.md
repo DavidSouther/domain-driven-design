@@ -47,7 +47,7 @@ digraph rgr {
     write_test -> run_check_test;
     run_check_test -> test_fails;
     test_fails -> implement [label="yes"];
-    test_fails -> write_test [label="no — fix test"];
+    test_fails -> write_test [label="no, fix test"];
     implement -> run_checks;
     run_checks -> all_pass;
     all_pass -> same_error [label="no"];
@@ -73,7 +73,7 @@ Run check. Fix all type errors before writing any tests. A clean type check mean
 
 ## Test: arrange-act-assert
 
-Add one test per iteration using the arrange-act-assert pattern. See `patterns:using-patterns` and `references/patterns/arrange-act-assert.md` for details. The test should:
+Add one test per iteration by using the arrange-act-assert pattern. See `patterns:using-patterns` and `references/patterns/arrange-act-assert.md` for details. The test should:
 - Target one behavior of the current plan step
 - Fail for the right reason (the implementation is a stub, not a type error)
 - Triangulate implementation and edge cases following the triangulate pattern. See `patterns:using-patterns` and `references/patterns/triangulate.md` for details.

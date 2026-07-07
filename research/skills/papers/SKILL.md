@@ -7,7 +7,7 @@ description: "Use when a research question targets an academic paper, preprint, 
 
 ## Overview
 
-Per-query research against the configured papers capability contract. Pick the **capability** the question needs: doi metadata, OA-PDF retrieval, topic search, citation graph, preprint search, biomedical search, citation-context classification. Dispatch to it and write the result with IEEE citations. The transport (MCP or HTTP) is the wiring's concern, not this skill's. Setup, key rotation, marketplace-plugin installs, and SSO handshakes belong in [the papers setup reference](../using-research/references/configuring/papers.md). This skill consumes the contract that skill publishes.
+Conduct per-query research against your configured papers capability contract. Identify which capability answers the question: doi metadata, OA-PDF retrieval, topic search, citation graph, preprint search, biomedical search, or citation-context classification. Dispatch to it and write results with IEEE citations. The transport layer (MCP or HTTP) is the wiring's responsibility. For setup, key rotation, marketplace-plugin installs, and SSO configuration, see [the papers setup reference](../using-research/references/configuring/papers.md).
 
 ## When to use / when not to use
 
@@ -33,11 +33,11 @@ Per-query research against the configured papers capability contract. Pick the *
 
 Before dispatching to a capability, expand the question into 3-5 variants. See [`research/references/jeopardy.md`](../../references/jeopardy.md) for the general technique. Papers-specific axes:
 
-- **DOI-vs-title** — when a DOI is in hand, prefer DOI-keyed capabilities; when only the title is known, run title-and-author queries against the topic-search capability.
-- **Author-name normalization** — first-author-last-name forms, ORCID id when known, common transliteration variants for non-English author names.
-- **Venue and year** — preprint year (ArXiv) vs. published year (Crossref); conference name (`PLDI 2024`) vs. journal name.
-- **Identifier variants** — DOI, PMID, PMCID, arXiv id; the same paper frequently has multiple identifiers and the *DOI fan-out* capability resolves disagreement.
-- **Topic-and-keyword variants** — narrow (specific technique with technology), broad (the field name), synonyms (`backpropagation` / `gradient descent` / `optimizer`).
+- **DOI-vs-title**: When you have a DOI, prefer DOI-keyed capabilities. When you know only the title, run title-and-author queries against the topic-search capability.
+- **Author-name normalization**: First-author-last-name forms, ORCID id when known, common transliteration variants for non-English author names.
+- **Venue and year**: Preprint year (ArXiv) vs. published year (Crossref); conference name (`PLDI 2024`) vs. journal name.
+- **Identifier variants**: DOI, PMID, PMCID, arXiv id. The same paper frequently has multiple identifiers, and the *DOI fan-out* capability resolves disagreement.
+- **Topic-and-keyword variants**: Narrow (specific technique with technology), broad (the field name), synonyms (`backpropagation` / `gradient descent` / `optimizer`).
 
 Run the variants in the order that the routing table below dictates. Union the result sets before deciding which capability has the highest-quality hit.
 
@@ -73,7 +73,7 @@ The routing table is the lookup. The heuristic below is what to apply when the q
 - **Biomedical** → `pubmed@life-sciences` when you install the plugin; Europe PMC for full-text coverage beyond PubMed.
 - **Publisher-specific** → Wiley Scholar Gateway when you configure SSO.
 
-For conditional capabilities that the contract marks Not-Available, accept the typed result as a routing signal and continue with the next capability in the heuristic. Not-Available indicates you haven't installed the plugin, completed SSO, or maintained your subscription. The free stack (OpenAlex + Semantic Scholar + Crossref + Unpaywall + ArXiv) covers the majority of queries without any conditional source.
+For conditional capabilities that the contract marks Not-Available, accept the typed result as a routing signal and continue with the next capability in the heuristic. Not-Available indicates you haven't installed the plugin, completed SSO, or maintained your subscription. The free stack includes OpenAlex, Semantic Scholar, Crossref, Unpaywall, and ArXiv. This covers the majority of queries without any conditional source.
 
 ## Output format
 
@@ -104,7 +104,7 @@ Excerpts only. Do not stage cached PDFs or full bodies. For passages from licens
 
 ## Composes with
 
-- **the papers setup reference** (`research:using-research` and `references/configuring/papers.md`). This is the wiring partner that publishes the contract this skill consumes.
-- **`research:books`** — sibling practice skill for citable books.
-- **`research/references/jeopardy.md`** — query expansion technique.
-- **`research/references/citations.md`** — IEEE citation format.
+- **the papers setup reference**: See `research:using-research` and `references/configuring/papers.md`. This is the wiring partner that publishes the contract this skill consumes.
+- **`research:books`**: Sibling practice skill for citable books.
+- **`research/references/jeopardy.md`**: Query expansion technique.
+- **`research/references/citations.md`**: IEEE citation format.

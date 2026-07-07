@@ -1,9 +1,9 @@
 # Configuring feature flags in Rust
 
-The composition root builds one evaluation client behind a vendor-neutral port and injects it. Call sites receive the port, never a vendor SDK.
+Build one evaluation client at the composition root. Call sites receive a vendor-neutral port, never the vendor SDK.
 
 ```rust
-// flags.rs — the vendor-neutral port every call site reads through
+// flags.rs: the vendor-neutral port every call site reads through
 pub struct FlagContext {
     pub environment: String,
     pub user_id: Option<String>,
@@ -81,7 +81,7 @@ in-memory-flags = []                          # default for local and CI: no ext
 ```
 
 ```rust
-// composition root — select the backing at compile time, not runtime
+// composition root: select the backing at compile time, not runtime
 #[cfg(feature = "openfeature-provider")]
 pub fn build_flags(environment: &str) -> Box<dyn Flags> {
     Box::new(FailSafe(OpenFeatureAdapter::new(environment)))

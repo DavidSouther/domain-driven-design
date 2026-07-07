@@ -10,7 +10,7 @@ The four layers and their mandates:
 | **Composition Root** | The only place that imports concrete classes; constructs and injects all dependencies; runs once at startup |
 
 ```typescript
-// domain.ts — pure logic, no I/O
+// domain.ts: pure logic, no I/O
 export type Order = { id: string; total: number };
 export type InsufficientFunds = { kind: "InsufficientFunds"; balance: number };
 
@@ -19,12 +19,12 @@ export function placeOrder(order: Order, balance: number): Order | InsufficientF
   return order;
 }
 
-// ports.ts — interfaces owned by the service layer (not the adapter)
+// ports.ts: interfaces owned by the service layer (not the adapter)
 export interface OrderRepository {
   getBalance(customerId: string): Promise<number>;
 }
 
-// service.ts — application service: orchestrates, does not own rules
+// service.ts: application service that orchestrates, does not own rules
 export class OrderService {
   constructor(private readonly repo: OrderRepository) {}
 
@@ -36,7 +36,7 @@ export class OrderService {
   }
 }
 
-// adapter.ts — thin HTTP adapter; maps protocol, calls service
+// adapter.ts: thin HTTP adapter; maps protocol, calls service
 async function handlePlaceOrder(req: Request, res: Response) {
   const result = await orderService.place(req.body);
   if (result.kind === "InsufficientFunds") return res.status(422).json(result);
@@ -44,7 +44,7 @@ async function handlePlaceOrder(req: Request, res: Response) {
   res.status(201).json(result);
 }
 
-// bootstrap.ts — Composition Root; the only file that knows about Postgres
+// bootstrap.ts: Composition Root; the only file that knows about Postgres
 const repo = new PostgresOrderRepository(process.env.DATABASE_URL);
 const orderService = new OrderService(repo);
 app.post("/orders", handlePlaceOrder);

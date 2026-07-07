@@ -1,14 +1,14 @@
 # Repository: TypeScript reference
 
 ```typescript
-// domain/repositories.ts — interface defined in the domain layer; no ORM imports
+// domain/repositories.ts: interface defined in the domain layer; no ORM imports
 interface ProductRepository {
   get(sku: string): Promise<Product | null>;
   add(product: Product): Promise<void>;
   list(): Promise<Product[]>;
 }
 
-// infrastructure/repositories.ts — implements the domain interface
+// infrastructure/repositories.ts: implements the domain interface
 class InMemoryProductRepository implements ProductRepository {
   private store = new Map<string, Product>();
 
@@ -25,7 +25,7 @@ class InMemoryProductRepository implements ProductRepository {
   }
 }
 
-// domain/services.ts — depends only on the interface, never on InMemory or SQL
+// domain/services.ts: depends only on the interface, never on InMemory or SQL
 async function allocate(orderLine: OrderLine, repo: ProductRepository): Promise<string> {
   const product = await repo.get(orderLine.sku);
   if (!product) throw new Error(`Unknown SKU: ${orderLine.sku}`);

@@ -2,7 +2,7 @@
 
 ## Selection principle
 
-Match the model to the task's complexity profile, not to which phase or skill happens to be dispatching. Favor the strongest available reasoner when the task exhibits high reasoning depth, heavy constraint or rule-following, deep domain specificity, or a pronounced generation-vs-evaluation asymmetry. The task is far harder to produce correctly than to check. Work that is low-complexity, rote, orchestration over a settled task list, or narrowly scoped favors a cheaper, faster model. Ensure that cheaper model clears an eval suite scoped to the work it performs.
+Match the model to task complexity, not to the phase or skill dispatching it. Favor stronger reasoners when tasks need deep reasoning, strict constraint-following, specialized domain knowledge, or have high generation-vs-evaluation asymmetry. Production is much harder than evaluation in these cases. Lower-complexity work such as rote tasks, orchestration over settled lists, or narrow scope favors cheaper, faster models. Ensure that cheaper model clears an eval suite scoped to the work it performs.
 
 Express this as a bare alias, never a dated pinned version: `opus`, `sonnet`, or `haiku` for Anthropic, and the equivalent bare-alias tier for any other provider. A bare alias should point to a provider's own "recommended" or "latest" pointer, not a specific dated release. Aliases track a provider's own current recommendation over time. A pinned version stays frozen the day you write it and goes stale the moment the provider ships a new generation. The dated table below represents the one deliberate, clearly stamped exception to this rule. See Frontier-model caution.
 
@@ -10,10 +10,10 @@ Express this as a bare alias, never a dated pinned version: `opus`, `sonnet`, or
 
 Classify a task along these axes before choosing a model. A task rarely sits at one extreme on every axis; weigh whichever axis dominates the work.
 
-- **Reasoning depth** — how many inferential steps, or how much multi-step planning, does producing a correct answer require? Shallow: a lookup, a mechanical rewrite, a single-pass transformation. Deep: a design tradeoff, a root-cause diagnosis, a multi-file refactor plan.
-- **Constraint- or rule-following** — how many simultaneous constraints must the output satisfy, and how costly is silently dropping one? Loose: prose with a few stylistic preferences. Strict: a spec with many named, interacting invariants, or a security- or correctness-critical contract.
-- **Domain specificity** — how much specialized, narrow domain knowledge does the task assume before the model can even begin reasoning about it? General: everyday code or writing. Specific: an unusual API, a niche protocol, a regulatory or legal domain, a codebase's own idiosyncratic conventions.
-- **Generation-vs-evaluation asymmetry** — is it much harder to produce the output than to check it once produced? High asymmetry (generation is the hard part) favors spending more capability on generation; low asymmetry (checking is roughly as hard as producing) is a signal that a cheaper model can do the work if a strong evaluator or test suite backs it up.
+- **Reasoning depth:** How many inferential steps or multi-step planning does a correct answer require? Shallow: a lookup, a mechanical rewrite, a single-pass transformation. Deep: a design tradeoff, a root-cause diagnosis, a multi-file refactor plan.
+- **Constraint- or rule-following:** How many simultaneous constraints must the output satisfy, and how costly is silently dropping one? Loose: prose with a few stylistic preferences. Strict: a spec with many named, interacting invariants, or a security- or correctness-critical contract.
+- **Domain specificity:** How much specialized, narrow domain knowledge does the task assume before the model can begin reasoning? General: everyday code or writing. Specific: an unusual API, a niche protocol, a regulatory or legal domain, or a codebase's own idiosyncratic conventions.
+- **Generation-vs-evaluation asymmetry:** Is it much harder to produce the output than to check it? High asymmetry means generation is the hard part, so spend more capability there. Low asymmetry means checking is roughly as hard as producing, so a cheaper model works if backed by a strong evaluator or test suite.
 
 ## Principle → provider example
 
@@ -30,6 +30,6 @@ Classify a task along these axes before choosing a model. A task rarely sits at 
 
 ## Frontier-model caution
 
-"Newest available" or "highest-benchmarked" is not, by itself, sufficient justification for recommending a model for a complexity dimension. A model earns a dimension's recommendation once it clears a strict eval suite scoped to that dimension. Reasoning-depth tasks get evaluated against reasoning-depth benchmarks. Constraint-following tasks get evaluated against constraint-adherence checks. The eval suite is documented here as future work, though this guidance does not build it. Until it exists, prefer a provider's own documented default alias over chasing whichever model is newest or scores highest on a general leaderboard.
+"Newest available" or "highest-benchmarked" is not, by itself, sufficient justification for recommending a model for a complexity dimension. A model earns a dimension's recommendation once it clears a strict eval suite scoped to that dimension. Reasoning-depth tasks get evaluated against reasoning-depth benchmarks. Constraint-following tasks get evaluated against constraint-adherence checks. We document the eval suite here as future work, though this guidance does not build it. Until it exists, prefer a provider's own documented default alias over chasing whichever model is newest or scores highest on a general leaderboard.
 
 **Override:** this is a default, not an absolute. Explicit human intent waives it for that request only. A project setting, a user setting, or a developer's own phrasing can explicitly ask for a frontier or newest model. Phrases like "use frontier" or "with the latest models" override the eval-gating default for that one dispatch. This targeted escape hatch ties to stated intent, not a general loosening of the default for unstated cases.

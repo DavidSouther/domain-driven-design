@@ -15,7 +15,7 @@ A page object encapsulates one UI surface (a screen, a page, or a console) behin
 
 ## Core pattern
 
-**Before** — the test inlines selectors and waits for `stellar_commander`'s `System` console, so a control rename breaks every test that touches it:
+**Before:** the test inlines selectors and waits for `stellar_commander`'s `System` console, so a control rename breaks every test that touches it:
 
 ```python
 def test_system_console_finds_object():
@@ -26,7 +26,7 @@ def test_system_console_finds_object():
     assert result == "Sol-3"
 ```
 
-**After** — a `SystemConsole` page object owns the selectors and waits behind a verb-phrase method; the test only acts through it and asserts on the return value:
+**After:** a `SystemConsole` page object owns the selectors and waits behind a verb-phrase method; the test only acts through it and asserts on the return value:
 
 ```python
 class SystemConsole:

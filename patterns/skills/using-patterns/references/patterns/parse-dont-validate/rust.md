@@ -5,7 +5,7 @@ Rust's `FromStr` / `TryFrom` traits are the idiomatic parse boundary. Only `from
 ```rust
 use std::str::FromStr;
 
-// BAD: validation returns bool — repeated at every call site
+// BAD: validation returns bool. Repeated at every call site
 fn is_valid_email(s: &str) -> bool {
     // simplified check for illustration
     s.contains('@') && s.contains('.')
@@ -30,7 +30,7 @@ impl FromStr for Email {
     }
 }
 
-// Domain functions accept &Email — compiler rejects plain &str
+// Domain functions accept &Email. Compiler rejects plain &str
 pub fn send_welcome(email: &Email) {
     smtp_send(&email.0, "Welcome!"); // no guard needed; the type is the proof
 }

@@ -32,10 +32,10 @@ Run the best 2–3 variants. Stop when results converge.
 
 Follow this order and stop as soon as you answer the question:
 
-1. **Read main config** — identify declared dependencies and version constraints
-2. **LSP hover** — on relevant import statements to get resolved type signatures
-3. **Local source** — if the project vendors the dependency or it lives in a monorepo sibling, use Bash to search it
-4. **Web** — use WebSearch + WebFetch for docs, changelogs, or API references when source is not local
+1. **Read main config**: identify declared dependencies and version constraints
+2. **LSP hover**: on relevant import statements to get resolved type signatures
+3. **Local source**: if the project vendors the dependency or it lives in a monorepo sibling, use Bash to search it
+4. **Web**: use WebSearch + WebFetch for docs, changelogs, or API references when source is not local
 
 ## Ecosystem config files reference
 
@@ -45,7 +45,7 @@ Follow this order and stop as soon as you answer the question:
 | Rust | `Cargo.toml` | `Cargo.lock` |
 | Python | `pyproject.toml`, `setup.py`, `requirements.txt` | `requirements.lock`, `pip.lock` |
 | Go | `go.mod` | `go.sum` |
-| Java/Kotlin | `pom.xml`, `build.gradle`, `build.gradle.kts` | — |
+| Java/Kotlin | `pom.xml`, `build.gradle`, `build.gradle.kts` | None |
 
 ## Output format
 

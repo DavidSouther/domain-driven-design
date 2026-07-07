@@ -1,6 +1,6 @@
 # Intent review
 
-> Ability referenced by each `developer:ailly` phase at its draft gate. Invoked through the active harness's isolation path and as one reviewer for `general:review`. There is no standalone `developer:intent-review` skill.
+> This ability runs at the draft gate of each `developer:ailly` phase. It uses the active harness's isolation path and reviews alongside `general:review`. There is no standalone `developer:intent-review` skill.
 
 ## Intent alignment gap
 
@@ -17,12 +17,7 @@ asked for. It generates falsifiable questions of the form:
 Every question is a falsifiable claim about behavior paired with a quote or paraphrase of the
 original request. Never include a vague quality judgment like "is this good code?"
 
-Before raising a candidate question, cross-reference it against the *entire* original request
-and against the artifact's own
-existing "Open Artifact Decisions" or deferred-decisions section, dropping any candidate the
-request or the artifact already resolves elsewhere. Skipping this dedup discipline causes the
-mechanism to over-generate shallow, already-settled questions instead of surfacing genuine
-drift.
+Before raising a candidate question, cross-reference it against the *entire* original request. Also check against the artifact's own "Open Artifact Decisions" or deferred-decisions section, dropping any candidate the request or artifact already resolves elsewhere. Skipping this dedup discipline causes the mechanism to over-generate shallow, already-settled questions instead of surfacing genuine drift.
 
 ## The four categories and the research-phase variant
 
@@ -47,10 +42,10 @@ Intent review runs as part of artifact review when reaching the **draft gate**, 
 
 Intent review **never clears** a draft gate, merge gate, or Closing Bell. It is not an autonomous
 gate-clearer, unlike long-loop's research-and-decide reviewer, which does auto-clear. It
-**supplements** the human's existing draft-gate review; it does not replace the human as the
-gate-clearer. In long-loop mode, the coordinator's existing research-and-decide reviewer still
-owns auto-clearing; intent review's questions may be an input that reviewer consults, but
-intent review itself never clears anything.
+**supplements** the human's existing draft-gate review without replacing the human's authority.
+In long-loop mode, the coordinator's research-and-decide reviewer still owns auto-clearing.
+Intent review's questions may inform that reviewer's decision, but intent review itself never
+clears anything.
 
 Dispatch is always **cold**: a memory-less, freshly dispatched reviewer with no access to the
 current session's own reasoning trail, reading the artifact fresh. This is the same fresh-eyes
@@ -59,8 +54,7 @@ work.
 
 ## Recording
 
-Intent review notates its questions using `general:review`'s `reviews/` folder convention. Dated entries get resolved and closed once the human answers them, never written in place into the
-artifact under review. See that skill for the mechanism.
+Intent review notates its questions by using `general:review`'s `reviews/` folder convention. Dated entries get resolved and closed once the human answers them, never written in place into the artifact under review. See that skill for the mechanism.
 
 ## The original-prompt anchor
 
@@ -71,7 +65,7 @@ anchor is genuinely available and most faithful to the original ask, best effort
 - the session's own `research.md` **Topic and Intent** section (or an equivalent durable record
   of the original request) as fallback.
 
-Apply the `.ailly/prompts/` convention when present; do not formalize it as a convention that
-must exist. Whichever source is actually read, the Topic and Intent section must carry the
-original request as an exact, verbatim quote, not a paraphrase, since it serves either directly
-or as the fallback anchor (see `references/phases/research.md`'s Topic and Intent instruction).
+Apply the `.ailly/prompts/` convention when present; do not formalize it as mandatory.
+Whichever source is actually read, the Topic and Intent section must carry the original request
+as an exact, verbatim quote, not a paraphrase. It serves either directly or as the fallback
+anchor (see `references/phases/research.md`'s Topic and Intent instruction).

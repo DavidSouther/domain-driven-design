@@ -30,7 +30,7 @@ Read the three types. The notes tier is always active; the task and doc tiers la
 4. **Create/label tasks** for features and bugs using the recorded labels, and link to the parent Epic via the link capability. Use field-write as fallback where no dedicated tool exists. When you discover a sub-issue mid-build, link it to its parent immediately when you create the child issue using the same link capability. Do not defer this to cleanup.
 5. **Record phase progress** per the recorded strategy as phases advance (the default is to tick the task's checklist). Where the configured tracker exposes a status field, also move the board card between columns at these phase boundaries: to **In Progress** when the Research phase begins (first commit to the session branch), and to **Done** when the Cleanup phase completes and the issue closes. Where no status field exists, route through the existing Not-Available/field-write fallback instead of skipping the transition.
 6. **Write deferred work** at cleanup as labeled tasks/comments under the right parent (Note → Task). This defaults to `TASKS.md` today when you have not configured a tracker.
-7. **Publish on Project acceptance** (Note → Doc): when the topic is a Project and the doc-system target is set, replicate the accepted notes to the document system and mark them `completed:`. Feature/bug notes are not published; they stay local, and you remove them at cleanup.
+7. **Publish on Project acceptance** (Note → Doc): when the topic is a Project and you set the doc-system target, replicate the accepted notes to the document system and mark them `completed:`. Feature/bug notes are not published; they stay local, and you remove them at cleanup.
 8. **Never re-teach setup.** A "before you start, confirm you configured the tracker…" preface is a contract bug. The wiring skill owns setup; widen its contract rather than prefacing this skill.
 
 ## Capability routing
@@ -51,13 +51,13 @@ Treat Not-Available as a **routing signal, not an error**: route the task tier t
 
 When `DEVELOPMENT.md` has no `## Program Management` section, or its **Active tracker** is unset or `none`:
 
-- **Tasks** falls back to `TASKS.md` — today's behavior, unchanged: next task selected from `TASKS.md`, deferred work written back to it.
+- **Tasks** falls back to `TASKS.md` (today's behavior, unchanged): next task selected from `TASKS.md`, deferred work written back to it.
 - **Docs** has no publish target; accepted Project notes stay local.
 - **Notes** remain unaffected. You write working files in `.ailly/developer/` exactly the same way whether or not you configure a tracker. The floor never degrades.
 
 ## Composes with
 
-- **[the configuring reference](configuring.md)** — the wiring partner. Publishes the contract this reference consumes; owns tracker detection, MCP install, OAuth/SSO, and the term mapping.
-- **`developer:ailly`** — the coordinator defers next-task selection and deferred-work writing here when you configure a tracker.
+- **[the configuring reference](configuring.md)**: the wiring partner. Publishes the contract this reference consumes; owns tracker detection, MCP install, OAuth/SSO, and the term mapping.
+- **`developer:ailly`**: the coordinator defers next-task selection and deferred-work writing here when you configure a tracker.
 - **The cleanup phase** (`references/phases/cleanup.md`) defers deferred-work write-back and Project doc publication at the end of a topic.
 - **[the internal sources setup reference](../../../../../research/skills/using-research/references/configuring/internal.md)** owns the MCP transport and auth for the same tracker MCPs. See `research:using-research` and `references/configuring/internal.md`.

@@ -1,4 +1,4 @@
-# Falsification reference
+# Falsification guide
 
 A single negative example disproves a claim. This is the asymmetry Karl Popper named in *The Logic of Scientific Discovery*: no number of confirming observations can prove a universal claim. Yet one well-found counterexample can refute it [1]. Confirmation is suggestive. Refutation is decisive.
 

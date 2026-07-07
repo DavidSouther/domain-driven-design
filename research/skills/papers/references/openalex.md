@@ -6,7 +6,7 @@ OurResearch's open scholarly graph. Broadest coverage at ~240M works, with citat
 
 - **Topic search** across the broadest open index.
 - **DOI / PMID / OpenAlex-ID lookup**.
-- **Citation graph** — `referenced_works`, `cited_by_count`, `cited_by_api_url`.
+- **Citation graph**: `referenced_works`, `cited_by_count`, `cited_by_api_url`.
 - **Institutions, authors, concepts, sources** as first-class entities.
 
 Example payload (`/works/{doi}`):
@@ -42,6 +42,6 @@ OpenAlex metadata is **CC0**. OpenAlex provides links to full text; the original
 
 ## Failure modes
 
-- **401 / missing key** — set `OPENALEX_API_KEY`.
-- **Daily credit exhausted** — the practice skill returns a typed Not-Available for the *Topic search* capability via OpenAlex; degrade to Semantic Scholar or Crossref.
-- **Result paginated** — OpenAlex uses cursor-based pagination beyond 10k results; pass `cursor=*` to start.
+- **401 / missing key**: set `OPENALEX_API_KEY`.
+- **Daily credit exhausted**: the practice skill returns a typed Not-Available for the *Topic search* capability via OpenAlex; degrade to Semantic Scholar or Crossref.
+- **Result paginated**: OpenAlex uses cursor-based pagination beyond 10k results; pass `cursor=*` to start.

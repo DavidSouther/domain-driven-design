@@ -1,7 +1,7 @@
-# Repository. python reference
+# Python repository reference
 
 ```python
-# domain/repositories.py — lives in the domain layer; no ORM imports here
+# domain/repositories.py: lives in the domain layer; no ORM imports here
 from abc import ABC, abstractmethod
 from typing import Optional, List
 
@@ -16,7 +16,7 @@ class AbstractProductRepository(ABC):
     def list(self) -> List["Product"]: ...
 
 
-# infrastructure/repositories.py — implements the domain interface
+# infrastructure/repositories.py: implements the domain interface
 class InMemoryProductRepository(AbstractProductRepository):
     def __init__(self):
         self._store: dict[str, "Product"] = {}
@@ -31,7 +31,7 @@ class InMemoryProductRepository(AbstractProductRepository):
         return list(self._store.values())
 
 
-# domain/services.py — depends only on the abstract interface
+# domain/services.py: depends only on the abstract interface
 def allocate(order_line, repo: AbstractProductRepository) -> str:
     product = repo.get(order_line.sku)
     if product is None:

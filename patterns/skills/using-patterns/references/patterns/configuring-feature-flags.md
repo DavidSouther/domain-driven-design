@@ -75,7 +75,7 @@ Re-run this skill, and confirm the contract still holds, when:
 
 ## Composes with
 
-- **the using-feature-flags pattern (`references/patterns/using-feature-flags.md`)** — the call-site partner. This skill installs the evaluation entry point and the conventions. That skill puts one feature behind one flag at one toggle point. Run them together.
-- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)** — the composition root that skill describes injects the entry point built here.
-- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — the evaluation context crosses a boundary, so parse it into a typed shape rather than threading raw values inward.
-- **`developer/skills/ailly/references/shapes/project/release-flags.md`** — the project loop's single release gate is one app of this harness.
+- **the using-feature-flags pattern (`references/patterns/using-feature-flags.md`)**: The call-site partner. This skill installs the evaluation entry point and the conventions. That skill puts one feature behind one flag at one toggle point. Run them together.
+- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)**: The composition root that skill describes injects the entry point built here.
+- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)**: The evaluation context crosses a boundary, so parse it into a typed shape rather than threading raw values inward.
+- **`developer/skills/ailly/references/shapes/project/release-flags.md`**: The project loop's single release gate is one app of this harness.

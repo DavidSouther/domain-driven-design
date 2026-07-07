@@ -4,15 +4,15 @@ The org knowledge base. First stop for specs, ADRs, runbooks, and any long-form 
 
 ## What it provides
 
-- **Confluence/Notion search** — page hits with their space (Confluence) or workspace (Notion) and a URL.
-- **Confluence/Notion fetch** — the page body, and comments where the connector exposes them, given a page id or URL.
+- **Confluence/Notion search**: page hits with their space (Confluence) or workspace (Notion) and a URL.
+- **Confluence/Notion fetch**: the page body, and comments where the connector exposes them, given a page id or URL.
 
 ## MCP / Connector
 
 Two wiki shapes share this contract row:
 
-- **Notion** — the Anthropic Notion connector exposes `notion-search` and `notion-fetch` (plus `notion-get-comments` when you want comments).
-- **Confluence** — probe the configured Confluence MCP for this org; tool names vary by which server you install, so discover the surface rather than assuming a slug.
+- **Notion**: the Anthropic Notion connector exposes `notion-search` and `notion-fetch` (plus `notion-get-comments` when you want comments).
+- **Confluence**: probe the configured Confluence MCP for this org; tool names vary by which server you install, so discover the surface rather than assuming a slug.
 
 If neither wiki MCP authenticates, the wiki capabilities are Not-Available.
 

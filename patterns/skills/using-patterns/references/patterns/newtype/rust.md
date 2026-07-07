@@ -35,7 +35,7 @@ impl Cents {
 }
 
 pub fn transfer(from: AccountId, to: AccountId, amount: Cents) {
-    // Compiler error if a plain String or u64 is passed — no runtime check needed.
+    // Compiler error if a plain String or u64 is passed. No runtime check needed.
     let _ = (from, to, amount);
 }
 

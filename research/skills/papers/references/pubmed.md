@@ -11,7 +11,7 @@ Biomedical literature: 36M+ citations, abstracts, and PMC full text where open-a
 
 ## MCP option (primary)
 
-**`pubmed@life-sciences`** — Anthropic-curated marketplace plugin. Install:
+**`pubmed@life-sciences`**: Anthropic-curated marketplace plugin. Install:
 
 ```
 /plugin marketplace add anthropics/life-sciences
@@ -40,6 +40,6 @@ No account required. Free. The wiring skill's checklist marks the *Biomedical se
 
 ## Failure modes
 
-- **Plugin not installed** — the *Biomedical search* capability returns Not-Available. The HTTP fallback remains usable if the user prefers raw E-utilities.
-- **Rate-limit (429)** — at 3 RPS anonymous, easy to exceed under fan-out. Add the API key or back off.
-- **PMID without PMCID** — many articles are abstract-only in PubMed; PMC full text is unavailable. The practice skill returns the abstract and a typed Not-Available for the full-text capability.
+- **Plugin not installed**: The *Biomedical search* capability returns Not-Available. The HTTP fallback remains usable if the user prefers raw E-utilities.
+- **Rate-limit (429)**: At 3 RPS anonymous, it is easy to exceed under fan-out. Add the API key or back off.
+- **PMID without PMCID**: Many articles are abstract-only in PubMed; PMC full text is unavailable. The practice skill returns the abstract and a typed Not-Available for the full-text capability.

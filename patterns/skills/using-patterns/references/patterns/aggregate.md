@@ -2,7 +2,7 @@
 
 ## Overview
 
-An Aggregate is a cluster of associated domain objects treated as a single unit of change. One object in the cluster (the **Aggregate Root**) is the sole public entry point for all mutations. Every completed operation must transition the cluster from one valid state to another; no intermediate state is ever observable. One aggregate = one transaction. Do not span a transaction across aggregate boundaries.
+An Aggregate is a group of related objects treated as one unit. One object in the group, the **Aggregate Root**, is the sole entry point for mutations. Every operation moves the group from one valid state to another. No intermediate state can be seen outside the group. One aggregate means one transaction. Never span a transaction across aggregate boundaries.
 
 ## When to use
 
@@ -49,7 +49,7 @@ For complete examples, see [`aggregate/typescript.md`](aggregate/typescript.md),
 
 ## Composes with
 
-- **the domain-objects pattern (`references/patterns/domain-objects.md`)** — the root is an entity; internal cluster members are typically value objects or child entities.
-- **the type-states pattern (`references/patterns/type-states.md`)** — model the aggregate's legal lifecycle (for example, `Order<Pending>` → `Order<Placed>`) as distinct types so invalid transitions are compile errors.
-- **the repository pattern (`references/patterns/repository.md`)** — load and save the aggregate root through a repository; child entities are never fetched directly.
-- **the unit-of-work pattern (`references/patterns/unit-of-work.md`)** — wrap the aggregate operation in a Unit of Work for atomic, durable persistence with guaranteed rollback.
+- **the domain-objects pattern (`references/patterns/domain-objects.md`)**: the root is an entity; internal cluster members are typically value objects or child entities.
+- **the type-states pattern (`references/patterns/type-states.md`)**: model the aggregate's legal lifecycle (for example, `Order<Pending>` → `Order<Placed>`) as distinct types so invalid transitions are compile errors.
+- **the repository pattern (`references/patterns/repository.md`)**: load and save the aggregate root through a repository; child entities are never fetched directly.
+- **the unit of work pattern (`references/patterns/unit-of-work.md`)**: wrap the aggregate operation in a Unit of Work for atomic, durable persistence with guaranteed rollback.

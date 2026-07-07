@@ -4,7 +4,7 @@
 
 ## Configuration
 
-rust-analyzer is the standard LSP for Rust. It activates automatically when a `Cargo.toml` is present. Ensure the project has been built at least once (`cargo check` or `cargo build`) so rust-analyzer can resolve the crate graph.
+rust-analyzer is the standard LSP for Rust. It activates automatically when a `Cargo.toml` is present. Ensure you have built the project at least once (`cargo check` or `cargo build`) so rust-analyzer can resolve the crate graph.
 
 You don't need additional configuration for the LSP tool in Claude Code. Open any `.rs` file and queries are available.
 

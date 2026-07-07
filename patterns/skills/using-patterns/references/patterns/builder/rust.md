@@ -1,6 +1,6 @@
 # Builder Rust reference
 
-Rust's ownership model makes the consuming builder pattern natural: calling `build()` moves the builder, preventing any further mutation.
+Rust's ownership model suits the builder pattern well. When you call `build()`, it consumes the builder and prevents further changes.
 
 ```rust
 use std::collections::HashMap;
@@ -59,7 +59,7 @@ impl HttpRequestBuilder {
         Ok(HttpRequest {
             method: self.method,
             url: self.url,
-            headers: self.headers,   // ownership moved — no aliasing possible
+            headers: self.headers,   // ownership moved. No aliasing possible
             body: self.body,
             timeout_ms: self.timeout_ms,
         })

@@ -39,7 +39,7 @@ class Open: ...
 S = TypeVar("S")
 
 class Connection(Generic[S]):
-    """State S is a phantom type — it exists only in type annotations."""
+    """State S is a phantom type: it exists only in type annotations."""
     def __init__(self) -> None:
         self._socket: object | None = None
 

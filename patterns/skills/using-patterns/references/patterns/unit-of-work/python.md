@@ -43,7 +43,7 @@ class SqlUnitOfWork(AbstractUnitOfWork):
         self._session.rollback()
 
 
-# In-memory fake — enables fast unit tests with no database
+# In-memory fake: enables fast unit tests with no database
 class FakeUnitOfWork(AbstractUnitOfWork):
     def __init__(self):
         self.products = FakeProductRepository()

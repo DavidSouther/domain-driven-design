@@ -25,9 +25,9 @@ None first-party. Use HTTP.
 
 - Base URL: `https://archive.org`
 - Endpoints:
-  - `/metadata/{identifier}`—full per-item metadata and file listing.
-  - `/advancedsearch.php?q=...&output=json` — catalog search.
-  - Beta full-text: `https://api.archivelab.org/books/{identifier}/search?q=...` — returns matching pages and bounding boxes.
+  - `/metadata/{identifier}`: full per-item metadata and file listing.
+  - `/advancedsearch.php?q=...&output=json`: catalog search.
+  - Beta full-text: `https://api.archivelab.org/books/{identifier}/search?q=...` (returns matching pages and bounding boxes).
 - Auth: none for read access. S3-style auth keys exist for upload but are not needed for research.
 - Rate limits: no published hard cap; back off on 429/503. Be polite (≤2 req/s).
 

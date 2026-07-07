@@ -35,7 +35,7 @@ Once you configure the papers sources (see this `papers.md` reference), callers 
 
 The practice skill treats Not-Available as a routing signal, not as an error.
 
-**Apply these etiquette rules:** use Crossref polite requests with `mailto=`, set the OpenAlex API key in env, space ArXiv requests three seconds apart on a single connection, and use exponential backoff on 429 s responses from Semantic Scholar. Add the Unpaywall email parameter and install marketplace plugins where required. The shared rules live in [`papers/references/etiquette.md`](../../../papers/references/etiquette.md). Each per-source reference cites that file for the rules it inherits.
+**Apply these etiquette rules:** use Crossref polite requests with `mailto=` and set the OpenAlex API key in env. Space ArXiv requests three seconds apart on a single connection and use exponential backoff on 429 responses from Semantic Scholar. Add the Unpaywall email parameter and install marketplace plugins where required. The shared rules live in [`papers/references/etiquette.md`](../../../papers/references/etiquette.md). Each per-source reference cites that file for the rules it inherits.
 
 ## When to use
 
@@ -51,30 +51,30 @@ Walk the checklist top-to-bottom on a fresh environment. Each item probes the MC
 
 Default sources for wide adoption:
 
-- [ ] **Crossref** — HTTP against `api.crossref.org` per [`papers/references/crossref.md`](../../../papers/references/crossref.md). Set `CROSSREF_MAILTO` to a contact email to route requests through polite channels. Smoke-test: DOI to metadata for a known DOI.
-- [ ] **Unpaywall** — HTTP against `api.unpaywall.org/v2/{doi}?email=` per [`papers/references/unpaywall.md`](../../../papers/references/unpaywall.md). Set `UNPAYWALL_EMAIL`. Smoke-test: DOI→OA-PDF for a known open-access DOI.
-- [ ] **OpenAlex** — probe an OpenAlex MCP (for example, `oksure/openalex-research-mcp`) per [`papers/references/openalex.md`](../../../papers/references/openalex.md); fall back to HTTP against `api.openalex.org`. Set `OPENALEX_API_KEY` (post-February 2026, `$1/day` free credit). Smoke-test: topic search for "domain-driven design."
-- [ ] **Semantic Scholar** — probe `FujishigeTemma/semantic-scholar-mcp` per [`papers/references/semantic-scholar.md`](../../../papers/references/semantic-scholar.md); fall back to HTTP against `api.semanticscholar.org`. Set `SEMANTIC_SCHOLAR_API_KEY` (strongly preferred for better limits). With a key, you get 1 RPS; anonymous access allows 5,000 requests per 5 minutes with mandatory exponential backoff on 429 s. Smoke-test: citation graph for a known paper.
+- [ ] **Crossref**: HTTP against `api.crossref.org` per [`papers/references/crossref.md`](../../../papers/references/crossref.md). Set `CROSSREF_MAILTO` to a contact email to route requests through polite channels. Smoke-test: DOI to metadata for a known DOI.
+- [ ] **Unpaywall**: HTTP against `api.unpaywall.org/v2/{doi}?email=` per [`papers/references/unpaywall.md`](../../../papers/references/unpaywall.md). Set `UNPAYWALL_EMAIL`. Smoke-test: DOI→OA-PDF for a known open-access DOI.
+- [ ] **OpenAlex**: probe an OpenAlex MCP (for example, `oksure/openalex-research-mcp`) per [`papers/references/openalex.md`](../../../papers/references/openalex.md); fall back to HTTP against `api.openalex.org`. Set `OPENALEX_API_KEY` (post-February 2026, `$1/day` free credit). Smoke-test: topic search for "domain-driven design."
+- [ ] **Semantic Scholar**: probe `FujishigeTemma/semantic-scholar-mcp` per [`papers/references/semantic-scholar.md`](../../../papers/references/semantic-scholar.md); fall back to HTTP against `api.semanticscholar.org`. Set `SEMANTIC_SCHOLAR_API_KEY` (strongly preferred for better limits). With a key, you get 1 RPS; anonymous access allows 5,000 requests per 5 minutes with mandatory exponential backoff on 429 s. Smoke-test: citation graph for a known paper.
 
 Priority sources (personal-default):
 
-- [ ] **ArXiv** — probe `blazickjp/arxiv-mcp-server` per [`papers/references/arxiv.md`](../../../papers/references/arxiv.md); fall back to HTTP against `export.arxiv.org/api/query`. Respect three-second spacing on a single connection. Smoke-test: preprint search in `cs.SE`.
-- [ ] **DOI fan-out** — probe `tfscharff/doi-mcp` per [`papers/references/doi.md`](../../../papers/references/doi.md). Fans out DOI resolution across 9+ sources in parallel. Smoke-test: DOI→metadata for a known DOI.
+- [ ] **ArXiv**: probe `blazickjp/arxiv-mcp-server` per [`papers/references/arxiv.md`](../../../papers/references/arxiv.md); fall back to HTTP against `export.arxiv.org/api/query`. Respect three-second spacing on a single connection. Smoke-test: preprint search in `cs.SE`.
+- [ ] **DOI fan-out**: probe `tfscharff/doi-mcp` per [`papers/references/doi.md`](../../../papers/references/doi.md). Fans out DOI resolution across 9+ sources in parallel. Smoke-test: DOI→metadata for a known DOI.
 
 Conditional sources via the Anthropic-curated `life-sciences` marketplace plugin:
 
-- [ ] **PubMed** — run `/plugin marketplace add anthropics/life-sciences` then `/plugin install pubmed@life-sciences` per [`papers/references/pubmed.md`](../../../papers/references/pubmed.md). No account required (covers 36M+ biomedical citations). Smoke-test: biomedical search for a known PMID. If you skip this install, mark the *Biomedical search* capability Not-Available.
-- [ ] **Wiley Scholar Gateway** — run `/plugin marketplace add anthropics/life-sciences` (if not already added) then `/plugin install wiley-scholar-gateway@life-sciences` per [`papers/references/wiley-scholar-gateway.md`](../../../papers/references/wiley-scholar-gateway.md). Complete the SSO handshake (Claude Pro plus Wiley institutional or trial SSO). Smoke-test: query a known Wiley journal article. If SSO is not completed, mark the *Wiley journal search* capability Not-Available.
+- [ ] **PubMed**: run `/plugin marketplace add anthropics/life-sciences` then `/plugin install pubmed@life-sciences` per [`papers/references/pubmed.md`](../../../papers/references/pubmed.md). No account required (covers 36M+ biomedical citations). Smoke-test: biomedical search for a known PMID. If you skip this install, mark the *Biomedical search* capability Not-Available.
+- [ ] **Wiley Scholar Gateway**: run `/plugin marketplace add anthropics/life-sciences` (if not already added) then `/plugin install wiley-scholar-gateway@life-sciences` per [`papers/references/wiley-scholar-gateway.md`](../../../papers/references/wiley-scholar-gateway.md). Complete the SSO handshake (Claude Pro plus Wiley institutional or trial SSO). Smoke-test: query a known Wiley journal article. If SSO is not completed, mark the *Wiley journal search* capability Not-Available.
 
 Opt-in sources (configure when the user supplies access):
 
-- [ ] **Scite** — probe the hosted MCP at `scite.ai/mcp` per [`papers/references/scite.md`](../../../papers/references/scite.md); alternative is `scitedotai/scite-mcp-skill`. Requires an active Scite subscription. Smoke-test: citation-context classification for a known DOI.
-- [ ] **DBLP** — HTTP against `dblp.org/search/.../api` per [`papers/references/dblp.md`](../../../papers/references/dblp.md). Smoke-test: author search for a known CS author.
-- [ ] **Europe PMC** — HTTP against `ebi.ac.uk/europepmc/webservices/rest/search` per [`papers/references/europe-pmc.md`](../../../papers/references/europe-pmc.md). Smoke-test: title search for a known biomedical preprint.
-- [ ] **CORE** — HTTP against `core.ac.uk/services/api` per [`papers/references/core.md`](../../../papers/references/core.md). Set `CORE_API_KEY`. Smoke-test: full-text search for a known phrase.
-- [ ] **Zotero** — probe `54yyyu/zotero-mcp` (or `cookjohn/zotero-mcp`) per [`papers/references/zotero.md`](../../../papers/references/zotero.md). Set `ZOTERO_API_KEY` and `ZOTERO_LIBRARY_ID`. Smoke-test: item-type filter for `journalArticle`.
+- [ ] **Scite**: probe the hosted MCP at `scite.ai/mcp` per [`papers/references/scite.md`](../../../papers/references/scite.md); alternative is `scitedotai/scite-mcp-skill`. Requires an active Scite subscription. Smoke-test: citation-context classification for a known DOI.
+- [ ] **DBLP**: HTTP against `dblp.org/search/.../api` per [`papers/references/dblp.md`](../../../papers/references/dblp.md). Smoke-test: author search for a known CS author.
+- [ ] **Europe PMC**: HTTP against `ebi.ac.uk/europepmc/webservices/rest/search` per [`papers/references/europe-pmc.md`](../../../papers/references/europe-pmc.md). Smoke-test: title search for a known biomedical preprint.
+- [ ] **CORE**: HTTP against `core.ac.uk/services/api` per [`papers/references/core.md`](../../../papers/references/core.md). Set `CORE_API_KEY`. Smoke-test: full-text search for a known phrase.
+- [ ] **Zotero**: probe `54yyyu/zotero-mcp` (or `cookjohn/zotero-mcp`) per [`papers/references/zotero.md`](../../../papers/references/zotero.md). Set `ZOTERO_API_KEY` and `ZOTERO_LIBRARY_ID`. Smoke-test: item-type filter for `journalArticle`.
 
-You can find **out-of-scope sources** in [`papers/references/out-of-scope.md`](../../../papers/references/out-of-scope.md), which documents why we exclude each. These include Wiley TDM (contractual license), per-publisher institutional MCPs, Google Scholar (ToS-forbidden), and Connected Papers. The institutional MCPs comprise Web of Science, ScienceDirect, Springer, and Scopus, while Connected Papers requires official clients.
+You can find **out-of-scope sources** in [`papers/references/out-of-scope.md`](../../../papers/references/out-of-scope.md), which documents why we exclude each. These include Wiley TDM (contractual license), per-publisher institutional MCPs, Google Scholar, and Connected Papers. The institutional MCPs comprise Web of Science, ScienceDirect, Springer, and Scopus, while Connected Papers requires official clients.
 
 ## Re-verification triggers
 
@@ -90,7 +90,7 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 
 ## Composes with
 
-- **`research:papers`** — the per-query partner. Wiring publishes the contract; practice consumes it.
-- **the books setup reference (`books.md`)** — sibling wiring for the books stack. The two harnesses are disjoint at the source level but share the cadence convention.
-- **`research/references/citations.md`** — IEEE citation format the practice skill writes against.
-- **`research/references/jeopardy.md`** — query expansion the practice skill applies before dispatching to a capability.
+- **`research:papers`**: the per-query partner. Wiring publishes the contract; practice consumes it.
+- **the books setup reference (`books.md`)**: sibling wiring for the books stack. The two harnesses are disjoint at the source level but share the cadence convention.
+- **`research/references/citations.md`**: IEEE citation format the practice skill writes against.
+- **`research/references/jeopardy.md`**: query expansion the practice skill applies before dispatching to a capability.

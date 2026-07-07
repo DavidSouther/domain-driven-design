@@ -55,7 +55,7 @@ For complete examples, see [`using-feature-flags/typescript.md`](using-feature-f
 
 ## Composes with
 
-- **the configuring-feature-flags pattern (`references/patterns/configuring-feature-flags.md`)** — the setup partner. It installs the evaluation port, the naming convention, and the fail-safe default this skill relies on.
-- **the type-states pattern (`references/patterns/type-states.md`)** — when a flag gates a lifecycle change, model the two states as types rather than re-reading the flag downstream.
-- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — read the flag once at the boundary into a typed decision rather than threading the raw flag through the domain.
-- **`developer/skills/ailly/references/shapes/project/release-flags.md`** — the project loop's single release gate, for hiding a whole project rather than one feature.
+- **the configuring-feature-flags pattern (`references/patterns/configuring-feature-flags.md`)**: the setup partner. It installs the evaluation port, the naming convention, and the fail-safe default this skill relies on.
+- **the type-states pattern (`references/patterns/type-states.md`)**: when a flag gates a lifecycle change, model the two states as types rather than re-reading the flag downstream.
+- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)**: read the flag once at the boundary into a typed decision rather than threading the raw flag through the domain.
+- **`developer/skills/ailly/references/shapes/project/release-flags.md`**: the project loop's single release gate, for hiding a whole project rather than one feature.

@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use std::collections::HashMap;
 use std::sync::Mutex;
 
-// domain/repository.rs — trait defined in the domain crate; no DB imports
+// domain/repository.rs: trait defined in the domain crate; no DB imports
 #[async_trait]
 pub trait ProductRepository: Send + Sync {
     async fn get(&self, sku: &str) -> anyhow::Result<Option<Product>>;
@@ -13,7 +13,7 @@ pub trait ProductRepository: Send + Sync {
     async fn list(&self) -> anyhow::Result<Vec<Product>>;
 }
 
-// infrastructure/in_memory.rs — implements the domain trait
+// infrastructure/in_memory.rs: implements the domain trait
 pub struct InMemoryProductRepository {
     store: Mutex<HashMap<String, Product>>,
 }
@@ -42,7 +42,7 @@ impl ProductRepository for InMemoryProductRepository {
     }
 }
 
-// domain/services.rs — depends only on the trait, never on InMemory or SQL
+// domain/services.rs: depends only on the trait, never on InMemory or SQL
 pub async fn allocate(
     order_line: &OrderLine,
     repo: &dyn ProductRepository,

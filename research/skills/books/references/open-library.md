@@ -4,10 +4,10 @@ Bibliographic anchor for any printed book. First stop for ISBN resolution, editi
 
 ## What it provides
 
-- **ISBN→edition lookup** — returns `{ isbn13, authors, publisher, year, work_id }`.
-- **Title+author search** — ranked editions with work-ID linkage.
-- **Author lookup** — works, biographical metadata, alternate names.
-- **Covers** — cover image URLs at S/M/L sizes (CC-BY-SA).
+- **ISBN→edition lookup**: returns `{ isbn13, authors, publisher, year, work_id }`.
+- **Title+author search**: ranked editions with work-ID linkage.
+- **Author lookup**: works, biographical metadata, alternate names.
+- **Covers**: cover image URLs at S/M/L sizes (CC-BY-SA).
 
 Example payload (edition `/books/{olid}.json`):
 
@@ -18,7 +18,7 @@ Example payload (edition `/books/{olid}.json`):
 
 ## MCP option
 
-`8enSmith/mcp-open-library` — TypeScript, stdio, unauthenticated. Tools: `get_book_by_title`, `get_authors_by_name`, `get_author_info`, `get_book_cover`, `get_book_by_id`. Install: `npx -y @8enSmith/mcp-open-library`. Env: none required, but the server respects `OPENLIBRARY_USER_AGENT` if set.
+`8enSmith/mcp-open-library`: TypeScript, stdio, unauthenticated. Tools: `get_book_by_title`, `get_authors_by_name`, `get_author_info`, `get_book_cover`, `get_book_by_id`. Install: `npx -y @8enSmith/mcp-open-library`. Env: none required, but the server respects `OPENLIBRARY_USER_AGENT` if set.
 
 ## HTTP fallback
 
@@ -40,6 +40,6 @@ Bibliographic data is **CC0**; freely quotable and redistributable. Cover images
 
 ## Failure modes
 
-- **HTTP 429** — exceeded rate limit. Back off; ensure the User-Agent carries the contact email to qualify for the higher anonymous tier.
-- **Missing edition** — older or obscure books may have a work record but no edition. Cross-check Google Books for ISBN-13.
-- **Stale data** — Open Library is community-edited. Treat publisher/year for self-published or print-on-demand titles with skepticism.
+- **HTTP 429**: exceeded rate limit. Back off; ensure the User-Agent carries the contact email to qualify for the higher anonymous tier.
+- **Missing edition**: older or obscure books may have a work record but no edition. Cross-check Google Books for ISBN-13.
+- **Stale data**: Open Library is community-edited. Treat publisher/year for self-published or print-on-demand titles with skepticism.

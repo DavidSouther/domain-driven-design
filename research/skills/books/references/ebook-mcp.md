@@ -4,7 +4,7 @@ The user's local EPUB or PDF directory. `bookreader-mcp` adds ChromaDB semantic 
 
 ## What it provides
 
-- **EPUB and PDF reading** — `get_metadata`, `get_toc`, `get_chapter_markdown` (ebook-mcp).
+- **EPUB and PDF reading**: `get_metadata`, `get_toc`, `get_chapter_markdown` (ebook-mcp).
 - **Semantic search** over an EPUB directory (bookreader-mcp).
 
 ## Mcp options
@@ -31,6 +31,6 @@ Per the original work. The user owns the files; quotation rights depend on the u
 
 ## Failure modes
 
-- **Path not configured** — the MCP cannot find the directory. Configure with an absolute path.
-- **Mixed-language EPUBs** — Chroma's semantic embeddings degrade across language boundaries; route to ebook-mcp's exact-match TOC when the EPUB mixes languages.
-- **Index out of date** — bookreader-mcp's ChromaDB index does not refresh automatically; trigger a re-index when the directory changes.
+- **Path not configured**: the MCP cannot find the directory. Configure with an absolute path.
+- **Mixed-language EPUBs**: Chroma's semantic embeddings degrade across language boundaries; route to ebook-mcp's exact-match TOC when the EPUB mixes languages.
+- **Index out of date**: bookreader-mcp's ChromaDB index does not refresh automatically; trigger a re-index when the directory changes.

@@ -1,6 +1,6 @@
 ---
 name: archaeology
-description: Use when a research question asks why code changed over time, who introduced a behavior, when developers added or removed a feature, or what motivated a past decision. Applies to questions about deleted code, renamed files, reverted changes, or the historical rationale behind current implementation. Does not apply to questions about current codebase state or dependency structure.
+description: Use to answer why code changed. Traces intent from git history for questions about deleted code, renamed files, reverted changes, or past decisions. Not for current codebase state or dependencies.
 ---
 
 # Overview
@@ -28,11 +28,11 @@ Do NOT use for questions about current codebase structure, dependency origins, o
 
 Before executing any git search, generate variants of each search term:
 
-- **Original phrasing** — the term as stated in the question
-- **Synonyms** — `remove` → `delete`, `drop`, `strip`; `add` → `introduce`, `create`, `implement`
-- **Related concepts** — a feature name plus its associated error codes, flags, or config keys
-- **Identifier casing** — `myFunction`, `my_function`, `my-function`, `MyFunction`
-- **Path variants** — `src/auth/login.ts`, `auth/login`, `login`
+- **Original phrasing**: the term as stated in the question
+- **Synonyms**: `remove` → `delete`, `drop`, `strip`; `add` → `introduce`, `create`, `implement`
+- **Related concepts**: a feature name plus its associated error codes, flags, or config keys
+- **Identifier casing**: `myFunction`, `my_function`, `my-function`, `MyFunction`
+- **Path variants**: `src/auth/login.ts`, `auth/login`, `login`
 
 Run each variant independently and union the results.
 
@@ -79,7 +79,7 @@ Structure:
 <narrative summary of what the history shows>
 
 ## Timeline
-- <hash> <date> — <what changed and why>
+- <hash> <date>: <what changed and why>
 
 ## Sources
 - Commits consulted: <hashes>
@@ -88,7 +88,7 @@ Structure:
 
 # Common mistakes
 
-- **Running only one query variant** — always expand before searching; a renamed identifier does not appear under its original name.
-- **Reading current code** — archaeology uses only git history; current state is out of scope.
-- **Stopping at the first matching commit** — a reverting commit frequently precedes the introducing commit; check surrounding history.
-- **Ignoring merge commits** — merge commit messages frequently name the feature branch and link to external discussion.
+- **Running only one query variant**: always expand before searching; a renamed identifier does not appear under its original name.
+- **Reading current code**: archaeology uses only git history; current state is out of scope.
+- **Stopping at the first matching commit**: a reverting commit frequently precedes the introducing commit; check surrounding history.
+- **Ignoring merge commits**: merge commit messages frequently name the feature branch and link to external discussion.

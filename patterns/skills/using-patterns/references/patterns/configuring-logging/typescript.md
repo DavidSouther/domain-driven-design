@@ -100,7 +100,7 @@ export async function initLogging(): Promise<LoggingHandle> {
   return { log, shutdown };
 }
 
-// CLI variant — same module, different defaults:
+// CLI variant: same module, different defaults:
 //
 //   - Resource keys: ATTR_PROCESS_EXECUTABLE_NAME, ATTR_PROCESS_RUNTIME_NAME,
 //     ATTR_PROCESS_PID instead of service.* keys.

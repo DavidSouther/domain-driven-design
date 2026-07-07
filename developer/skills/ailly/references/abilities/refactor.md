@@ -7,7 +7,7 @@
 
 ## Overview
 
-Post-green cleanup. Runs only when tests pass and the working directory is clean. Applies one refactoring at a time, verifying after each. Stops when the smell is gone, not when the code is maximally elegant.
+Post-green cleanup. Runs only when tests pass and the working directory is clean. Applies one refactoring at a time, verifying after each. Stops when the smell vanishes, not when the code is maximally elegant.
 
 **Guard:** check `git status` before starting. If the working directory is not clean, stop immediately:
 
@@ -114,7 +114,7 @@ If you've already consulted `references/abilities/thinking.md` for this error an
 
 ## Deferred smells
 
-If smells remain that are too risky to address now—for example, would require changing multiple modules, or encountered repeated failures while fixing—record them:
+If smells remain that are too risky to address now (for example, would require changing multiple modules, or encountered repeated failures while fixing), record them:
 
 Save to `.ailly/developer/YYYY-MM-DD-A-<topic>/deferred-refactoring.md`:
 

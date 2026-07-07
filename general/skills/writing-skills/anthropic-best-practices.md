@@ -320,7 +320,7 @@ bigquery-skill/
 
 ## Quick search
 
-Find specific metrics using grep:
+Find specific metrics by using grep:
 
 ```bash
 grep -i "revenue" reference/finance.md
@@ -1094,7 +1094,7 @@ The `SKILL.md` frontmatter requires `name` (up to 64 characters) and `descriptio
 
 ### Token budgets
 
-Keep `SKILL.md` body under 500 lines for optimal performance. If your content exceeds this, split it into separate files using the progressive disclosure patterns described earlier. For architectural details, see the [Skills overview](/en/docs/agents-and-tools/agent-skills/overview#how-skills-work).
+Keep `SKILL.md` body under 500 lines for optimal performance. If your content exceeds this, split it into separate files by using the progressive disclosure patterns described earlier. For architectural details, see the [Skills overview](/en/docs/agents-and-tools/agent-skills/overview#how-skills-work).
 
 ## Checklist for effective skills
 

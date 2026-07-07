@@ -45,7 +45,7 @@ class HttpRequestBuilder:
         return HttpRequest(
             method=self._method,
             url=self._url,
-            headers=dict(self._headers),   # copy — reusing builder doesn't alias
+            headers=dict(self._headers),   # copy: reusing builder doesn't alias
             body=self._body,
             timeout_ms=self._timeout_ms,
         )

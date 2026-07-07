@@ -35,6 +35,6 @@ User-curated library metadata is the user's own. Quotation rights depend on the 
 
 ## Failure modes
 
-- **Invalid API key** — rotate at `zotero.org/settings/keys` and re-run [`../../configuring-papers/SKILL.md`](../../configuring-papers/SKILL.md).
-- **Group library mismatch** — use `/groups/{id}` instead of `/users/{id}` for group libraries.
-- **Item type omitted** — without an `itemType=` filter, results include books, web pages, and reports; restrict to paper types for predictable behavior.
+- **Invalid API key**: rotate at `zotero.org/settings/keys` and re-run [`../../configuring-papers/SKILL.md`](../../configuring-papers/SKILL.md).
+- **Group library mismatch**: use `/groups/{id}` instead of `/users/{id}` for group libraries.
+- **Item type omitted**: without an `itemType=` filter, results include books, web pages, and reports; restrict to paper types for predictable behavior.

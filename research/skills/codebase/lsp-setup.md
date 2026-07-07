@@ -1,13 +1,13 @@
 # Codebase: lsp setup
 
-Per-language priming rules for the codebase stack. The wiring SKILL (codebase configuration system, see [`../configuring-codebase/SKILL.md`](../configuring-codebase/SKILL.md)) cites this file at configure time. Per-language reference files (`lsp-rust.md`, `lsp-python.md`, `lsp-typescript.md`) cite it for the priming step each inherits.
+Per-language priming rules for the codebase stack. The wiring SKILL cites this file at configure time. The wiring SKILL is the codebase configuration system; see [`../configuring-codebase/SKILL.md`](../configuring-codebase/SKILL.md) for details. Per-language reference files (`lsp-rust.md`, `lsp-python.md`, `lsp-typescript.md`) cite it for the priming step each inherits.
 
 Priming is the codebase analog of the books/papers `etiquette.md`: a shared-rules file. The concern is not host politeness or credential handling, but project resolution. Language servers are toolchain installs with no auth. Unprimed servers answer `goToDefinition` with nothing. The rules below make each language server resolve the project before the contract holds.
 
 ## Rust (rust-analyzer)
 
 - rust-analyzer activates automatically when `Cargo.toml` is present; no separate install.
-- **Prime with `cargo check`** so the crate graph resolves. Until the graph is built at least once, cross-crate `goToDefinition`/`findReferences` return nothing.
+- **Prime with `cargo check`** so the crate graph resolves. Until you build the crate graph at least once, cross-crate `goToDefinition`/`findReferences` return nothing.
 - Workspace crates resolve once you check the workspace root; you do not need to check each member crate separately.
 - Feature flags affect what resolves. rust-analyzer uses the active feature set (in most cases `default`). A symbol behind a non-default feature appears Not-Available until you enable that feature in the rust-analyzer config.
 

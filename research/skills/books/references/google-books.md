@@ -5,8 +5,8 @@ Broadest commercial-publisher coverage, including tables of contents, publisher 
 ## What it provides
 
 - **ISBN, title, author search** with publisher and date metadata.
-- **Table-of-contents** — exposed in `volumeInfo.tableOfContents` when the publisher provides it.
-- **Preview snippets** — short excerpts where the publisher has authorized preview.
+- **Table-of-contents**: exposed in `volumeInfo.tableOfContents` when the publisher provides it.
+- **Preview snippets**: short excerpts where the publisher has authorized preview.
 
 Example payload (`/volumes?q=isbn:9780321125217`):
 
@@ -40,6 +40,6 @@ Google licenses snippets and preview text for display, not redistribution. Quote
 
 ## Failure modes
 
-- **403 / `dailyLimitExceeded`** — key has hit the 1,000/day quota. Rotate to a different project or back off until reset.
-- **Missing tableOfContents** — publisher did not provide one. The practice skill returns a typed Not-Available for the table-of-contents-fetch capability.
-- **Sparse metadata for older books** — Google Books favors recent commercial publishing. For older or out-of-print titles, prefer Open Library or HathiTrust.
+- **403 / `dailyLimitExceeded`**: key has hit the 1,000/day quota. Rotate to a different project or back off until reset.
+- **Missing tableOfContents**: publisher did not provide one. The practice skill returns a typed Not-Available for the table-of-contents-fetch capability.
+- **Sparse metadata for older books**: Google Books favors recent commercial publishing. For older or out-of-print titles, prefer Open Library or HathiTrust.

@@ -13,7 +13,7 @@ Fresh-context investigation for stuck moments during the Build phase (red-green-
 **Hard constraints:**
 - Do NOT edit any files
 - Do NOT run any code or build commands
-- Do NOT propose "try X and see what happens"—every proposed step must have a specific predicted outcome
+- Do NOT propose "try X and see what happens": every proposed step must have a specific predicted outcome
 
 ## Inputs (from red-green-refactor)
 
@@ -55,8 +55,8 @@ Save to `.ailly/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`:
 
 ## Next Steps (in order)
 
-1. **<Specific change>** — expected outcome: `<what the error or test result should look like after this change>`
-2. **<Specific change>** — expected outcome: `<what changes next>`
+1. **<Specific change>** (expected outcome: `<what the error or test result should look like after this change>`)
+2. **<Specific change>** (expected outcome: `<what changes next>`)
 3. ...
 ```
 

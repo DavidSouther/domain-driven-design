@@ -72,7 +72,7 @@ For complete examples, see [`type-conversion/typescript.md`](type-conversion/typ
 
 ## Composes with
 
-- **the newtype pattern (`references/patterns/newtype.md`)** — newtype constructors are total conversions when input is already valid, and partial conversions when validation runs. Implementing `From<Inner> for NewType` is the canonical build path; implementing `TryFrom<&str> for NewType` is the canonical parse path.
-- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — a parser is a partial conversion from a raw boundary type to a domain type. The return type encodes the proof of validity.
-- **the errors-typed-untyped pattern (`references/patterns/errors-typed-untyped.md`)** — a partial conversion's error is a typed library error. `TryFrom`'s associated `Error` type is the typed-error pattern applied at the conversion boundary.
-- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)** — partial conversions run inside boundary adapters such as HTTP handlers, command-line tool commands, and queue consumers. The app core handles only converted, typed values.
+- **the newtype pattern (`references/patterns/newtype.md`)**: newtype constructors are total conversions when input is already valid, and partial conversions when validation runs. Implementing `From<Inner> for NewType` is the canonical build path; implementing `TryFrom<&str> for NewType` is the canonical parse path.
+- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)**: a parser is a partial conversion from a raw boundary type to a domain type. The return type encodes the proof of validity.
+- **the errors-typed-untyped pattern (`references/patterns/errors-typed-untyped.md`)**: a partial conversion's error is a typed library error. `TryFrom`'s associated `Error` type is the typed-error pattern applied at the conversion boundary.
+- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)**: partial conversions run inside boundary adapters such as HTTP handlers, command-line tool commands, and queue consumers. The app core handles only converted, typed values.

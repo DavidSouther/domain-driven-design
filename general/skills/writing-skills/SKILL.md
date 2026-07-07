@@ -27,7 +27,7 @@ A **skill** is a reference guide for proven techniques, patterns, or tools. Skil
 
 ## TDD mapping for skills
 
-Each skill is documented in a primary file named SKILL.md. Here's how TDD concepts map to skill creation:
+A primary file named SKILL.md documents each skill. Here's how TDD concepts map to skill creation:
 
 | TDD Concept | Skill Creation |
 |-------------|----------------|
@@ -78,11 +78,11 @@ skills/
     supporting-file.*     # Only if needed
 ```
 
-**Flat namespace**—all skills in one searchable namespace.
+**Flat namespace:** all skills in one searchable namespace.
 
 **Separate files for:**
-1. **Heavy reference** (100+ lines)—API docs, comprehensive syntax
-2. **Reusable tools**—Scripts, utilities, templates
+1. **Heavy reference** (100+ lines): API docs, comprehensive syntax
+2. **Reusable tools:** Scripts, utilities, templates
 
 **Keep inline:**
 - Principles and concepts
@@ -430,7 +430,7 @@ Run a pressure scenario with a subagent without the skill. Document exact behavi
 - What rationalizations did it use (verbatim)?
 - Which pressures triggered violations?
 
-This is "watch the test fail"—you must see what agents naturally do before writing the skill.
+This is "watch the test fail": you must see what agents naturally do before writing the skill.
 
 ### Green: write minimal skill
 

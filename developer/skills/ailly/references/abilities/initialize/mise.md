@@ -14,7 +14,7 @@ A mise monorepo hosts multiple language sub-projects under one root. Mise provid
   .mise.toml          # optional local overrides (gitignored)
   <service-a>/        # Rust, Python, TypeScript sub-project
     mise.toml         # service-level task overrides (optional)
-    <lang-specific layout — see language reference>
+    <lang-specific layout (see language reference)
   <service-b>/
     ...
   docs/
@@ -97,7 +97,7 @@ run = "echo 'Override with service-specific commands'"
 
 - [ ] Verify you have installed `mise` (run `mise --version`)
 - [ ] Root `mise.toml` exists with `format`, `check`, `test`, `lint` tasks
-- [ ] `mise trust` has been run (or `MISE_TRUSTED_CONFIG_PATHS` is set)
+- [ ] Run `mise trust` (or set `MISE_TRUSTED_CONFIG_PATHS`)
 - [ ] Each sub-project has its own language reference validated
 - [ ] `mise run check` exits 0
 - [ ] `mise run test` exits 0

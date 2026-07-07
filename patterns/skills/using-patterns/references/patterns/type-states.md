@@ -2,7 +2,7 @@
 
 ## Overview
 
-Make illegal states unrepresentable by encoding each variant of a domain object as a distinct type. Instead of one flat type with optional fields and runtime checks, define one type per valid state. The compiler then rejects any code that tries to use data or call methods that do not exist in the current state.
+Represent each valid state as a separate type. Instead of one object with optional fields and runtime checks, use one type per state. The compiler rejects code that tries to use data or methods unavailable in the current state.
 
 ## When to use
 
@@ -17,11 +17,11 @@ Make illegal states unrepresentable by encoding each variant of a domain object 
 
 Three sub-patterns, each making a different class of illegal state unrepresentable:
 
-**Discriminated union** — each valid state combination is its own type. The compiler rejects any value whose fields belong to different states. For example, `{ status: "peace", ruler: "dictator" }` is not assignable to `Rome`.
+**Discriminated union:** each valid state combination is its own type. The compiler rejects any value whose fields belong to different states. For example, `{ status: "peace", ruler: "dictator" }` is not assignable to `Rome`.
 
-**Type state** — the state parameter `S` exists only at compile time (a _phantom type_); the runtime stores no value for it. Transition functions consume the old state and return a new one, so the caller cannot reuse a stale reference.
+**Type state:** the state parameter `S` exists only at compile time (a _phantom type_); the runtime stores no value for it. Transition functions consume the old state and return a new one, so the caller cannot reuse a stale reference.
 
-**Protocols / interfaces** — define narrow interfaces per capability so callers only access what their context permits. A function that accepts `Readable` cannot accidentally call `write`.
+**Protocols / interfaces:** define narrow interfaces per capability so callers only access what their context permits. A function that accepts `Readable` cannot accidentally call `write`.
 
 For complete examples, see [`type-states/typescript.md`](type-states/typescript.md), [`type-states/python.md`](type-states/python.md), and [`type-states/rust.md`](type-states/rust.md).
 
@@ -43,5 +43,5 @@ For complete examples, see [`type-states/typescript.md`](type-states/typescript.
 
 ## Composes with
 
-- **the aggregate pattern (`references/patterns/aggregate.md`)** — type states model the legal lifecycle of an aggregate (for example, `Order<Pending>` → `Order<Placed>`); invalid transitions become compile errors rather than runtime panics.
-- **the newtype pattern (`references/patterns/newtype.md`)** — phantom types use the same compile-time brand technique; the runtime erases the state parameter `S` in `Connection<S>`, just like a newtype brand.
+- **the aggregate pattern (`references/patterns/aggregate.md`):** type states model the legal lifecycle of an aggregate (for example, `Order<Pending>` → `Order<Placed>`); invalid transitions become compile errors rather than runtime panics.
+- **the newtype pattern (`references/patterns/newtype.md`):** phantom types use the same compile-time brand technique; the runtime erases the state parameter `S` in `Connection<S>`, just like a newtype brand.

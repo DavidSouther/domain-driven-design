@@ -58,7 +58,7 @@ Open with "Use when" and the assembly triggers, then close with the cadence and 
 
 ```yaml
 # Wiring frontmatter (configuring-logging)
-description: Use when bootstrapping a service's logging pipeline — selecting a
+description: Use when bootstrapping a service's logging pipeline: selecting a
   subscriber/registry, layering formatter/filter/enricher/exporter, attaching
   resource attributes, wiring W3C trace propagators, choosing head- or
   tail-based sampling, configuring redaction as defense-in-depth, and arranging
@@ -72,7 +72,7 @@ Open with "Use when" and the recurring trigger. Examples are "applies every time
 
 ```yaml
 # Practice frontmatter (emitting-logs)
-description: Use when writing log call sites in domain or application code —
+description: Use when writing log call sites in domain or application code:
   choosing a severity, attaching structured fields with semantic-convention
   keys, scoping spans to units of work, recording errors with their full chain
   at a single boundary, and naming business events. Applies every time code
@@ -91,7 +91,7 @@ The cross-reference is symmetric. The wiring skill names the practice skill as t
 
 ## The contract
 
-The contract is a short, scannable statement of what downstream code may assume once the wiring has been run. It is the **API between the pair**. It lives in the wiring skill in one of three places: as a small block near the top labeled "Contract," as a block labeled "After this skill runs…," or as the last paragraph of the Overview. The practice skill cites the contract. It does not restate it.
+The contract is a short, scannable statement of what downstream code may assume once the wiring runs. It is the **API between the pair**. The contract lives in the wiring skill in one of three places: a "Contract" block near the top, an "After this skill runs…" block, or the Overview's final paragraph. The practice skill cites the contract. It does not restate it.
 
 A good contract is concrete and short. The logging pair's contract reads, in effect:
 
@@ -155,7 +155,7 @@ The developer-plugin program-management pair is the second exemplar: a once-per-
 
 ## Composes with
 
-- **`general:writing-skills`** — the underlying authoring methodology (CSO, TDD-of-documentation, frontmatter rules) that this skill specialises for paired skills. Run a baseline pressure scenario on each half of a pair before writing either skill; the wiring half and the practice half typically fail in different ways without their respective skills.
-- **`general:writing-pattern-skills`** — when the pair lives in the patterns plugin, both halves also follow the Alexandrian template documented there. This skill adds the pairing conventions on top.
-- **`general:review`** — review a fresh pair as a unit, not one half at a time. The contract, the cross-references, and the cadence clauses are pair-level properties.
-- **`patterns:bootstrap-and-service`** — the code-level analog of the cadence split. Bootstrap invokes the wiring; the service runs the practice. The pairing of skills mirrors the pairing of code locations.
+- **`general:writing-skills`**: the underlying authoring methodology (CSO, TDD-of-documentation, frontmatter rules) that this skill specialises for paired skills. Run a baseline pressure scenario on each half of a pair before writing either skill; the wiring half and the practice half typically fail in different ways without their respective skills.
+- **`general:writing-pattern-skills`**: when the pair lives in the patterns plugin, both halves also follow the Alexandrian template documented there. This skill adds the pairing conventions on top.
+- **`general:review`**: review a fresh pair as a unit, not one half at a time. The contract, the cross-references, and the cadence clauses are pair-level properties.
+- **`patterns:bootstrap-and-service`**: the code-level analog of the cadence split. Bootstrap invokes the wiring; the service runs the practice. The pairing of skills mirrors the pairing of code locations.

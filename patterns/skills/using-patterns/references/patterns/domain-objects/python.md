@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from datetime import date
 
 
-# VALUE OBJECT — no identity, equality by value, frozen (immutable)
+# VALUE OBJECT: no identity, equality by value, frozen (immutable)
 @dataclass(frozen=True)
 class OrderLine:
     order_id: str
@@ -17,7 +17,7 @@ class OrderLine:
         return OrderLine(self.order_id, self.sku, qty)
 
 
-# ENTITY — identity via id, mutable state, equality by id
+# ENTITY: identity via id, mutable state, equality by id
 class Batch:
     def __init__(self, id: str, sku: str, eta: date, available: int) -> None:
         self._id = id
@@ -51,7 +51,7 @@ class Batch:
         return hash(self._id)
 
 
-# DOMAIN SERVICE FUNCTION — stateless; coordinates logic spanning multiple entities
+# DOMAIN SERVICE FUNCTION: stateless; coordinates logic spanning multiple entities
 def allocate(line: OrderLine, batches: list[Batch]) -> str:
     eligible = sorted(
         (b for b in batches if b.can_allocate(line)),

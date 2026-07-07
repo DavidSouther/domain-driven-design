@@ -4,12 +4,12 @@ The org document store. First stop for documents, spreadsheets, and presentation
 
 ## What it provides
 
-- **Google Drive search** — file hits with id, type, and owner, filterable by file type.
-- **Google Drive fetch** — the file content, or extracted text for binary formats, given a file id.
+- **Google Drive search**: file hits with id, type, and owner, filterable by file type.
+- **Google Drive fetch**: the file content, or extracted text for binary formats, given a file id.
 
 ## MCP / connector capabilities
 
-The Anthropic Google Drive connector exposes `search_files` and `read_file_content`. Additional capabilities—`get_file_metadata`, `list_recent_files`, and `download_file_content`—enable richer access when you need it. If this connector is not the one installed, probe the configured Drive MCP for this org.
+The Anthropic Google Drive connector exposes `search_files` and `read_file_content`. Additional capabilities (`get_file_metadata`, `list_recent_files`, and `download_file_content`) enable richer access when you need it. If this connector is not the one installed, probe the configured Drive MCP for this org.
 
 ## Auth
 

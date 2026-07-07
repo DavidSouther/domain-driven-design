@@ -100,7 +100,7 @@ export const PlacedOrder = {
 };
 ```
 
-The fields of `draft` are spread, not extracted and rewrapped. The branded values flow through.
+The spread operator copies the fields of `draft` directly, without extraction and rewrapping. The branded values flow through.
 
 ## Anti-patterns
 

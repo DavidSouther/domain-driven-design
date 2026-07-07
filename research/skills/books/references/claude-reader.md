@@ -1,11 +1,11 @@
 # Claude reader (Apple Books)
 
-The user's macOS Apple Books DRM-free imports, typically self-uploaded EPUBs and PDFs. These include academic theses, technical reports, and self-published work. Use for personally curated material outside Kindle.
+DRM-free imports to the user's Apple Books library on macOS. Typically self-uploaded EPUBs and PDFs, including academic theses, technical reports, and self-published work. Use for personally curated material outside Kindle.
 
 ## What it provides
 
 - **Apple Books library search** over DRM-free imports.
-- **Chapter navigation** — `get_current_chapter`, `goto`.
+- **Chapter navigation**: `get_current_chapter`, `goto`.
 
 DRM-protected books in Apple Books are auto-skipped.
 
@@ -30,6 +30,6 @@ User-imported EPUBs and PDFs are **personal-use licensed**. The user is the lice
 
 ## Failure modes
 
-- **macOS only** — on other OSes the *Apple Books library search* capability returns Not-Available.
-- **DRM-locked book** — skipped silently. The user's purchased iBooks are typically DRM-locked and do not appear.
-- **Index out of date** — Apple Books reindexes asynchronously; recently added books may not appear until the system finishes.
+- **macOS only**: on other OSes the *Apple Books library search* capability returns Not-Available.
+- **DRM-locked book**: skipped silently. The user's purchased iBooks are typically DRM-locked and do not appear.
+- **Index out of date**: Apple Books reindexes asynchronously; recently added books may not appear until the system finishes.

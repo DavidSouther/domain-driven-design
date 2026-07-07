@@ -3,7 +3,7 @@
 ```rust
 use std::cmp::Ordering;
 
-// VALUE OBJECT — no identity, equality by value, all fields public and cloneable
+// VALUE OBJECT: no identity, equality by value, all fields public and cloneable
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct OrderLine {
     pub order_id: String,
@@ -18,7 +18,7 @@ impl OrderLine {
     }
 }
 
-// ENTITY — identity via id, mutable state, equality by id
+// ENTITY: identity via id, mutable state, equality by id
 pub struct Batch {
     id: String,
     sku: String,
@@ -60,7 +60,7 @@ impl PartialEq for Batch {
     }
 }
 
-// DOMAIN SERVICE FUNCTION — stateless; coordinates logic spanning multiple entities
+// DOMAIN SERVICE FUNCTION: stateless; coordinates logic spanning multiple entities
 pub fn allocate(line: &OrderLine, batches: &mut [Batch]) -> Result<String, String> {
     // Sort eligible batches by earliest ETA
     let mut eligible: Vec<&mut Batch> = batches

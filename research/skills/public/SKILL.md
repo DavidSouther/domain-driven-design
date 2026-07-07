@@ -1,11 +1,11 @@
 ---
 name: public
-description: Use when a research question requires publicly available information. This includes external library documentation, language specifications, API references, community knowledge, or any topic not contained in the local codebase or internal documents. You obtain the answer from the public internet via web search or URL retrieval. Do not use for codebase structure questions (use `research:codebase`) or internal document questions (use `research:internal`).
+description: Use for research about public information, such as external library docs, specs, APIs, or community knowledge. Search the public internet via web search or URL fetch. Do not use for codebase or internal document questions.
 ---
 
 # Overview
 
-Public research answers questions using `WebSearch` and `WebFetch` against the open internet. It expands each query into multiple variants before searching, fetches high-value sources, and synthesizes findings with inline citations.
+Public research answers questions by using `WebSearch` and `WebFetch` against the open internet. It expands each query into multiple variants before searching, fetches high-value sources, and synthesizes findings with inline citations.
 
 Etiquette, allowed/blocked-domain policy, and any augmentation provider belong in [the public setup reference](../using-research/references/configuring/public.md); this skill consumes the contract that skill publishes. The cross-reference makes the pairing symmetric.
 
@@ -27,11 +27,11 @@ Etiquette, allowed/blocked-domain policy, and any augmentation provider belong i
 
 Before issuing any search, generate 3-5 variant queries:
 
-- **Synonyms** — different words for the same concept (`timeout` / `deadline` / `cancellation`)
-- **Narrow** — specific term plus technology/version context (`tokio timeout rust 1.78`)
-- **Broad** — general concept without specifics (`async cancellation rust`)
-- **Alternate phrasing** — question form vs. keyword form (`how to set request timeout` vs. `http client timeout configuration`)
-- **Related terms** — adjacent concepts that appear in relevant docs (`select!`, `CancellationToken`, `AbortSignal`)
+- **Synonyms**: different words for the same concept (`timeout` / `deadline` / `cancellation`)
+- **Narrow**: specific term plus technology/version context (`tokio timeout rust 1.78`)
+- **Broad**: general concept without specifics (`async cancellation rust`)
+- **Alternate phrasing**: question form vs. keyword form (`how to set request timeout` vs. `http client timeout configuration`)
+- **Related terms**: adjacent concepts that appear in relevant docs (`select!`, `CancellationToken`, `AbortSignal`)
 
 Run all variants. Union the result sets before deciding which URLs to fetch.
 
@@ -109,24 +109,24 @@ Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/public.md`. If the calle
 <narrative: synthesized answer with inline citations ([Source](url))>
 
 ## Sources
-- [Title](url) — reason consulted
-- [Title](url) — reason consulted
+- [Title](url), reason consulted
+- [Title](url), reason consulted
 ```
 
 # Common mistakes
 
-- **Single query only** — one phrasing frequently misses the canonical term used in official docs; always expand first.
-- **Fetching without searching** — guessing URLs skips relevance ranking; search first, then fetch top results.
-- **Stopping at snippets** — search result snippets are frequently too short; fetch the full page for precise answers.
-- **Treating blogs as authoritative** — verify blog claims against official docs before including them as findings.
-- **Ignoring version specifics** — API behavior frequently differs across versions; include the version in at least one query variant.
-- **Reporting only confirming hits** — web search ranks confirming results highly and buries contradictions. When a claim is load-bearing, run a falsification pass: search specifically for the negation. See `research/references/falsify.md`.
+- **Single query only**: one phrasing frequently misses the canonical term used in official docs. Always expand first.
+- **Fetching without searching**: guessing URLs skips relevance ranking. Search first, then fetch top results.
+- **Stopping at snippets**: search result snippets are frequently too short. Fetch the full page for precise answers.
+- **Treating blogs as authoritative**: verify blog claims against official docs before including them as findings.
+- **Ignoring version specifics**: API behavior frequently differs across versions. Include the version in at least one query variant.
+- **Reporting only confirming hits**: web search ranks confirming results highly and buries contradictions. When a claim is load-bearing, run a falsification pass: search specifically for the negation. See `research/references/falsify.md`.
 - **Re-teaching the wiring** – A "first, set your User-Agent, record your blocked domains" preface is wiring leakage. The wiring skill (configured in the public setup reference) owns setup; this skill consumes the contract. If a preface becomes unavoidable, the contract is incomplete. Widen it in [the public setup reference](../using-research/references/configuring/public.md).
 
 # Composes with
 
-- **the public setup reference** – The wiring partner. Located at `research:using-research` and `references/configuring/public.md`. Publishes the contract this skill consumes: built-in web search and fetch capabilities, etiquette and domain policy, and optional augmentation provider.
-- **`research:books`** and **`research:papers`** — sibling practice skills for citable books and academic papers.
-- **`research/references/jeopardy.md`** — query expansion technique.
-- **`research/references/citations.md`** — IEEE citation format.
-- **`research/references/falsify.md`** — falsification pass for load-bearing claims.
+- **the public setup reference**: The wiring partner. Located at `research:using-research` and `references/configuring/public.md`. Publishes the contract this skill consumes: built-in web search and fetch capabilities, etiquette and domain policy, and optional augmentation provider.
+- **`research:books`** and **`research:papers`**: sibling practice skills for citable books and academic papers.
+- **`research/references/jeopardy.md`**: query expansion technique.
+- **`research/references/citations.md`**: IEEE citation format.
+- **`research/references/falsify.md`**: falsification pass for load-bearing claims.

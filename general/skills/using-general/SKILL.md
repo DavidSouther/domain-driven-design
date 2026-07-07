@@ -15,7 +15,7 @@ Skills override default system prompt behavior. User instructions always take pr
 
 ## The rule
 
-Invoke relevant skills before any response or action. If a skill might apply, load it and check. A skill that turns out not to fit can be set aside.
+Invoke relevant skills before any response or action. If a skill might apply, load it and check. Set aside any skill that turns out not to fit.
 
 ```dot
 digraph skill_flow {

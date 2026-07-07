@@ -7,7 +7,7 @@ description: Use when reviewing comments in coding artifacts. Produces a critiqu
 
 ## Overview
 
-Review comments for whether they explain durable intent and invariants to the right reader. The artifact is a critique document, not a code rewrite.
+Review comments to see if they explain intent and key rules to the right reader. Create a critique document, not code edits.
 
 Comments explain why this exists, what contract callers may rely on, what invariant a future reader must protect, or why an unusual choice is correct.
 A comment explains what the code, signatures, type names, editor navigation, and git history cannot say clearly enough.
@@ -21,7 +21,7 @@ They remain useful after code moves, engineers rename files, callers change, mai
 
 ## Public docblocks serve external readers
 
-A public DocBlock addresses someone using the symbol without reading its implementation. It should explain why the symbol exists, what behavior callers may rely on, and any constraints that shape correct use.
+A public DocBlock addresses someone by using the symbol without reading its implementation. It should explain why the symbol exists, what behavior callers may rely on, and any constraints that shape correct use.
 
 A public DocBlock can include module-level intent, stable contracts, important edge cases, and worked examples.
 It should trust the reader’s tools for signatures, parameter names, return types, definitions, and reference searches.
@@ -29,7 +29,7 @@ It should trust the reader’s tools for signatures, parameter names, return typ
 ## Internal comments preserve maintainer judgment
 
 An internal comment addresses a future maintainer who can read the code, jump to definitions, find usages, and inspect history.
-Its job is to preserve judgment that would otherwise be lost. It explains why this path is surprising but intentional, what invariant the next edit must protect, or what external constraint shaped the implementation.
+Its job is to preserve judgment that future maintainers would otherwise lose. It explains why this path is surprising but intentional, what invariant the next edit must protect, or what external constraint shaped the implementation.
 
 The strongest inline comments sit near the decision they explain and survive a caller reshuffle.
 

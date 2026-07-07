@@ -1,11 +1,11 @@
 # O'Reilly learning
 
-Technical content from O'Reilly Media and partner publishers: Manning, Pragmatic Programmers, Packt, No Starch, and Wiley tech imprints. Plus video courses and live events. First stop for any hands-on technical question routing through this skill.
+O'Reilly Media provides technical content. Partner publishers include Manning, Pragmatic Programmers, Packt, No Starch, and Wiley. Find books, videos, and live events. Use this for hands-on technical questions.
 
 ## What it provides
 
-- **O'Reilly library search** — AI-powered search across roughly 60,000 books, video courses, and live events.
-- **Chapter and section retrieval** — planned for 2026; not all official-MCP versions expose it at launch.
+- **O'Reilly library search**: AI-powered search across roughly 60,000 books, video courses, and live events.
+- **Chapter and section retrieval**: planned for 2026; not all official-MCP versions expose it at launch.
 
 ## MCP options (probe order)
 
@@ -41,7 +41,7 @@ O'Reilly content is **subscription-licensed**. Cite-and-link with the platform U
 
 ## Failure modes
 
-- **SSO token expired** (enterprise MCP)—re-authenticate. This is a re-verification trigger in [`../../configuring-books/SKILL.md`](../../configuring-books/SKILL.md).
-- **Search API quota exceeded** (community MCP)—back off; the Platform Search API is not documented in detail and quotas can shift without notice.
-- **Capability mismatch** — section-level retrieval is on the 2026 roadmap; if the deployed MCP does not expose it, the *section retrieval* capability returns Not-Available.
-- **Individual access opens in 2026** — when the official MCP opens to individual subscribers, promote it from the enterprise-only probe to the primary transport for personal use. This is a named re-verification trigger.
+- **SSO token expired** (enterprise MCP): re-authenticate. This is a re-verification trigger in [`../../configuring-books/SKILL.md`](../../configuring-books/SKILL.md).
+- **Search API quota exceeded** (community MCP): back off; the Platform Search API is not documented in detail and quotas can shift without notice.
+- **Capability mismatch**: section-level retrieval is on the 2026 roadmap; if the deployed MCP does not expose it, the *section retrieval* capability returns Not-Available.
+- **Individual access opens in 2026**: when the official MCP opens to individual subscribers, promote it from the enterprise-only probe to the primary transport for personal use. This is a named re-verification trigger.

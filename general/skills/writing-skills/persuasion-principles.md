@@ -2,7 +2,7 @@
 
 ## Overview
 
-LLMs respond to the same persuasion principles as humans. Understanding this psychology helps you design more effective skills - not to manipulate, but to ensure you implement critical practices even under pressure.
+LLMs respond to the same persuasion principles as humans. Understanding this helps you design better skills—not to trick, but to ensure critical practices stick even under pressure.
 
 **Research foundation:** meincke et al. (2025) tested 7 persuasion principles with N=28,000 AI conversations. Persuasion techniques more than doubled compliance rates (33% → 72%, p < .001).
 

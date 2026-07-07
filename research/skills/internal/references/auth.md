@@ -6,8 +6,8 @@ Shared credential and handshake rules for the internal stack. The wiring skill (
 
 Every internal source authenticates before the contract holds; there is no anonymous fallback. The Anthropic-style connectors expose a two-call handshake:
 
-- `authenticate` — opens the provider's OAuth/SSO flow and returns a URL (or device code) the user completes in a browser.
-- `complete_authentication` — exchanges the completed flow for a session the MCP holds. After it returns, the connector's search and fetch tools answer.
+- `authenticate`: opens the provider's OAuth/SSO flow and returns a URL (or device code) the user completes in a browser.
+- `complete_authentication`: exchanges the completed flow for a session the MCP holds. After it returns, the connector's search and fetch tools answer.
 
 The handshake runs once per environment at configure time. A connector that has not completed it answers Not-Available, not an error. Sources reached over a command-line tool (GitHub via `gh`) or a server-side API key skip the browser flow and authenticate from the env var below.
 

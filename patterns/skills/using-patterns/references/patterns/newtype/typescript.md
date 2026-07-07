@@ -1,4 +1,4 @@
-# NewType: typescript reference
+# NewType: TypeScript
 
 Branded types erase at runtime, zero performance overhead.
 
@@ -12,7 +12,7 @@ transfer(toId, fromId, amountInCents);
 type AccountId = string & { readonly _brand: "AccountId" };
 type Cents     = number & { readonly _brand: "Cents" };
 
-// Constructor is the only sanctioned entry point — validation lives here once.
+// Constructor is the only sanctioned entry point. Validation lives here once.
 function makeAccountId(raw: string): AccountId {
   if (!raw.startsWith("acc-")) throw new Error(`Invalid AccountId: ${raw}`);
   return raw as AccountId;
@@ -24,9 +24,9 @@ function makeCents(raw: number): Cents {
 
 function transfer(from: AccountId, to: AccountId, amount: Cents): void { /* ... */ }
 
-// Type error — plain string is not assignable to AccountId:
+// Type error: plain string is not assignable to AccountId
 transfer("acc-123", "acc-456", 5000);           // TS error
 
-// Correct — construction is explicit:
+// Correct: construction is explicit
 transfer(makeAccountId("acc-123"), makeAccountId("acc-456"), makeCents(5000));
 ```

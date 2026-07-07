@@ -22,14 +22,14 @@ Four rules, applied together:
 3. **Explicit mutation methods.** Every state change is a named domain operation: `order.cancel()`, `batch.allocate(line)`, `account.deposit(amount)`. The method checks invariants inside. Forbid setters when they would let a caller establish an illegal state.
 4. **Builder-oriented creation.** The constructor is private. Construction goes through a builder, factory function, or `from`/`parse` method that enforces required fields and cross-field validation before producing the object. There is no path to a partially initialized instance.
 
-**Before** — every rule of the Order is enforceable only by convention.
+**Before.** Every rule of the Order is enforceable only by convention.
 ```
 order.status = "cancelled";        // no check that the order is cancellable
 order.lines.push(line);            // bypasses total recomputation
 order.total = 0;                   // contradicts order.lines
 ```
 
-**After** — the Order owns its rules.
+**After.** The Order owns its rules.
 ```
 order.cancel();                    // throws if not in a cancellable state
 order.addLine(line);               // recomputes total atomically
@@ -59,7 +59,7 @@ For complete examples, see [`visibility/typescript.md`](visibility/typescript.md
 
 ## Composes with
 
-- **the builder pattern (`references/patterns/builder.md`)** — the natural partner for rule four. The builder is the only public path to construction; the product's constructor stays private.
-- **the domain-objects pattern (`references/patterns/domain-objects.md`)** — entities and value objects are the things that need this discipline. Value objects take it further by being immutable end-to-end, so reads are inherently safe.
-- **the aggregate pattern (`references/patterns/aggregate.md`)** — the aggregate root is the only object with a public mutation surface for the cluster. Internal entities are reachable only through methods on the root, which is the strongest app of these rules.
-- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — at a boundary, parse the input into a constructed domain object whose internals are already private. Do not pass the raw record inward.
+- **the builder pattern (`references/patterns/builder.md`).** The natural partner for rule four. The builder is the only public path to construction; the product's constructor stays private.
+- **the domain-objects pattern (`references/patterns/domain-objects.md`).** Entities and value objects are the things that need this discipline. Value objects take it further by being immutable end-to-end, so reads are inherently safe.
+- **the aggregate pattern (`references/patterns/aggregate.md`).** The aggregate root is the only object with a public mutation surface for the cluster. Internal entities are reachable only through methods on the root, which is the strongest app of these rules.
+- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`).** At a boundary, parse the input into a constructed domain object whose internals are already private. Do not pass the raw record inward.

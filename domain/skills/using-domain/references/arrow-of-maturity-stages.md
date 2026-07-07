@@ -1,4 +1,4 @@
-# Arrow of maturity: architectural stages
+# Arrow of maturity: design stages
 
 This document describes a common set of six architectural stages that domain driven design projects grow through. Referenced by `ddd:domain-model` and `ddd:arrow-of-maturity`.
 

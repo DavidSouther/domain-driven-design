@@ -25,7 +25,7 @@ Re-running on a configured project confirms the contract or detects that surface
 
 ## Details (published to `DEVELOPMENT.md`)
 
-The details lives in `DEVELOPMENT.md` **only** — a single home that is both human-facing and agent-readable. After the configuring reference has run, the using reference may assume `DEVELOPMENT.md` contains a `## Program Management` section naming:
+The details lives in `DEVELOPMENT.md` **only**: a single home that is both human-facing and agent-readable. After the configuring reference has run, the using reference may assume `DEVELOPMENT.md` contains a `## Program Management` section naming:
 
 - **Active tracker (tasks home):** exactly one value that uniquely identifies a project management MCP. Known trackers are `{ linear, jira, github, notion, none }`, resolved at configure time even when several MCPs authenticate. When unset or `none`, the task tier degrades to `TASKS.md`.
 - **Term mapping:** the team's outward nouns for each Ailly tier.
@@ -44,12 +44,12 @@ The capability details the practice skill consumes, keyed by the active tracker'
 
 | Capability | Tier | Inputs | Returns | Notes |
 |---|---|---|---|---|
-| Select next task | tasks | optional team/label/status filter | highest-priority open task with id, title, labels, body, comments | — |
-| Create task | tasks | title, body, labels, optional parent | new task id | — |
+| Select next task | tasks | optional team/label/status filter | highest-priority open task with id, title, labels, body, comments |  |
+| Create task | tasks | title, body, labels, optional parent | new task id |  |
 | Link parent/child | tasks | child id, parent id | confirmation | GitHub `sub_issue_write`; else parent field write |
 | Transition status | tasks | task id, target state | confirmation | Jira `transitionJiraIssue`; else status field write |
 | Record phase progress | tasks | task id, phase, state | confirmation | per phase-representation strategy |
-| Write deferred work | tasks | title/body, labels, optional parent | new task/comment id | — |
+| Write deferred work | tasks | title/body, labels, optional parent | new task/comment id |  |
 | Publish long-lived doc | docs | doc path, doc-system target | published URL | only when doc-system target is not `none`, Project shape |
 
 **GitHub `Link parent/child` caveat:** the sub-issue endpoint takes the child's **database id** as `sub_issue_id`. The endpoint path is `POST /repos/:owner/:repo/issues/:parent/sub_issues`. Use an integer for the database id, not its issue number. `gh api -F` sends every field value as a string, which is unreliable for this integer field. Route the call through `gh api --input -` with a JSON heredoc body instead of `-F`.
@@ -64,11 +64,11 @@ The practice skill treats Not-Available as a routing signal, not an error.
 
 ## Configure checklist
 
-Walk the checklist top-to-bottom. Each item probes the source's MCP through the [internal sources setup reference](../../../../../research/skills/using-research/references/configuring/internal.md) contract, then records its line and smoke-tests it. **Do not re-teach MCP install or OAuth** — cite that internal setup reference for transport and auth. Record in (or update) `DEVELOPMENT.md`; never recreate it.
+Walk the checklist top-to-bottom. Each item probes the source's MCP through the [internal sources setup reference](../../../../../research/skills/using-research/references/configuring/internal.md) contract, then records its line and smoke-tests it. **Do not re-teach MCP install or OAuth.** Cite that internal setup reference for transport and auth. Record in (or update) `DEVELOPMENT.md`; never recreate it.
 
 **Default**
 
-- [ ] **Tracker detection and selection (tasks home).** Probe each tracker MCP for this project — **Linear**, **Jira**, **GitHub**, **Notion**, or if advertised research others. If more than one authenticates, ask the user to pick **one** active tracker and record it. Smoke-test: select-next-task returns the contract shape.
+- [ ] **Tracker detection and selection (tasks home).** Probe each tracker MCP for this project: **Linear**, **Jira**, **GitHub**, **Notion**, or if advertised research others. If more than one authenticates, ask the user to pick **one** active tracker and record it. Smoke-test: select-next-task returns the contract shape.
 - [ ] **Term mapping.** Ask the team's outward nouns for Project/Epic, feature, bug, and the deferred-work label, then record the mapping table. Where the team has no distinct noun, keep the tracker default.
 
 **Priority**
@@ -94,6 +94,6 @@ Re-run the wiring when any of the following happens. Re-running confirms the con
 
 ## Composes with
 
-- **[the using reference](using.md)** — the per-session partner. Wiring publishes the contract; practice consumes it.
+- **[the using reference](using.md)**: the per-session partner. Wiring publishes the contract; practice consumes it.
 - **[the internal sources setup reference](../../../../../research/skills/using-research/references/configuring/internal.md)** owns the MCP transport and OAuth/SSO handshakes for the same tracker MCPs. See `research:using-research` or `references/configuring/internal.md` for those reference details. Cite it for install and auth; do not re-teach them here.
-- **`developer:ailly`** — the coordinator reads this contract from `DEVELOPMENT.md` to decide whether to defer task I/O to the practice reference.
+- **`developer:ailly`**: the coordinator reads this contract from `DEVELOPMENT.md` to decide whether to defer task I/O to the practice reference.

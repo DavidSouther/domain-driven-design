@@ -1,12 +1,12 @@
 # Library of congress
 
-Digitized federal collection: rare books, manuscripts, government publications, Chronicling America historical newspapers. Use for primary-source historical documents and Americana.
+A digitized federal collection of rare books, manuscripts, government publications, and historical newspapers. Use it for primary-source historical documents and Americana.
 
 ## What it provides
 
 - **Catalog search** across digitized holdings.
-- **Item metadata** — title, creator, year, format, digitization status.
-- **Format-aware retrieval** — many items expose direct links to scanned PDFs, JPEGs, or transcripts.
+- **Item metadata**: title, creator, year, format, digitization status.
+- **Format-aware retrieval**: many items expose direct links to scanned PDFs, JPEGs, or transcripts.
 
 The catalog scope is the **digitized subset** of LoC's holdings, not the full card catalog. Non-digitized items appear in the LoC online catalog at `catalog.loc.gov` but not in the JSON API.
 
@@ -35,6 +35,6 @@ None first-party. Use HTTP.
 
 ## Failure modes
 
-- **Item not digitized** — appears in `catalog.loc.gov` but not in the JSON API. The practice skill returns the catalog reference and a typed Not-Available for the full-text-retrieval capability.
-- **Sparse metadata for older items** — some digitizations lack structured metadata. Fall back to the item's HTML page for the human-readable description.
-- **Format diversity** — items may offer PDF, JPEG, MP3, or only a transcript depending on type. The `original_format` field in the JSON response routes the practice skill to the right artifact.
+- **Item not digitized**: appears in `catalog.loc.gov` but not in the JSON API. The practice skill returns the catalog reference and a typed Not-Available for the full-text-retrieval capability.
+- **Sparse metadata for older items**: some digitizations lack structured metadata. Fall back to the item's HTML page for the human-readable description.
+- **Format diversity**: items may offer PDF, JPEG, MP3, or only a transcript depending on type. The `original_format` field in the JSON response routes the practice skill to the right artifact.

@@ -4,7 +4,7 @@ DOI→open-access PDF resolver. The canonical "is there a legal free PDF for thi
 
 ## What it provides
 
-- **DOI→OA-PDF** — best legal open-access location for a DOI, with license and OA-status metadata.
+- **DOI→OA-PDF**: best legal open-access location for a DOI, with license and OA-status metadata.
 
 Example payload (`/v2/{doi}?email=...`):
 
@@ -38,6 +38,6 @@ Per-location. Unpaywall reports the license string for each OA location; `cc-by-
 
 ## Failure modes
 
-- **No email parameter** — request rejected. Set `UNPAYWALL_EMAIL`.
-- **`is_oa: false`** — no legal free copy known. The practice skill returns a typed Not-Available for the *DOI→OA-PDF* capability.
-- **Stale OA location** — repositories occasionally take a copy down. Re-resolve through Crossref or Semantic Scholar for an alternative location.
+- **No email parameter**: request rejected. Set `UNPAYWALL_EMAIL`.
+- **`is_oa: false`**: no legal free copy known. The practice skill returns a typed Not-Available for the *DOI→OA-PDF* capability.
+- **Stale OA location**: repositories occasionally take a copy down. Re-resolve through Crossref or Semantic Scholar for an alternative location.

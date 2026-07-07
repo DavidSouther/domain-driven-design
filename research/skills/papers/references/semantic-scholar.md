@@ -6,7 +6,7 @@ Allen Institute for AI's academic graph. Strong for citation-graph queries, ML/A
 
 - **Topic search** with quality ranking biased to CS, ML, and AI.
 - **DOI / arXiv / PMID lookup** in a single shape.
-- **Citation graph** — `/paper/{id}/citations` and `/paper/{id}/references`.
+- **Citation graph**: `/paper/{id}/citations` and `/paper/{id}/references`.
 - **Author endpoints** and **recommendations**.
 
 Example payload (`/graph/v1/paper/{id}`):
@@ -18,7 +18,7 @@ Example payload (`/graph/v1/paper/{id}`):
 
 ## MCP option
 
-`FujishigeTemma/semantic-scholar-mcp` — wraps the Graph API. `afrise/academic-search-mcp-server` combines Semantic Scholar with Crossref.
+`FujishigeTemma/semantic-scholar-mcp` wraps the Graph API. `afrise/academic-search-mcp-server` combines Semantic Scholar with Crossref.
 
 ## HTTP fallback
 
@@ -42,6 +42,6 @@ Metadata, abstracts, and citation-graph edges are freely usable. Semantic Schola
 
 ## Failure modes
 
-- **429 without backoff** — anonymous quota exhausted. Apply exponential backoff or set the API key.
-- **Identifier prefix missing** — endpoints disambiguate via prefix (`DOI:`, `arXiv:`, `PMID:`). Forgetting the prefix matches no record.
-- **Citation graph truncation** — `/citations` requires pagination; iterate via `offset`. Highly cited papers (10k+ citations) require many requests.
+- **429 without backoff**: anonymous quota exhausted. Apply exponential backoff or set the API key.
+- **Identifier prefix missing**: endpoints disambiguate via prefix (`DOI:`, `arXiv:`, `PMID:`). Forgetting the prefix matches no record.
+- **Citation graph truncation**: `/citations` requires pagination; iterate via `offset`. Highly cited papers (10k+ citations) require many requests.

@@ -1,6 +1,6 @@
 ---
 name: writing-pattern-skills
-description: Use when authoring a new skill for the patterns plugin, or when revising an existing pattern skill so it conforms to the plugin's conventions. Applies when a recurring design pressure warrants expression as a named, reusable pattern, including its frontmatter, section structure, and the references directory layout.
+description: Use when authoring a new skill for the patterns plugin or revising an existing one. Applies when a design pressure calls for a named, reusable pattern with specific frontmatter and file structure.
 ---
 
 # Writing pattern skills
@@ -17,7 +17,7 @@ This skill describes that template, and the editorial choices that keep the cata
 
 - Industry literature (GoF, DDD, Fowler, Alexis King, Kent Beck) names a recurring design pressure and a skill should make it discoverable to Claude.
 - An emergent pattern in this codebase has matured enough to deserve a reusable name.
-- An existing pattern skill needs to be brought into conformance with the catalog's structure.
+- Update an existing pattern skill to conform to the catalog's structure.
 - A developer is adding a new language reference (`references/<lang>.md`) to an existing pattern.
 
 **When NOT to use:** authoring a non-pattern skill (a technique, a workflow, a reference). Use `general:writing-skills` directly. Likewise, project-specific conventions belong in CLAUDE.md, not in a pattern skill.
@@ -56,7 +56,7 @@ For complete examples, see [`references/typescript.md`](references/typescript.md
 - **Concise name of the misstep.** One or two sentences on the corrective action.
 
 ## Composes With
-- **`patterns:other-skill`** — how the two patterns reinforce each other.
+- **`patterns:other-skill`**: how the two patterns reinforce each other.
 ```
 
 ## Anatomy of each section
@@ -91,7 +91,7 @@ Each entry is a bolded misstep followed by the corrective move, framed as guidan
 
 ### Composes with
 
-The patterns plugin is a network, not a list. Every pattern names the neighbours it reinforces, with a short clause on why they pair: "**`patterns:newtype`** — the return type of a parser is a newtype." Cross-references use the `plugin:skill` form. When a pattern composes with skills outside the plugin (`developer:red-green-refactor`, for instance), include them too.
+The patterns plugin is a network, not a list. Every pattern names the neighbours it reinforces, with a short clause on why they pair: "**`patterns:newtype`**: the return type of a parser is a newtype." Cross-references use the `plugin:skill` form. When a pattern composes with skills outside the plugin (`developer:red-green-refactor`, for instance), include them too.
 
 ## File layout
 
@@ -139,6 +139,6 @@ When citing prior art, attribute the source. Alexis King developed parse-don't-v
 
 ## Composes with
 
-- **`general:writing-skills`** — the underlying authoring methodology (CSO, TDD-of-documentation, naming, frontmatter rules) that this skill specializes for the patterns plugin.
-- **`patterns:using-patterns`** — the bootstrap and routing skill that names every pattern in the catalog. Add a row to its situation table whenever a new pattern skill ships, so the new skill becomes reachable from the workflow.
-- **`general:review`** — run a review pass against a fresh draft before committing, especially the Common Mistakes and Composes With sections, which are easy to under-fill.
+- **`general:writing-skills`**: the underlying authoring methodology (CSO, TDD-of-documentation, naming, frontmatter rules) that this skill specializes for the patterns plugin.
+- **`patterns:using-patterns`**: the bootstrap and routing skill that names every pattern in the catalog. Add a row to its situation table whenever a new pattern skill ships, so the new skill becomes reachable from the workflow.
+- **`general:review`**: run a review pass against a fresh draft before committing, especially the Common Mistakes and Composes With sections, which are easy to under-fill.

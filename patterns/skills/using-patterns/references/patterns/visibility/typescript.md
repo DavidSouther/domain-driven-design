@@ -24,7 +24,7 @@ class Order {
   private readonly _lines: OrderLine[] = [];
   private _total: Cents = makeCents(0);
 
-  // Constructor is private — only the builder can produce an Order.
+  // Constructor is private: only the builder can produce an Order.
   private constructor(readonly id: OrderId) {}
 
   // The builder is returned from a static method on Order, so the closure
@@ -70,7 +70,7 @@ interface OrderBuilder {
 
 Key details:
 - Fields are `private`. There is no accidental write path from outside the class.
-- `lines()` returns `ReadonlyArray<OrderLine>` — `.push` is a type error at the call site.
+- `lines()` returns `ReadonlyArray<OrderLine>`. `.push` is a type error at the call site.
 - `cancel()` and `addLine()` are the only writes; both check the invariants they protect.
 - `status()` and `total()` compute their values; they are not assignable fields.
 - The constructor is private; `Order.builder(...)` is the only sanctioned construction path.

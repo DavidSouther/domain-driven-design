@@ -1,4 +1,4 @@
-# The forward/backward method for developing algorithms
+# Forward and backward method
 ## Example: Circular linked list
 
 Part three of a series on [technical whiteboarding](/blog/interview_01_whiteboard).
@@ -35,7 +35,7 @@ Having moved backwards to needing a visited set, the programmer asks the forward
 
 At this point, a complete logical thread connects all the steps from A1 to B1. A1 is the input. A2 maintains a visited list during traversal. B3 checks the visited list. B2 recognizes or does not recognize a duplicate item. B1 returns immediately when the code encounters a duplicate or when the traversal completes.
 
-When the forward and backward steps line up in the visualization using specific values, it’s time to write a general plain language description of each step. These steps should not be specific to any programming language. They should use “big picture” holistic operations, like “traverse the list”, “compare the values”, or “check the set”. Calling out intermediate data structures by variable name is appropriate, but describing the changes to a loop counter is too detailed for a general algorithm.
+When the forward and backward steps line up in the visualization by using specific values, it’s time to write a general plain language description of each step. These steps should not be specific to any programming language. They should use “big picture” holistic operations, like “traverse the list”, “compare the values”, or “check the set”. Calling out intermediate data structures by variable name is appropriate, but describing the changes to a loop counter is too detailed for a general algorithm.
 
 ![Completed visualization and algorithm](/images/Technical_Whiteboarding_FB_Algorithm.png)
 

@@ -1,6 +1,6 @@
 # Release flags
 
-A project lands features over time. A release flag, also called a release toggle or feature flag, keeps the in-progress work from reaching users until the project is done. It decouples deployment from release. The project deploys code continuously behind the flag and shows it to users only when the project turns the flag on. This reference holds the practice that `developer/skills/ailly/references/shapes/project/project-cycle.md` summarizes.
+A project lands features over time. A release flag, also called a release toggle or feature flag, keeps the in-progress work from reaching users until you finish the project. It decouples deployment from release. The project deploys code continuously behind the flag and shows it to users only when the project turns the flag on. This reference holds the practice that `developer/skills/ailly/references/shapes/project/project-cycle.md` summarizes.
 
 ## One project flag by default
 

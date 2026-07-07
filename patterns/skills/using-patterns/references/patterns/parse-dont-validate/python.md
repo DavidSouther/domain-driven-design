@@ -24,7 +24,7 @@ def parse_email(raw: str) -> Email:
         raise ValueError(f'"{raw}" is not a valid email address')
     return Email(raw)
 
-# Domain functions accept Email — mypy rejects plain str
+# Domain functions accept Email (mypy rejects plain str)
 def send_welcome(email: Email) -> None:
     smtp.send(email.value, "Welcome!")  # no guard needed; the type is the proof
 

@@ -10,7 +10,7 @@ The four layers and their mandates:
 | **Composition Root** | The only place that imports concrete classes; constructs and injects all dependencies; runs once at startup |
 
 ```python
-# domain.py — pure logic, no I/O
+# domain.py: pure logic, no I/O
 from dataclasses import dataclass
 from typing import Union
 
@@ -30,7 +30,7 @@ def place_order(order: Order, balance: float) -> Union[Order, InsufficientFunds]
     return order
 
 
-# ports.py — interfaces owned by the service layer
+# ports.py: interfaces owned by the service layer
 from abc import ABC, abstractmethod
 
 class OrderRepository(ABC):
@@ -38,7 +38,7 @@ class OrderRepository(ABC):
     async def get_balance(self, customer_id: str) -> float: ...
 
 
-# service.py — application service: orchestrates, does not own rules
+# service.py: application service; orchestrates, does not own rules
 class OrderService:
     def __init__(self, repo: OrderRepository) -> None:
         self._repo = repo
@@ -52,7 +52,7 @@ class OrderService:
         return place_order(order, balance)      # domain function owns the rule
 
 
-# adapter.py — thin HTTP adapter (FastAPI); maps protocol, calls service
+# adapter.py: thin HTTP adapter (FastAPI); maps protocol, calls service
 from fastapi.responses import JSONResponse
 
 async def handle_place_order(request: Request, service: OrderService) -> JSONResponse:
@@ -65,7 +65,7 @@ async def handle_place_order(request: Request, service: OrderService) -> JSONRes
     return JSONResponse({"id": result.id, "total": result.total}, status_code=201)
 
 
-# bootstrap.py — Composition Root; the only file that knows about Postgres
+# bootstrap.py: Composition Root; the only file that knows about Postgres
 import os
 from fastapi import FastAPI
 from infrastructure.postgres_repo import PostgresOrderRepository

@@ -1,6 +1,6 @@
 # Visibility, rust reference
 
-Rust's module system enforces visibility at compile time. Fields default to private; `pub` is opt-in. Borrowing rules give reference-only getters for free: `&T` cannot mutate, `&mut T` is the only way to mutate, and the compiler decides who has which.
+Rust enforces visibility at compile time. Fields are private by default; `pub` makes them public. Borrowing rules handle getters for you: `&T` cannot mutate, `&mut T` allows mutation, and the compiler controls access.
 
 ```rust
 mod order {
@@ -39,7 +39,7 @@ mod order {
     }
 
     impl Order {
-        // Private constructor — outside this module, only `builder` can produce an Order.
+        // Private constructor: outside this module, only `builder` can produce an Order.
         fn new(id: OrderId) -> Self {
             Order { id, status: OrderStatus::Open, lines: Vec::new(), total: 0 }
         }

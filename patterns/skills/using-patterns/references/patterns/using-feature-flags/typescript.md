@@ -3,7 +3,7 @@
 One toggle point reads the injected `Flags` port and branches. The default branch is today's behavior. The targeting stays in the provider behind the port. The test exercises both branches.
 
 ```ts
-// checkout.ts — one toggle point, at the edge of the new path
+// checkout.ts: one toggle point at the edge of the new path
 import type { Flags, FlagContext } from "./flags"; // installed by configuring-feature-flags
 
 export function checkout(flags: Flags, ctx: FlagContext, cart: Cart): Receipt {
@@ -15,7 +15,7 @@ export function checkout(flags: Flags, ctx: FlagContext, cart: Cart): Receipt {
 ```
 
 ```ts
-// checkout.test.ts — both states ship, so both states are tested
+// checkout.test.ts: both states ship, so both states are tested
 import { checkout } from "./checkout";
 
 class FakeFlags {

@@ -12,7 +12,7 @@ pub trait UnitOfWork: Send {
     async fn rollback(&mut self) -> anyhow::Result<()>;
 }
 
-// In-memory fake — fast unit tests without a database
+// In-memory fake: fast unit tests without a database
 pub struct InMemoryUnitOfWork {
     products_repo: InMemoryProductRepository,
     pub committed: bool,
@@ -43,7 +43,7 @@ impl UnitOfWork for InMemoryUnitOfWork {
     }
 }
 
-// Drop provides automatic rollback — if commit() was never called, changes are discarded.
+// Drop provides automatic rollback: if commit() was never called, changes are discarded.
 // SQL implementations would call self.session.rollback() here.
 impl Drop for InMemoryUnitOfWork {
     fn drop(&mut self) {

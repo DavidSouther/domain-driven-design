@@ -152,4 +152,4 @@ def cli_logging(verbosity: int = 0, log_format: str = "auto") -> Iterator[None]:
             provider.shutdown()
 ```
 
-The `_add_trace_context` processor runs on every log call, so `trace_id` and `span_id` arrive without each emit-site mentioning them. `contextvars.merge_contextvars` lets request-scoped fields (a `user_id`, a `request_id`) ride along once they have been bound at the request boundary.
+The `_add_trace_context` processor runs on every log call, so `trace_id` and `span_id` arrive without each emit-site mentioning them. `contextvars.merge_contextvars` lets request-scoped fields (a `user_id`, a `request_id`) ride along once you bind them at the request boundary.

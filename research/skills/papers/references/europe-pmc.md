@@ -33,6 +33,6 @@ None first-party for Europe PMC as a single source. Aggregators (`xingyulu23/Aca
 
 ## Failure modes
 
-- **Full text gated** — when `inEPMC: false` or `isOpenAccess: false`, the body is not retrievable. Return a typed Not-Available and cite the article via DOI.
-- **XML parsing** — Europe PMC's full-text XML is JATS; verbose. Prefer a JATS parser over hand-rolled regular expressions.
-- **Result paginated** — page via `pageSize` and `cursorMark`; large biomedical topics easily exceed default page size.
+- **Full text gated**: when `inEPMC: false` or `isOpenAccess: false`, the body is not retrievable. Return a typed Not-Available and cite the article via DOI.
+- **XML parsing**: Europe PMC's full-text XML is JATS; verbose. Prefer a JATS parser over hand-rolled regular expressions.
+- **Result paginated**: page via `pageSize` and `cursorMark`; large biomedical topics easily exceed default page size.

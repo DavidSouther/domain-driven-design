@@ -21,7 +21,7 @@ fn describe(rome: &Rome) -> &'static str {
     }
 }
 
-// The compiler exhaustively checks every variant — no invalid combination possible.
+// The compiler exhaustively checks every variant: no invalid combination possible.
 ```
 
 ### Type state, zero-cost phantom types
@@ -32,7 +32,7 @@ use std::marker::PhantomData;
 struct Closed;
 struct Open;
 
-/// The state parameter S is erased at runtime — zero overhead.
+/// The state parameter S is erased at runtime: zero overhead.
 struct Connection<S> {
     _state: PhantomData<S>,
 }

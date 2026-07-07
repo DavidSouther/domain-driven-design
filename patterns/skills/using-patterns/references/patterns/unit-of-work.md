@@ -2,14 +2,14 @@
 
 ## Overview
 
-The Unit of Work pattern pairs an Aggregate with a Repository inside a single transactional boundary. All mutations defer until `commit()`. A failed operation reverts entirely via `rollback()`. This keeps durability concerns out of app-layer code. Row locks, optimistic-concurrency tokens, and session lifecycle details stay in the pattern. Handlers are testable without a real database.
+The Unit of Work pattern bundles an Aggregate and Repository inside one transactional boundary. All mutations defer until `commit()`. A failed operation reverts entirely via `rollback()`. This approach keeps durability concerns out of app-layer code and leaves row locks, optimistic-concurrency tokens, and session lifecycle details to the pattern. Handlers become testable without a real database.
 
 ## When to use
 
 - A handler makes changes that must all succeed or all fail. Partial writes are unacceptable.
 - Rollback behavior must be explicit and guaranteed. Validation errors, concurrent conflicts, and infrastructure failures all trigger it predictably.
 - Tests must verify aggregate operations and persistence together without a real database.
-- Durability details must be kept out of app-layer and domain code.
+- Keep durability details out of app-layer and domain code.
 
 **When NOT to use:** read-only queries, fire-and-forget writes with no rollback requirement, or simple CRUD with no domain logic.
 
@@ -30,11 +30,11 @@ For complete examples, see [`unit-of-work/typescript.md`](unit-of-work/typescrip
 
 ## Quick reference
 
-1. **Open** — enter the `with` block; UoW creates the session and repository.
-2. **Load** — fetch the aggregate through the repository (no write yet).
-3. **Operate** — call the aggregate's domain method. The UoW tracks mutations in memory.
-4. **Commit or rollback** — `commit()` flushes all deferred writes atomically; `__exit__` calls `rollback()` automatically on any exception.
-5. **Respond** — return results or surface domain errors *outside* the `with` block.
+1. **Open**: enter the `with` block; UoW creates the session and repository.
+2. **Load**: fetch the aggregate through the repository (no write yet).
+3. **Operate**: call the aggregate's domain method. The UoW tracks mutations in memory.
+4. **Commit or rollback**: `commit()` flushes all deferred writes atomically; `__exit__` calls `rollback()` automatically on any exception.
+5. **Respond**: return results or surface domain errors *outside* the `with` block.
 
 ## Common mistakes
 
@@ -50,6 +50,6 @@ For complete examples, see [`unit-of-work/typescript.md`](unit-of-work/typescrip
 
 ## Composes with
 
-- **the aggregate pattern (`references/patterns/aggregate.md`)** — the UoW wraps exactly one aggregate operation; atomicity here enforces the aggregate's consistency guarantee at the storage level.
-- **the repository pattern (`references/patterns/repository.md`)** — the UoW owns and creates the repository instance; the repository is never constructed or used outside a UoW in transactional handlers.
-- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)** — app services create and use the UoW. The Composition Root injects the concrete UoW factory so tests can substitute `FakeUnitOfWork`.
+- **the aggregate pattern (`references/patterns/aggregate.md`)**: the UoW wraps exactly one aggregate operation; atomicity here enforces the aggregate's consistency guarantee at the storage level.
+- **the repository pattern (`references/patterns/repository.md`)**: the UoW owns and creates the repository instance; the repository is never constructed or used outside a UoW in transactional handlers.
+- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)**: app services create and use the UoW. The Composition Root injects the concrete UoW factory so tests can substitute `FakeUnitOfWork`.

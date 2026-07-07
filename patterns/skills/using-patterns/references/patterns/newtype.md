@@ -2,7 +2,7 @@
 
 ## Overview
 
-Wrap primitive types in named domain types so the type system enforces correct usage. Scalar types describe what data *looks like*; domain types describe what data *means*. The compiler checks shape, not meaning, so two fields that are both floatint point numbers are indistinguishable without wrapping in a newtype. When implemented using brands, the compiler erases the brand at runtime, ensuring zero performance overhead.
+Wrap primitive types in named domain types so the type system enforces correct usage. Scalar types describe what data looks like. Domain types describe what data means. The compiler checks shape, not meaning. Two fields that are both floatint point numbers look identical without wrapping in a newtype. Using brands, the compiler erases the brand at runtime with zero performance overhead.
 
 ## When to use
 
@@ -15,15 +15,15 @@ Wrap primitive types in named domain types so the type system enforces correct u
 
 ## Core pattern
 
-**Before** — primitives leak domain intent; swapping `fromAccount` and `toAccount` (both `string`) compiles silently.
+**Before:** primitives leak domain intent; swapping `fromAccount` and `toAccount` (both `string`) compiles silently.
 
-**After** — branded/wrapper types make the mistake unrepresentable. The constructor is the only sanctioned entry point; validation and coercion live there once.
+**After:** branded/wrapper types make the mistake unrepresentable. The constructor is the only sanctioned entry point; validation and coercion live there once.
 
 ```
 type AccountId = string & { readonly _brand: "AccountId" };
-// Type error — plain string is not assignable to AccountId:
+// Type error: plain string is not assignable to AccountId:
 transfer("acc-123", "acc-456", 5000);
-// Correct — construction is explicit:
+// Correct: construction is explicit:
 transfer(makeAccountId("acc-123"), makeAccountId("acc-456"), makeCents(5000));
 ```
 
@@ -48,5 +48,5 @@ For complete examples, see [`newtype/typescript.md`](newtype/typescript.md), [`n
 
 ## Composes with
 
-- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)** — constructor functions, builders, and `impl TryFrom` *are* parsers; `makeEmail(raw)` validates and brands in one step, producing the typed value domain code consumes.
-- **the domain-objects pattern (`references/patterns/domain-objects.md`)** — brand entity IDs (`UserId`, `OrderId`) and constrained value object fields (`Cents`, `EmailAddress`) so the type system enforces correct usage across the model.
+- **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`):** Constructor functions, builders, and `impl TryFrom` *are* parsers; `makeEmail(raw)` validates and brands in one step, producing the typed value domain code consumes.
+- **the domain-objects pattern (`references/patterns/domain-objects.md`):** Brand entity IDs (`UserId`, `OrderId`) and constrained value object fields (`Cents`, `EmailAddress`) so the type system enforces correct usage across the model.

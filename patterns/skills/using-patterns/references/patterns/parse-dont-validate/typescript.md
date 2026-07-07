@@ -20,7 +20,7 @@ function parseEmail(raw: string): Email {
   return raw as Email;
 }
 
-// Domain functions accept Email — illegal to pass an unvalidated string
+// Domain functions accept Email: it is illegal to pass an unvalidated string
 function sendWelcome(email: Email) {
   smtp.send(email, "Welcome!"); // no guard needed; the type is the proof
 }

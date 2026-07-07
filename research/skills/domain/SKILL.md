@@ -1,6 +1,6 @@
 ---
 name: domain
-description: "Use when a research question is about the conceptual model of the problem space: entities, bounded contexts, ubiquitous language, invariants, or DDD maturity. Apply it instead of questions about how code implements those concepts. Use it when `domain:` skills load or when domain artifacts exist in the codebase. Don't use it for implementation questions (use `research:codebase`) or for questions answerable only from external sources (use `research:public`)."
+description: "Use for questions about the conceptual model. Include entities, relationships, rules, and DDD concepts. Don't use it for implementation questions or external research."
 ---
 
 # Overview
@@ -20,11 +20,11 @@ Domain answers research questions about the conceptual model: what things exist,
 
 Before running any search, generate 3–5 query variants per concept:
 
-- **Canonical term** — the term as stated in the question
-- **Synonyms** — alternate words a domain expert might use
-- **Ubiquitous language variants** — project-specific vocabulary for the same concept
-- **Structural synonyms** — `entity` / `aggregate` / `object`; `rule` / `invariant` / `constraint`
-- **File-name variants** — `glossary`, `model`, `domain`, `entities`, `context`
+- **Canonical term**: the term as stated in the question
+- **Synonyms**: alternate words a domain expert might use
+- **Ubiquitous language variants**: project-specific vocabulary for the same concept
+- **Structural synonyms**: `entity` / `aggregate` / `object`; `rule` / `invariant` / `constraint`
+- **File-name variants**: `glossary`, `model`, `domain`, `entities`, `context`
 
 Run each variant; union the results before synthesizing.
 
@@ -72,7 +72,7 @@ Structure:
 
 # Common mistakes
 
-- **Answering from code instead of the model** — if the only source is implementation files rather than domain artifacts or `domain:` skills, escalate to `research:codebase` or note the gap explicitly.
-- **Skipping query expansion** — a concept named `Order` may also appear as `PurchaseOrder`, `SalesOrder`, or `order_aggregate`; always expand before concluding absence.
-- **Conflating bounded contexts** — the same term can mean different things in different contexts; identify which bounded context applies before defining a term.
-- **Finalizing domain changes without approval** — if research surfaces a needed correction to domain artifacts in `docs/ddd/`, mark it `[DRAFT]` and request human sign-off before finalizing.
+- **Answering from code instead of the model**: if the only source is implementation files rather than domain artifacts or `domain:` skills, escalate to `research:codebase` or note the gap explicitly.
+- **Skipping query expansion**: a concept named `Order` may also appear as `PurchaseOrder`, `SalesOrder`, or `order_aggregate`; always expand before concluding absence.
+- **Conflating bounded contexts**: the same term can mean different things in different contexts; identify which bounded context applies before defining a term.
+- **Finalizing domain changes without approval**: if research surfaces a needed correction to domain artifacts in `docs/ddd/`, mark it `[DRAFT]` and request human sign-off before finalizing.

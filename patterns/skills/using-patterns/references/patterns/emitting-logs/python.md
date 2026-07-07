@@ -1,6 +1,6 @@
 # Emitting logs: Python reference
 
-`structlog` bound loggers carry per-request context; `contextvars` propagate it across `await` boundaries without each call site re-attaching it. The configuration skill's `_add_trace_context` processor already attaches `trace_id`/`span_id` from the active span; emit sites only add the per-event fields. Error chains render via `log.exception(...)` (which captures `sys.exc_info()`) plus explicit `error.type` / `exception.type` keys for OTel grouping.
+`structlog` bound loggers hold per-request context. `contextvars` spread it across `await` boundaries so each call doesn't need to attach it again. The configuration skill's `_add_trace_context` processor adds `trace_id`/`span_id` from the active span. Emit sites only add the per-event fields. Render error chains with `log.exception(...)` to capture `sys.exc_info()`. Add explicit `error.type` and `exception.type` keys for OTel grouping.
 
 ```python
 from __future__ import annotations

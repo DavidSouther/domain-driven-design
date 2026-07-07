@@ -1,8 +1,6 @@
 # Tool failure: stop and escalate
 
-Load this reference **after** a tool declared for the project fails: a build, test,
-lint, type-check, package manager, or task runner that the README or a package/lock
-file says this project uses.
+Load this reference after a tool fails. The tool must be declared in the project: a build, test, lint, type-check, package manager, or task runner that the README or a package/lock file lists.
 
 Agents are good at picking up project norms, and good at quietly routing around a
 broken tool by reaching for a different one. That second instinct is the hazard here.
@@ -18,23 +16,16 @@ higher than for an undeclared, incidental tool.
 
 ## First: check for a local fix via the initialize reference
 
-Many failures are a missing local setup step, not a broken project. Before escalating,
-consult the coordinator's initialize reference
-(`developer/skills/ailly/references/abilities/initialize.md`) to see whether you need to prepare the environment, for example a missing `mise trust`, an `npm install` that has not
-been run, an unactivated virtualenv, or an uninstalled dev dependency. If the initialize
-reference identifies a safe, local, idempotent fix, apply it and retry the original
-command once.
+Many failures stem from missing setup, not a broken project. Before escalating, consult the coordinator's initialize reference (`developer/skills/ailly/references/abilities/initialize.md`). You may need to run `mise trust`, `npm install`, activate a virtualenv, or install a dev dependency. If you find a safe, local, idempotent fix, apply it and retry the original command once.
 
 ## Then: escalate back to the user
 
 If `initialize` does not resolve it, escalate to the **user**. Do not keep trying
 variations silently. Report, in plain terms:
 
-- **What failed** — the exact command and the relevant error output.
-- **Suggested remediation** — the most likely fix (for example, `mise install`, a version
-  bump, an auth/token that needs setting, a missing system dependency).
-- **Why that remediation is correct** — the reasoning that connects the error to the fix,
-  so the user can judge it rather than apply it blindly.
+- **What failed**: the exact command and the relevant error output.
+- **Suggested remediation**: the most likely fix (for example, `mise install`, a version bump, an auth or token that needs setting, a missing system dependency).
+- **Why that remediation is correct**: the reasoning that connects the error to the fix, so the user can judge it rather than apply it blindly.
 
 ## Finally: Retry and continue
 

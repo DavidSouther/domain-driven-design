@@ -2,7 +2,7 @@
 
 ## Overview
 
-Data at the boundary of a system is unsafe by nature, including raw strings, unstructured JSON, and untrusted input. Instead of validating (checking a boolean and proceeding), parse: transform the unsafe representation into a typed domain value whose *existence* is the proof of validity. You cannot create a value of type `Email` without passing the check, so domain code accepts `Email`, not `string`, and the guard is never needed again. This is the key insight from Alexis King's original formulation: a parsed type carries the proof; a boolean check does not.
+Data at the boundary of a system is unsafe. This includes raw strings, unstructured JSON, and untrusted input. Do not just validate (check a boolean and proceed). Instead, parse: transform the unsafe representation into a typed domain value. The *existence* of this value is the proof of validity. You cannot create a value of type `Email` without passing the check. Domain code accepts `Email`, not `string`, so the guard is never needed again. This is the key insight from Alexis King's original formulation: a parsed type carries the proof; a boolean check does not.
 
 This pattern applies the principle of "make illegal states unrepresentable." The type system enforces the invariant instead of runtime discipline.
 
@@ -23,7 +23,7 @@ This pattern applies the principle of "make illegal states unrepresentable." The
 ```
 // Parse once at the HTTP boundary:
 const email = parseEmail(req.body.email);
-sendWelcome(email);  // no guard inside — the type guarantees validity
+sendWelcome(email);  // no guard inside: the type guarantees validity
 ```
 
 Errors must be specific to the failure mode. The caller of the parser must be able to understand the error and correct it.
@@ -46,5 +46,5 @@ For complete examples, see [`parse-dont-validate/typescript.md`](parse-dont-vali
 
 ## Composes with
 
-- **the newtype pattern (`references/patterns/newtype.md`)** — the return type of a parser is a newtype; `parseEmail` returns `Email`, not `string`. The parse function *is* the newtype constructor when the type has a format constraint.
-- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)** — parsing happens in the adapter or app service, exactly at the boundary where untrusted data enters the domain.
+- **the newtype pattern (`references/patterns/newtype.md`)**: the return type of a parser is a newtype. `parseEmail` returns `Email`, not `string`. The parse function *is* the newtype constructor when the type has a format constraint.
+- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)**: parsing happens in the adapter or app service, exactly at the boundary where untrusted data enters the domain.

@@ -3,7 +3,7 @@
 The composition root builds one evaluation client behind a vendor-neutral port and injects it. Call sites receive the port, never a vendor SDK.
 
 ```ts
-// flags.ts — the vendor-neutral port every call site reads through
+// flags.ts: the vendor-neutral port every call site reads through
 export type FlagContext = { environment: string; userId?: string };
 
 export interface Flags {
@@ -12,7 +12,7 @@ export interface Flags {
 ```
 
 ```ts
-// fail-safe.ts — an unreachable backing resolves to the default (current behavior)
+// fail-safe.ts: an unreachable backing resolves to the default (current behavior)
 export class FailSafeFlags implements Flags {
   constructor(private readonly inner: Flags) {}
 
@@ -27,7 +27,7 @@ export class FailSafeFlags implements Flags {
 ```
 
 ```ts
-// static-flags.ts — a fully runnable backing for local and CI
+// static-flags.ts: a fully runnable backing for local and CI
 export class StaticFlags implements Flags {
   constructor(private readonly values: Record<string, boolean> = {}) {}
 
@@ -38,7 +38,7 @@ export class StaticFlags implements Flags {
 ```
 
 ```ts
-// bootstrap.ts — built once at the composition root, then injected
+// bootstrap.ts: built once at the composition root, then injected
 export function buildFlags(environment: string): Flags {
   // Production backs the port with a vendor SDK that evaluates a locally cached
   // ruleset (LaunchDarkly, Unleash), or with an OpenFeature client. OpenFeature's
