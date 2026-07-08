@@ -1,0 +1,7 @@
+*
+!.gitignore
+!runner.py
+!pyproject.toml
+!NOTES.md
+!tests/
+!tests/*
