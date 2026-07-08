@@ -1,13 +1,21 @@
 # Internal: Out of scope
 
-This section lists sources we exclude from internal research and why. The configuration at [`../../configuring-internal/SKILL.md`](../../configuring-internal/SKILL.md) marks the boundary between the internal stack and other research skills.
+This section lists sources we exclude from internal research and why.
+The configuration at [`../../configuring-internal/SKILL.md`](../../configuring-internal/SKILL.md) marks the boundary between the internal stack and other research skills.
 
 ## Out-of-scope sources
 
-- **Public internet sources** include external library docs, language specs, community knowledge, and anything on the public web. Route these to `research:public`. The internal MCPs do not index the public internet; an authenticated transport adds nothing for an anonymous public page.
-- **The local checkout** includes symbol definitions, call sites, and type structure at the checked-out commit. Route this to `research:codebase`. LSP and Bash search read the code on disk, not an authenticated org connector.
-- **Git history** covers why code changed, who introduced a behavior, or when developers added or reverted features. Route this to `research:archaeology`. The repository's commit graph contains history, not an internal document store.
+- **Public internet sources** include external library docs, language specs, community knowledge, and anything on the public web.
+  Route these to `research:public`.
+  The internal MCPs do not index the public internet; an authenticated transport adds nothing for an anonymous public page.
+- **The local checkout** includes symbol definitions, call sites, and type structure at the checked-out commit.
+  Route this to `research:codebase`.
+  LSP and Bash search read the code on disk, not an authenticated org connector.
+- **Git history** covers why code changed, who introduced a behavior, or when developers added or reverted features.
+  Route this to `research:archaeology`.
+  The repository's commit graph contains history, not an internal document store.
 
 ## Why the boundary matters
 
-Each of these has a transport and a re-verification cadence disjoint from the authenticated-MCP stack. Folding them into the internal contract would make the contract dishonest about what authentication buys and would duplicate routing the sibling skills already own.
+Each of these has a transport and a re-verification cadence disjoint from the authenticated-MCP stack.
+Folding them into the internal contract would make the contract dishonest about what authentication buys and would duplicate routing the sibling skills already own.

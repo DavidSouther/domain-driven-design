@@ -7,7 +7,8 @@ description: Use when reviewing comments in coding artifacts. Produces a critiqu
 
 ## Overview
 
-Review comments to see if they explain intent and key rules to the right reader. Create a critique document, not code edits.
+Review comments to see if they explain intent and key rules to the right reader.
+Create a critique document, not code edits.
 
 Comments explain why this exists, what callers can trust, what a future reader must protect, or why a choice is right.
 A comment tells readers what code, names, and history alone cannot explain.
@@ -21,7 +22,8 @@ They stay useful after code moves, names change, and teams forget the original p
 
 ## Public docblocks serve external readers
 
-A public DocBlock reaches readers by using the symbol. It explains why it exists, what callers can rely on, and what constraints matter.
+A public DocBlock reaches readers by using the symbol.
+It explains why it exists, what callers can rely on, and what constraints matter.
 
 A public DocBlock can name intent, contracts, edge cases, and examples.
 Trust the reader’s tools for types and signatures.
@@ -29,7 +31,8 @@ Trust the reader’s tools for types and signatures.
 ## Internal comments preserve maintainer judgment
 
 An internal comment speaks to a future maintainer who can read code and check history.
-It saves judgment they cannot recover alone. It explains why a path is right, what invariant the next edit must protect, or what constraint shaped the code.
+It saves judgment they cannot recover alone.
+It explains why a path is right, what invariant the next edit must protect, or what constraint shaped the code.
 
 Strong comments sit near the decision they explain and stay true when callers change.
 
@@ -40,21 +43,20 @@ Types, names, visibility, definitions, references, blame, and history are alread
 
 Consider these comment types:
 
-History: “split out of restir.wgsl”
-Invariant: “this layout must remain byte-compatible with the ReSTIR shader buffer”
-Reference: “used by testing_events.rs”
-Contract: “the test harness and production path must share this gather rule”
+History: “split out of restir.wgsl” Invariant: “this layout must remain byte-compatible with the ReSTIR shader buffer” Reference: “used by testing_events.rs” Contract: “the test harness and production path must share this gather rule”
 
 ## Output format
 
-Produce a critique document. For each comment or comment group:
+Produce a critique document.
+For each comment or comment group:
 
 1. Identify the audience: public DocBlock or internal note.
 2. Name the intent or invariant the comment should carry.
 3. Check if the current comment serves that goal.
 4. Suggest an action: keep, simplify, rewrite, or remove.
 
-The review document names the problem and suggests how the comment should change. It does not edit code.
+The review document names the problem and suggests how the comment should change.
+It does not edit code.
 
 ## Review signals
 

@@ -1,31 +1,46 @@
 # Codebase: lsp setup
 
-Per-language priming rules for the codebase stack. The wiring SKILL cites this file at configure time. The wiring SKILL is the codebase configuration system; see [`../configuring-codebase/SKILL.md`](../configuring-codebase/SKILL.md) for details. Per-language reference files (`lsp-rust.md`, `lsp-python.md`, `lsp-typescript.md`) cite it for the priming step each inherits.
+Per-language priming rules for the codebase stack.
+The wiring SKILL cites this file at configure time.
+The wiring SKILL is the codebase configuration system; see [`../configuring-codebase/SKILL.md`](../configuring-codebase/SKILL.md) for details.
+Per-language reference files (`lsp-rust.md`, `lsp-python.md`, `lsp-typescript.md`) cite it for the priming step each inherits.
 
-Priming is the codebase analog of the books/papers `etiquette.md`: a shared-rules file. The concern is not host politeness or credential handling, but project resolution. Language servers are toolchain installs with no auth. Unprimed servers answer `goToDefinition` with nothing. The rules below make each language server resolve the project before the contract holds.
+Priming is the codebase analog of the books/papers `etiquette.md`: a shared-rules file.
+The concern is not host politeness or credential handling, but project resolution.
+Language servers are toolchain installs with no auth.
+Unprimed servers answer `goToDefinition` with nothing.
+The rules below make each language server resolve the project before the contract holds.
 
 ## Rust (rust-analyzer)
 
 - rust-analyzer activates automatically when `Cargo.toml` is present; no separate install.
-- **Prime with `cargo check`** so the crate graph resolves. Until you build the crate graph at least once, cross-crate `goToDefinition`/`findReferences` return nothing.
+- **Prime with `cargo check`** so the crate graph resolves.
+  Until you build the crate graph at least once, cross-crate `goToDefinition`/`findReferences` return nothing.
 - Workspace crates resolve once you check the workspace root; you do not need to check each member crate separately.
-- Feature flags affect what resolves. rust-analyzer uses the active feature set (in most cases `default`). A symbol behind a non-default feature appears Not-Available until you enable that feature in the rust-analyzer config.
+- Feature flags affect what resolves. rust-analyzer uses the active feature set (in most cases `default`).
+  A symbol behind a non-default feature appears Not-Available until you enable that feature in the rust-analyzer config.
 
 ## Python (pyright / pylsp)
 
 - Install pyright (`pip install pyright` or `npm install -g pyright`); pylsp (`pip install python-lsp-server`) is the alternative.
-- **Activate the venv and match the pyright config to it.** A `pyrightconfig.json` or a `[tool.pyright]` block in `pyproject.toml` must point `venvPath`/`pythonPath` at the active virtual environment. A mismatched or absent venv causes import-resolution failures and `hover` returns `Unknown`.
-- After the venv is correct, `hover` on a typed symbol returns a concrete type. If it returns `Unknown`, the priming is incomplete (wrong venv) or the code is genuinely untyped.
+- **Activate the venv and match the pyright config to it.**
+  A `pyrightconfig.json` or a `[tool.pyright]` block in `pyproject.toml` must point `venvPath`/`pythonPath` at the active virtual environment.
+  A mismatched or absent venv causes import-resolution failures and `hover` returns `Unknown`.
+- After the venv is correct, `hover` on a typed symbol returns a concrete type.
+  If it returns `Unknown`, the priming is incomplete (wrong venv) or the code is genuinely untyped.
 
 ## TypeScript / javascript (typescript-language-server)
 
 - tsserver ships with TypeScript; no separate install beyond the project's dependencies.
-- **Run `npm install` (or equivalent) to populate `node_modules`.** Until you install dependencies, imports into third-party packages and `.d.ts` declarations do not resolve.
-- For monorepos, **run `tsc --build`** so project references (`composite: true`) regenerate the declaration files tsserver needs to resolve cross-package imports. Until then, cross-package `goToDefinition` lands nowhere.
+- **Run `npm install` (or equivalent) to populate `node_modules`.**
+  Until you install dependencies, imports into third-party packages and `.d.ts` declarations do not resolve.
+- For monorepos, **run `tsc --build`** so project references (`composite: true`) regenerate the declaration files tsserver needs to resolve cross-package imports.
+  Until then, cross-package `goToDefinition` lands nowhere.
 
 ## Other languages
 
-Each compiled language follows the same shape: install the standard server, then prime the build so the server resolves the project before smoke-testing. Document the per-language priming step in that language's `lsp-<lang>.md` and cite this file for the shared rationale.
+Each compiled language follows the same shape: install the standard server, then prime the build so the server resolves the project before smoke-testing.
+Document the per-language priming step in that language's `lsp-<lang>.md` and cite this file for the shared rationale.
 
 - **Go (gopls):** `go build ./...` so the module graph resolves.
 - **Java (jdtls):** import/build the project (`mvn compile` / `gradle build`) so the classpath resolves.
@@ -34,4 +49,6 @@ Each compiled language follows the same shape: install the standard server, then
 
 ## Re-priming trigger
 
-Priming is not one-and-done. Re-run the priming step for a language when its build inputs change: a dependency added to `Cargo.toml`/`package.json`, a pulled branch, or a moved workspace member. A previously resolving operation that now returns nothing is the signal that the project needs re-priming, and is a re-verification trigger in [`../configuring-codebase/SKILL.md`](../configuring-codebase/SKILL.md).
+Priming is not one-and-done.
+Re-run the priming step for a language when its build inputs change: a dependency added to `Cargo.toml`/`package.json`, a pulled branch, or a moved workspace member.
+A previously resolving operation that now returns nothing is the signal that the project needs re-priming, and is a re-verification trigger in [`../configuring-codebase/SKILL.md`](../configuring-codebase/SKILL.md).

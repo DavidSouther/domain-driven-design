@@ -1,6 +1,7 @@
 # Codex tool mapping
 
-Codex adapter for the harness contract in `developer:ailly`. When a skill reference names a tool that Codex calls something else, use this table:
+Codex adapter for the harness contract in `developer:ailly`.
+When a skill reference names a tool that Codex calls something else, use this table:
 
 | Skill references | Codex equivalent |
 |-----------------|------------------|
@@ -15,7 +16,11 @@ Codex adapter for the harness contract in `developer:ailly`. When a skill refere
 
 ## Model mandate
 
-Each `spawn_agent` call accepts a per-agent `model` field in its TOML configuration. This is a confirmed model-selection mechanism. Follow the mandate-with-announce rule in `general/skills/dispatching-agents/model-selection.md`. Set that field directly from that guidance on every `spawn_agent` dispatch this skill package performs, including phase-level dispatch and any qualifying within-phase sub-dispatch. Announce the model chosen to the developer.
+Each `spawn_agent` call accepts a per-agent `model` field in its TOML configuration.
+This is a confirmed model-selection mechanism.
+Follow the mandate-with-announce rule in `general/skills/dispatching-agents/model-selection.md`.
+Set that field directly from that guidance on every `spawn_agent` dispatch this skill package performs, including phase-level dispatch and any qualifying within-phase sub-dispatch.
+Announce the model chosen to the developer.
 
 ## Subagent dispatch requires multi-agent features
 
@@ -31,8 +36,8 @@ This enables `spawn_agent`, `wait`, and `close_agent` for skills like `dispatchi
 ## Named agent dispatch
 
 Some legacy or third-party skills reference named agent types like `superpowers:code-reviewer`.
-Codex does not have a named agent registry. `spawn_agent` creates generic agents
-from built-in roles (`default`, `explorer`, `worker`).
+Codex does not have a named agent registry.
+`spawn_agent` creates generic agents from built-in roles (`default`, `explorer`, `worker`).
 
 When a skill says to dispatch a named agent type:
 
@@ -49,8 +54,8 @@ When a skill says to dispatch a named agent type:
 
 ### Message framing
 
-The `message` parameter is user-level input, not a system prompt. Structure it
-for maximum instruction adherence:
+The `message` parameter is user-level input, not a system prompt.
+Structure it for maximum instruction adherence:
 
 ```
 Your task is to perform the following. Follow the instructions below exactly.
@@ -69,15 +74,12 @@ specified in the instructions above.
 
 ### How to remove this workaround
 
-This approach compensates for Codex's plugin system not yet supporting an `agents`
-field in `plugin.json`. When `RawPluginManifest` gains an `agents` field, the
-plugin can symlink to `agents/` (mirroring the existing `skills/` symlink) and
-skills can dispatch named agent types directly.
+This approach compensates for Codex's plugin system not yet supporting an `agents` field in `plugin.json`.
+When `RawPluginManifest` gains an `agents` field, the plugin can symlink to `agents/` (mirroring the existing `skills/` symlink) and skills can dispatch named agent types directly.
 
 ## Environment detection
 
-Skills that create worktrees or finish branches should detect their
-environment with read-only git commands before proceeding:
+Skills that create worktrees or finish branches should detect their environment with read-only git commands before proceeding:
 
 ```bash
 GIT_DIR=$(cd "$(git rev-parse --git-dir)" 2>/dev/null && pwd -P)
@@ -88,17 +90,13 @@ BRANCH=$(git branch --show-current)
 - `GIT_DIR != GIT_COMMON` → already in a linked worktree (skip creation)
 - `BRANCH` empty → detached HEAD (cannot branch/push/PR from sandbox)
 
-See `using-git-worktrees` Step 0 and `finishing-a-development-branch`
-Step 1 for how each skill uses these signals.
+See `using-git-worktrees` Step 0 and `finishing-a-development-branch` Step 1 for how each skill uses these signals.
 
 ## Codex app finishing
 
-When the sandbox blocks branch/push operations (detached HEAD in an
-externally managed worktree), the agent commits all work and informs
-the user to use the App's native controls:
+When the sandbox blocks branch/push operations (detached HEAD in an externally managed worktree), the agent commits all work and informs the user to use the App's native controls:
 
 - **"Create branch"**: names the branch, then commit/push/PR via App UI
 - **"Hand off to local"**: transfers work to the user's local checkout
 
-The agent can still run tests, stage files, and output suggested branch
-names, commit messages, and PR descriptions for the user to copy.
+The agent can still run tests, stage files, and output suggested branch names, commit messages, and PR descriptions for the user to copy.

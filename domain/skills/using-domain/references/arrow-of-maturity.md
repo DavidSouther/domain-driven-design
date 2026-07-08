@@ -17,10 +17,18 @@ For full stage descriptions, see `../../../references/arrow-of-maturity-stages.m
 
 ## Rules
 
-- **Move quickly from Stage 1 to 2a.** Once business logic appears, concepts need names. Do not remain in straight-through handlers.
-- **Extract a Repository (2b) before production.** Required for long-term codebase health. Also move to 2b as soon as you need to swap persistence implementations or test domain logic without hitting a real database.
-- **Introduce Aggregates and Unit of Work (2c) conservatively.** Add the aggregate when you discover domain operations, not speculatively. Stages 2b and 2c can live side by side, with only some operations relying on aggregates while others continue to use their entities and value objects.
-- **Do NOT rush to Stage 3.** Only genuine production scaling pressure or the need to model the dimension of time justifies event-sourced microservices. Moving to event sourced does require changing substantial portions of the external API, and is difficult to do piecemeal.
+- **Move quickly from Stage 1 to 2a.**
+  Once business logic appears, concepts need names.
+  Do not remain in straight-through handlers.
+- **Extract a Repository (2b) before production.**
+  Required for long-term codebase health.
+  Also move to 2b as soon as you need to swap persistence implementations or test domain logic without hitting a real database.
+- **Introduce Aggregates and Unit of Work (2c) conservatively.**
+  Add the aggregate when you discover domain operations, not speculatively.
+  Stages 2b and 2c can live side by side, with only some operations relying on aggregates while others continue to use their entities and value objects.
+- **Do NOT rush to Stage 3.**
+  Only genuine production scaling pressure or the need to model the dimension of time justifies event-sourced microservices.
+  Moving to event sourced does require changing substantial portions of the external API, and is difficult to do piecemeal.
 - **Advance only when the current stage creates genuine friction.**
 
 ## Output

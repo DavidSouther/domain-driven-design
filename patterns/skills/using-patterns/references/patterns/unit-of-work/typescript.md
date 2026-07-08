@@ -1,6 +1,7 @@
 # TypeScript Unit of Work
 
-TypeScript automatically rolls back when a scope exits. It uses `Symbol.asyncDispose` (ES2023 `await using`) to do this.
+TypeScript automatically rolls back when a scope exits.
+It uses `Symbol.asyncDispose` (ES2023 `await using`) to do this.
 
 ```typescript
 interface UnitOfWork extends AsyncDisposable {

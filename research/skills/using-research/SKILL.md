@@ -9,7 +9,8 @@ If you're a subagent executing a specific task, skip this skill.
 
 # Research skills workflow
 
-You are working in a project with structured research skills. When asked a research question, select the appropriate skill based on the nature of the question.
+You are working in a project with structured research skills.
+When asked a research question, select the appropriate skill based on the nature of the question.
 
 | Question type | Invoke |
 |---------------|--------|
@@ -24,7 +25,14 @@ You are working in a project with structured research skills. When asked a resea
 
 ## Configuring sources
 
-Source wiring is a once-per-environment setup task, not a per-query research move, so it lives as on-demand references rather than always-on skills. When bootstrapping or revising a source stack on a fresh checkout, take these steps. Probe MCP servers, fall back to HTTP, and install marketplace plugins. Complete OAuth/SSO handshakes and set auth env vars and contact details. Smoke-test each capability against its published contract. Read the matching setup reference and follow it. Each reference publishes the capability contract the per-query skill preceding this consumes. Do NOT run these inside a research session.
+Source wiring is a once-per-environment setup task, not a per-query research move, so it lives as on-demand references rather than always-on skills.
+When bootstrapping or revising a source stack on a fresh checkout, take these steps.
+Probe MCP servers, fall back to HTTP, and install marketplace plugins.
+Complete OAuth/SSO handshakes and set auth env vars and contact details.
+Smoke-test each capability against its published contract.
+Read the matching setup reference and follow it.
+Each reference publishes the capability contract the per-query skill preceding this consumes.
+Do NOT run these inside a research session.
 
 | Setting up sources for | Read |
 |---|---|
@@ -36,15 +44,24 @@ Source wiring is a once-per-environment setup task, not a per-query research mov
 
 ## Jeopardy search (all skills)
 
-Every research skill applies Jeopardy search. Before issuing any query, generate 3–5 variants: synonyms, different phrasings, casing variants, and related concepts. Run each. See `research/references/jeopardy.md` for background.
+Every research skill applies Jeopardy search.
+Before issuing any query, generate 3–5 variants: synonyms, different phrasings, casing variants, and related concepts.
+Run each.
+See `research/references/jeopardy.md` for background.
 
 ## Falsification (oppositional research)
 
-When a claim is load-bearing, when the user asks "are you sure?," or when the evidence so far is entirely confirming, run a falsification pass before reporting a conclusion. Restate the claim as a universal, negate it into 3 to 5 concrete falsifiable hypotheses, and dispatch a subagent per hypothesis to search specifically for the negation. A single counterexample refutes the original; absence of counterexamples only fails to refute it. See `research/references/falsify.md` for procedure and limits.
+When a claim is load-bearing, when the user asks "are you sure?," or when the evidence so far is entirely confirming, run a falsification pass before reporting a conclusion.
+Restate the claim as a universal, negate it into 3 to 5 concrete falsifiable hypotheses, and dispatch a subagent per hypothesis to search specifically for the negation.
+A single counterexample refutes the original; absence of counterexamples only fails to refute it.
+See `research/references/falsify.md` for procedure and limits.
 
 ## Thread digest (conversational sources)
 
-When a fetched source is a discussion thread (GitHub/PR, Slack, Reddit/HN, or mailing-list), read the full thread including body and every comment. Always run it through the three-pass digest: fetch, organize, and refine. Do this before treating it as scoped, regardless of thread size. See `research/references/thread-digest.md` for the source-type gate, the procedure, and the untrusted-content rules for handling attacker-reachable comment text.
+When a fetched source is a discussion thread (GitHub/PR, Slack, Reddit/HN, or mailing-list), read the full thread including body and every comment.
+Always run it through the three-pass digest: fetch, organize, and refine.
+Do this before treating it as scoped, regardless of thread size.
+See `research/references/thread-digest.md` for the source-type gate, the procedure, and the untrusted-content rules for handling attacker-reachable comment text.
 
 ## Research notes convention
 
@@ -53,12 +70,19 @@ Before dispatching search subagents, choose the research note folder:
 - Standalone research uses `.ailly/research/YYYY-MM-DD-A-<topic>/`.
 - Research that is part of an Ailly development task uses the task session's `.ailly/developer/<session-slug>/research/` folder when the caller provides it.
 
-Create that folder before dispatching. Each skill writes its findings to `<skill-name>.md` in that folder, with a `**Sources**` section listing every resource consulted. In text references to sources should use a loose IEEE style. See `references/citations.md` when formatting those sections for more details.
+Create that folder before dispatching.
+Each skill writes its findings to `<skill-name>.md` in that folder, with a `**Sources**` section listing every resource consulted.
+In text references to sources should use a loose IEEE style.
+See `references/citations.md` when formatting those sections for more details.
 
 ## Combining skills
 
-Most research questions benefit from more than one skill. Dispatch them in parallel and synthesize the findings:
+Most research questions benefit from more than one skill.
+Dispatch them in parallel and synthesize the findings:
 
-- "Why does this dependency exist and what does it actually do?" → `dependencies` + `archaeology`
-- "What does the domain say this should be, and is the code correct?" → `domain` + `codebase`
-- "Is this pattern documented anywhere internally or publicly?" → `internal` + `public`
+- "Why does this dependency exist and what does it actually do?"
+  → `dependencies` + `archaeology`
+- "What does the domain say this should be, and is the code correct?"
+  → `domain` + `codebase`
+- "Is this pattern documented anywhere internally or publicly?"
+  → `internal` + `public`

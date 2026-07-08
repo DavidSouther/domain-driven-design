@@ -2,7 +2,12 @@
 
 ## Overview
 
-A page object encapsulates one UI surface (a screen, a page, or a console) behind an object. That object exposes verb-phrase, user-intent methods like `System_findObject` and `Helm_setManeuver` instead of raw selectors. The object owns every locator and wait for that surface. A test drives the surface only through the object's methods, never through a direct selector. The core principle, from Fowler's `PageObject` bliki: when the UI changes, exactly one file changes with it. The acceptance tests that read like user journeys never see the difference.
+A page object encapsulates one UI surface (a screen, a page, or a console) behind an object.
+That object exposes verb-phrase, user-intent methods like `System_findObject` and `Helm_setManeuver` instead of raw selectors.
+The object owns every locator and wait for that surface.
+A test drives the surface only through the object's methods, never through a direct selector.
+The core principle, from Fowler's `PageObject` bliki: when the UI changes, exactly one file changes with it.
+The acceptance tests that read like user journeys never see the difference.
 
 ## When to use
 
@@ -11,7 +16,9 @@ A page object encapsulates one UI surface (a screen, a page, or a console) behin
 - A single UI change (a renamed button, a moved control) breaks several unrelated tests at once.
 - A test reads as a sequence of low-level DOM/console interactions rather than a sequence of user actions.
 
-**When not to use:** a one-off test that touches a screen exactly once, where the encapsulation cost is not repaid. A unit test with no UI surface to encapsulate. Route that to `arrange-act-assert` instead.
+**When not to use:** a one-off test that touches a screen exactly once, where the encapsulation cost is not repaid.
+A unit test with no UI surface to encapsulate.
+Route that to `arrange-act-assert` instead.
 
 ## Core pattern
 
@@ -49,7 +56,8 @@ def test_system_console_finds_object():
     assert result == "Sol-3"
 ```
 
-Naming follows one pattern: one page object per screen or console (`SystemConsole`, `HelmConsole`). Name methods as verb phrases describing the user's intent (`System_findObject`, `Helm_setManeuver`), never the DOM or console structure the method happens to tap.
+Naming follows one pattern: one page object per screen or console (`SystemConsole`, `HelmConsole`).
+Name methods as verb phrases describing the user's intent (`System_findObject`, `Helm_setManeuver`), never the DOM or console structure the method happens to tap.
 
 ## Quick reference
 
@@ -63,12 +71,22 @@ Naming follows one pattern: one page object per screen or console (`SystemConsol
 
 ## Common mistakes
 
-- **Asserting inside the page object.** The page object never asserts; it returns values or exposes observable state, and the test asserts on what it returns.
-- **Exposing raw selectors as public methods.** A method like `getSearchButton()` leaks DOM structure back into the test. Expose only verb-phrase intent methods like `System_findObject`.
-- **One page object spanning multiple screens or consoles.** Split by surface: one page object per screen or console, not one page object for the whole app.
-- **Method names mirror DOM/console structure instead of user intent.** `System_clickSearchButton` describes the DOM; `System_findObject` describes the user's action. Name by intent.
-- **Re-deriving selectors in the test "just this once."** Any selector or wait written directly in a test, even for a quick check, defeats the localization the page object exists to provide. Move it into the page object instead.
+- **Asserting inside the page object.**
+  The page object never asserts; it returns values or exposes observable state, and the test asserts on what it returns.
+- **Exposing raw selectors as public methods.**
+  A method like `getSearchButton()` leaks DOM structure back into the test.
+  Expose only verb-phrase intent methods like `System_findObject`.
+- **One page object spanning multiple screens or consoles.**
+  Split by surface: one page object per screen or console, not one page object for the whole app.
+- **Method names mirror DOM/console structure instead of user intent.**
+  `System_clickSearchButton` describes the DOM; `System_findObject` describes the user's action.
+  Name by intent.
+- **Re-deriving selectors in the test "just this once."**
+  Any selector or wait written directly in a test, even for a quick check, defeats the localization the page object exists to provide.
+  Move it into the page object instead.
 
 ## Composes with
 
-- **`patterns:arrange-act-assert`** (`references/patterns/arrange-act-assert.md`). The page object's verb-phrase method calls are the test's Act. The test still owns its own Arrange and Assert, and never asserts inside the page object.
+- **`patterns:arrange-act-assert`** (`references/patterns/arrange-act-assert.md`).
+  The page object's verb-phrase method calls are the test's Act.
+  The test still owns its own Arrange and Assert, and never asserts inside the page object.

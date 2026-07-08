@@ -1,11 +1,10 @@
-A cleared design for a JSON-Lines filter CLI (`jq-lite`) is reproduced below. Its
-`*Draft*` marker was removed after review. The design records the path of its one
-feature test, `tests/test_jq_lite.py`, which lives in the project test tree and
-is currently failing because no implementation exists. The project is Python and
-tests run under `pytest`.
+A cleared design for a JSON-Lines filter CLI (`jq-lite`) is reproduced below.
+Its `*Draft*` marker was removed after review.
+The design records the path of its one feature test, `tests/test_jq_lite.py`, which lives in the project test tree and is currently failing because no implementation exists.
+The project is Python and tests run under `pytest`.
 
-Produce the implementation plan. Write everything inline as your reply: do not
-call any tools or emit tool-call JSON.
+Produce the implementation plan.
+Write everything inline as your reply: do not call any tools or emit tool-call JSON.
 
 Cleared design — `.ailly/developer/2026-06-03-A-jq-lite/design.md`:
 
@@ -37,8 +36,7 @@ full `jq` is heavier than a predicate-only need.
 A small parser → evaluator → streaming-I/O loop, standard library only.
 ```
 
-Feature test recorded by the design, living in the project at
-`tests/test_jq_lite.py` and currently failing:
+Feature test recorded by the design, living in the project at `tests/test_jq_lite.py` and currently failing:
 
 ```markdown
 # Feature Test — jq-lite (recorded in design.md)

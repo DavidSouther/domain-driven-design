@@ -1,9 +1,28 @@
-Semantic search improves documents by using LLM generation. This approach uses LLMs and prompt engineering to create “similar” documents from the original document†. These documents expand coverage in the embedding space and place related points close by. Similarity searches find more matches in the source space. Similar techniques create similar queries for semantic lookup.
+Semantic search improves documents by using LLM generation.
+This approach uses LLMs and prompt engineering to create “similar” documents from the original document†.
+These documents expand coverage in the embedding space and place related points close by.
+Similarity searches find more matches in the source space.
+Similar techniques create similar queries for semantic lookup.
 
-These techniques are expensive and limited success. Similar documents are likely to confabulate on the one hand, increasing the likelihood of negative matches. These matched documents contain incorrect contents for the query. On the other, expanding the query space at request time is very expensive, incurring multiple real-time LLM generation calls on the response path.
+These techniques are expensive and limited success.
+Similar documents are likely to confabulate on the one hand, increasing the likelihood of negative matches.
+These matched documents contain incorrect contents for the query.
+On the other, expanding the query space at request time is very expensive, incurring multiple real-time LLM generation calls on the response path.
 
-Jeopardy search is a combination of these techniques, with an extra pinch of salt in the form of user personas. In Jeopardy search, when you add a document to the knowledge base, it takes a different approach than HyDE. Rather than generating additional documents in the “source” embedding space, it generates queries which the document would answer. This moves the semantic expansion into the “query” embedding space. The query side then moves its indirection. Instead of semantic similarity against the source space, it performs semantic similarity in the query space. This transparently returns the same original documents. For production search cases, this returns nearest-neighbors and uses additional ranking techniques. For graph retrieval augmented generation, it expands several hops through the knowledge base and applies the same technique.
+Jeopardy search is a combination of these techniques, with an extra pinch of salt in the form of user personas.
+In Jeopardy search, when you add a document to the knowledge base, it takes a different approach than HyDE.
+Rather than generating additional documents in the “source” embedding space, it generates queries which the document would answer.
+This moves the semantic expansion into the “query” embedding space.
+The query side then moves its indirection.
+Instead of semantic similarity against the source space, it performs semantic similarity in the query space.
+This transparently returns the same original documents.
+For production search cases, this returns nearest-neighbors and uses additional ranking techniques.
+For graph retrieval augmented generation, it expands several hops through the knowledge base and applies the same technique.
 
-The pinch of salt for Jeopardy search comes from having a history of personas and their searches. When prompting to generate the query set for a document, the system takes examples from past good searches based on a persona. For instance, “The Executive Persona used ABC query and chose XYZ document.”, “The Designer Persona used JKL query and chose QWE document.” For either persona, then include the task “Generate 10 queries the persona would ask that document VBN would answer.”
+The pinch of salt for Jeopardy search comes from having a history of personas and their searches.
+When prompting to generate the query set for a document, the system takes examples from past good searches based on a persona.
+For instance, “The Executive Persona used ABC query and chose XYZ document.”, “The Designer Persona used JKL query and chose QWE document.”
+For either persona, then include the task “Generate 10 queries the persona would ask that document VBN would answer.”
 
-† Technically, this involves breaking a document into chunks of appropriate size. Chunking is itself a bit of an art form, but typically 512 tokens per chunk, 64 token overlap, and some context-aware (heading level, prose vs code block) sections work well. [Citation needed, but this aligns with general practice.] The point being, Document Length is the O(n) for these operations.
+† Technically, this involves breaking a document into chunks of appropriate size.
+Chunking is itself a bit of an art form, but typically 512 tokens per chunk, 64 token overlap, and some context-aware (heading level, prose vs code block) sections work well. [Citation needed, but this aligns with general practice.] The point being, Document Length is the O(n) for these operations.

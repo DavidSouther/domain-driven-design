@@ -1,6 +1,8 @@
 # Type states, rust reference
 
-Rust enforces type states at compile time through ownership and the borrow checker. Consuming the old state on transition is not convention. Move semantics enforce it.
+Rust enforces type states at compile time through ownership and the borrow checker.
+Consuming the old state on transition is not convention.
+Move semantics enforce it.
 
 ### Discriminated union (enum)
 

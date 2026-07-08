@@ -41,4 +41,5 @@ def allocate(order_line, repo: AbstractProductRepository) -> str:
     return order_line.sku
 ```
 
-Domain code gets the repository and calls only the abstract interface. It does not use SQLAlchemy sessions, file handles, or HTTP clients.
+Domain code gets the repository and calls only the abstract interface.
+It does not use SQLAlchemy sessions, file handles, or HTTP clients.

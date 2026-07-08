@@ -1,6 +1,14 @@
 # Available developer skills
 
-These are the skills you can invoke. Each line is one skill's identifier and the `description:` from its frontmatter — the same routing surface a coding agent presents. Select the one whose description fits the situation.
+These are the skills you can invoke.
+Each line is one skill's identifier and the `description:` from its frontmatter — the same routing surface a coding agent presents.
+Select the one whose description fits the situation.
 
-- `developer:ailly` — Use when starting, resuming, or routing any software development task. The single bootstrap and session coordinator for the developer plugin: it directs which developer ability applies and drives the five-phase development loop — research, design, plan, red-green-refactor (build), cleanup — entered by phase argument (`/ailly design ...`). Creates and manages the session folder, enforces the draft gates between phases, runs the phase-entry model and tool-readiness checks, and resumes an existing session at the right phase. Routes the coordinator's progressive abilities: thinking (stuck on a compiler/test/lint error during build), refactor (clean up green code before finishing), initialize (set up a new project or language environment), and program-management (read the next task or wire the team's issue tracker and document system). Also drives quick-loop, long-loop, bugfix, and project-shape variants.
-- `developer:clean-comments-review` — Use when reviewing the comments and DocBlocks in code for their audience and longevity, not the code's correctness. Applies when a public DocBlock enumerates current callers or describes how a symbol is used today (detail that rots when usage changes) instead of why the symbol exists, when a comment's audience is unclear (an external-reader DocBlock versus an internal line comment), or when over-documentation should be cut back to intent. Produces a critique document, not edits to the code.
+- `developer:ailly` — Use when starting, resuming, or routing any software development task.
+  The single bootstrap and session coordinator for the developer plugin: it directs which developer ability applies and drives the five-phase development loop — research, design, plan, red-green-refactor (build), cleanup — entered by phase argument (`/ailly design ...`).
+  Creates and manages the session folder, enforces the draft gates between phases, runs the phase-entry model and tool-readiness checks, and resumes an existing session at the right phase.
+  Routes the coordinator's progressive abilities: thinking (stuck on a compiler/test/lint error during build), refactor (clean up green code before finishing), initialize (set up a new project or language environment), and program-management (read the next task or wire the team's issue tracker and document system).
+  Also drives quick-loop, long-loop, bugfix, and project-shape variants.
+- `developer:clean-comments-review` — Use when reviewing the comments and DocBlocks in code for their audience and longevity, not the code's correctness.
+  Applies when a public DocBlock enumerates current callers or describes how a symbol is used today (detail that rots when usage changes) instead of why the symbol exists, when a comment's audience is unclear (an external-reader DocBlock versus an internal line comment), or when over-documentation should be cut back to intent.
+  Produces a critique document, not edits to the code.

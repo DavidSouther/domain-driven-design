@@ -1,7 +1,6 @@
-The auth-handler change below is finished: static checks pass, the unit tests
-are green, and the working directory is clean (everything is committed). Before I
-open the PR I want to clean up the code. Nothing about its behaviour should
-change.
+The auth-handler change below is finished: static checks pass, the unit tests are green, and the working directory is clean (everything is committed).
+Before I open the PR I want to clean up the code.
+Nothing about its behaviour should change.
 
 `auth/handler.py`:
 

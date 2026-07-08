@@ -4,7 +4,8 @@ Toolchain: mise + per-language sub-projects
 
 ## Overview
 
-A mise monorepo hosts multiple language sub-projects under one root. Mise provides a unified task interface (`mise format`, `mise test`, etc.) that delegates to each sub-project's own tooling.
+A mise monorepo hosts multiple language sub-projects under one root.
+Mise provides a unified task interface (`mise format`, `mise test`, etc.) that delegates to each sub-project's own tooling.
 
 ## Required layout
 

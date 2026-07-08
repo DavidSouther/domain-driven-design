@@ -1,6 +1,7 @@
 # Type states: Python reference
 
-Python's type system is structural and checked by tools like mypy. Discriminated unions use `Literal` types; type states use `Generic` with phantom types enforced by mypy, not the runtime.
+Python's type system is structural and checked by tools like mypy.
+Discriminated unions use `Literal` types; type states use `Generic` with phantom types enforced by mypy, not the runtime.
 
 ### Discriminated union
 

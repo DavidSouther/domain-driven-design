@@ -1,6 +1,7 @@
 # Zotero (books)
 
-The user's reference manager. Strong for books the user has cited, annotated, or tagged for a research project.
+The user's reference manager.
+Strong for books the user has cited, annotated, or tagged for a research project.
 
 ## What it provides
 
@@ -8,13 +9,15 @@ The user's reference manager. Strong for books the user has cited, annotated, or
 - ID-based lookup by ISBN.
 - Tag, collection, and full-text-note filtering.
 
-For papers items (`journalArticle`, `preprint`, `conferencePaper`), see [`../../papers/references/zotero.md`](../../papers/references/zotero.md). This copy focuses on book items (`book`, `bookSection`).
+For papers items (`journalArticle`, `preprint`, `conferencePaper`), see [`../../papers/references/zotero.md`](../../papers/references/zotero.md).
+This copy focuses on book items (`book`, `bookSection`).
 
 ## Mcp option
 
 `54yyyu/zotero-mcp` adds semantic search. `cookjohn/zotero-mcp` provides ID-based lookup by DOI, ISBN, arXiv, PMID, title, author, year, and tag filters. `kujenga/zotero-mcp` is a third option.
 
-Install per the chosen repo's README. Auth: `ZOTERO_API_KEY` (generated at `zotero.org/settings/keys`) and `ZOTERO_LIBRARY_ID`, the numeric ID found at the same page.
+Install per the chosen repo's README.
+Auth: `ZOTERO_API_KEY` (generated at `zotero.org/settings/keys`) and `ZOTERO_LIBRARY_ID`, the numeric ID found at the same page.
 
 ## Http fallback
 
@@ -31,7 +34,9 @@ Install per the chosen repo's README. Auth: `ZOTERO_API_KEY` (generated at `zote
 
 ## Licensing
 
-Personal library metadata is the user's own. Quotation rights depend on the original work the user has cataloged. The Zotero notes and tags are the user's, freely usable in the user's own session.
+Personal library metadata is the user's own.
+Quotation rights depend on the original work the user has cataloged.
+The Zotero notes and tags are the user's, freely usable in the user's own session.
 
 ## Failure modes
 

@@ -1,6 +1,8 @@
 # Claude reader (Apple Books)
 
-Import DRM-free books to your Apple Books library on macOS. You can upload EPUBs and PDFs, such as academic theses, technical reports, and self-published work. Use this for your own collection outside Kindle.
+Import DRM-free books to your Apple Books library on macOS.
+You can upload EPUBs and PDFs, such as academic theses, technical reports, and self-published work.
+Use this for your own collection outside Kindle.
 
 ## What it provides
 
@@ -11,13 +13,17 @@ DRM-protected books in Apple Books are auto-skipped.
 
 ## MCP option
 
-`jasonbates/claude-reader` (Apache-style MIT license, not affiliated with Anthropic). Tools: `get_current_chapter`, `search_library`, `goto`. Runs locally on macOS against the Apple Books library directory.
+`jasonbates/claude-reader` (Apache-style MIT license, not affiliated with Anthropic).
+Tools: `get_current_chapter`, `search_library`, `goto`.
+Runs locally on macOS against the Apple Books library directory.
 
-Install: clone the repo and follow the README; configure the MCP entry in Claude Code settings. No env vars; the server reads the Apple Books library at the standard macOS path.
+Install: clone the repo and follow the README; configure the MCP entry in Claude Code settings.
+No env vars; the server reads the Apple Books library at the standard macOS path.
 
 ## HTTP fallback
 
-None. Apple Books is local-only; no public API exists.
+None.
+Apple Books is local-only; no public API exists.
 
 ## Query shapes
 
@@ -26,10 +32,13 @@ None. Apple Books is local-only; no public API exists.
 
 ## Licensing
 
-User-imported EPUBs and PDFs are **personal-use licensed**. The user is the licensee; quotation rights depend on the original work. Within the user's own session, quoting is fine; do not stage passages from copyrighted personal imports into public artifacts.
+User-imported EPUBs and PDFs are **personal-use licensed**.
+The user is the licensee; quotation rights depend on the original work.
+Within the user's own session, quoting is fine; do not stage passages from copyrighted personal imports into public artifacts.
 
 ## Failure modes
 
 - **macOS only**: on other OSes the *Apple Books library search* capability returns Not-Available.
-- **DRM-locked book**: skipped silently. The user's purchased iBooks are typically DRM-locked and do not appear.
+- **DRM-locked book**: skipped silently.
+  The user's purchased iBooks are typically DRM-locked and do not appear.
 - **Index out of date**: Apple Books reindexes asynchronously; recently added books may not appear until the system finishes.

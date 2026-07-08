@@ -2,11 +2,17 @@
 
 ## Overview
 
-Wrap primitive types in named domain types. This makes the type system enforce correct usage. Primitive types describe shape; domain types describe meaning. The compiler checks shape, not meaning. Two numeric fields look the same without wrapping. Brands let the compiler remove the wrapper at runtime with zero cost.
+Wrap primitive types in named domain types.
+This makes the type system enforce correct usage.
+Primitive types describe shape; domain types describe meaning.
+The compiler checks shape, not meaning.
+Two numeric fields look the same without wrapping.
+Brands let the compiler remove the wrapper at runtime with zero cost.
 
 ## When to use
 
-- Two or more domain identifiers share the same primitive type. For example, `UserId`, `OrderId`, and `ProductId` are all UUIDs.
+- Two or more domain identifiers share the same primitive type.
+  For example, `UserId`, `OrderId`, and `ProductId` are all UUIDs.
 - A numeric quantity has units whose mixing would be incorrect (for example, `Meters` vs `Feet`, `Euros` vs `Dollars`).
 - A string has a constrained format or security implications; validate them once at construction (`EmailAddress`, `Slug`, `SqlQuery`), preventing injection by making unsanitized strings unacceptable to domain APIs.
 - A value crosses a bounded context boundary and its meaning must be explicit.
@@ -17,7 +23,8 @@ Wrap primitive types in named domain types. This makes the type system enforce c
 
 **Before:** primitives leak domain intent; swapping `fromAccount` and `toAccount` (both `string`) compiles silently.
 
-**After:** branded/wrapper types make the mistake unrepresentable. The constructor is the only sanctioned entry point; validation and coercion live there once.
+**After:** branded/wrapper types make the mistake unrepresentable.
+The constructor is the only sanctioned entry point; validation and coercion live there once.
 
 ```
 type AccountId = string & { readonly _brand: "AccountId" };
@@ -42,9 +49,12 @@ For complete examples, see [`newtype/typescript.md`](newtype/typescript.md), [`n
 ## Common mistakes
 
 - **Plain type alias instead of a brand** `type UserId = string` is fully transparent; the compiler treats it as identical to `string` and provides no safety.
-- **Casting with `as` at call sites** writing `transfer(toId as AccountId, fromId as AccountId, ...)` defeats the pattern entirely. All `as` casts belong inside the constructor function, never at the call site.
-- **Skipping the constructor or builder** directly casting raw values at every use site spreads unvalidated entry points across the codebase. Centralise construction so validation and coercion happen once.
-- **Branding every incidental value** NewTypes belong on domain-meaningful concepts. Branding loop counters or local temporaries adds noise without benefit.
+- **Casting with `as` at call sites** writing `transfer(toId as AccountId, fromId as AccountId, ...)` defeats the pattern entirely.
+  All `as` casts belong inside the constructor function, never at the call site.
+- **Skipping the constructor or builder** directly casting raw values at every use site spreads unvalidated entry points across the codebase.
+  Centralise construction so validation and coercion happen once.
+- **Branding every incidental value** NewTypes belong on domain-meaningful concepts.
+  Branding loop counters or local temporaries adds noise without benefit.
 
 ## Composes with
 

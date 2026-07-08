@@ -1,6 +1,9 @@
 # Type conversion - TypeScript reference
 
-TypeScript has no built-in `From` or `Into` traits, so you supply the discipline through convention. Use static `from` and `tryFrom` methods on the target class or namespace. Total conversions never throw. Partial conversions either throw a typed error or return a discriminated `Result`.
+TypeScript has no built-in `From` or `Into` traits, so you supply the discipline through convention.
+Use static `from` and `tryFrom` methods on the target class or namespace.
+Total conversions never throw.
+Partial conversions either throw a typed error or return a discriminated `Result`.
 
 ## Total: `static from`
 
@@ -25,7 +28,10 @@ const d: Dollars = Dollars.from(Cents(2599));
 
 ## Partial: `static tryFrom`
 
-`Email` is a partial conversion: a raw string may not be a valid email. The constructor stays private; the only public construction paths are `tryFrom` and `parse`. Two return shapes are idiomatic. Choose one per project and stay consistent.
+`Email` is a partial conversion: a raw string may not be a valid email.
+The constructor stays private; the only public construction paths are `tryFrom` and `parse`.
+Two return shapes are idiomatic.
+Choose one per project and stay consistent.
 
 ```typescript
 export class Email {
@@ -100,7 +106,8 @@ export const PlacedOrder = {
 };
 ```
 
-The spread operator copies the fields of `draft` directly, without extraction and rewrapping. The branded values flow through.
+The spread operator copies the fields of `draft` directly, without extraction and rewrapping.
+The branded values flow through.
 
 ## Anti-patterns
 
@@ -118,7 +125,8 @@ const newId = (draft.id as string) as OrderId;
 
 ## Single canonical direction
 
-Implement one direction. If `Cents` to `Dollars` is canonical, the reverse gets a named method that surfaces the rounding:
+Implement one direction.
+If `Cents` to `Dollars` is canonical, the reverse gets a named method that surfaces the rounding:
 
 ```typescript
 export const Cents = {

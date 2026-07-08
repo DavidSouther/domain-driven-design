@@ -2,12 +2,19 @@
 
 ## Overview
 
-The Unit of Work pattern wraps an Aggregate and Repository in a single transaction. All changes wait until `commit()`. If an operation fails, `rollback()` reverts everything. This keeps database concerns out of app code. Row locks, tokens, and sessions stay in the pattern. Handlers become testable without a real database.
+The Unit of Work pattern wraps an Aggregate and Repository in a single transaction.
+All changes wait until `commit()`.
+If an operation fails, `rollback()` reverts everything.
+This keeps database concerns out of app code.
+Row locks, tokens, and sessions stay in the pattern.
+Handlers become testable without a real database.
 
 ## When to use
 
-- A handler makes changes that must all succeed or all fail. Partial writes are unacceptable.
-- Rollback behavior must be explicit and guaranteed. Validation errors, concurrent conflicts, and infrastructure failures all trigger it predictably.
+- A handler makes changes that must all succeed or all fail.
+  Partial writes are unacceptable.
+- Rollback behavior must be explicit and guaranteed.
+  Validation errors, concurrent conflicts, and infrastructure failures all trigger it predictably.
 - Tests must verify aggregate operations and persistence together without a real database.
 - Keep durability details out of app-layer and domain code.
 
@@ -15,7 +22,9 @@ The Unit of Work pattern wraps an Aggregate and Repository in a single transacti
 
 ## Core pattern
 
-The abstract UoW interface exposes a repository and `commit()`/`rollback()` methods. The context manager (Python `with`, TypeScript `await using`, Rust `Drop`) guarantees rollback on any unhandled exception. Tests use a `FakeUnitOfWork` that requires no database.
+The abstract UoW interface exposes a repository and `commit()`/`rollback()` methods.
+The context manager (Python `with`, TypeScript `await using`, Rust `Drop`) guarantees rollback on any unhandled exception.
+Tests use a `FakeUnitOfWork` that requires no database.
 
 ```
 def allocate(cmd, uow: AbstractUnitOfWork) -> str:
@@ -32,24 +41,38 @@ For complete examples, see [`unit-of-work/typescript.md`](unit-of-work/typescrip
 
 1. **Open**: enter the `with` block; UoW creates the session and repository.
 2. **Load**: fetch the aggregate through the repository (no write yet).
-3. **Operate**: call the aggregate's domain method. The UoW tracks mutations in memory.
+3. **Operate**: call the aggregate's domain method.
+   The UoW tracks mutations in memory.
 4. **Commit or rollback**: `commit()` flushes all deferred writes atomically; `__exit__` calls `rollback()` automatically on any exception.
 5. **Respond**: return results or surface domain errors *outside* the `with` block.
 
 ## Common mistakes
 
-**Forgetting the rollback path.** Calling `commit()` outside a `with` block (or `try/finally`) leaves the session dirty on failure. Always use context-manager interface, Drop semantics, or similar.
+**Forgetting the rollback path.**
+Calling `commit()` outside a `with` block (or `try/finally`) leaves the session dirty on failure.
+Always use context-manager interface, Drop semantics, or similar.
 
-**Using the repository outside a context management block.** Accessing `uow.products` after exiting the context causes undefined behavior. The session closes. All aggregate work must happen inside the `with` block. Some languages drop the `uow` automatically.
+**Using the repository outside a context management block.**
+Accessing `uow.products` after exiting the context causes undefined behavior.
+The session closes.
+All aggregate work must happen inside the `with` block.
+Some languages drop the `uow` automatically.
 
-**UoW spanning multiple aggregate roots.** A UoW should map 1:1 to one aggregate operation. Chaining multiple aggregate updates inflates the consistency boundary and makes failure recovery ambiguous.
+**UoW spanning multiple aggregate roots.**
+A UoW should map 1:1 to one aggregate operation.
+Chaining multiple aggregate updates inflates the consistency boundary and makes failure recovery ambiguous.
 
-**Leaking the session into the domain.** The ORM session must stay inside the UoW implementation. Aggregates and repositories must never import or reference it directly.
+**Leaking the session into the domain.**
+The ORM session must stay inside the UoW implementation.
+Aggregates and repositories must never import or reference it directly.
 
-**Ignoring domain events.** After `commit()`, call `collect_events()` and publish any events the aggregate raised. Skipping this silently drops side-effects.
+**Ignoring domain events.**
+After `commit()`, call `collect_events()` and publish any events the aggregate raised.
+Skipping this silently drops side-effects.
 
 ## Composes with
 
 - **the aggregate pattern (`references/patterns/aggregate.md`)**: the UoW wraps exactly one aggregate operation; atomicity here enforces the aggregate's consistency guarantee at the storage level.
 - **the repository pattern (`references/patterns/repository.md`)**: the UoW owns and creates the repository instance; the repository is never constructed or used outside a UoW in transactional handlers.
-- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)**: app services create and use the UoW. The Composition Root injects the concrete UoW factory so tests can substitute `FakeUnitOfWork`.
+- **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)**: app services create and use the UoW.
+  The Composition Root injects the concrete UoW factory so tests can substitute `FakeUnitOfWork`.

@@ -1,5 +1,4 @@
-Model a small ordering domain with three things and make their differing natures
-explicit in the code:
+Model a small ordering domain with three things and make their differing natures explicit in the code:
 
 1. a `Batch` that has a stable identity which persists as its state changes over
    time,
@@ -8,5 +7,5 @@ explicit in the code:
 3. an `allocate` operation that distributes an order line across several `Batch`es
    and belongs to no single batch.
 
-Show all three. Make clear in the code which has identity, which is a value
-compared by its fields, and where the cross-batch operation lives.
+Show all three.
+Make clear in the code which has identity, which is a value compared by its fields, and where the cross-batch operation lives.

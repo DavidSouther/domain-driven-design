@@ -1,6 +1,7 @@
 # DDD & Design Patterns Skills for Agentic Development
 
-An agent skills collection for Domain-Driven Design, software design patterns, research, and a strict test-driven developer lifecycle. The repository ships Claude Code marketplace packaging today, and the skill instructions are written so other agent harnesses such as Codex, Copilot, and Gemini can adapt the same workflows through explicit tool mappings.
+An agent skills collection for Domain-Driven Design, software design patterns, research, and a strict test-driven developer lifecycle.
+The repository ships Claude Code marketplace packaging today, and the skill instructions are written so other agent harnesses such as Codex, Copilot, and Gemini can adapt the same workflows through explicit tool mappings.
 
 ## Installation & Getting Started
 
@@ -10,26 +11,35 @@ Claude Code uses the `.claude-plugin/` directories as its marketplace adapter.
 
 1. Add the marketplace from GitHub: run `/plugin marketplace add davidsouther/domain-driven-design`.
    * You can also run `/plugin` to open the interactive browser and add it from the **Marketplaces** tab.
-2. Install the skills with `/plugin install <name>@ailly` — install `general`, `developer`, `patterns`, and `research` (`domain` is optional). Browse and toggle them anytime from the **Installed** tab of `/plugin`.
+2. Install the skills with `/plugin install <name>@ailly` — install `general`, `developer`, `patterns`, and `research` (`domain` is optional).
+   Browse and toggle them anytime from the **Installed** tab of `/plugin`.
 
-> **Updating:** Ailly does not auto-update when new versions are pushed. Run `/plugin marketplace update ailly` to pull the latest skills.
+> **Updating:** Ailly does not auto-update when new versions are pushed.
+> Run `/plugin marketplace update ailly` to pull the latest skills.
 > **Local development:** To work from a local clone instead, run `/plugin marketplace add <path-to-clone>`.
 
 ### Codex Plugin Mirrors
 
-Codex uses the `*/.codex-plugin/plugin.json` manifests as its plugin adapter. This repository includes Codex mirrors for the skill plugins: `developer`, `domain`, `general`, `patterns`, and `research`.
+Codex uses the `*/.codex-plugin/plugin.json` manifests as its plugin adapter.
+This repository includes Codex mirrors for the skill plugins: `developer`, `domain`, `general`, `patterns`, and `research`.
 
-Repo-local Codex marketplace metadata lives at `.agents/plugins/marketplace.json`. Its entries point back to the plugin folders in this checkout, where each `.codex-plugin/plugin.json` lives. The `characters` package remains Claude Code-specific because it is an output-style package rather than a portable skill plugin.
+Repo-local Codex marketplace metadata lives at `.agents/plugins/marketplace.json`.
+Its entries point back to the plugin folders in this checkout, where each `.codex-plugin/plugin.json` lives.
+The `characters` package remains Claude Code-specific because it is an output-style package rather than a portable skill plugin.
 
 ### Other Agent Harnesses
 
-Install or expose the `*/skills/*/SKILL.md` trees using your harness's native skill mechanism. `developer:ailly` is the lifecycle coordinator; it consults `developer/skills/ailly/references/agents/<harness>.md` for host-specific tool names and behavior. Mappings currently exist for Claude Code, Codex, Copilot, and Gemini.
+Install or expose the `*/skills/*/SKILL.md` trees using your harness's native skill mechanism.
+`developer:ailly` is the lifecycle coordinator; it consults `developer/skills/ailly/references/agents/<harness>.md` for host-specific tool names and behavior.
+Mappings currently exist for Claude Code, Codex, Copilot, and Gemini.
 
-The `.claude-plugin/` and `.codex-plugin/` manifests are packaging metadata only. They are not the source of truth for the skill behavior.
+The `.claude-plugin/` and `.codex-plugin/` manifests are packaging metadata only.
+They are not the source of truth for the skill behavior.
 
 ### Starting Work
 
-The examples below use Ailly's slash-command surface. In another harness, invoke the same `developer:ailly` skill or command equivalent and rely on the matching harness reference for tool-name translation.
+The examples below use Ailly's slash-command surface.
+In another harness, invoke the same `developer:ailly` skill or command equivalent and rely on the matching harness reference for tool-name translation.
 
 1. Start a project in a new folder - `/ailly initialize a project called [name] for [design goal] using [TypeScript, Python, or Rust] (including initializing git)`.
 2. Start work on a new feature - `/ailly start work on [description]`.
@@ -37,7 +47,8 @@ The examples below use Ailly's slash-command surface. In another harness, invoke
 4. Continue work on a specific phase - `/ailly continue [phase] [task-slug]`.
 5. Fast-track a simple change - `/ailly finish [task] with a quick loop`.
 6. Tell Ailly to do research herself - after Ailly asks you a question, `/using-research to perform a deep dive; pay attention especially to [area of interest]`.
-7. When finished with a task, `/ailly cleanup [task] with a PR`. Or use `with a squash merge` for local development.
+7. When finished with a task, `/ailly cleanup [task] with a PR`.
+   Or use `with a squash merge` for local development.
 
 ### How Ailly Works
 
@@ -51,9 +62,11 @@ Ailly structures development as five sequential phases, each isolated by the act
 | **Build** | Executes each plan step, runs checks, commits; targets a passing feature test |
 | **Cleanup** | Removes session artifacts, squash-merges the branch |
 
-Each phase produces a draft artifact. A human must review and clear the draft marker before the next phase begins — this keeps architectural decisions collaborative rather than delegated entirely to the agent.
+Each phase produces a draft artifact.
+A human must review and clear the draft marker before the next phase begins — this keeps architectural decisions collaborative rather than delegated entirely to the agent.
 
-The **quick loop** option compresses the human-reviewed draft structure for simple, unambiguous tasks while still producing minimal research, design, plan, build, and thinking artifacts. It pauses before cleanup so those artifacts can be reviewed, unless the user starts with "no review".
+The **quick loop** option compresses the human-reviewed draft structure for simple, unambiguous tasks while still producing minimal research, design, plan, build, and thinking artifacts.
+It pauses before cleanup so those artifacts can be reviewed, unless the user starts with "no review".
 
 ### Useful Patterns
 
@@ -90,34 +103,25 @@ The developer lifecycle uses draft gates: each artifact (design doc, feature tes
 ### Domain-Driven Design (`domain:*`)
 
 Guides architectural decisions and domain modeling through the full DDD lifecycle.
-The plugin exposes a single skill, `domain:using-domain`, whose body is the routing
-surface. Each ability's full guidance lives in a reference under
-`domain/skills/using-domain/references/<name>.md`, loaded on demand.
+The plugin exposes a single skill, `domain:using-domain`, whose body is the routing surface.
+Each ability's full guidance lives in a reference under `domain/skills/using-domain/references/<name>.md`, loaded on demand.
 
-`domain:using-domain` is the bootstrap and router: it names the domain ability that fits
-the situation and points at its `references/<name>.md`, with a glossary-first gate on any
-new term.
+`domain:using-domain` is the bootstrap and router: it names the domain ability that fits the situation and points at its `references/<name>.md`, with a glossary-first gate on any new term.
 
-The abilities it routes to (each a `references/<name>.md` reference): glossary,
-ubiquitous-language, domain-model, contracts-and-invariants, arrow-of-maturity.
+The abilities it routes to (each a `references/<name>.md` reference): glossary, ubiquitous-language, domain-model, contracts-and-invariants, arrow-of-maturity.
 
-The Arrow of Maturity describes six architectural stages a DDD project grows through, from prototype scripts to event-sourced microservices. Each ability knows which stage is appropriate and what signal justifies advancing.
+The Arrow of Maturity describes six architectural stages a DDD project grows through, from prototype scripts to event-sourced microservices.
+Each ability knows which stage is appropriate and what signal justifies advancing.
 
 ### Design Patterns (`patterns:*`)
 
 Provides structured guidance for applying common software patterns at the right time.
-The plugin exposes a single skill, `patterns:using-patterns`, whose body is the routing
-surface. Each pattern's full guidance lives in a reference under
-`patterns/skills/using-patterns/references/patterns/<name>.md`, loaded on demand.
+The plugin exposes a single skill, `patterns:using-patterns`, whose body is the routing surface.
+Each pattern's full guidance lives in a reference under `patterns/skills/using-patterns/references/patterns/<name>.md`, loaded on demand.
 
-`patterns:using-patterns` is the bootstrap and router: it names the pattern that fits a
-design pressure and points at its `references/patterns/<name>.md`.
+`patterns:using-patterns` is the bootstrap and router: it names the pattern that fits a design pressure and points at its `references/patterns/<name>.md`.
 
-The patterns it routes to (each a `references/patterns/<name>.md` reference): aggregate,
-arrange-act-assert, bootstrap-and-service, builder, configuring-feature-flags,
-configuring-logging, domain-objects, emitting-logs, errors-typed-untyped, newtype,
-parse-dont-validate, repository, triangulate, type-conversion, type-states,
-unit-of-work, using-feature-flags, visibility.
+The patterns it routes to (each a `references/patterns/<name>.md` reference): aggregate, arrange-act-assert, bootstrap-and-service, builder, configuring-feature-flags, configuring-logging, domain-objects, emitting-logs, errors-typed-untyped, newtype, parse-dont-validate, repository, triangulate, type-conversion, type-states, unit-of-work, using-feature-flags, visibility.
 
 ### Research (`research:*`)
 

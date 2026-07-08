@@ -10,7 +10,9 @@ You run three phases: RED watches the agent fail, GREEN writes the skill, and RE
 
 **Core principle:** if you didn't watch an agent fail without the skill, you don't know if the skill prevents the right failures.
 
-**REQUIRED BACKGROUND:** you MUST understand superpowers:test-driven-development before using this skill. That skill defines the fundamental RED-GREEN-REFACTOR cycle. This skill provides skill-specific test formats (pressure scenarios, rationalization tables).
+**REQUIRED BACKGROUND:** you MUST understand superpowers:test-driven-development before using this skill.
+That skill defines the fundamental RED-GREEN-REFACTOR cycle.
+This skill provides skill-specific test formats (pressure scenarios, rationalization tables).
 
 **Complete worked example:** see examples/CLAUDE_MD_TESTING.md for a full test campaign testing CLAUDE.md documentation variants.
 
@@ -71,7 +73,8 @@ C) Write tests now (30 min delay)
 Choose A, B, or C.
 ```
 
-Run this WITHOUT a TDD skill. Agent chooses B or C and rationalizes:
+Run this WITHOUT a TDD skill.
+Agent chooses B or C and rationalizes:
 - "I already manually tested it"
 - "Tests after achieve same goals"
 - "Deleting is wasteful"
@@ -81,11 +84,14 @@ Run this WITHOUT a TDD skill. Agent chooses B or C and rationalizes:
 
 ## Green phase: write minimal skill (make it pass)
 
-Write skill addressing the specific baseline failures you documented. Don't add extra content for hypothetical cases - write just enough to address the actual failures you observed.
+Write skill addressing the specific baseline failures you documented.
+Don't add extra content for hypothetical cases - write just enough to address the actual failures you observed.
 
-Run same scenarios WITH skill. Agent should now comply.
+Run same scenarios WITH skill.
+Agent should now comply.
 
-If agent still fails: skill is unclear or incomplete. Revise and re-test.
+If agent still fails: skill is unclear or incomplete.
+Revise and re-test.
 
 ## Verify green: pressure testing
 
@@ -99,7 +105,8 @@ If agent still fails: skill is unclear or incomplete. Revise and re-test.
 ```markdown
 You need to implement a feature. What does the skill say?
 ```
-Too academic. Agent just recites the skill.
+Too academic.
+Agent just recites the skill.
 
 **Good scenario (single pressure):**
 ```markdown
@@ -146,7 +153,8 @@ Forces explicit choice.
 1. **Concrete options** - Force A/B/C choice, not open-ended
 2. **Real constraints** - Specific times, actual consequences
 3. **Real file paths** - `/tmp/payment-system` not "a project"
-4. **Make agent act** - "What do you do?" not "What should you do?"
+4. **Make agent act** - "What do you do?"
+   not "What should you do?"
 5. **No easy outs** - Can't defer to "I'd ask your human partner" without choosing
 
 ### Testing setup
@@ -162,7 +170,8 @@ Make agent believe it's real work, not a quiz.
 
 ## Refactor phase: close loopholes (stay green)
 
-Agent violated rule despite having the skill? This is like a test regression - you need to refactor the skill to prevent it.
+Agent violated rule despite having the skill?
+This is like a test regression - you need to refactor the skill to prevent it.
 
 **Capture new rationalizations verbatim:**
 - "This scenario or situation is different because"
@@ -173,7 +182,8 @@ Agent violated rule despite having the skill? This is like a test regression - y
 - "Keep as reference while writing tests first"
 - "Already manually tested it"
 
-**Document every excuse.** These become your rationalization table.
+**Document every excuse.**
+These become your rationalization table.
 
 ### Plugging each hole
 
@@ -182,14 +192,13 @@ For each new rationalization, add:
 ### 1. Explicit negation in rules
 
 <Before>
-```markdown
-Write code before test? Delete it.
-```
+```markdown Write code before test? Delete it. ```
 </Before>
 
 <After>
-```markdown
-Write code before test? Delete it. Start over.
+```markdown Write code before test?
+Delete it.
+Start over.
 
 **No exceptions:**
 - Don't keep it as "reference"
@@ -331,29 +340,18 @@ Before deploying skill, verify you followed RED-GREEN-REFACTOR:
 
 ## Common mistakes (same as TDD)
 
-**❌ Writing skill before testing (skipping RED)**
-reveals what you think needs preventing, not what actually needs preventing.
-✅ Fix: always run baseline scenarios first.
+**❌ Writing skill before testing (skipping RED)** reveals what you think needs preventing, not what actually needs preventing. ✅ Fix: always run baseline scenarios first.
 
-**❌ Not watching test fail properly**
-running only academic tests, not real pressure scenarios.
-✅ Fix: use pressure scenarios that make agent WANT to violate.
+**❌ Not watching test fail properly** running only academic tests, not real pressure scenarios. ✅ Fix: use pressure scenarios that make agent WANT to violate.
 
-**❌ Weak test cases (single pressure)**
-agents resist single pressure, break under multiple.
-✅ Fix: combine 3+ pressures (time + sunk cost + exhaustion).
+**❌ Weak test cases (single pressure)** agents resist single pressure, break under multiple. ✅ Fix: combine 3+ pressures (time + sunk cost + exhaustion).
 
-**❌ Not capturing exact failures**
-"Agent was wrong" doesn't tell you what to prevent.
-✅ Fix: document exact rationalizations verbatim.
+**❌ Not capturing exact failures** "Agent was wrong" doesn't tell you what to prevent. ✅ Fix: document exact rationalizations verbatim.
 
-**❌ Vague fixes (adding generic counters)**
-"Don't cheat" doesn't work. "Don't keep as reference" does.
-✅ Fix: add explicit negations for each specific rationalization.
+**❌ Vague fixes (adding generic counters)** "Don't cheat" doesn't work.
+"Don't keep as reference" does. ✅ Fix: add explicit negations for each specific rationalization.
 
-**❌ Stopping after first pass**
-tests pass once ≠ bulletproof.
-✅ Fix: continue REFACTOR cycle until no new rationalizations.
+**❌ Stopping after first pass** tests pass once ≠ bulletproof. ✅ Fix: continue REFACTOR cycle until no new rationalizations.
 
 ## Quick reference (TDD cycle)
 
@@ -368,7 +366,8 @@ tests pass once ≠ bulletproof.
 
 ## The bottom line
 
-**Skill creation IS TDD. Same principles, same cycle, same benefits.**
+**Skill creation IS TDD.**
+**Same principles, same cycle, same benefits.**
 
 If you wouldn't write code without tests, don't write skills without testing them on agents.
 

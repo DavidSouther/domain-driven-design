@@ -1,6 +1,9 @@
 # Using feature flags in Rust
 
-One toggle point reads the injected `Flags` port and branches. The default branch is today's behavior. The targeting stays in the provider behind the port. The test exercises both branches.
+One toggle point reads the injected `Flags` port and branches.
+The default branch is today's behavior.
+The targeting stays in the provider behind the port.
+The test exercises both branches.
 
 ```rust
 // checkout.rs: one toggle point, at the edge of the new path
@@ -53,7 +56,9 @@ When the new flow is fully rolled out, delete the flag, the `if`, and `current_c
 
 ## Cargo features: compile-time toggle points
 
-When you decide at build time rather than runtime, a Cargo feature replaces the runtime `Flags` port. The toggle point uses `#[cfg(feature = "...")]` instead of reading the injected port. The same discipline applies: one toggle point, default to current behavior, test both states.
+When you decide at build time rather than runtime, a Cargo feature replaces the runtime `Flags` port.
+The toggle point uses `#[cfg(feature = "...")]` instead of reading the injected port.
+The same discipline applies: one toggle point, default to current behavior, test both states.
 
 ```toml
 # Cargo.toml: declare the feature before gating code on it
@@ -92,4 +97,8 @@ mod tests {
 }
 ```
 
-A Cargo feature is appropriate when the toggle must not change without a rebuild. Examples include optional backend adapters, platform-specific code paths, or capabilities that have no runtime-flip requirement. It is not appropriate for release gates or experiments that need to change without a redeploy. Use the runtime `Flags` port for those. See `references/patterns/configuring-feature-flags/rust.md` for the full comparison.
+A Cargo feature is appropriate when the toggle must not change without a rebuild.
+Examples include optional backend adapters, platform-specific code paths, or capabilities that have no runtime-flip requirement.
+It is not appropriate for release gates or experiments that need to change without a redeploy.
+Use the runtime `Flags` port for those.
+See `references/patterns/configuring-feature-flags/rust.md` for the full comparison.

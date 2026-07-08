@@ -1,6 +1,7 @@
 # Visibility: TypeScript reference
 
-TypeScript has `private`, `readonly`, and `ReadonlyArray<T>`. Together they cover all four rules.
+TypeScript has `private`, `readonly`, and `ReadonlyArray<T>`.
+Together they cover all four rules.
 
 ```typescript
 // Before: every rule of the Order is enforceable only by convention.
@@ -69,7 +70,8 @@ interface OrderBuilder {
 ```
 
 Key details:
-- Fields are `private`. There is no accidental write path from outside the class.
+- Fields are `private`.
+  There is no accidental write path from outside the class.
 - `lines()` returns `ReadonlyArray<OrderLine>`. `.push` is a type error at the call site.
 - `cancel()` and `addLine()` are the only writes; both check the invariants they protect.
 - `status()` and `total()` compute their values; they are not assignable fields.

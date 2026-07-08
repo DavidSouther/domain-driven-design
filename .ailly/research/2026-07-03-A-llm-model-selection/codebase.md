@@ -4,7 +4,8 @@ Research findings on model selection patterns, guidance, and configuration in Cl
 
 ## Summary
 
-The domain-driven-design repository implements a comprehensive phase-based model selection system for the Ailly developer lifecycle. Models are recommended per development phase based on cost/capability tradeoffs, with provider-specific mappings (Anthropic, OpenAI, Open Source).
+The domain-driven-design repository implements a comprehensive phase-based model selection system for the Ailly developer lifecycle.
+Models are recommended per development phase based on cost/capability tradeoffs, with provider-specific mappings (Anthropic, OpenAI, Open Source).
 
 ## Key Findings
 
@@ -22,7 +23,12 @@ The repository defines a structured phase-by-provider table that maps each devel
 | Implementation | Sonnet 4.6 (high effort, 1M context) | GPT-4.1 | Llama 4 Scout |
 | Cleanup | Haiku 4.5 | o4-mini | Qwen3-4B |
 
-**Rationale:** "Each phase of the Ailly developer loop has a different cost and capability profile. Research gathers and filters broadly. Design synthesizes and judges. Planning and implementation follow structure over long context. Cleanup tidies. The strongest reasoner is wasted on cleanup, and the cheapest model is a liability for design."
+**Rationale:** "Each phase of the Ailly developer loop has a different cost and capability profile.
+Research gathers and filters broadly.
+Design synthesizes and judges.
+Planning and implementation follow structure over long context.
+Cleanup tidies.
+The strongest reasoner is wasted on cleanup, and the cheapest model is a liability for design."
 
 ### 2. Model Effort Qualifiers
 
@@ -84,10 +90,14 @@ Two mechanisms for switching models:
 Each phase reference explicitly names the model recommendation at startup:
 
 **Research phase announce line:**
-> "Name the recommended model for research from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort or thinking qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+> "Name the recommended model for research from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort or thinking qualifier verbatim.
+> If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback.
+> I'll continue on the current model either way."
 
 **Design phase announce line:**
-> "Name the recommended model for design from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim. If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback. I'll continue on the current model either way."
+> "Name the recommended model for design from the Phase by Provider table in developer/skills/ailly/references/checks/model-per-phase.md, matched to the active provider, with its effort qualifier verbatim.
+> If you're not already on it, I'll switch when the harness allows; otherwise switch with `/model` (press `s` for session-only) as the fallback.
+> I'll continue on the current model either way."
 
 ### 7. Skill-Level Integration
 
@@ -95,7 +105,11 @@ Each phase reference explicitly names the model recommendation at startup:
 
 Model checking is listed as a mandatory phase-entry check:
 
-> "Model check. Detect the running model and compare it to the model recommended for the phase. On a mismatch, say so explicitly and invite a `/model` switch; continue on the current model either way. This is a check, not a gate — the loop never stalls. Consult `developer/skills/ailly/references/checks/model-per-phase.md` for the phase×provider table, the detection rules, and the switch protocol."
+> "Model check.
+> Detect the running model and compare it to the model recommended for the phase.
+> On a mismatch, say so explicitly and invite a `/model` switch; continue on the current model either way.
+> This is a check, not a gate — the loop never stalls.
+> Consult `developer/skills/ailly/references/checks/model-per-phase.md` for the phase×provider table, the detection rules, and the switch protocol."
 
 This check is paired with a **tool-readiness check** (see `references/checks/tool-failure.md`).
 
@@ -103,7 +117,8 @@ This check is paired with a **tool-readiness check** (see `references/checks/too
 
 **Source:** `/developer/skills/ailly/references/agents/claude.md`
 
-Phase isolation in Claude Code uses `Task` (subagent dispatch) to run each phase in isolation, reading only that phase's reference file. Model switching integrates with Claude Code's native model-selection UI.
+Phase isolation in Claude Code uses `Task` (subagent dispatch) to run each phase in isolation, reading only that phase's reference file.
+Model switching integrates with Claude Code's native model-selection UI.
 
 Other harnesses (Codex, Copilot, Gemini) have their own agent-specific references at:
 - `references/agents/codex.md`
@@ -114,7 +129,8 @@ Other harnesses (Codex, Copilot, Gemini) have their own agent-specific reference
 
 **Source:** `.claude-plugin/plugin.json` files
 
-Plugin definitions do not hardcode model requirements. The model selection is determined at runtime by:
+Plugin definitions do not hardcode model requirements.
+The model selection is determined at runtime by:
 1. Phase entry (which phase is running)
 2. Active provider (detected from running model)
 3. Developer's UI/harness capabilities

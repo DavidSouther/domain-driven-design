@@ -1,14 +1,16 @@
 # Thinking
 
-> Coordinator reference loaded by `developer:ailly` during the Build phase when an
-> error recurs after a fix. Invoked through the active harness's isolation path;
-> there is no standalone `developer:thinking` skill.
+> Coordinator reference loaded by `developer:ailly` during the Build phase when an error recurs after a fix.
+> Invoked through the active harness's isolation path; there is no standalone `developer:thinking` skill.
 
 ## Overview
 
-Fresh-context investigation for stuck moments during the Build phase (red-green-refactor). Run it with the strongest isolation mechanism the active harness supports. It investigates the problem, produces a concrete next-steps plan, and returns control without modifying any files.
+Fresh-context investigation for stuck moments during the Build phase (red-green-refactor).
+Run it with the strongest isolation mechanism the active harness supports.
+It investigates the problem, produces a concrete next-steps plan, and returns control without modifying any files.
 
-**Invoke this reference through the harness isolation path**. Prefer a subagent where available; otherwise use the fallback in `developer/skills/ailly/references/agents/<harness>.md`.
+**Invoke this reference through the harness isolation path**.
+Prefer a subagent where available; otherwise use the fallback in `developer/skills/ailly/references/agents/<harness>.md`.
 
 **Hard constraints:**
 - Do NOT edit any files
@@ -25,8 +27,11 @@ The invoking skill must pass:
 ## Behavior
 
 1. Read the inputs without editorializing.
-2. Use `research:` skills to investigate the problem if needed. Review API docs, look for similar patterns in the codebase, and check error message semantics.
-3. apply the forward-backward method: work backward from the desired green (passing) outcome and forward from the current red (failing) state. See `developer/skills/ailly/references/abilities/forward-backward.md`. Note: for thinking skills, the map can be part of the file in the `thinking/<problem-slug>.md` file, rather than in the `maps/` directory.
+2. Use `research:` skills to investigate the problem if needed.
+   Review API docs, look for similar patterns in the codebase, and check error message semantics.
+3. apply the forward-backward method: work backward from the desired green (passing) outcome and forward from the current red (failing) state.
+   See `developer/skills/ailly/references/abilities/forward-backward.md`.
+   Note: for thinking skills, the map can be part of the file in the `thinking/<problem-slug>.md` file, rather than in the `maps/` directory.
 4. Produce a thinking doc.
 5. Return control to the Build phase (red-green-refactor) with a pointer to the thinking doc.
 
@@ -60,7 +65,8 @@ Save to `.ailly/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`:
 3. ...
 ```
 
-The next steps must be concrete and ordered. "Try X" without a predicted outcome is not acceptable.
+The next steps must be concrete and ordered.
+"Try X" without a predicted outcome is not acceptable.
 
 ## Scope
 
@@ -74,4 +80,6 @@ The next steps must be concrete and ordered. "Try X" without a predicted outcome
 
 After writing the thinking doc, return to the caller with:
 
-> "Thinking complete. Root cause: `<one sentence>`. Next steps in `.ailly/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`."
+> "Thinking complete.
+> Root cause: `<one sentence>`.
+> Next steps in `.ailly/developer/YYYY-MM-DD-A-<topic>/thinking/<problem-slug>.md`."

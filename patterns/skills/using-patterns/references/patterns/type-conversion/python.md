@@ -1,6 +1,8 @@
 # Type conversion: Python reference
 
-Python uses `classmethod` factories as the conversion entry points. The `from_x` name marks a total conversion. The `parse` or `try_from` name marks a partial conversion that may raise or return a union.
+Python uses `classmethod` factories as the conversion entry points.
+The `from_x` name marks a total conversion.
+The `parse` or `try_from` name marks a partial conversion that may raise or return a union.
 
 ## Total: `from_x` classmethod
 
@@ -28,7 +30,8 @@ class Dollars:
 d = Dollars.from_cents(Cents(2599))
 ```
 
-The factory name `from_cents` makes the source explicit. A reader sees the conversion in the call site rather than inferring it from arithmetic.
+The factory name `from_cents` makes the source explicit.
+A reader sees the conversion in the call site rather than inferring it from arithmetic.
 
 ## Partial: `parse` raising a typed error
 
@@ -135,7 +138,8 @@ class PlacedOrder:
         )
 ```
 
-Note that the conversion passes the typed fields of `draft` through. It does not unwrap and rewrap them.
+Note that the conversion passes the typed fields of `draft` through.
+It does not unwrap and rewrap them.
 
 ## Anti-patterns
 

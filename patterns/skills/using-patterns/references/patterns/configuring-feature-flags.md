@@ -2,9 +2,16 @@
 
 ## Overview
 
-Assemble a feature-flag system once at the composition root as a single evaluation entry point. The rest of the code reads through it. The setup fixes the decisions every flag inherits. These are: which provider backs evaluation, what a flag resolves to when the provider is unreachable, how you name and own flags, and when they expire. Code against a vendor-neutral interface: the CNCF OpenFeature standard or a thin internal `Flags` port. This ensures the provider is swappable and no call site imports a vendor SDK.
+Assemble a feature-flag system once at the composition root as a single evaluation entry point.
+The rest of the code reads through it.
+The setup fixes the decisions every flag inherits.
+These are: which provider backs evaluation, what a flag resolves to when the provider is unreachable, how you name and own flags, and when they expire.
+Code against a vendor-neutral interface: the CNCF OpenFeature standard or a thin internal `Flags` port.
+This ensures the provider is swappable and no call site imports a vendor SDK.
 
-This skill is the general flag harness. One app of this harness is the project loop's single release gate, which hides a whole multi-feature project until its Closing Bell completes. For details, see `developer/skills/ailly/references/shapes/project/release-flags.md`.
+This skill is the general flag harness.
+One app of this harness is the project loop's single release gate, which hides a whole multi-feature project until its Closing Bell completes.
+For details, see `developer/skills/ailly/references/shapes/project/release-flags.md`.
 
 ## When to use
 
@@ -13,7 +20,9 @@ This skill is the general flag harness. One app of this harness is the project l
 - Reviewing a provider or SDK change, the default-value policy, or the stale-flag CI check.
 - A flag has appeared with no owner, no expiry, or a name that does not say what it gates.
 
-**When NOT to use:** putting an individual feature behind a flag, choosing its category, or writing its toggle point. That is per-flag work and belongs in the using-feature-flags pattern (`references/patterns/using-feature-flags.md`). Running this skill at a call site installs a second evaluation path and breaks the single-entry-point contract.
+**When NOT to use:** putting an individual feature behind a flag, choosing its category, or writing its toggle point.
+That is per-flag work and belongs in the using-feature-flags pattern (`references/patterns/using-feature-flags.md`).
+Running this skill at a call site installs a second evaluation path and breaks the single-entry-point contract.
 
 ## Contract
 
@@ -30,7 +39,9 @@ the using-feature-flags pattern (`references/patterns/using-feature-flags.md`) r
 
 ## Core pattern
 
-The composition root builds one evaluation client and injects it. Call sites read through it. The decision logic, what Fowler calls the Toggle Router, lives behind the entry point, so the call site is only a read.
+The composition root builds one evaluation client and injects it.
+Call sites read through it.
+The decision logic, what Fowler calls the Toggle Router, lives behind the entry point, so the call site is only a read.
 
 ```
 // composition root, once
@@ -63,19 +74,33 @@ Re-run this skill, and confirm the contract still holds, when:
 - You upgrade the provider or its SDK, or the project switches providers.
 - The OpenFeature spec or the internal port changes.
 - A new environment or deployment target appears.
-- A flag turns up with no owner or expiry, or CI reports a flag past its lifetime. Both are drift.
+- A flag turns up with no owner or expiry, or CI reports a flag past its lifetime.
+  Both are drift.
 
 ## Common mistakes
 
-- **Vendor SDK at the call site.** Importing LaunchDarkly or Unleash directly couples every toggle point to one vendor. Put the vendor behind the OpenFeature client or an internal port, and have call sites read the port.
-- **Default that is not the current behavior.** A flag whose off-state differs from production turns a provider outage into a surprise change. The default must be what production does today.
-- **No owner and no expiry.** A flag without both is a future stale flag. Record them at creation and let CI fail past the date.
-- **A name that does not say what it gates.** `flag_1234` tells a reader nothing. Encode category, area, and intent so a stale flag is obvious on sight.
-- **Environment resolved at the call site.** Reading `if env == prod` next to a flag scatters environment logic. Resolve the environment once at the entry point and pass it in the context.
+- **Vendor SDK at the call site.**
+  Importing LaunchDarkly or Unleash directly couples every toggle point to one vendor.
+  Put the vendor behind the OpenFeature client or an internal port, and have call sites read the port.
+- **Default that is not the current behavior.**
+  A flag whose off-state differs from production turns a provider outage into a surprise change.
+  The default must be what production does today.
+- **No owner and no expiry.**
+  A flag without both is a future stale flag.
+  Record them at creation and let CI fail past the date.
+- **A name that does not say what it gates.**
+  `flag_1234` tells a reader nothing.
+  Encode category, area, and intent so a stale flag is obvious on sight.
+- **Environment resolved at the call site.**
+  Reading `if env == prod` next to a flag scatters environment logic.
+  Resolve the environment once at the entry point and pass it in the context.
 
 ## Composes with
 
-- **the using-feature-flags pattern (`references/patterns/using-feature-flags.md`)**: The call-site partner. This skill installs the evaluation entry point and the conventions. That skill puts one feature behind one flag at one toggle point. Run them together.
+- **the using-feature-flags pattern (`references/patterns/using-feature-flags.md`)**: The call-site partner.
+  This skill installs the evaluation entry point and the conventions.
+  That skill puts one feature behind one flag at one toggle point.
+  Run them together.
 - **the bootstrap-and-service pattern (`references/patterns/bootstrap-and-service.md`)**: The composition root that skill describes injects the entry point built here.
 - **the parse-dont-validate pattern (`references/patterns/parse-dont-validate.md`)**: The evaluation context crosses a boundary, so parse it into a typed shape rather than threading raw values inward.
 - **`developer/skills/ailly/references/shapes/project/release-flags.md`**: The project loop's single release gate is one app of this harness.

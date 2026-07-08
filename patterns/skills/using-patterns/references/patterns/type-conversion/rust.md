@@ -1,6 +1,9 @@
 # Type conversion, rust reference
 
-Rust ships the conversion pattern in the standard library. A blanket impl pairs `From` and `Into`. The same impl pairs `TryFrom` and `TryInto` for fallible conversions. Implement the `From` side; the compiler generates the `Into` side.
+Rust ships the conversion pattern in the standard library.
+A blanket impl pairs `From` and `Into`.
+The same impl pairs `TryFrom` and `TryInto` for fallible conversions.
+Implement the `From` side; the compiler generates the `Into` side.
 
 ## Total: `From` and `Into`
 
@@ -90,7 +93,8 @@ impl PlacedOrder {
 }
 ```
 
-Note that no field requires extraction and rewrapping. The newtypes move through.
+Note that no field requires extraction and rewrapping.
+The newtypes move through.
 
 ## Anti-patterns
 
@@ -107,7 +111,8 @@ let id = OrderId(draft.id.0.clone());
 
 ## Single canonical direction
 
-If `Cents` to `Dollars` is canonical, do not also implement `From<Dollars> for Cents`. The reverse is lossy and deserves an explicit method:
+If `Cents` to `Dollars` is canonical, do not also implement `From<Dollars> for Cents`.
+The reverse is lossy and deserves an explicit method:
 
 ```rust
 impl Dollars {

@@ -1,6 +1,9 @@
 # Logging in Rust
 
-The `tracing` macros (`info!`, `error!`) attach structured fields directly. Use `#[instrument(skip_all, fields(...))]` to open a span; events inside inherit `TraceId` and `SpanId` from it. Define newtypes with `Display` impls to produce semantic-convention values. Use `Secret<T>` so its `Debug` impl renders `[REDACTED]`: the type, not the call site, carries the safety property.
+The `tracing` macros (`info!`, `error!`) attach structured fields directly.
+Use `#[instrument(skip_all, fields(...))]` to open a span; events inside inherit `TraceId` and `SpanId` from it.
+Define newtypes with `Display` impls to produce semantic-convention values.
+Use `Secret<T>` so its `Debug` impl renders `[REDACTED]`: the type, not the call site, carries the safety property.
 
 ```rust
 use std::fmt;

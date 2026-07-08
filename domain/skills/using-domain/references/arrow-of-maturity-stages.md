@@ -1,12 +1,16 @@
 # Arrow of maturity: design stages
 
-This document describes six design stages for domain-driven design projects. The `ddd:domain-model` and `ddd:arrow-of-maturity` skills reference this document.
+This document describes six design stages for domain-driven design projects.
+The `ddd:domain-model` and `ddd:arrow-of-maturity` skills reference this document.
 
 ---
 
 ## Stage 0: Prototype / data engineering
 
-**Purpose:** explore feasibility. Understand the domain before building production software. Show early demos of promising ideas. Find areas that are easy, hard, or complex.
+**Purpose:** explore feasibility.
+Understand the domain before building production software.
+Show early demos of promising ideas.
+Find areas that are easy, hard, or complex.
 
 **Characteristics:**
 - Scripts, notebooks, or exploratory code
@@ -16,13 +20,15 @@ This document describes six design stages for domain-driven design projects. The
 
 **Move on when:** you validate the domain and are ready to build production software. 
 
-The domain-driven-design skill does not apply at this stage. Do not use it here.
+The domain-driven-design skill does not apply at this stage.
+Do not use it here.
 
 ---
 
 ## Stage 1: Straight-through handler
 
-**Purpose:** build real software. Process requests end-to-end with minimal structure.
+**Purpose:** build real software.
+Process requests end-to-end with minimal structure.
 
 **Characteristics:**
 - Thin handlers (controllers, functions, lambdas) that use an off-the-shelf ORM for storage
@@ -39,7 +45,8 @@ The domain-driven-design skill does not apply at this stage. Do not use it here.
 
 ## Stage 2a: Domain model
 
-**Purpose:** name domain concepts. Separate business logic from infrastructure.
+**Purpose:** name domain concepts.
+Separate business logic from infrastructure.
 
 **Characteristics:**
 - Ubiquitous language that names business entities and processes
@@ -95,4 +102,5 @@ The domain-driven-design skill does not apply at this stage. Do not use it here.
 
 **Move on when:** real production pressure exists, you have SLA needs, or the domain models time (history, audit, replay).
 
-**Warning:** this stage adds real operational and cognitive complexity. Do not introduce it without clear need.
+**Warning:** this stage adds real operational and cognitive complexity.
+Do not introduce it without clear need.

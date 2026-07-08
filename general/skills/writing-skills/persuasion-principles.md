@@ -2,9 +2,11 @@
 
 ## Overview
 
-LLMs respond to persuasion the same way humans do. This helps you design better skills that make important practices work under pressure—honestly, not through trickery.
+LLMs respond to persuasion the same way humans do.
+This helps you design better skills that make important practices work under pressure—honestly, not through trickery.
 
-**Research foundation:** meincke et al. (2025) tested 7 persuasion principles with N=28,000 AI conversations. Persuasion techniques more than doubled compliance rates (33% → 72%, p < .001).
+**Research foundation:** meincke et al. (2025) tested 7 persuasion principles with N=28,000 AI conversations.
+Persuasion techniques more than doubled compliance rates (33% → 72%, p < .001).
 
 ## The seven principles
 
@@ -136,7 +138,8 @@ LLMs respond to persuasion the same way humans do. This helps you design better 
 
 **Clear rules reduce excuses:**
 - "YOU MUST" removes decision fatigue
-- Absolute language eliminates "is this an exception?" questions
+- Absolute language eliminates "is this an exception?"
+  questions
 - Direct language blocks common workarounds
 
 **Implementation intentions create automatic behavior:**
@@ -166,11 +169,15 @@ LLMs respond to persuasion the same way humans do. This helps you design better 
 
 ## Research citations
 
-**Cialdini, R. B. (2021).** *Influence: the psychology of persuasion (New and Expanded).* Harper Business.
+**Cialdini, R. B. (2021).**
+*Influence: the psychology of persuasion (New and Expanded).*
+Harper Business.
 - Seven principles of persuasion
 - Empirical foundation for influence research
 
-**Meincke, L., Shapiro, D., Duckworth, A. L., Mollick, E., Mollick, L., & Cialdini, R. (2025).** "Call me a jerk: persuading AI to comply with objectionable requests." University of Pennsylvania.
+**Meincke, L., Shapiro, D., Duckworth, A. L., Mollick, E., Mollick, L., & Cialdini, R. (2025).**
+"Call me a jerk: persuading AI to comply with objectionable requests."
+University of Pennsylvania.
 - Tested 7 principles with N=28,000 LLM conversations
 - Compliance increased 33% → 72% with persuasion techniques
 - Authority, commitment, scarcity most effective
@@ -180,8 +187,12 @@ LLMs respond to persuasion the same way humans do. This helps you design better 
 
 When designing a skill, ask:
 
-1. **What type is it?** (Discipline vs. guidance vs. reference)
+1. **What type is it?**
+   (Discipline vs. guidance vs. reference)
 2. **What behavior should change?**
-3. **Which principles apply?** In most cases authority and commitment for discipline.
-4. **Are too many combined?** (Don't use all seven)
-5. **Is this ethical?** (Serves user's genuine interests?)
+3. **Which principles apply?**
+   In most cases authority and commitment for discipline.
+4. **Are too many combined?**
+   (Don't use all seven)
+5. **Is this ethical?**
+   (Serves user's genuine interests?)

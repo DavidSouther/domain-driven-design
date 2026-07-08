@@ -1,9 +1,8 @@
-You are about to claim the following change complete. Run a review pass
-first, and produce the review output directly in your reply. This environment
-has no file system and no tools — do not call tools; write your review inline.
+You are about to claim the following change complete.
+Run a review pass first, and produce the review output directly in your reply.
+This environment has no file system and no tools — do not call tools; write your review inline.
 
-Task: "Add an `is_admin: bool` field to the `User` struct and surface it on
-the `/users/:id` JSON response."
+Task: "Add an `is_admin: bool` field to the `User` struct and surface it on the `/users/:id` JSON response."
 
 Diff:
 

@@ -1,12 +1,13 @@
 # Initialize
 
-> The `developer:ailly` coordinator uses this when setting up new projects and
-> language environments. There is no separate `developer:initialize` skill. The
-> coordinator and tool-failure reference both route here for local environment fixes.
+> The `developer:ailly` coordinator uses this when setting up new projects and language environments.
+> There is no separate `developer:initialize` skill.
+> The coordinator and tool-failure reference both route here for local environment fixes.
 
 ## Overview
 
-Prepares a project folder for development using language-specific details from reference files. Checks the existing layout before adding needed files.
+Prepares a project folder for development using language-specific details from reference files.
+Checks the existing layout before adding needed files.
 
 **Announce at start:** "Using the developer:ailly initialize reference to set up the project."
 
@@ -51,7 +52,8 @@ Validation must confirm:
 - You have installed required tooling (for example, `cargo`, `uv`, `node`, `mise`)
 - The project builds/runs cleanly with zero errors and zero warnings
 
-If validation fails, apply the fixes from the reference file before proceeding. Do not declare initialization complete until a clean build succeeds.
+If validation fails, apply the fixes from the reference file before proceeding.
+Do not declare initialization complete until a clean build succeeds.
 
 ## Verification command
 

@@ -1,6 +1,7 @@
 # Configuring feature flags in Rust
 
-Build one evaluation client at the composition root. Every call site uses the same interface, not the vendor SDK.
+Build one evaluation client at the composition root.
+Every call site uses the same interface, not the vendor SDK.
 
 ```rust
 // flags.rs: the vendor-neutral port every call site reads through
@@ -57,11 +58,14 @@ pub fn build_flags(environment: &str) -> Box<dyn Flags> {
 }
 ```
 
-Keep the flag inventory (key, owner, expiry) with this module. A CI check catches any flag that has expired.
+Keep the flag inventory (key, owner, expiry) with this module.
+A CI check catches any flag that has expired.
 
 ## Cargo features: compile-time flags
 
-Cargo features are Rust's built-in way to set flags at compile time. You declare them in `Cargo.toml` under `[features]` and check them with `#[cfg(feature = "...")]`. They are different from the runtime `Flags` port.
+Cargo features are Rust's built-in way to set flags at compile time.
+You declare them in `Cargo.toml` under `[features]` and check them with `#[cfg(feature = "...")]`.
+They are different from the runtime `Flags` port.
 
 | Property | Cargo features | Runtime `Flags` port |
 |---|---|---|
@@ -70,7 +74,9 @@ Cargo features are Rust's built-in way to set flags at compile time. You declare
 | Appropriate for | Optional deps, optional capabilities, library opt-ins | Release gates, experiments, ops stop switches, permissions |
 | Provider needed | No (built into `cargo`) | Yes (static or remote) |
 
-Use Cargo features for decisions that stay the same when you build your binary. Examples include enabling an optional library, picking a backend, or hiding features that should never change at runtime. Use the runtime `Flags` port for anything that should change without a rebuild.
+Use Cargo features for decisions that stay the same when you build your binary.
+Examples include enabling an optional library, picking a backend, or hiding features that should never change at runtime.
+Use the runtime `Flags` port for anything that should change without a rebuild.
 
 ```toml
 # Cargo.toml
@@ -93,4 +99,6 @@ pub fn build_flags(_environment: &str) -> Box<dyn Flags> {
 }
 ```
 
-A Cargo feature that controls a user-visible feature is hard to change: flipping it requires a rebuild and redeploy. Treat it like an `ops` or `release` choice made once at build time. Record an expiry in the inventory, just as you would for a runtime flag.
+A Cargo feature that controls a user-visible feature is hard to change: flipping it requires a rebuild and redeploy.
+Treat it like an `ops` or `release` choice made once at build time.
+Record an expiry in the inventory, just as you would for a runtime flag.

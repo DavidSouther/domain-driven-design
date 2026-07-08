@@ -1,12 +1,10 @@
-A cleared design, feature test, and implementation plan for a JSON-Lines filter
-CLI (`jq-lite`) are reproduced below. All three have been reviewed and their
-`*Draft*` markers removed. The project is Python and tests run under `pytest`.
+A cleared design, feature test, and implementation plan for a JSON-Lines filter CLI (`jq-lite`) are reproduced below.
+All three have been reviewed and their `*Draft*` markers removed.
+The project is Python and tests run under `pytest`.
 
-Execute **only Step 1 of the plan** (the predicate parser) as a single
-red-green-refactor cycle: write the type-first signatures with stub bodies,
-write one arrange-act-assert test that fails for the right reason, then implement
-until that single test passes. Do not start Step 2. Show the code you write at
-each part of the cycle.
+Execute **only Step 1 of the plan** (the predicate parser) as a single red-green-refactor cycle: write the type-first signatures with stub bodies, write one arrange-act-assert test that fails for the right reason, then implement until that single test passes.
+Do not start Step 2.
+Show the code you write at each part of the cycle.
 
 Cleared design — `.ailly/developer/2026-06-03-A-jq-lite/design.md`:
 

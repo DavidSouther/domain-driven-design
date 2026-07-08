@@ -7,7 +7,9 @@ description: Search internal sources like Slack, wikis, tickets, and ADRs. Do no
 
 ## Overview
 
-Search configured MCP servers to find answers in internal organizational knowledge. Different projects use different integrations; discover what is available before searching. Setup and token rotation belong in [the internal setup reference](../using-research/references/configuring/internal.md); this skill uses the contract that skill defines.
+Search configured MCP servers to find answers in internal organizational knowledge.
+Different projects use different integrations; discover what is available before searching.
+Setup and token rotation belong in [the internal setup reference](../using-research/references/configuring/internal.md); this skill uses the contract that skill defines.
 
 ## When to use / When not to use
 
@@ -20,7 +22,8 @@ Search configured MCP servers to find answers in internal organizational knowled
 
 ## Query expansion (jeopardy search)
 
-Before running any search, generate 3-5 variant queries by using different phrasings, synonyms, and topic angles. Run all variants across every relevant MCP server.
+Before running any search, generate 3-5 variant queries by using different phrasings, synonyms, and topic angles.
+Run all variants across every relevant MCP server.
 
 Example: topic "deployment freeze policy":
 1. "deployment freeze"
@@ -63,11 +66,16 @@ The contract published by [the internal setup reference](../using-research/refer
 - **Single-query searches**: one phrasing misses results; always expand to 3-5 variants.
 - **Using this skill for public content**: internal MCP servers do not index the public internet; use `research:public` instead.
 - **Stopping at first result**: run all variants across all servers before synthesizing.
-- **Re-teaching the wiring**: a "first, make sure you have installed the Slack MCP and completed OAuth" preface is wiring leakage. The wiring skill owns setup; this skill consumes the contract. If a preface is unavoidable, the contract is incomplete. Widen it in [the internal setup reference](../using-research/references/configuring/internal.md).
+- **Re-teaching the wiring**: a "first, make sure you have installed the Slack MCP and completed OAuth" preface is wiring leakage.
+  The wiring skill owns setup; this skill consumes the contract.
+  If a preface is unavoidable, the contract is incomplete.
+  Widen it in [the internal setup reference](../using-research/references/configuring/internal.md).
 
 ## Composes with
 
-- **the internal setup reference**: the wiring partner. Located at `research:using-research` (`references/configuring/internal.md`). Publishes the contract this skill consumes; owns MCP install, OAuth/SSO handshakes, and token rotation.
+- **the internal setup reference**: the wiring partner.
+  Located at `research:using-research` (`references/configuring/internal.md`).
+  Publishes the contract this skill consumes; owns MCP install, OAuth/SSO handshakes, and token rotation.
 - **`research:public`**: sibling practice skill for public-web sources.
 - **`research:codebase`**: sibling practice skill for the local checkout.
 - **`research/references/jeopardy.md`**: query expansion technique.

@@ -1,6 +1,11 @@
 # Emitting logs: Python reference
 
-`structlog` bound loggers hold per-request context. `contextvars` spread it across `await` boundaries so each call doesn't need to attach it again. The configuration skill's `_add_trace_context` processor adds `trace_id`/`span_id` from the active span. Emit sites only add the per-event fields. Render error chains with `log.exception(...)` to capture `sys.exc_info()`. Add explicit `error.type` and `exception.type` keys for OTel grouping.
+`structlog` bound loggers hold per-request context.
+`contextvars` spread it across `await` boundaries so each call doesn't need to attach it again.
+The configuration skill's `_add_trace_context` processor adds `trace_id`/`span_id` from the active span.
+Emit sites only add the per-event fields.
+Render error chains with `log.exception(...)` to capture `sys.exc_info()`.
+Add explicit `error.type` and `exception.type` keys for OTel grouping.
 
 ```python
 from __future__ import annotations
@@ -119,4 +124,7 @@ async def _process_one(_: str) -> None:
     return None
 ```
 
-`structlog.contextvars.bind_contextvars` plus an ASGI/WSGI middleware that calls it per request gives every emit site inside the request the same set of fields. This eliminates the need for an explicit `log = log.bind(...)` call. Pass kwargs that contain a dot through `**{}` so the field key carries the OTel semantic convention literally. The message string stays free of interpolation.
+`structlog.contextvars.bind_contextvars` plus an ASGI/WSGI middleware that calls it per request gives every emit site inside the request the same set of fields.
+This eliminates the need for an explicit `log = log.bind(...)` call.
+Pass kwargs that contain a dot through `**{}` so the field key carries the OTel semantic convention literally.
+The message string stays free of interpolation.

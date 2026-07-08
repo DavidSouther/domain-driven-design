@@ -1,6 +1,7 @@
 # Semantic scholar
 
-Allen Institute for AI's academic graph. Strong for citation-graph queries, ML/AI coverage, and DOI/arXiv/PMID lookup with consistent shape across identifiers.
+Allen Institute for AI's academic graph.
+Strong for citation-graph queries, ML/AI coverage, and DOI/arXiv/PMID lookup with consistent shape across identifiers.
 
 ## What it provides
 
@@ -24,10 +25,14 @@ Example payload (`/graph/v1/paper/{id}`):
 
 - Base URL: `https://api.semanticscholar.org/graph/v1`
 - Endpoints: `/paper/search?query=...`, `/paper/{id}`, `/paper/{id}/citations`, `/paper/{id}/references`, `/author/{id}`
-- Auth: API key strongly preferred. Request via the Semantic Scholar developer portal. Pass as header `x-api-key: ...`. Set `SEMANTIC_SCHOLAR_API_KEY`.
+- Auth: API key strongly preferred.
+  Request via the Semantic Scholar developer portal.
+  Pass as header `x-api-key: ...`.
+  Set `SEMANTIC_SCHOLAR_API_KEY`.
 - Rate limits:
   - **With key**: 1 RPS dedicated.
-  - **Anonymous**: global shared quota of 5,000 requests per 5 minutes; **mandatory exponential backoff on 429&nbsp;s**. See [`etiquette.md`](etiquette.md).
+  - **Anonymous**: global shared quota of 5,000 requests per 5 minutes; **mandatory exponential backoff on 429&nbsp;s**.
+    See [`etiquette.md`](etiquette.md).
 
 ## Query shapes
 
@@ -38,10 +43,14 @@ Example payload (`/graph/v1/paper/{id}`):
 
 ## Licensing
 
-Metadata, abstracts, and citation-graph edges are freely usable. Semantic Scholar links to full PDFs at their original repositories; quote per the original license.
+Metadata, abstracts, and citation-graph edges are freely usable.
+Semantic Scholar links to full PDFs at their original repositories; quote per the original license.
 
 ## Failure modes
 
-- **429 without backoff**: anonymous quota exhausted. Apply exponential backoff or set the API key.
-- **Identifier prefix missing**: endpoints disambiguate via prefix (`DOI:`, `arXiv:`, `PMID:`). Forgetting the prefix matches no record.
-- **Citation graph truncation**: `/citations` requires pagination; iterate via `offset`. Highly cited papers (10k+ citations) require many requests.
+- **429 without backoff**: anonymous quota exhausted.
+  Apply exponential backoff or set the API key.
+- **Identifier prefix missing**: endpoints disambiguate via prefix (`DOI:`, `arXiv:`, `PMID:`).
+  Forgetting the prefix matches no record.
+- **Citation graph truncation**: `/citations` requires pagination; iterate via `offset`.
+  Highly cited papers (10k+ citations) require many requests.

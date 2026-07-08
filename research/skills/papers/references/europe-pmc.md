@@ -10,7 +10,8 @@ EMBL-EBI's biomedical and life-sciences index: 33M+ publications including 10.2M
 
 ## Mcp option
 
-None first-party for Europe PMC as a single source. Aggregators (`xingyulu23/Academix`, `openags/paper-search-mcp`) may include it; check the active server's source list.
+None first-party for Europe PMC as a single source.
+Aggregators (`xingyulu23/Academix`, `openags/paper-search-mcp`) may include it; check the active server's source list.
 
 ## Http fallback
 
@@ -33,6 +34,8 @@ None first-party for Europe PMC as a single source. Aggregators (`xingyulu23/Aca
 
 ## Failure modes
 
-- **Full text gated**: when `inEPMC: false` or `isOpenAccess: false`, the body is not retrievable. Return a typed Not-Available and cite the article via DOI.
-- **XML parsing**: Europe PMC's full-text XML is JATS; verbose. Prefer a JATS parser over hand-rolled regular expressions.
+- **Full text gated**: when `inEPMC: false` or `isOpenAccess: false`, the body is not retrievable.
+  Return a typed Not-Available and cite the article via DOI.
+- **XML parsing**: Europe PMC's full-text XML is JATS; verbose.
+  Prefer a JATS parser over hand-rolled regular expressions.
 - **Result paginated**: page via `pageSize` and `cursorMark`; large biomedical topics easily exceed default page size.

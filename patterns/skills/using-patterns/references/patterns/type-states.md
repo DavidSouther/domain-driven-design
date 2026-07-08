@@ -2,7 +2,9 @@
 
 ## Overview
 
-Represent each valid state as a separate type. Instead of one object with optional fields and runtime checks, use one type per state. The compiler rejects code that tries to use data or methods unavailable in the current state.
+Represent each valid state as a separate type.
+Instead of one object with optional fields and runtime checks, use one type per state.
+The compiler rejects code that tries to use data or methods unavailable in the current state.
 
 ## When to use
 
@@ -11,17 +13,22 @@ Represent each valid state as a separate type. Instead of one object with option
 - Invalid combinations of fields exist but are only caught today by runtime guards or null checks.
 - An object owns resources that you must release or act on only once (for example, a network connection or file).
 
-**When not to use:** purely dynamic data where the set of variants remains open-ended at compile time. Use a runtime discriminant and validation instead.
+**When not to use:** purely dynamic data where the set of variants remains open-ended at compile time.
+Use a runtime discriminant and validation instead.
 
 ## Core pattern
 
 Three sub-patterns, each making a different class of illegal state unrepresentable:
 
-**Discriminated union:** each valid state combination is its own type. The compiler rejects any value whose fields belong to different states. For example, `{ status: "peace", ruler: "dictator" }` is not assignable to `Rome`.
+**Discriminated union:** each valid state combination is its own type.
+The compiler rejects any value whose fields belong to different states.
+For example, `{ status: "peace", ruler: "dictator" }` is not assignable to `Rome`.
 
-**Type state:** the state parameter `S` exists only at compile time (a _phantom type_); the runtime stores no value for it. Transition functions consume the old state and return a new one, so the caller cannot reuse a stale reference.
+**Type state:** the state parameter `S` exists only at compile time (a _phantom type_); the runtime stores no value for it.
+Transition functions consume the old state and return a new one, so the caller cannot reuse a stale reference.
 
-**Protocols / interfaces:** define narrow interfaces per capability so callers only access what their context permits. A function that accepts `Readable` cannot accidentally call `write`.
+**Protocols / interfaces:** define narrow interfaces per capability so callers only access what their context permits.
+A function that accepts `Readable` cannot accidentally call `write`.
 
 For complete examples, see [`type-states/typescript.md`](type-states/typescript.md), [`type-states/python.md`](type-states/python.md), and [`type-states/rust.md`](type-states/rust.md).
 
@@ -35,11 +42,16 @@ For complete examples, see [`type-states/typescript.md`](type-states/typescript.
 
 ## Common mistakes
 
-**Using enums + runtime checks instead of types:** a single `status: Status` field plus `if (status === "war")` guards means the compiler cannot verify consistency. The Roman bug passes every type check; only tests (or production) catch it.
+**Using enums + runtime checks instead of types:** a single `status: Status` field plus `if (status === "war")` guards means the compiler cannot verify consistency.
+The Roman bug passes every type check; only tests (or production) catch it.
 
-**Shared mutable state across states:** storing all possible fields in one object and leaving some `undefined` recreates the flat-type problem. Each state type should carry only the fields relevant to that state.
+**Shared mutable state across states:** storing all possible fields in one object and leaving some `undefined` recreates the flat-type problem.
+Each state type should carry only the fields relevant to that state.
 
-**Reusing a resource after transition:** if a transition function takes the connection by reference instead of by value, the caller keeps a reference to the pre-transition object. The caller can then still call methods on the wrong state. Transition functions must consume (take ownership of) the old resource instead. In TypeScript, reassign, and never alias: `conn = open(conn)`.
+**Reusing a resource after transition:** if a transition function takes the connection by reference instead of by value, the caller keeps a reference to the pre-transition object.
+The caller can then still call methods on the wrong state.
+Transition functions must consume (take ownership of) the old resource instead.
+In TypeScript, reassign, and never alias: `conn = open(conn)`.
 
 ## Composes with
 

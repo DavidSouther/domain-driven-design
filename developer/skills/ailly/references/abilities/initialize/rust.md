@@ -80,7 +80,8 @@ cargo test
 
 ## Feature tests
 
-Feature tests live in `tests/`. Cargo compiles each file in `tests/` as a separate integration test binary.
+Feature tests live in `tests/`.
+Cargo compiles each file in `tests/` as a separate integration test binary.
 
 ```rust
 // tests/user_login.rs

@@ -1,14 +1,13 @@
-Below is a single SKILL.md that has grown two cadences. The front half
-explains how to configure a project's pre-commit hook framework (done once
-when the repository is set up). The back half explains what to do every time
-a developer adds a new check (per change).
+Below is a single SKILL.md that has grown two cadences.
+The front half explains how to configure a project's pre-commit hook framework (done once when the repository is set up).
+The back half explains what to do every time a developer adds a new check (per change).
 
 Split it into a paired pair — one wiring skill and one practice skill.
-Produce both SKILL.md files in full, in order. Give them distinct names.
+Produce both SKILL.md files in full, in order.
+Give them distinct names.
 
-Emit both files inline in your reply as fenced Markdown blocks. This
-environment has no file system and no tools — do not call tools or write to
-disk; write the full content directly in your response.
+Emit both files inline in your reply as fenced Markdown blocks.
+This environment has no file system and no tools — do not call tools or write to disk; write the full content directly in your response.
 
 ```markdown
 ---

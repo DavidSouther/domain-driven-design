@@ -5,7 +5,9 @@ description: "Use for questions about what the domain means. Include entities, r
 
 # Overview
 
-Domain answers research questions about the conceptual model. It covers what exists, what things mean, how they relate, and what rules apply. It uses `domain:` DDD skills when available, or domain artifacts from the codebase otherwise.
+Domain answers research questions about the conceptual model.
+It covers what exists, what things mean, how they relate, and what rules apply.
+It uses `domain:` DDD skills when available, or domain artifacts from the codebase otherwise.
 
 # When to use
 
@@ -14,7 +16,8 @@ Domain answers research questions about the conceptual model. It covers what exi
 - The question is about invariants, contracts, or business rules
 - The question requires understanding bounded contexts or aggregate boundaries
 
-**Do NOT use** when the question is about how code implements a domain concept; use `research:codebase` instead. Also, don't use this when the domain is entirely undefined and you must source information from external references; use `research:public` instead.
+**Do NOT use** when the question is about how code implements a domain concept; use `research:codebase` instead.
+Also, don't use this when the domain is entirely undefined and you must source information from external references; use `research:public` instead.
 
 # Query expansion (jeopardy search)
 
@@ -51,7 +54,8 @@ Use Jeopardy search variants across all artifact locations before concluding a c
 
 # Output format
 
-Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/domain.md`. If the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `domain.md` there instead.
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/domain.md`.
+If the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `domain.md` there instead.
 
 Structure:
 

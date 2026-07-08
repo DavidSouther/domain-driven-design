@@ -1,10 +1,13 @@
 # LLM Model Selection: Best Practices and Guidance
 
-Research synthesis on selecting appropriate language models for different tasks and workloads. Covers Anthropic Claude models, cost-performance tradeoffs, framework recommendations, and phase-based selection strategies.
+Research synthesis on selecting appropriate language models for different tasks and workloads.
+Covers Anthropic Claude models, cost-performance tradeoffs, framework recommendations, and phase-based selection strategies.
 
 ## Executive Summary
 
-Effective LLM model selection balances three competing factors: capabilities, speed, and cost. Rather than a single "best" model, the optimal choice depends on task complexity, latency requirements, and budget constraints. Modern guidance emphasizes starting with efficiency (Haiku for prototyping and cost-sensitive work) or capability (Opus for complex tasks), then optimizing based on benchmarked evaluation sets specific to your use case.
+Effective LLM model selection balances three competing factors: capabilities, speed, and cost.
+Rather than a single "best" model, the optimal choice depends on task complexity, latency requirements, and budget constraints.
+Modern guidance emphasizes starting with efficiency (Haiku for prototyping and cost-sensitive work) or capability (Opus for complex tasks), then optimizing based on benchmarked evaluation sets specific to your use case.
 
 ## Claude Model Landscape (2026)
 
@@ -46,7 +49,8 @@ As of June 2026, Anthropic provides a clearly stratified model family:
 
 ### Legacy Models
 
-Claude Opus 4.7, Opus 4.6, Sonnet 4.6, and Sonnet 4.5 remain available but are no longer recommended for new projects. Migration guides exist for updating existing implementations.
+Claude Opus 4.7, Opus 4.6, Sonnet 4.6, and Sonnet 4.5 remain available but are no longer recommended for new projects.
+Migration guides exist for updating existing implementations.
 
 ## Model Selection Framework
 
@@ -56,13 +60,17 @@ Anthropic's official guidance prioritizes decision-making over prescriptive rule
 
 When evaluating which model to use, establish requirements for:
 
-1. **Capabilities**: What specific features or reasoning depth does your task demand? Does the task require vision processing, extended reasoning, or code generation at scale?
+1. **Capabilities**: What specific features or reasoning depth does your task demand?
+   Does the task require vision processing, extended reasoning, or code generation at scale?
 
-2. **Speed**: What latency constraints exist? Does your application require real-time responses (sub-second), near-real-time (seconds), or can it tolerate longer response times?
+2. **Speed**: What latency constraints exist?
+   Does your application require real-time responses (sub-second), near-real-time (seconds), or can it tolerate longer response times?
 
-3. **Cost**: What is the total cost budget for development and production usage? What is the cost per transaction or per task?
+3. **Cost**: What is the total cost budget for development and production usage?
+   What is the cost per transaction or per task?
 
-4. **Effort** (Additional consideration): Recent Opus and Sonnet models support an `effort` parameter that trades intelligence for latency and cost within a single model. The `xhigh` setting (between `high` and `max`) is recommended for coding and agentic use cases.
+4. **Effort** (Additional consideration): Recent Opus and Sonnet models support an `effort` parameter that trades intelligence for latency and cost within a single model.
+   The `xhigh` setting (between `high` and `max`) is recommended for coding and agentic use cases.
 
 ### Model Selection Matrix
 
@@ -126,7 +134,8 @@ Research on LLM cost-performance optimization identifies several strategies:
 
 ### Pareto Optimization
 
-Cost-aware model selection uses Pareto optimization to enable explicit performance-cost tradeoffs. This approach recognizes that:
+Cost-aware model selection uses Pareto optimization to enable explicit performance-cost tradeoffs.
+This approach recognizes that:
 - No single model optimizes all dimensions (cost, latency, accuracy)
 - Tradeoff curves differ across task types
 - Different applications prioritize different objectives
@@ -138,7 +147,8 @@ Effective model evaluation considers three metrics jointly:
 - **Latency**: How long does inference take?
 - **Cost**: What is the per-request or per-task cost?
 
-Applications should define a utility function reflecting operational priorities. For example:
+Applications should define a utility function reflecting operational priorities.
+For example:
 - Real-time applications prioritize latency over cost
 - Batch processing prioritizes cost over latency
 - Mission-critical systems prioritize accuracy over cost
@@ -155,7 +165,8 @@ This approach can reduce average costs significantly while maintaining accuracy 
 
 ### Empirical Finding
 
-Lightweight models (such as Claude Haiku) can achieve competitive or superior accuracy compared to larger models for many tasks while incurring lower cost and latency. This emphasizes the importance of measuring performance-cost tradeoffs empirically for your specific use case rather than assuming larger = better.
+Lightweight models (such as Claude Haiku) can achieve competitive or superior accuracy compared to larger models for many tasks while incurring lower cost and latency.
+This emphasizes the importance of measuring performance-cost tradeoffs empirically for your specific use case rather than assuming larger = better.
 
 ## Evaluation and Benchmarking
 
@@ -166,7 +177,8 @@ Anthropic's guidance emphasizes benchmarking as the critical step:
 3. **Measure dimensions**: Compare performance across accuracy, response quality, and edge case handling
 4. **Weigh tradeoffs**: Analyze performance improvements against cost increases
 
-Key principle: Having a good evaluation set is the most important step in the selection process. This prevents premature optimization and grounds decisions in your actual workload.
+Key principle: Having a good evaluation set is the most important step in the selection process.
+This prevents premature optimization and grounds decisions in your actual workload.
 
 ## Framework and Toolkit Guidance
 
@@ -192,7 +204,8 @@ The `@ai-sdk/langchain` package bridges both frameworks:
 - Supports modern LangChain and LangGraph features
 - Provides conversion utilities for seamless integration
 
-**Recommendation**: Use Vercel AI SDK for simple applications and web-first development. Use LangChain for complex RAG, multi-step workflows, and agent systems.
+**Recommendation**: Use Vercel AI SDK for simple applications and web-first development.
+Use LangChain for complex RAG, multi-step workflows, and agent systems.
 
 ## Phase-Based Model Selection
 
@@ -220,7 +233,8 @@ Advanced implementations use different models for different workflow phases:
 
 ### Claude Mythos Preview and Project Glasswing
 
-Claude Mythos 5 and Claude Mythos Preview are available through Project Glasswing, an invitation-only program for defensive cybersecurity workflows. These models share Fable 5's specifications and pricing but are tuned for security-specific tasks.
+Claude Mythos 5 and Claude Mythos Preview are available through Project Glasswing, an invitation-only program for defensive cybersecurity workflows.
+These models share Fable 5's specifications and pricing but are tuned for security-specific tasks.
 
 ### Extended and Adaptive Thinking
 

@@ -1,6 +1,9 @@
 # Hathitrust
 
-Digital holdings from research libraries. The Bibliographic API is open to all. The Data API requires organization login. Search academic library catalogs or find which member libraries hold copies.
+Digital holdings from research libraries.
+The Bibliographic API is open to all.
+The Data API requires organization login.
+Search academic library catalogs or find which member libraries hold copies.
 
 ## What it provides
 
@@ -9,7 +12,8 @@ Digital holdings from research libraries. The Bibliographic API is open to all. 
 
 ## Mcp option
 
-None first-party. Use HTTP.
+None first-party.
+Use HTTP.
 
 ## Http fallback
 
@@ -39,6 +43,8 @@ None first-party. Use HTTP.
 
 ## Failure modes
 
-- **Item not held**: HathiTrust restricts its catalog to member-library holdings. For broader coverage, fall back to Open Library + Internet Archive.
-- **OAuth not configured**: Data API requests fail with 401. Bibliographic API remains usable.
+- **Item not held**: HathiTrust restricts its catalog to member-library holdings.
+  For broader coverage, fall back to Open Library + Internet Archive.
+- **OAuth not configured**: Data API requests fail with 401.
+  Bibliographic API remains usable.
 - **Rights tier denies full text**: the practice skill returns a typed Not-Available for the open-full-text capability and continues with the bibliographic result.

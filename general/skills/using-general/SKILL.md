@@ -3,19 +3,24 @@ name: using-general
 description: Bootstrap skill for general skills. Use to find the most relevant skills before thinking or acting.
 ---
 
-Always prefer skills to guide thinking when available. Use general skills first, then find specific skills later in the session.
+Always prefer skills to guide thinking when available.
+Use general skills first, then find specific skills later in the session.
 
 ## Instruction priority
 
-Skills override default system prompt behavior. User instructions always take precedence:
+Skills override default system prompt behavior.
+User instructions always take precedence:
 
-1. **Project Files** (CLAUDE.md, GEMINI.md, AGENTS.md) include details specific to this project. These details include the team's slack channel, or specific web forums to track. 
+1. **Project Files** (CLAUDE.md, GEMINI.md, AGENTS.md) include details specific to this project.
+   These details include the team's slack channel, or specific web forums to track.
 2. **General and specialist skills** provide additional conversational guidance and specific task lists.
 3. **Default system prompt** is only used to clarify and find an applicable skill.
 
 ## The rule
 
-Invoke relevant skills before any response or action. If a skill might apply, load it and check. Set aside any skill that turns out not to fit.
+Invoke relevant skills before any response or action.
+If a skill might apply, load it and check.
+Set aside any skill that turns out not to fit.
 
 ```dot
 digraph skill_flow {
@@ -76,9 +81,12 @@ digraph skill_flow {
 
 ## Intermediate files
 
-Write intermediate files judiciously, both to share results across tasks and to enable users to edit findings directly. Write intermediate files to `docs/<plugin>/<skill>/YYYY-MM-DD-A-<topic>.md`.
-The YYYY-MM-DD-A component is the year, month, day, and an incrementing letter starting at `A`, then `B`, then `C`, and so on for topics started on the same day. Some plugins may modify this layout, but `docs/<plugin>/` should always be the directory and `YYYY-MM-DD-A-<topic>` as part of the path.
+Write intermediate files judiciously, both to share results across tasks and to enable users to edit findings directly.
+Write intermediate files to `docs/<plugin>/<skill>/YYYY-MM-DD-A-<topic>.md`.
+The YYYY-MM-DD-A component is the year, month, day, and an incrementing letter starting at `A`, then `B`, then `C`, and so on for topics started on the same day.
+Some plugins may modify this layout, but `docs/<plugin>/` should always be the directory and `YYYY-MM-DD-A-<topic>` as part of the path.
 
 ## User Instructions
 
-User instructions specify *what*, not *how*. "Add X" or "Fix Y" does not mean skip skill workflows.
+User instructions specify *what*, not *how*.
+"Add X" or "Fix Y" does not mean skip skill workflows.

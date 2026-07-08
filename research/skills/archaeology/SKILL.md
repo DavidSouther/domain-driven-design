@@ -5,7 +5,9 @@ description: Use to answer why code changed. Look at git history for deleted cod
 
 # Overview
 
-Archaeology answers "why did this change?" questions by mining git history. It reconstructs intent from commit messages, diffs, and authorship rather than from current code state.
+Archaeology answers "why did this change?"
+questions by mining git history.
+It reconstructs intent from commit messages, diffs, and authorship rather than from current code state.
 
 # When to use
 
@@ -68,7 +70,8 @@ git bisect good <known-good-ref>
 
 # Output format
 
-Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/archaeology.md`. If the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `archaeology.md` to that scenario instead.
+Write findings to `.ailly/research/YYYY-MM-DD-A-<topic>/archaeology.md`.
+If the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `archaeology.md` to that scenario instead.
 
 Structure:
 

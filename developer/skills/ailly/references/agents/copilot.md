@@ -1,6 +1,7 @@
 # Copilot command-line tool mapping
 
-Maps Copilot command-line tools to the harness contract in `developer:ailly`. When a skill reference names a tool that Copilot calls by a different name, use this table:
+Maps Copilot command-line tools to the harness contract in `developer:ailly`.
+When a skill reference names a tool that Copilot calls by a different name, use this table:
 
 | Skill references | Copilot command-line tool equivalent |
 |-----------------|----------------------|
@@ -21,7 +22,13 @@ Maps Copilot command-line tools to the harness contract in `developer:ailly`. Wh
 
 ## Model mandate
 
-Copilot command-line tool's `task` dispatch call lacks a confirmed model-selection field today. This doesn't create a separate rule. Instead, it triggers the mandate-with-announce rule in `general/skills/dispatching-agents/model-selection.md`. This rule degrades automatically when no confirmed mechanism exists. When degraded, the mandate half becomes a no-op and only the announce half applies. Name the recommended model verbatim and invite a switch through Copilot's own equivalent of `/model`. Never gate; continue on the current model either way.
+Copilot command-line tool's `task` dispatch call lacks a confirmed model-selection field today.
+This doesn't create a separate rule.
+Instead, it triggers the mandate-with-announce rule in `general/skills/dispatching-agents/model-selection.md`.
+This rule degrades automatically when no confirmed mechanism exists.
+When degraded, the mandate half becomes a no-op and only the announce half applies.
+Name the recommended model verbatim and invite a switch through Copilot's own equivalent of `/model`.
+Never gate; continue on the current model either way.
 
 ## Async shell sessions
 

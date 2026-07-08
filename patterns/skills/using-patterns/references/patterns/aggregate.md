@@ -2,7 +2,12 @@
 
 ## Overview
 
-An Aggregate groups related objects as one unit. One object, the **Aggregate Root**, is the sole entry point for mutations. Each operation moves the group from one valid state to another. The group never shows intermediate states. One aggregate means one transaction. Never span a transaction across aggregate boundaries.
+An Aggregate groups related objects as one unit.
+One object, the **Aggregate Root**, is the sole entry point for mutations.
+Each operation moves the group from one valid state to another.
+The group never shows intermediate states.
+One aggregate means one transaction.
+Never span a transaction across aggregate boundaries.
 
 ## When to use
 
@@ -11,11 +16,14 @@ An Aggregate groups related objects as one unit. One object, the **Aggregate Roo
 - A group of objects shares a consistency invariant that no external caller should be able to split across multiple calls.
 - Load the specific object or concept, call one method, persist the result.
 
-**When NOT to use:** independent entities with no shared invariants. Forcing unrelated objects into one aggregate inflates its boundary and makes consistency reasoning harder.
+**When NOT to use:** independent entities with no shared invariants.
+Forcing unrelated objects into one aggregate inflates its boundary and makes consistency reasoning harder.
 
 ## Core pattern
 
-An `Order` aggregate owns its `LineItem`s. The root validates and enforces the invariant: "a placed order must have at least one item and a positive total." entirely inside one method. Callers never tap internals directly.
+An `Order` aggregate owns its `LineItem`s.
+The root validates and enforces the invariant: "a placed order must have at least one item and a positive total." entirely inside one method.
+Callers never tap internals directly.
 
 ```
 // Caller: load one aggregate, call one method, persist the result
@@ -39,13 +47,18 @@ For complete examples, see [`aggregate/typescript.md`](aggregate/typescript.md),
 
 ## Common mistakes
 
-**Aggregate too large:** including every related object (customer, address history, payment records) creates a god object. Keep the boundary to what must change *together* in one operation. Small aggregates are almost always better.
+**Aggregate too large:** including every related object (customer, address history, payment records) creates a god object.
+Keep the boundary to what must change *together* in one operation.
+Small aggregates are almost always better.
 
 **Exposing internal entities:** returning a raw `LineItem[]` reference lets callers mutate internals without going through the root.
 
-**Cross-aggregate mutation:** calling `inventoryAggregate.decrement(...)` from inside `Order.place` spans a consistency boundary and couples two aggregates in one transaction. Use domain events to trigger that update after the order transaction commits.
+**Cross-aggregate mutation:** calling `inventoryAggregate.decrement(...)` from inside `Order.place` spans a consistency boundary and couples two aggregates in one transaction.
+Use domain events to trigger that update after the order transaction commits.
 
-**Multiple aggregate calls per request:** calling `order.addLine(...)` then `order.confirm(...)` as separate top-level operations re-introduces the partial-failure window. The aggregate pattern exists to eliminate this window. Design one operation per business intent.
+**Multiple aggregate calls per request:** calling `order.addLine(...)` then `order.confirm(...)` as separate top-level operations re-introduces the partial-failure window.
+The aggregate pattern exists to eliminate this window.
+Design one operation per business intent.
 
 ## Composes with
 

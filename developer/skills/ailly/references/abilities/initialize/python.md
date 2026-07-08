@@ -97,7 +97,8 @@ uv run pytest
 
 ## Feature tests
 
-Feature tests live in `tests/features/`. They test end-to-end flows without mocking the domain.
+Feature tests live in `tests/features/`.
+They test end-to-end flows without mocking the domain.
 
 ```python
 # tests/features/test_user_login.py

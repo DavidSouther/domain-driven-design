@@ -144,7 +144,9 @@ npm test
 
 ## Feature tests
 
-Feature tests live in `tests/features/`. For server targets, test HTTP handlers directly. For browser targets, use a test renderer or a minimal DOM fixture.
+Feature tests live in `tests/features/`.
+For server targets, test HTTP handlers directly.
+For browser targets, use a test renderer or a minimal DOM fixture.
 
 ```typescript
 // tests/features/user-login.test.ts

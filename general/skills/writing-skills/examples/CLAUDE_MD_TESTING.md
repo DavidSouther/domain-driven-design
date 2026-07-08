@@ -150,7 +150,8 @@ For each variant:
    - Document when compliance breaks down
 
 4. **Meta-test** - Ask agent how to improve doc
-   - "You had the doc but didn't check. Why?"
+   - "You had the doc but didn't check.
+     Why?"
    - "How could doc be clearer?"
 
 ## Success criteria

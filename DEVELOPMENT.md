@@ -20,7 +20,8 @@ Issues tracked in Github under DavidSouther/domain-driven-design.
 
 ## Evals
 
-Feature and unit tests for Ailly should be in the form of evals. Feature tests are authored in the root e2e/ folder; unit tests are authored in individual plugin e2e/ folders.
+Feature and unit tests for Ailly should be in the form of evals.
+Feature tests are authored in the root e2e/ folder; unit tests are authored in individual plugin e2e/ folders.
 
 ## Releasing
 
@@ -51,4 +52,5 @@ Wrap a passage in `<!-- vale off -->` / `<!-- vale on -->` to suspend checks loc
 
 ### CI
 
-Every push and pull request runs `.github/workflows/vale.yml` automatically. Warnings and suggestions are reported but don't fail the build; only `error`-level findings do (`fail_on_error: false`).
+Every push and pull request runs `.github/workflows/vale.yml` automatically.
+Warnings and suggestions are reported but don't fail the build; only `error`-level findings do (`fail_on_error: false`).

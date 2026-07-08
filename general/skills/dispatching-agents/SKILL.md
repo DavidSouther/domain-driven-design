@@ -7,11 +7,15 @@ description: Use when preparing to start subagents. Especially multiple independ
 
 ## Overview
 
-Delegate tasks to specialized agents with isolated context. Craft their instructions precisely so each agent stays focused on one problem domain without inheriting your session's history. This preserves your own context for coordination work.
+Delegate tasks to specialized agents with isolated context.
+Craft their instructions precisely so each agent stays focused on one problem domain without inheriting your session's history.
+This preserves your own context for coordination work.
 
-When multiple unrelated failures appear across different test files or subsystems, investigating them sequentially wastes time. Each investigation is independent and can happen concurrently.
+When multiple unrelated failures appear across different test files or subsystems, investigating them sequentially wastes time.
+Each investigation is independent and can happen concurrently.
 
-**Core principle:** one agent per independent problem domain. Let them work concurrently.
+**Core principle:** one agent per independent problem domain.
+Let them work concurrently.
 
 ## When to use
 
@@ -39,25 +43,34 @@ digraph when_to_use {
 - No shared state between investigations
 
 **When NOT to use:**
-- Failures relate to each other. Fixing one might fix others, so investigate them together first.
+- Failures relate to each other.
+  Fixing one might fix others, so investigate them together first.
 - Understanding requires seeing the full system state.
 - Agents would interfere with each other (editing same files, shared resources).
 - The failure scope is not yet known.
 
 ## Delegation signals
 
-The first question is whether you should dispatch a sub-step to a subagent. Check these signals before reaching for model-selection guidance.
+The first question is whether you should dispatch a sub-step to a subagent.
+Check these signals before reaching for model-selection guidance.
 
 **Positive signals (favor dispatch):**
-- Independent scope with a clear input/output boundary. The step receives a self-contained brief and returns a self-contained result.
-- Parallelizable with other work. The step can run concurrently with other sub-steps or with work the caller is doing itself.
-- A genuine cost or capability mismatch. The step's complexity profile differs enough from the caller's own that isolating it lets it run on a cheaper or more specialized model.
-- A structured, deterministic hand-off. The caller can describe the step once, completely, without needing ongoing back-and-forth.
+- Independent scope with a clear input/output boundary.
+  The step receives a self-contained brief and returns a self-contained result.
+- Parallelizable with other work.
+  The step can run concurrently with other sub-steps or with work the caller is doing itself.
+- A genuine cost or capability mismatch.
+  The step's complexity profile differs enough from the caller's own that isolating it lets it run on a cheaper or more specialized model.
+- A structured, deterministic hand-off.
+  The caller can describe the step once, completely, without needing ongoing back-and-forth.
 
 **Negative signals (favor staying inline):**
-- Forced decomposition. The "step" exists only as a named heading in a plan or reference, with no real independent work behind it.
-- Tight, low-latency, multi-turn coupling to context the caller already holds in-session. The step needs to keep asking the caller things a subagent would have to reconstruct from scratch.
-- Round-trip coordination overhead. An extra model call plus context reconstruction on return would cost more than isolating the step saves.
+- Forced decomposition.
+  The "step" exists only as a named heading in a plan or reference, with no real independent work behind it.
+- Tight, low-latency, multi-turn coupling to context the caller already holds in-session.
+  The step needs to keep asking the caller things a subagent would have to reconstruct from scratch.
+- Round-trip coordination overhead.
+  An extra model call plus context reconstruction on return would cost more than isolating the step saves.
 
 Dispatch a subagent once one of these signals is real, not because a step happens to have a name.
 
@@ -75,7 +88,8 @@ Group research by areas
 - Codebase search for existing implementation
 - Public search for external context.
 
-Each domain is independent. Fixing tool approval does not affect stop tests.
+Each domain is independent.
+Fixing tool approval does not affect stop tests.
 
 ### 2. Create focused agent tasks
 

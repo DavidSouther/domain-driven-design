@@ -7,7 +7,9 @@ description: Use when answering questions about a project's declared dependencie
 
 ## Overview
 
-Answers research questions about a project's declared dependencies. Reads main config files and uses LSP for type resolution. Searches local source when available and fetches external docs when not.
+Answers research questions about a project's declared dependencies.
+Reads main config files and uses LSP for type resolution.
+Searches local source when available and fetches external docs when not.
 
 ## When to use / when not to use
 
@@ -15,8 +17,10 @@ Answers research questions about a project's declared dependencies. Reads main c
 
 **Do NOT use when:**
 - Source code is already in context (read it directly)
-- Asked about transitive/resolved deps. Those live in lock files, which this skill ignores
-- Asked about internal usage patterns. Use the `codebase` skill for that
+- Asked about transitive/resolved deps.
+  Those live in lock files, which this skill ignores
+- Asked about internal usage patterns.
+  Use the `codebase` skill for that
 
 ## Query expansion (jeopardy search)
 
@@ -26,7 +30,8 @@ Before any search, generate 3–5 variant queries covering:
 - Package name variants: exact name, scoped name (`@scope/pkg`), import path
 - Related concepts: changelog, migration guide, breaking changes, API surface
 
-Run the best 2–3 variants. Stop when results converge.
+Run the best 2–3 variants.
+Stop when results converge.
 
 ## Search strategy
 
@@ -49,13 +54,18 @@ Follow this order and stop as soon as you answer the question:
 
 ## Output format
 
-Find `.ailly/research/YYYY-MM-DD-A-<topic>/` and write findings to `dependencies.md` inside it. If the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `dependencies.md` there instead.
+Find `.ailly/research/YYYY-MM-DD-A-<topic>/` and write findings to `dependencies.md` inside it.
+If the caller provides a task-scoped research folder such as `.ailly/developer/<session-slug>/research/`, write `dependencies.md` there instead.
 
 Include a `**Sources**` section listing every config path and URL consulted.
 
 ## Common mistakes
 
-- Reading lock files. They list resolved transitive deps, not declared deps; ignore them.
-- Searching git history. Use the `archaeology` skill for that.
-- Searching codebase for usage. Use the `codebase` skill for that.
-- Running a single query. Always expand to 3–5 variants before searching.
+- Reading lock files.
+  They list resolved transitive deps, not declared deps; ignore them.
+- Searching git history.
+  Use the `archaeology` skill for that.
+- Searching codebase for usage.
+  Use the `codebase` skill for that.
+- Running a single query.
+  Always expand to 3–5 variants before searching.

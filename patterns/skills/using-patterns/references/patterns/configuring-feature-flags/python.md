@@ -1,6 +1,7 @@
 # Configuring feature flags in Python
 
-The composition root builds one evaluation client behind a vendor-neutral port and injects it. Call sites receive the port, never a vendor SDK.
+The composition root builds one evaluation client behind a vendor-neutral port and injects it.
+Call sites receive the port, never a vendor SDK.
 
 ```python
 # flags.py: the vendor-neutral port every call site reads through

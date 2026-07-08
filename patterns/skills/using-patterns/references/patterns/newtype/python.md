@@ -1,6 +1,8 @@
 # Newtype, Python reference
 
-Python lacks compile-time branding. Newtypes use frozen dataclasses instead. mypy enforces the distinction between types. The `value` field carries the underlying primitive.
+Python lacks compile-time branding.
+Newtypes use frozen dataclasses instead. mypy enforces the distinction between types.
+The `value` field carries the underlying primitive.
 
 ```python
 from dataclasses import dataclass

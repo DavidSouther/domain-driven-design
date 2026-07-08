@@ -5,14 +5,14 @@ description: Bootstrap and routing skill for design patterns. Loaded at session 
 
 # Design patterns workflow
 
-You are working in a project that uses structured design patterns. This skill is the
-routing surface for the whole pattern catalog. During design, plan, and review phases,
-read the situation, name the pattern that fits, and open its reference under `references/patterns/<name>.md` for the full teaching. It includes an overview, when-to-use guidance, core pattern, and language examples.
+You are working in a project that uses structured design patterns.
+This skill is the routing surface for the whole pattern catalog.
+During design, plan, and review phases, read the situation, name the pattern that fits, and open its reference under `references/patterns/<name>.md` for the full teaching.
+It includes an overview, when-to-use guidance, core pattern, and language examples.
 
-Each row below states the discriminator that selects the pattern and the reference
-that holds it. Match the situation in the left column, then read the reference in the
-right column. Do not apply all patterns upfront; start with the one that addresses the
-immediate design pressure.
+Each row below states the discriminator that selects the pattern and the reference that holds it.
+Match the situation in the left column, then read the reference in the right column.
+Do not apply all patterns upfront; start with the one that addresses the immediate design pressure.
 
 ## Routing table
 
@@ -40,71 +40,85 @@ immediate design pressure.
 
 ## Discriminators that are easy to confuse
 
-These pairs route to different patterns. State the discriminator before choosing.
+These pairs route to different patterns.
+State the discriminator before choosing.
 
-- **newtype vs domain-objects.** A single primitive carrying NO behavior. A bare `UserId`/`OrderId` you cannot accidentally swap or a `Cents` you cannot accidentally add to `Meters` routes to newtype (`references/patterns/newtype.md`). An object carrying behavior or calculations, an `OrderLine` doing unit-price-times-quantity, discount, and line-total math, or any decision about identity vs value vs service routes to domain-objects (`references/patterns/domain-objects.md`). Wrapping a tuple that does price math is domain-objects, not newtype.
+- **newtype vs domain-objects.**
+  A single primitive carrying NO behavior.
+  A bare `UserId`/`OrderId` you cannot accidentally swap or a `Cents` you cannot accidentally add to `Meters` routes to newtype (`references/patterns/newtype.md`).
+  An object carrying behavior or calculations, an `OrderLine` doing unit-price-times-quantity, discount, and line-total math, or any decision about identity vs value vs service routes to domain-objects (`references/patterns/domain-objects.md`).
+  Wrapping a tuple that does price math is domain-objects, not newtype.
 
-- **errors-typed-untyped (not parse-dont-validate).** A library function that can fail several ways you must match on. Retry one, surface another, give up on a third. This routes to errors-typed-untyped (`references/patterns/errors-typed-untyped.md`), which decides between a typed error hierarchy and a stringly typed message. This is a failure-signalling decision, not an input-validation one; do not route it to parse-dont-validate.
+- **errors-typed-untyped (not parse-dont-validate).**
+  A library function that can fail several ways you must match on.
+  Retry one, surface another, give up on a third.
+  This routes to errors-typed-untyped (`references/patterns/errors-typed-untyped.md`), which decides between a typed error hierarchy and a stringly typed message.
+  This is a failure-signalling decision, not an input-validation one; do not route it to parse-dont-validate.
 
-- **configuring-logging vs emitting-logs.** Bootstrap or pipeline setup, including installing a W3C trace propagator at process start, runs ONCE and routes to configuring-logging (`references/patterns/configuring-logging.md`). A log line written INSIDE an already-running handler routes to emitting-logs (`references/patterns/emitting-logs.md`). The split is bootstrap-once versus per-record.
+- **configuring-logging vs emitting-logs.**
+  Bootstrap or pipeline setup, including installing a W3C trace propagator at process start, runs ONCE and routes to configuring-logging (`references/patterns/configuring-logging.md`).
+  A log line written INSIDE an already-running handler routes to emitting-logs (`references/patterns/emitting-logs.md`).
+  The split is bootstrap-once versus per-record.
 
-- **configuring-feature-flags vs using-feature-flags.** The same bootstrap-vs-per-use split. Standing up the flag harness (provider, defaults, naming, off switch) runs ONCE and routes to configuring-feature-flags (`references/patterns/configuring-feature-flags.md`). Putting one feature behind one flag at one toggle point routes to using-feature-flags (`references/patterns/using-feature-flags.md`).
+- **configuring-feature-flags vs using-feature-flags.**
+  The same bootstrap-vs-per-use split.
+  Standing up the flag harness (provider, defaults, naming, off switch) runs ONCE and routes to configuring-feature-flags (`references/patterns/configuring-feature-flags.md`).
+  Putting one feature behind one flag at one toggle point routes to using-feature-flags (`references/patterns/using-feature-flags.md`).
 
-- **aggregate vs unit of work.** An invariant across multiple objects protected by a single root is aggregate (`references/patterns/aggregate.md`). You ensure atomic, durable flushing that wraps the aggregate operation at commit time through unit of work (`references/patterns/unit-of-work.md`).
+- **aggregate vs unit of work.**
+  An invariant across multiple objects protected by a single root is aggregate (`references/patterns/aggregate.md`).
+  You ensure atomic, durable flushing that wraps the aggregate operation at commit time through unit of work (`references/patterns/unit-of-work.md`).
 
-- **type-states vs parse-dont-validate.** A field present only after a lifecycle transition is a distinct phase and routes to type-states (`references/patterns/type-states.md`). A `shippingAddress` that exists only once you confirm a cart exemplifies this. Untrusted data crossing a boundary routes to parse-dont-validate (`references/patterns/parse-dont-validate.md`).
+- **type-states vs parse-dont-validate.**
+  A field present only after a lifecycle transition is a distinct phase and routes to type-states (`references/patterns/type-states.md`).
+  A `shippingAddress` that exists only once you confirm a cart exemplifies this.
+  Untrusted data crossing a boundary routes to parse-dont-validate (`references/patterns/parse-dont-validate.md`).
 
-- **type-conversion vs newtype.** Reshaping or rewrapping an existing typed value into
-  another type, such as extract-and-rewrap or duplicated `to_X`/`from_X`, routes to
-  type-conversion (`references/patterns/type-conversion.md`). First wrapping a bare
-  primitive routes to newtype (`references/patterns/newtype.md`).
+- **type-conversion vs newtype.**
+  Reshaping or rewrapping an existing typed value into another type, such as extract-and-rewrap or duplicated `to_X`/`from_X`, routes to type-conversion (`references/patterns/type-conversion.md`).
+  First wrapping a bare primitive routes to newtype (`references/patterns/newtype.md`).
 
-- **bootstrap-and-service vs repository.** Wiring the composition root and keeping
-  adapters thin is bootstrap-and-service (`references/patterns/bootstrap-and-service.md`).
-  Decoupling the domain from a storage technology is repository
-  (`references/patterns/repository.md`).
+- **bootstrap-and-service vs repository.**
+  Wiring the composition root and keeping adapters thin is bootstrap-and-service (`references/patterns/bootstrap-and-service.md`).
+  Decoupling the domain from a storage technology is repository (`references/patterns/repository.md`).
 
-- **triangulate vs arrange-act-assert.** Forcing a real implementation by writing a
-  second test is triangulate (`references/patterns/triangulate.md`). Structuring any one
-  test cleanly is arrange-act-assert (`references/patterns/arrange-act-assert.md`).
+- **triangulate vs arrange-act-assert.**
+  Forcing a real implementation by writing a second test is triangulate (`references/patterns/triangulate.md`).
+  Structuring any one test cleanly is arrange-act-assert (`references/patterns/arrange-act-assert.md`).
 
-- **page-objects vs arrange-act-assert.** Encapsulating a reusable UI surface
-  (a screen or console) behind verb-phrase actions, reused across many
-  acceptance tests, routes to page-objects (`references/patterns/page-objects.md`).
-  Structuring the arrange/act/assert phases of one test routes to
-  arrange-act-assert (`references/patterns/arrange-act-assert.md`).
+- **page-objects vs arrange-act-assert.**
+  Encapsulating a reusable UI surface (a screen or console) behind verb-phrase actions, reused across many acceptance tests, routes to page-objects (`references/patterns/page-objects.md`).
+  Structuring the arrange/act/assert phases of one test routes to arrange-act-assert (`references/patterns/arrange-act-assert.md`).
 
 ## Pattern composition
 
-Patterns compose in predictable ways. Recognize these combinations:
+Patterns compose in predictable ways.
+Recognize these combinations:
 
 - **parse-dont-validate + newtype:** parse external input directly into domain types.
-  The parsed type *is* the proof of validity. See
-  `references/patterns/parse-dont-validate.md` and `references/patterns/newtype.md`.
-- **repository + aggregate:** a persistence-ignorant domain model with clean
-  consistency boundaries. Add unit of work when the operation must be atomic and
-  durable. See `references/patterns/repository.md`, `references/patterns/aggregate.md`,
-  and `references/patterns/unit-of-work.md`.
-- **bootstrap-and-service:** the outer shell that wires repository, unit of work, and
-  protocol adapters together at startup. Apply last. See
-  `references/patterns/bootstrap-and-service.md`.
+  The parsed type *is* the proof of validity.
+  See `references/patterns/parse-dont-validate.md` and `references/patterns/newtype.md`.
+- **repository + aggregate:** a persistence-ignorant domain model with clean consistency boundaries.
+  Add unit of work when the operation must be atomic and durable.
+  See `references/patterns/repository.md`, `references/patterns/aggregate.md`, and `references/patterns/unit-of-work.md`.
+- **bootstrap-and-service:** the outer shell that wires repository, unit of work, and protocol adapters together at startup.
+  Apply last.
+  See `references/patterns/bootstrap-and-service.md`.
 - **type-conversion + newtype:** newtype constructors *are* the canonical conversions.
-  Total constructors implement `From`, partial constructors implement `TryFrom`/`parse`,
-  and call sites stop reaching into `.0` to rewrap. See
-  `references/patterns/type-conversion.md` and `references/patterns/newtype.md`.
+  Total constructors implement `From`, partial constructors implement `TryFrom`/`parse`, and call sites stop reaching into `.0` to rewrap.
+  See `references/patterns/type-conversion.md` and `references/patterns/newtype.md`.
 - **configuring-logging + emitting-logs:** the two halves of structured logging.
-  Configuration sets the envelope and the exporter once. Emission attaches the per-event
-  fields under the semantic conventions the configuration enforces. Run them together.
-  One without the other produces structured logs that are not queryable, or queryable
-  logs that are not centralized. See `references/patterns/configuring-logging.md` and
-  `references/patterns/emitting-logs.md`.
-- **configuring-feature-flags + using-feature-flags:** the two halves of feature
-  flagging. Configuration installs one vendor-neutral evaluation entry point with
-  fail-safe defaults and naming, ownership, and expiry conventions. Usage puts one
-  feature behind one flag at a single toggle point. Run them together. A flag without
-  the harness scatters vendor SDKs across call sites, and a harness with no disciplined
-  usage fills with stale flags. See `references/patterns/configuring-feature-flags.md`
-  and `references/patterns/using-feature-flags.md`.
+  Configuration sets the envelope and the exporter once.
+  Emission attaches the per-event fields under the semantic conventions the configuration enforces.
+  Run them together.
+  One without the other produces structured logs that are not queryable, or queryable logs that are not centralized.
+  See `references/patterns/configuring-logging.md` and `references/patterns/emitting-logs.md`.
+- **configuring-feature-flags + using-feature-flags:** the two halves of feature flagging.
+  Configuration installs one vendor-neutral evaluation entry point with fail-safe defaults and naming, ownership, and expiry conventions.
+  Usage puts one feature behind one flag at a single toggle point.
+  Run them together.
+  A flag without the harness scatters vendor SDKs across call sites, and a harness with no disciplined usage fills with stale flags.
+  See `references/patterns/configuring-feature-flags.md` and `references/patterns/using-feature-flags.md`.
 
-Do not apply all patterns upfront. Start with the one that addresses the immediate
-design pressure, name it, and read its reference.
+Do not apply all patterns upfront.
+Start with the one that addresses the immediate design pressure, name it, and read its reference.

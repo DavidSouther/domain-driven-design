@@ -1,6 +1,7 @@
 # Builder Rust reference
 
-Rust's ownership model suits the builder pattern well. When you call `build()`, it consumes the builder and prevents further changes.
+Rust's ownership model suits the builder pattern well.
+When you call `build()`, it consumes the builder and prevents further changes.
 
 ```rust
 use std::collections::HashMap;

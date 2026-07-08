@@ -1,29 +1,19 @@
 # research-eval
 
-A regression harness for the `research` skill plugin, built with
-[Ailly](https://github.com/davidsouther/ailly). It scores two independent
-failure surfaces of a `SKILL.md` edit:
+A regression harness for the `research` skill plugin, built with [Ailly](https://github.com/davidsouther/ailly).
+It scores two independent failure surfaces of a `SKILL.md` edit:
 
-- **Discovery** — does the `description:` frontmatter still route the model to
-  the right skill? Sweeps 10 routing cases over the concatenated descriptions of
-  the nine always-on research skills (`context/skills/disclosure.md`) plus the
-  `using-research` bootstrap. Asserts which skill the model names. Post-consolidation
-  (progressive-disclosure Feature C) the five setup-only `configuring-*` descriptions
-  were deferred out of the always-on view into references under the `using-research`
-  bootstrap; the two `configuring-*-trigger` cases now assert routing to the relocated
-  `references/configuring/<name>.md` reference instead of a retired skill identifier.
-- **Invocation** — once a skill body is loaded, does the output exhibit the
-  conventions the skill teaches? Sweeps the eight non-bootstrap SOURCE leaves
-  (`codebase`, `archaeology`, `papers`, `books`, `dependencies`, `domain`,
-  `internal`, `public`). Each case mixes a structural Python checker, an LLM judge,
-  and a token budget. The `configuring-*` skills are no longer standalone bodies to
-  invoke (they are references under `using-research`), so they are not in the
-  invocation matrix; their setup-routing is covered by the discovery suite.
+- **Discovery** — does the `description:` frontmatter still route the model to the right skill?
+  Sweeps 10 routing cases over the concatenated descriptions of the nine always-on research skills (`context/skills/disclosure.md`) plus the `using-research` bootstrap.
+  Asserts which skill the model names.
+  Post-consolidation (progressive-disclosure Feature C) the five setup-only `configuring-*` descriptions were deferred out of the always-on view into references under the `using-research` bootstrap; the two `configuring-*-trigger` cases now assert routing to the relocated `references/configuring/<name>.md` reference instead of a retired skill identifier.
+- **Invocation** — once a skill body is loaded, does the output exhibit the conventions the skill teaches?
+  Sweeps the eight non-bootstrap SOURCE leaves (`codebase`, `archaeology`, `papers`, `books`, `dependencies`, `domain`, `internal`, `public`).
+  Each case mixes a structural Python checker, an LLM judge, and a token budget.
+  The `configuring-*` skills are no longer standalone bodies to invoke (they are references under `using-research`), so they are not in the invocation matrix; their setup-routing is covered by the discovery suite.
 
-The invocation axis is run as an A/B falsification comparison against a
-**baseline** arm with no skill body loaded, over identical prompts. The gate is
-`improved > 0 && regressed == 0`: the skill must help on at least one assertion
-the baseline failed, and break nothing the baseline passed.
+The invocation axis is run as an A/B falsification comparison against a **baseline** arm with no skill body loaded, over identical prompts.
+The gate is `improved > 0 && regressed == 0`: the skill must help on at least one assertion the baseline failed, and break nothing the baseline passed.
 
 ## Layout
 
@@ -41,22 +31,17 @@ ci.sh                         assemble -> run -> eval -> report, with the gate
 
 ## Running
 
-`ci.sh` needs the Ailly binary and an Anthropic key. Point it at the binary with
-`AILLY_BIN` (or its repo with `AILLY_HOME`), and drop the key in a project
-`.env` (`ANTHROPIC_API_KEY=...`) or export it.
+`ci.sh` needs the Ailly binary and an Anthropic key.
+Point it at the binary with `AILLY_BIN` (or its repo with `AILLY_HOME`), and drop the key in a project `.env` (`ANTHROPIC_API_KEY=...`) or export it.
 
 ```sh
 ./ci.sh
 ```
 
-`assemble` runs without a model; `run`, `eval`, and `report` call the model. The
-script asserts the conversation counts, that every assistant slot was filled,
-that a per-run report landed, and finally that the baseline-vs-invocation
-comparison clears the falsification gate.
+`assemble` runs without a model; `run`, `eval`, and `report` call the model.
+The script asserts the conversation counts, that every assistant slot was filled, that a per-run report landed, and finally that the baseline-vs-invocation comparison clears the falsification gate.
 
 ## Reading the result
 
-`report <baseline-id> <invocation-id>` writes a report bucketing 
-every paired assertion into `improved` / `regressed` / `unchanged_pass` /
-`unchanged_fail`. A null result (an assertion that fails on both arms) is a true
-statement about the model, not a defect.
+`report <baseline-id> <invocation-id>` writes a report bucketing  every paired assertion into `improved` / `regressed` / `unchanged_pass` / `unchanged_fail`.
+A null result (an assertion that fails on both arms) is a true statement about the model, not a defect.
