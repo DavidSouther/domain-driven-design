@@ -1,5 +1,9 @@
 # Tasks
 
+- Fix Vale Lint CI: `.vale.ini`'s `Packages = Ailly` fails `vale sync` in GitHub Actions with `E100 [download] Runtime error: 'Ailly' is not a valid URL or the directory doesn't exist`.
+  Introduced by commit `6afb2cb` ("Consolidated several disparate and mediocre styles into a single Ailly style"), which predates session `2026-07-07-A-vale-markdown-format` and was never exercised in CI until this session's force-push finally landed it on `origin/2026-07-05-A-vale` — unrelated to the markdown-format work itself, just first surfaced by it.
+  `Packages` expects a syncable remote package name/URL, but "Ailly" is a local consolidated style already living under `styles/`; likely fix is dropping `Packages = Ailly` (keep `StylesPath = styles` and `BasedOnStyles = Ailly`) or removing the `vale sync` step from `.github/workflows/vale.yml` if no packages are actually needed anymore.
+  See CI run `28952980848` on branch `2026-07-05-A-vale`.
 - Build `scripts/vale-generate-examples.sh`, the offline LLM-generated example-backfill tier named in design.md Specification item 3.
   It should iterate every Warning/Error rule across the repo's effective style set (`Google`, `Joblint`, `DDD` — `.vale.ini`'s `BasedOnStyles`), skipping any rule already covered by the auto-derived tier (has a `swap:`/`action:` block — `vale-fix.sh`'s `lookup_example` already reads these live, nothing to generate) or already carrying a hand-authored sidecar under `styles/config/examples/` (the two seed files this session shipped — the generator must never overwrite curated content), and dispatch one LLM call per remaining rule (mirroring `vale-fix.sh`'s own `xargs -P 8` pattern) asking it to either write a `bad`/`good`/`note` example in the sidecar schema or emit nothing when the rule's own `message:`/`link:` already states a sufficient correction.
   Output is written to the sidecar path and reviewed/committed like any other content change, never generated or trusted at fix-time.
@@ -48,3 +52,16 @@
   - A new entry in `patterns/e2e/evals/invocation.yaml` wiring the prompt to the checker.
   - A new entry in `patterns/e2e/assemblies/invocation.yaml` adding the case to the invocation assembly run.
   - See `patterns/e2e/evals/scripts/_checker_utils.py` for shared checker helpers already in use by sibling checks.
+- File an upstream bug against `rvben/rumdl`: `rumdl check --fix` never converges (its own "Auto-fix did not converge after 100 iterations" warning) on adjacent quoted-italic fragments like `"*text.*" "*text.*"`, and instead of erroring cleanly it corrupts the line (a stray `"` character, ~100-space indentation artifacts, moved punctuation).
+  Once fixed upstream, revisit whether the `<!-- rumdl-disable/enable MD013 -->` wraps added around 5 spans in `characters/output-styles/voice-{ailly,jacki,jefri,rupert}.md` can be removed in favor of the tool's own (by-then-correct) fix — a narrow, documented exception to design.md's "no exemptions" decision, forced by this bug rather than chosen.
+  Not filed yet; no `rvben/rumdl` issue number to cite.
+  See commit `3ae0190` in session `2026-07-07-A-vale-markdown-format`.
+- Build a YAML-specific reflow for the 951-char `description` scalars in `SKILL.md` frontmatter, if frontmatter readability becomes a real motivation.
+  No Markdown-body wrap tool (including `rumdl`) touches YAML frontmatter, so these long single-line scalars are untouched by the new OSPL formatter; deliberately deferred per design.md's Specification and Summary.
+  See design.md in session `2026-07-07-A-vale-markdown-format`.
+- Consider table cell-padding normalization as a separate feature, if it becomes a real pain point.
+  `MD013` doesn't govern tables, so `rumdl`'s OSPL reflow left table formatting untouched; deliberately deferred per design.md's Summary.
+  See design.md in session `2026-07-07-A-vale-markdown-format`.
+- Evaluate adopting additional `rumdl`/markdownlint rules beyond `MD013` (e.g. `MD041` first-line-heading, observed firing as a separate editor-linter diagnostic during this session's build) as a later, separate feature.
+  `.rumdl.toml` deliberately scopes to `[global] enable = ["MD013"]` only, since enabling rumdl's full default rule set flagged unrelated structural issues (e.g. files intentionally leading with YAML frontmatter) that are a different, unscoped feature.
+  See design.md's Specification ("Scope-of-rules decision") in session `2026-07-07-A-vale-markdown-format`.
