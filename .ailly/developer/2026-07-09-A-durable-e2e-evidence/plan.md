@@ -1,9 +1,9 @@
 # Implementation Plan: Durable e2e Evidence Archive
 
-**Feature test:** `e2e/test_e2e_archive_durability.py`
-**User story:** As an e2e report user, I can render `--from-existing --archive <run>` from durable archived evidence after plugin-local scratch outputs have been cleaned.
+**Feature test:** `e2e/test_e2e_archive_durability.py` **User story:** As an e2e report user, I can render `--from-existing --archive <run>` from durable archived evidence after plugin-local scratch outputs have been cleaned.
 **Libraries & Skills:** `developer:ailly`, `research:codebase`, `patterns:using-patterns arrange-act-assert`; use `research:archaeology` only if a later question requires history.
 **Steps:**
+
 - [x] Step 0: API surface area
 - [x] Step 1: Archive identity, path resolution, and manifest loading
 - [x] Step 2: Archive-backed existing report indexing
@@ -127,7 +127,8 @@ def run_model_project(
 
 **Enables:** `runner.main([... "--archive", archive_id, ...])` accepts the flag and can resolve the test's bare archive id to `REPO / "e2e" / "artifacts" / archive_id` instead of failing argparse before assertions run.
 
-Build the archive boundary primitives: run id generation, model slugging, bare-id versus path resolution, and manifest parsing into records. The feature test will still fail until replay uses the manifest, but `--archive` will no longer be an unrecognized argument and a hand-built manifest can be opened.
+Build the archive boundary primitives: run id generation, model slugging, bare-id versus path resolution, and manifest parsing into records.
+The feature test will still fail until replay uses the manifest, but `--archive` will no longer be an unrecognized argument and a hand-built manifest can be opened.
 
 **Tests**
 
@@ -167,7 +168,8 @@ function parse_archive_manifest(path):
 
 **Enables:** the replay path can derive models, suites, resources, discovery cells, and invocation cells from archived `report_paths` and `comparison_paths` instead of plugin-local `evals/reports`.
 
-Build a manifest-backed equivalent of the current existing-report loaders. It should read only archived report JSON files referenced by complete suite records, preserve the current `ResourceCell` and `format_report()` contract, and reuse `initial_project_cells()`, `case_passes()`, `baseline_for()`, `resource_name()`, and `comparison_invocation_icons()` where practical.
+Build a manifest-backed equivalent of the current existing-report loaders.
+It should read only archived report JSON files referenced by complete suite records, preserve the current `ResourceCell` and `format_report()` contract, and reuse `initial_project_cells()`, `case_passes()`, `baseline_for()`, `resource_name()`, and `comparison_invocation_icons()` where practical.
 
 **Tests**
 
@@ -214,7 +216,8 @@ function archive_project_matrix(archive, projects, models):
 
 **Enables:** the full feature test assertions: `exit_code == 0`, the rendered report contains `>model-a</th>`, `>model-b</th>`, and `>fixture:skill</th>` after plugin-local scratch contains only model B.
 
-Wire `main()` so archive replay bypasses `existing_models()` and `load_existing_project_matrix()` when both `--from-existing` and `--archive` are present. The report should still flow through `format_report()` and `--report`, with static checks skipped the same way current `--from-existing` replay does.
+Wire `main()` so archive replay bypasses `existing_models()` and `load_existing_project_matrix()` when both `--from-existing` and `--archive` are present.
+The report should still flow through `format_report()` and `--report`, with static checks skipped the same way current `--from-existing` replay does.
 
 **Tests**
 
@@ -264,7 +267,8 @@ function main(argv):
 
 **Enables:** future live e2e runs create the same durable evidence shape that the replay path now reads, so the feature is not limited to hand-built test archives.
 
-Build the minimal live-run capture path decided by the design: create one archive before cleanup, write `events.jsonl`, maintain `manifest.json` atomically, record command sidecar streams at the `run_command()` boundary, and copy selected run/report/input evidence after each suite unit. Keep this limited to the storage contract required by archive replay; richer rendered links and remote artifact publication remain deferred.
+Build the minimal live-run capture path decided by the design: create one archive before cleanup, write `events.jsonl`, maintain `manifest.json` atomically, record command sidecar streams at the `run_command()` boundary, and copy selected run/report/input evidence after each suite unit.
+Keep this limited to the storage contract required by archive replay; richer rendered links and remote artifact publication remain deferred.
 
 **Tests**
 
