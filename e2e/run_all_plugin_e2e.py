@@ -161,10 +161,36 @@ class EvalRunArchive:
     manifest: ArchiveManifest
 
     @classmethod
+    def create_at(
+        cls, root: Path, run_id: RunId | None = None, created_at: str | None = None
+    ) -> "EvalRunArchive":
+        archive_run_id = run_id or RunId(root.name)
+        archive_created_at = created_at or utc_now()
+        root.mkdir(parents=True, exist_ok=True)
+        archive = cls(
+            root,
+            ArchiveManifest(
+                schema_version=1,
+                run_id=archive_run_id,
+                created_at=archive_created_at,
+                status="running",
+                plugins={},
+                models=(),
+                rendered={},
+                failures=(),
+            ),
+        )
+        (root / "events.jsonl").touch()
+        archive.write_manifest(archive.manifest)
+        archive.append_event("run_started", {"run_id": str(archive_run_id)})
+        return archive
+
+    @classmethod
     def create(
         cls, repo: Path, run_id: RunId | None = None, created_at: str | None = None
     ) -> "EvalRunArchive":
-        raise NotImplementedError("live archive creation is Step 4")
+        archive_run_id = run_id or generate_run_id()
+        return cls.create_at(repo / "e2e" / "artifacts" / str(archive_run_id), archive_run_id, created_at)
 
     @classmethod
     def open(cls, root: Path) -> "EvalRunArchive":
@@ -174,33 +200,191 @@ class EvalRunArchive:
         return self.root / "plugins" / project.name / "models" / str(model_slug)
 
     def append_event(self, event_name: str, payload: dict) -> None:
-        raise NotImplementedError("live archive events are Step 4")
+        self.root.mkdir(parents=True, exist_ok=True)
+        with (self.root / "events.jsonl").open("a", encoding="utf-8") as events:
+            events.write(
+                json.dumps(
+                    {
+                        "timestamp": utc_now(),
+                        "event": event_name,
+                        "payload": payload,
+                    },
+                    sort_keys=True,
+                )
+                + "\n"
+            )
 
     def write_manifest(self, manifest: ArchiveManifest) -> None:
-        raise NotImplementedError("live archive manifest writes are Step 4")
+        self.root.mkdir(parents=True, exist_ok=True)
+        manifest_path = self.root / "manifest.json"
+        temp_path = self.root / "manifest.json.tmp"
+        temp_path.write_text(
+            json.dumps(archive_manifest_to_json(manifest), indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        temp_path.replace(manifest_path)
+        object.__setattr__(self, "manifest", manifest)
 
     def begin_unit(self, unit: ArchiveUnit) -> None:
-        raise NotImplementedError("live archive unit capture is Step 4")
+        for child in ("inputs", "runs", "reports", "commands"):
+            (self.unit_root(unit.project, unit.model_slug) / child).mkdir(parents=True, exist_ok=True)
+        current = self._suite_record(unit)
+        if current is None:
+            self._replace_suite_record(
+                unit,
+                ArchiveSuiteRecord(
+                    status="running",
+                    run_id=None,
+                    input_paths=(),
+                    run_paths=(),
+                    report_paths=(),
+                    comparison_paths=(),
+                    command_records=(),
+                ),
+            )
+        self.append_event(
+            "unit_started",
+            {"plugin": unit.project.name, "model": unit.model, "suite": unit.suite.name},
+        )
 
     def record_command(
         self, unit: ArchiveUnit, step: str, result: subprocess.CompletedProcess[str]
     ) -> CommandRecord:
-        raise NotImplementedError("live archive command capture is Step 4")
+        current = self._suite_record(unit)
+        sequence = len(current.command_records) + 1 if current is not None else 1
+        safe_step = archive_safe_name(step)
+        command_root = self.unit_root(unit.project, unit.model_slug) / "commands"
+        command_root.mkdir(parents=True, exist_ok=True)
+        stdout_path = command_root / f"{sequence:03d}-{safe_step}.stdout.txt"
+        stderr_path = command_root / f"{sequence:03d}-{safe_step}.stderr.txt"
+        stdout_path.write_text(result.stdout or "", encoding="utf-8")
+        stderr_path.write_text(result.stderr or "", encoding="utf-8")
+        now = utc_now()
+        record = CommandRecord(
+            sequence=sequence,
+            step=step,
+            args=tuple(str(arg) for arg in command_args(result.args)),
+            cwd=str(REPO),
+            started_at=now,
+            finished_at=now,
+            returncode=int(result.returncode),
+            stdout_path=archive_relative_path(self.root, stdout_path),
+            stderr_path=archive_relative_path(self.root, stderr_path),
+        )
+        base = current or ArchiveSuiteRecord("running", None, (), (), (), (), ())
+        self._replace_suite_record(
+            unit,
+            dataclasses.replace(base, command_records=base.command_records + (record,)),
+        )
+        self.append_event(
+            "command_finished",
+            {
+                "plugin": unit.project.name,
+                "model": unit.model,
+                "suite": unit.suite.name,
+                "step": step,
+                "returncode": result.returncode,
+            },
+        )
+        return record
 
     def capture_inputs(self, unit: ArchiveUnit) -> tuple[str, ...]:
-        raise NotImplementedError("live archive input capture is Step 4")
+        paths = [unit.suite.path, unit.project.path / "evals" / f"{unit.suite.name}.yaml"]
+        for referenced in unit.suite.prompt_paths + unit.suite.prefix_paths:
+            for expanded in expand_suite_input_path(unit.suite, referenced):
+                paths.append(unit.project.path / expanded)
+        captured: list[str] = []
+        for source in sorted(dict.fromkeys(paths)):
+            if not source.is_file():
+                self.fail_unit(unit, f"missing input:{source}")
+                raise FileNotFoundError(source)
+            target = self.unit_root(unit.project, unit.model_slug) / "inputs" / source.relative_to(unit.project.path)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+            relative = archive_relative_path(self.root, target)
+            captured.append(relative)
+            self.append_event(
+                "artifact_captured",
+                {"plugin": unit.project.name, "model": unit.model, "suite": unit.suite.name, "path": relative},
+            )
+        return tuple(captured)
 
     def capture_run_dir(self, unit: ArchiveUnit, run_dir: Path) -> str:
-        raise NotImplementedError("live archive run capture is Step 4")
+        target = self.unit_root(unit.project, unit.model_slug) / "runs" / run_dir.name
+        if target.exists():
+            shutil.rmtree(target)
+        shutil.copytree(run_dir, target)
+        relative = archive_relative_path(self.root, target)
+        self.append_event(
+            "artifact_captured",
+            {"plugin": unit.project.name, "model": unit.model, "suite": unit.suite.name, "path": relative},
+        )
+        return relative
 
     def capture_report(self, unit: ArchiveUnit, report_path: Path) -> str:
-        raise NotImplementedError("live archive report capture is Step 4")
+        target = self.unit_root(unit.project, unit.model_slug) / "reports" / report_path.name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(report_path, target)
+        relative = archive_relative_path(self.root, target)
+        self.append_event(
+            "artifact_captured",
+            {"plugin": unit.project.name, "model": unit.model, "suite": unit.suite.name, "path": relative},
+        )
+        return relative
 
     def finish_unit(self, unit: ArchiveUnit, suite_record: ArchiveSuiteRecord) -> None:
-        raise NotImplementedError("live archive unit completion is Step 4")
+        self._replace_suite_record(unit, suite_record)
+        self.append_event(
+            "unit_finished",
+            {"plugin": unit.project.name, "model": unit.model, "suite": unit.suite.name},
+        )
 
     def fail_unit(self, unit: ArchiveUnit, reason: str) -> None:
-        raise NotImplementedError("live archive unit failure capture is Step 4")
+        current = self._suite_record(unit) or ArchiveSuiteRecord(
+            status="running",
+            run_id=None,
+            input_paths=(),
+            run_paths=(),
+            report_paths=(),
+            comparison_paths=(),
+            command_records=(),
+        )
+        self._replace_suite_record(unit, dataclasses.replace(current, status="failed"))
+        failure = {"plugin": unit.project.name, "model": unit.model, "suite": unit.suite.name, "reason": reason}
+        self.write_manifest(dataclasses.replace(self.manifest, failures=self.manifest.failures + (failure,)))
+        self.append_event("unit_failed", failure)
+
+    def finish_run(self, status: str) -> None:
+        self.write_manifest(dataclasses.replace(self.manifest, status=status))
+        self.append_event("run_finished", {"run_id": str(self.manifest.run_id), "status": status})
+
+    def _suite_record(self, unit: ArchiveUnit) -> ArchiveSuiteRecord | None:
+        plugin = self.manifest.plugins.get(unit.project.name)
+        if plugin is None:
+            return None
+        model = plugin.models.get(unit.model)
+        if model is None:
+            return None
+        return model.suites.get(unit.suite.name)
+
+    def _replace_suite_record(self, unit: ArchiveUnit, suite_record: ArchiveSuiteRecord) -> None:
+        plugins = dict(self.manifest.plugins)
+        plugin_record = plugins.get(unit.project.name) or ArchivePluginRecord(
+            path=archive_relative_path(REPO, unit.project.path),
+            models={},
+        )
+        models = dict(plugin_record.models)
+        model_record = models.get(unit.model) or ArchiveModelRecord(unit.model_slug, {})
+        suites = dict(model_record.suites)
+        suites[unit.suite.name] = suite_record
+        models[unit.model] = dataclasses.replace(model_record, slug=unit.model_slug, suites=suites)
+        plugins[unit.project.name] = dataclasses.replace(plugin_record, models=models)
+        manifest_models = self.manifest.models
+        if unit.model not in manifest_models:
+            manifest_models = manifest_models + (unit.model,)
+        self.write_manifest(
+            dataclasses.replace(self.manifest, plugins=plugins, models=manifest_models)
+        )
 
 
 def generate_run_id(
@@ -229,6 +413,100 @@ def resolve_archive_path(repo: Path, archive_arg: str) -> Path:
     if archive_path.is_absolute() or has_separator:
         return archive_path
     return repo / "e2e" / "artifacts" / archive_arg
+
+
+def utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def archive_safe_name(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-") or "step"
+
+
+def archive_relative_path(root: Path, path: Path) -> str:
+    try:
+        return path.relative_to(root).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def command_args(args: object) -> tuple[str, ...]:
+    if isinstance(args, (list, tuple)):
+        return tuple(str(arg) for arg in args)
+    return (str(args),)
+
+
+def expand_suite_input_path(suite: Suite, path: str) -> tuple[str, ...]:
+    if suite.axis is None:
+        return (path,)
+    expanded: list[str] = []
+    for case in suite.cases:
+        case_path = path.replace("{{ " + suite.axis + " }}", case)
+        case_path = case_path.replace("{{" + suite.axis + "}}", case)
+        expanded.append(case_path)
+    return tuple(expanded)
+
+
+def command_record_to_json(record: CommandRecord) -> dict:
+    return {
+        "sequence": record.sequence,
+        "step": record.step,
+        "args": list(record.args),
+        "cwd": record.cwd,
+        "started_at": record.started_at,
+        "finished_at": record.finished_at,
+        "returncode": record.returncode,
+        "stdout_path": record.stdout_path,
+        "stderr_path": record.stderr_path,
+    }
+
+
+def suite_record_to_json(record: ArchiveSuiteRecord) -> dict:
+    return {
+        "status": record.status,
+        "run_id": record.run_id,
+        "input_paths": list(record.input_paths),
+        "run_paths": list(record.run_paths),
+        "report_paths": list(record.report_paths),
+        "comparison_paths": list(record.comparison_paths),
+        "command_records": [command_record_to_json(command) for command in record.command_records],
+    }
+
+
+def model_record_to_json(record: ArchiveModelRecord) -> dict:
+    return {
+        "slug": str(record.slug),
+        "suites": {
+            suite_name: suite_record_to_json(suite_record)
+            for suite_name, suite_record in record.suites.items()
+        },
+    }
+
+
+def plugin_record_to_json(record: ArchivePluginRecord) -> dict:
+    return {
+        "path": record.path,
+        "models": {
+            model_name: model_record_to_json(model_record)
+            for model_name, model_record in record.models.items()
+        },
+    }
+
+
+def archive_manifest_to_json(manifest: ArchiveManifest) -> dict:
+    return {
+        "schema_version": manifest.schema_version,
+        "run_id": str(manifest.run_id),
+        "created_at": manifest.created_at,
+        "status": manifest.status,
+        "plugins": {
+            plugin_name: plugin_record_to_json(plugin_record)
+            for plugin_name, plugin_record in manifest.plugins.items()
+        },
+        "models": list(manifest.models),
+        "rendered": dict(manifest.rendered),
+        "failures": list(manifest.failures),
+    }
 
 
 def command_record_from_json(data: dict) -> CommandRecord:
@@ -678,6 +956,49 @@ def comparison_invocation_icons(case: dict) -> tuple[str, ...]:
     return tuple(invocation_icon_for_assertion(assertion) for assertion in case.get("assertions", []))
 
 
+def archive_unit_for(
+    archive: EvalRunArchive,
+    project: Project,
+    model: str | None,
+    suite: Suite,
+) -> ArchiveUnit:
+    model_name = model or suite.model or "default"
+    plugin = archive.manifest.plugins.get(project.name)
+    if plugin and model_name in plugin.models:
+        slug = plugin.models[model_name].slug
+    else:
+        used_slugs = tuple(str(record.slug) for record in plugin.models.values()) if plugin else ()
+        slug = model_slug(model_name, used_slugs)
+    return ArchiveUnit(project, model_name, slug, suite)
+
+
+def empty_suite_capture() -> dict[str, list]:
+    return {
+        "input_paths": [],
+        "run_paths": [],
+        "report_paths": [],
+        "comparison_paths": [],
+        "command_records": [],
+    }
+
+
+def archive_suite_record(run_id: str | None, capture: dict[str, list]) -> ArchiveSuiteRecord:
+    return ArchiveSuiteRecord(
+        status="complete",
+        run_id=run_id,
+        input_paths=tuple(capture["input_paths"]),
+        run_paths=tuple(capture["run_paths"]),
+        report_paths=tuple(capture["report_paths"]),
+        comparison_paths=tuple(capture["comparison_paths"]),
+        command_records=tuple(capture["command_records"]),
+    )
+
+
+def mark_cells_error(cells: dict[str, ResourceCell], message: str) -> None:
+    for cell in cells.values():
+        cell.error = message
+
+
 def run_model_project(
     args: argparse.Namespace,
     project: Project,
@@ -697,17 +1018,37 @@ def run_model_project(
 
     with patched_models(project, model):
         run_dirs: dict[str, Path] = {}
+        archive_units: dict[str, ArchiveUnit] = {}
+        archive_captures: dict[str, dict[str, list]] = {}
         for suite_name in sorted(suites):
+            if archive is not None:
+                unit = archive_unit_for(archive, project, model, suites[suite_name])
+                archive_units[suite_name] = unit
+                archive_captures[suite_name] = empty_suite_capture()
+                archive.begin_unit(unit)
+                try:
+                    archive_captures[suite_name]["input_paths"].extend(archive.capture_inputs(unit))
+                except FileNotFoundError:
+                    mark_cells_error(cells, f"input:{suite_name}")
+                    return cells
             result = run_command(
                 ailly_command(args) + ["-p", str(project.path), "assemble", suite_name],
                 REPO,
                 args.continue_on_error,
             )
+            if archive is not None:
+                command = archive.record_command(archive_units[suite_name], "assemble", result)
+                archive_captures[suite_name]["command_records"].append(command)
             if result.returncode:
-                for cell in cells.values():
-                    cell.error = f"assemble:{suite_name}"
+                if archive is not None:
+                    archive.fail_unit(archive_units[suite_name], f"assemble:{suite_name}")
+                mark_cells_error(cells, f"assemble:{suite_name}")
                 return cells
             run_dirs[suite_name] = run_dir_for(project, suite_name)
+            if archive is not None:
+                archive_captures[suite_name]["run_paths"].append(
+                    archive.capture_run_dir(archive_units[suite_name], run_dirs[suite_name])
+                )
 
         for suite_name, run_dir in run_dirs.items():
             result = run_command(
@@ -715,26 +1056,42 @@ def run_model_project(
                 REPO,
                 args.continue_on_error,
             )
+            if archive is not None:
+                command = archive.record_command(archive_units[suite_name], "run", result)
+                archive_captures[suite_name]["command_records"].append(command)
             if result.returncode:
-                for cell in cells.values():
-                    cell.error = f"run:{suite_name}"
+                if archive is not None:
+                    archive.fail_unit(archive_units[suite_name], f"run:{suite_name}")
+                mark_cells_error(cells, f"run:{suite_name}")
                 return cells
 
         for suite_name, run_dir in run_dirs.items():
             run_id = run_dir.name
-            run_command(
+            result = run_command(
                 ailly_command(args) + ["-p", str(project.path), "eval", suite_name, "--over", str(run_dir)],
                 REPO,
                 continue_on_error=True,
             )
-            if not (project.path / "evals" / "reports" / f"{run_id}.json").is_file():
-                for cell in cells.values():
-                    cell.error = f"eval:{suite_name}"
+            if archive is not None:
+                command = archive.record_command(archive_units[suite_name], "eval", result)
+                archive_captures[suite_name]["command_records"].append(command)
+            report_path = project.path / "evals" / "reports" / f"{run_id}.json"
+            if not report_path.is_file():
+                if archive is not None:
+                    archive.fail_unit(archive_units[suite_name], f"eval:{suite_name}")
+                mark_cells_error(cells, f"eval:{suite_name}")
                 return cells
+            if archive is not None:
+                archive_captures[suite_name]["report_paths"].append(
+                    archive.capture_report(archive_units[suite_name], report_path)
+                )
 
         if "discovery" in run_dirs:
             discovery_id = run_dirs["discovery"].name
-            run_command(ailly_command(args) + ["-p", str(project.path), "report", discovery_id], REPO, True)
+            result = run_command(ailly_command(args) + ["-p", str(project.path), "report", discovery_id], REPO, True)
+            if archive is not None:
+                command = archive.record_command(archive_units["discovery"], "report-discovery", result)
+                archive_captures["discovery"]["command_records"].append(command)
             discovery_report = load_report(project, discovery_id)
             case_status = {
                 case.get("name"): case_passes(case)
@@ -754,7 +1111,7 @@ def run_model_project(
                 continue
             run_id_a = run_dirs[pair].name
             run_id_b = run_dirs[suite_name].name
-            run_command(
+            result = run_command(
                 ailly_command(args)
                 + [
                     "-p",
@@ -770,10 +1127,25 @@ def run_model_project(
                 REPO,
                 True,
             )
+            if archive is not None:
+                command = archive.record_command(archive_units[suite_name], "report-comparison", result)
+                archive_captures[suite_name]["command_records"].append(command)
             comparison = load_comparison(project, run_id_a, run_id_b)
+            if archive is not None:
+                comparison_path = project.path / "evals" / "reports" / f"{run_id_a}-vs-{run_id_b}.json"
+                archive_captures[suite_name]["comparison_paths"].append(
+                    archive.capture_report(archive_units[suite_name], comparison_path)
+                )
             for case in comparison.get("cases", []):
                 resource = resource_name(project, suite, case.get("case", ""))
                 cells.setdefault(resource, ResourceCell()).invocation_icons = comparison_invocation_icons(case)
+
+        if archive is not None:
+            for suite_name, unit in archive_units.items():
+                archive.finish_unit(
+                    unit,
+                    archive_suite_record(run_dirs.get(suite_name).name, archive_captures[suite_name]),
+                )
 
     return cells
 
@@ -1025,6 +1397,13 @@ def archive_project_matrix(
     return project_matrix
 
 
+def create_live_archive(repo: Path, archive_arg: str | None) -> EvalRunArchive:
+    if not archive_arg:
+        return EvalRunArchive.create(repo)
+    archive_path = resolve_archive_path(repo, archive_arg)
+    return EvalRunArchive.create_at(archive_path, RunId(archive_path.name))
+
+
 def run_static_project(project: Project, args: argparse.Namespace) -> bool:
     if args.dry_run:
         return True
@@ -1229,7 +1608,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     )
     parser.add_argument(
         "--archive",
-        help="Replay a durable e2e archive by run id or path when used with --from-existing.",
+        help="Archive run id or path for live evidence capture, or replay source with --from-existing.",
     )
     parser.add_argument("--fail-fast", dest="continue_on_error", action="store_false")
     parser.add_argument("--skip-static", action="store_true")
@@ -1269,11 +1648,12 @@ def main(argv: list[str] | None = None) -> int:
                 matrix.setdefault(resource, {}).update(per_model)
     else:
         if not args.dry_run:
+            archive = create_live_archive(REPO, args.archive)
             for project in model_projects:
                 clean_project_outputs(project)
         for model in models:
             for project in model_projects:
-                project_cells = run_model_project(args, project, model)
+                project_cells = run_model_project(args, project, model, archive)
                 for resource, cell in project_cells.items():
                     matrix.setdefault(resource, {})[model] = cell
 
@@ -1289,6 +1669,8 @@ def main(argv: list[str] | None = None) -> int:
 
     any_error = any(cell.error for per_model in matrix.values() for cell in per_model.values())
     any_static_failure = any(not ok for ok in static_results.values())
+    if archive is not None and not args.from_existing:
+        archive.finish_run("failed" if coverage_errors or any_error or any_static_failure else "complete")
     return 1 if coverage_errors or any_error or any_static_failure else 0
 
 

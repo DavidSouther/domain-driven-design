@@ -2,6 +2,7 @@
 
 import importlib.util
 import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -213,6 +214,76 @@ class AllPluginE2ERunnerTests(unittest.TestCase):
             )
 
             self.assertIs(matrix["fixture:skill"]["model-a"].discovery_pass, True)
+
+    def test_live_archive_capture_writes_manifest_events_command_streams_and_reports(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            repo = Path(tmp)
+            project = repo / "fixture" / "e2e"
+            run_id = "20260709-model-a-discovery"
+
+            (project / "assemblies").mkdir(parents=True)
+            (project / "evals" / "reports").mkdir(parents=True)
+            (project / "ci.sh").write_text("#!/usr/bin/env bash\nexit 0\n", encoding="utf-8")
+            (project / "assemblies" / "discovery.yaml").write_text(
+                "name: discovery\nmodel: model-a\n",
+                encoding="utf-8",
+            )
+            (project / "evals" / "discovery.yaml").write_text(
+                '- name: fixture-skill\n'
+                '  assert:\n'
+                '    - type: text_contains, value: "fixture:skill"\n',
+                encoding="utf-8",
+            )
+            report = project / "evals" / "reports" / f"{run_id}.json"
+            report.write_text(json.dumps(discovery_report("model-a", run_id)), encoding="utf-8")
+            archive = self.runner.EvalRunArchive.create(
+                repo,
+                self.runner.RunId("20260709T000000Z-1234abcd"),
+                "2026-07-09T00:00:00Z",
+            )
+            suite = self.runner.parse_suite(project / "assemblies" / "discovery.yaml")
+            unit = self.runner.ArchiveUnit(
+                self.runner.Project("fixture", project, project / "ci.sh"),
+                "model-a",
+                self.runner.ModelSlug("model-a"),
+                suite,
+            )
+            command_result = subprocess.CompletedProcess(
+                args=("ailly", "eval", "discovery"),
+                returncode=0,
+                stdout="ok\n",
+                stderr="",
+            )
+
+            archive.begin_unit(unit)
+            input_paths = archive.capture_inputs(unit)
+            command = archive.record_command(unit, "eval", command_result)
+            report_path = archive.capture_report(unit, report)
+            archive.finish_unit(
+                unit,
+                self.runner.ArchiveSuiteRecord(
+                    status="complete",
+                    run_id=run_id,
+                    input_paths=input_paths,
+                    run_paths=(),
+                    report_paths=(report_path,),
+                    comparison_paths=(),
+                    command_records=(command,),
+                ),
+            )
+            archive.finish_run("complete")
+
+            reloaded = self.runner.EvalRunArchive.open(archive.root)
+            suite_record = reloaded.manifest.plugins["fixture"].models["model-a"].suites["discovery"]
+            events = (archive.root / "events.jsonl").read_text(encoding="utf-8")
+
+            self.assertEqual(reloaded.manifest.status, "complete")
+            self.assertEqual(suite_record.status, "complete")
+            self.assertEqual(suite_record.report_paths, (report_path,))
+            self.assertEqual(suite_record.command_records[0].stdout_path, command.stdout_path)
+            self.assertEqual((archive.root / command.stdout_path).read_text(encoding="utf-8"), "ok\n")
+            self.assertIn("unit_finished", events)
+            self.assertIn("run_finished", events)
 
     def test_invocation_icons_categorize_comparison_assertions(self):
         self.assertEqual(

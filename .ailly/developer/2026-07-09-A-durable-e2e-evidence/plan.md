@@ -8,7 +8,7 @@
 - [x] Step 1: Archive identity, path resolution, and manifest loading
 - [x] Step 2: Archive-backed existing report indexing
 - [x] Step 3: CLI replay wiring for `--from-existing --archive`
-- [ ] Step 4: Live-run archive scaffolding and evidence capture hooks
+- [x] Step 4: Live-run archive scaffolding and evidence capture hooks
 
 ## Step 0: API surface area
 
