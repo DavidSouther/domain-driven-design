@@ -128,8 +128,62 @@ def write_fixture_archive(repo: Path) -> Path:
         ),
         encoding="utf-8",
     )
+    (model_root / "reports" / "run-baseline.json").write_text(
+        json.dumps(
+            {
+                "suite": "baseline",
+                "model": "model-a",
+                "run_id": "run-baseline",
+                "cases": [
+                    {
+                        "name": "skill",
+                        "matches": [
+                            {
+                                "conversation": "skill.yaml",
+                                "assertions": [
+                                    {"class": "script", "outcome": "pass"},
+                                    {
+                                        "class": "judge",
+                                        "outcome": "fail",
+                                        "reason": "Baseline judge explanation",
+                                    },
+                                    {"class": "tokens", "outcome": "pass"},
+                                ],
+                            }
+                        ],
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
     (model_root / "reports" / "run-invocation.json").write_text(
-        json.dumps({"suite": "invocation", "model": "model-a", "run_id": "run-invocation", "cases": []}),
+        json.dumps(
+            {
+                "suite": "invocation",
+                "model": "model-a",
+                "run_id": "run-invocation",
+                "cases": [
+                    {
+                        "name": "skill",
+                        "matches": [
+                            {
+                                "conversation": "skill.yaml",
+                                "assertions": [
+                                    {"class": "script", "outcome": "pass"},
+                                    {
+                                        "class": "judge",
+                                        "outcome": "pass",
+                                        "reason": "Invocation judge explanation",
+                                    },
+                                    {"class": "tokens", "outcome": "pass"},
+                                ],
+                            }
+                        ],
+                    }
+                ],
+            }
+        ),
         encoding="utf-8",
     )
     (model_root / "reports" / "comparison.json").write_text(
@@ -211,7 +265,9 @@ def write_fixture_archive(repo: Path) -> Path:
                                         "run_id": "run-baseline",
                                         "input_paths": [],
                                         "run_paths": ["plugins/fixture/models/model-a/runs/run-baseline"],
-                                        "report_paths": [],
+                                        "report_paths": [
+                                            "plugins/fixture/models/model-a/reports/run-baseline.json"
+                                        ],
                                         "comparison_paths": [],
                                         "command_records": [],
                                     },
@@ -330,9 +386,30 @@ class E2EDashboardServerTest(unittest.TestCase):
             self.assertEqual(evidence["evaluator_results"][1]["invocation"], "pass")
             self.assertEqual(evidence["evaluator_results"][1]["change"], "Improved")
             self.assertEqual(evidence["evaluator_results"][1]["icon"], "🥇")
+            self.assertEqual(
+                evidence["evaluator_results"][1]["baseline_reason"],
+                "Baseline judge explanation",
+            )
+            self.assertEqual(
+                evidence["evaluator_results"][1]["invocation_reason"],
+                "Invocation judge explanation",
+            )
+            self.assertEqual(
+                evidence["evaluator_results"][1]["baseline_report_path"],
+                "plugins/fixture/models/model-a/reports/run-baseline.json",
+            )
+            self.assertEqual(
+                evidence["evaluator_results"][1]["invocation_report_path"],
+                "plugins/fixture/models/model-a/reports/run-invocation.json",
+            )
             self.assertEqual(evidence["evaluator_results"][2]["evaluator"], "tokens")
             self.assertEqual(evidence["evaluator_results"][2]["icon"], "💵")
             self.assertIn("archived checker", evidence["evaluators"][1]["preview"]["content"])
+            self.assertIn("renderEvaluatorExpansion", self.server.APP_HTML)
+            self.assertIn("reason-columns", self.server.APP_HTML)
+            self.assertIn("reasonLikelyTruncated", self.server.APP_HTML)
+            self.assertIn("no reason recorded", self.server.APP_HTML)
+            self.assertIn("Change / Output", self.server.APP_HTML)
 
     def test_cell_detail_falls_back_to_checkout_transcript_when_archive_has_empty_assistant(self):
         with tempfile.TemporaryDirectory() as tmp:

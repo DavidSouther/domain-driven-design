@@ -362,6 +362,20 @@ def archived_run_path_for_id(
     return None
 
 
+def archived_report_path_for_id(
+    archive: runner.EvalRunArchive,
+    plugin: str,
+    model_record: runner.ArchiveModelRecord | None,
+    run_id: object,
+) -> str | None:
+    if not run_id or model_record is None:
+        return None
+    relative = f"plugins/{plugin}/models/{model_record.slug}/reports/{run_id}.json"
+    if safe_archive_path(archive, relative).is_file():
+        return relative
+    return None
+
+
 def comparison_arm_run_paths(
     archive: runner.EvalRunArchive,
     plugin: str,
@@ -396,6 +410,52 @@ def comparison_arm_run_paths(
             paths = [path]
         arms.append({"label": label, "run_id": run_id or "", "paths": paths})
     return arms
+
+
+def comparison_arm_report_paths(
+    archive: runner.EvalRunArchive,
+    plugin: str,
+    model_record: runner.ArchiveModelRecord | None,
+    report: dict,
+    suite_record: runner.ArchiveSuiteRecord,
+    suite_name: str,
+    evidence_kind: str,
+) -> dict[str, str]:
+    if evidence_kind != "invocation":
+        return {}
+    paths: dict[str, str] = {}
+    baseline_record = baseline_suite_record(model_record, suite_name)
+    arm_specs = (
+        ("arm_a", "baseline", baseline_record),
+        ("arm_b", "invocation", suite_record),
+    )
+    for key, label, record in arm_specs:
+        if record is None:
+            continue
+        run_id = comparison_arm_run_id(report, key) or record.run_id
+        path = report_path_for_run_id(record, run_id)
+        if path is None:
+            path = archived_report_path_for_id(archive, plugin, model_record, run_id)
+        if path is not None:
+            paths[label] = path
+    return paths
+
+
+def report_path_for_run_id(
+    suite_record: runner.ArchiveSuiteRecord,
+    run_id: str | None,
+) -> str | None:
+    report_paths = list(suite_record.report_paths)
+    if run_id:
+        for path in report_paths:
+            if Path(path).stem == run_id:
+                return path
+        for path in report_paths:
+            if run_id in Path(path).stem:
+                return path
+    if len(report_paths) == 1:
+        return report_paths[0]
+    return None
 
 
 def comparison_arm_run_id(report: dict, key: str) -> str | None:
@@ -708,13 +768,18 @@ def script_input_path_for_eval(eval_input_path: str, script_path: str) -> str | 
     return prefix + script_path
 
 
-def evaluator_results(cases: Iterable[dict]) -> list[dict]:
+def evaluator_results(
+    cases: Iterable[dict],
+    arm_details: dict[str, dict[tuple[str, str], list[dict]]] | None = None,
+) -> list[dict]:
     results: list[dict] = []
     attempt = 1
+    detail_cursors: dict[tuple[str, str, str], int] = {}
     for case in cases:
         case_name = str(case.get("case") or case.get("name") or "case")
         for assertion in case.get("assertions", ()):
             result = evaluator_assertion_result(case_name, assertion, attempt)
+            enrich_evaluator_result(result, arm_details, detail_cursors)
             results.append(result)
             attempt += 1
         for match in case.get("matches", ()):
@@ -723,6 +788,7 @@ def evaluator_results(cases: Iterable[dict]) -> list[dict]:
                 result = evaluator_assertion_result(case_name, assertion, attempt)
                 if conversation:
                     result["conversation"] = conversation
+                enrich_evaluator_result(result, arm_details, detail_cursors)
                 results.append(result)
                 attempt += 1
     return results
@@ -741,6 +807,71 @@ def evaluator_assertion_result(case_name: str, assertion: dict, attempt: int) ->
     }
     result["icon"] = evaluator_result_icon(result)
     return result
+
+
+def enrich_evaluator_result(
+    result: dict,
+    arm_details: dict[str, dict[tuple[str, str], list[dict]]] | None,
+    detail_cursors: dict[tuple[str, str, str], int],
+) -> None:
+    if not arm_details:
+        return
+    key = (result["case"], result["evaluator"])
+    for arm_label, details_by_key in arm_details.items():
+        matches = details_by_key.get(key, [])
+        cursor_key = (arm_label, key[0], key[1])
+        cursor = detail_cursors.get(cursor_key, 0)
+        if cursor >= len(matches):
+            continue
+        detail = matches[cursor]
+        detail_cursors[cursor_key] = cursor + 1
+        for field in ("outcome", "reason", "conversation", "report_path"):
+            value = detail.get(field)
+            if value:
+                result[f"{arm_label}_{field}"] = value
+
+
+def evaluator_detail_index(cases: Iterable[dict], report_path: str) -> dict[tuple[str, str], list[dict]]:
+    details: dict[tuple[str, str], list[dict]] = {}
+    for case in cases:
+        case_name = str(case.get("case") or case.get("name") or "case")
+        for assertion in case.get("assertions", ()):
+            add_evaluator_detail(details, case_name, assertion, report_path, "")
+        for match in case.get("matches", ()):
+            conversation = str(match.get("conversation") or "")
+            for assertion in match.get("assertions", ()):
+                add_evaluator_detail(details, case_name, assertion, report_path, conversation)
+    return details
+
+
+def add_evaluator_detail(
+    details: dict[tuple[str, str], list[dict]],
+    case_name: str,
+    assertion: dict,
+    report_path: str,
+    conversation: str,
+) -> None:
+    evaluator = str(assertion.get("class") or assertion.get("type") or assertion.get("name") or "assertion")
+    key = (case_name, evaluator)
+    details.setdefault(key, []).append(
+        {
+            "outcome": string_or_empty(assertion.get("outcome") or assertion.get("status")),
+            "reason": string_or_empty(assertion.get("reason")),
+            "conversation": conversation,
+            "report_path": report_path,
+        }
+    )
+
+
+def evaluator_arm_details(
+    archive: runner.EvalRunArchive,
+    arm_report_paths: dict[str, str],
+) -> dict[str, dict[tuple[str, str], list[dict]]]:
+    details: dict[str, dict[tuple[str, str], list[dict]]] = {}
+    for arm_label, report_path in arm_report_paths.items():
+        report = read_archive_json(archive, report_path)
+        details[arm_label] = evaluator_detail_index(report.get("cases", ()), report_path)
+    return details
 
 
 def evaluator_result_icon(result: dict) -> str:
@@ -834,6 +965,16 @@ def evidence_detail(
         evidence.kind,
     )
     detail["session_arms"] = session_arms
+    arm_report_paths = comparison_arm_report_paths(
+        archive,
+        plugin,
+        model_record,
+        report,
+        suite_record,
+        evidence.suite,
+        evidence.kind,
+    )
+    detail["evaluator_results"] = evaluator_results(cases, evaluator_arm_details(archive, arm_report_paths))
     detail["commands"] = [command_to_json(archive, command) for command in suite_record.command_records]
     detail["session_files"] = file_list_for_session_arms(archive, session_arms, transcript_stems)
     detail["transcripts"] = transcripts_for_session_arms(
@@ -1333,6 +1474,21 @@ thead .resource-col {
   border-radius: 6px;
   overflow: hidden;
 }
+.result-entry {
+  border: 0;
+  border-radius: 0;
+  border-top: 1px solid var(--line);
+  overflow: visible;
+}
+.result-entry > summary.result-row {
+  background: #fff;
+  border-top: 0;
+  cursor: pointer;
+  list-style: none;
+}
+.result-entry > summary.result-row::-webkit-details-marker {
+  display: none;
+}
 .result-row {
   align-items: center;
   border-top: 1px solid var(--line);
@@ -1345,6 +1501,7 @@ thead .resource-col {
   border-top: 0;
 }
 .result-head {
+  align-items: center;
   background: #fafbfc;
   color: var(--muted);
   font-size: 12px;
@@ -1364,6 +1521,68 @@ thead .resource-col {
 .status-pill.fail { background: var(--loss); color: #8a2c21; }
 .status-pill.warn { background: var(--noise); color: #735500; }
 .status-pill.unknown { background: var(--unknown); color: var(--muted); }
+.result-expansion {
+  background: #fbfcfd;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 10px;
+  padding: 10px 12px 12px;
+}
+.reason-change {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+.comparison-reason {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--muted);
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+}
+.comparison-reason strong,
+.reason-title {
+  font-size: 12px;
+  font-weight: 700;
+}
+.reason-columns {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.reason-panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  padding: 8px;
+}
+.reason-path {
+  color: var(--muted);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+.reason-panel pre {
+  font-size: 12px;
+  max-height: 360px;
+}
+.reason-warning {
+  background: var(--noise);
+  border-radius: 6px;
+  color: #735500;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 8px;
+}
+.reason-empty {
+  color: var(--muted);
+  font-size: 12px;
+  padding: 8px 0;
+}
 pre {
   background: #111418;
   border-radius: 6px;
@@ -1394,6 +1613,9 @@ summary {
   }
   .detail {
     max-height: none;
+  }
+  .reason-columns {
+    grid-template-columns: 1fr;
   }
 }
 </style>
@@ -1724,7 +1946,7 @@ function renderEvaluatorResults(item) {
       <span>Evaluator</span>
       <span>${comparison ? "Baseline" : "Trace"}</span>
       <span>${comparison ? "Invocation" : "Outcome"}</span>
-      <span>${comparison ? "Change" : "Reason"}</span>
+      <span>${comparison ? "Change / Output" : "Reason"}</span>
     </div>
     ${results.map(result => renderEvaluatorResult(result, comparison)).join("")}
   </div>`;
@@ -1733,15 +1955,69 @@ function renderEvaluatorResults(item) {
 function renderEvaluatorResult(result, comparison) {
   const runOutcome = comparison ? result.invocation : result.outcome;
   const trace = comparison ? result.baseline : result.conversation;
-  const note = comparison ? result.change || result.reason : result.reason;
-  return `<div class="result-row">
+  const expansion = renderEvaluatorExpansion(result, comparison);
+  const change = comparison ? result.change || (expansion ? "details" : result.reason) : result.reason;
+  const cells = `
     <span>${statusBaubles(result.icon || "⁇")}</span>
     <span>${escapeHTML(result.case)}</span>
     <span>${escapeHTML(result.evaluator)}</span>
     <span>${comparison ? renderOutcome(trace) : escapeHTML(trace || "—")}</span>
     <span>${renderOutcome(runOutcome)}</span>
-    <span>${escapeHTML(note || "—")}</span>
-  </div>`;
+    <span class="reason-change">${escapeHTML(change || "—")}</span>`;
+  if (!expansion) return `<div class="result-row">${cells}</div>`;
+  return `<details open class="result-entry">
+    <summary class="result-row">${cells}</summary>
+    ${expansion}
+  </details>`;
+}
+
+function renderEvaluatorExpansion(result, comparison) {
+  if (!comparison) {
+    if (!result.reason) return "";
+    return `<div class="result-expansion">${renderOutputPanel("Reason", result.reason, result.report_path)}</div>`;
+  }
+  const parts = [];
+  if (result.reason) {
+    parts.push(`<div class="comparison-reason">
+      <strong>Comparison reason${result.report_path ? ` · ${escapeHTML(result.report_path)}` : ""}</strong>
+      <span>${escapeHTML(result.reason)}</span>
+    </div>`);
+  }
+  const evaluator = String(result.evaluator || "evaluator").toLowerCase();
+  const noun = evaluator === "judge" ? "judge output" : `${evaluator} output`;
+  if (result.baseline_reason || result.invocation_reason) {
+    parts.push(`<div class="reason-columns">
+      ${renderOutputPanel(`Baseline ${noun}`, result.baseline_reason, result.baseline_report_path, result.baseline_outcome || result.baseline)}
+      ${renderOutputPanel(`Invocation ${noun}`, result.invocation_reason, result.invocation_report_path, result.invocation_outcome || result.invocation)}
+    </div>`);
+  }
+  return parts.length ? `<div class="result-expansion">${parts.join("")}</div>` : "";
+}
+
+function renderOutputPanel(label, reason, path, outcome = "") {
+  return `<section class="reason-panel">
+    <div class="reason-title">${escapeHTML(label)}</div>
+    ${path ? `<div class="reason-path">${escapeHTML(path)}</div>` : ""}
+    ${reason && reasonLikelyTruncated(reason) ? `<div class="reason-warning">Stored reason appears truncated at 200 characters.</div>` : ""}
+    ${reason ? `<pre>${escapeHTML(reason)}</pre>` : `<div class="reason-empty">${escapeHTML(missingReasonMessage(label, outcome))}</div>`}
+  </section>`;
+}
+
+function reasonLikelyTruncated(reason) {
+  const text = String(reason || "").trimEnd();
+  return text.length === 200 && !/[.!?)]$/.test(text);
+}
+
+function missingReasonMessage(label, outcome) {
+  const subject = String(label || "Evaluator output")
+    .replace(/^(Baseline|Invocation)\s+/, "")
+    .replace(/\s+output$/, "");
+  const title = subject.charAt(0).toUpperCase() + subject.slice(1);
+  const status = String(outcome || "").toLowerCase();
+  if (["pass", "passed"].includes(status)) return `${title} passed; no reason recorded.`;
+  if (["fail", "failed"].includes(status)) return `${title} failed; no reason recorded.`;
+  if (status) return `${title} ${status}; no reason recorded.`;
+  return "No reason recorded.";
 }
 
 function renderOutcome(value) {

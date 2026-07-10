@@ -205,9 +205,17 @@ The `Evaluators` tab flattens report assertions into review rows with:
 - invocation outcome
 - change label
 - result icon
-- reason text when present
+- comparison reason text when present
+- per-arm evaluator output/reason text when the baseline or invocation report
+  recorded it
 
 Comparison assertions use `arm_a` for baseline and `arm_b` for invocation.
+For invocation comparisons, the comparison report supplies the pass/fail/change
+row, while the baseline and invocation single-arm reports supply the detailed
+evaluator `reason` output. The dashboard resolves those arm reports from
+`report.arm_a.run_id` / `report.arm_b.run_id`, falls back through the manifest
+suite records, and displays the output in an expanded row with baseline on the
+left and invocation on the right.
 Non-comparison assertions use `outcome` or `status`.
 
 ## Files To Commit
