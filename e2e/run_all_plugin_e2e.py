@@ -39,6 +39,9 @@ INVOCATION_UNNEEDED = "🗡️"
 INVOCATION_LOSS = "👎"
 INVOCATION_NOISE = "💥"
 INVOCATION_FAILURE = "⚠️"
+INVOCATION_TOKEN_SAVINGS = "💵"
+INVOCATION_TOKEN_BURN = "🔥"
+INVOCATION_EVALUATOR_ORDER = ("check", "judge", "tokens")
 
 INVOCATION_CHANGE_ICONS = {
     "Improved": INVOCATION_WIN,
@@ -89,10 +92,20 @@ class Suite:
 
 
 @dataclasses.dataclass
+class CellEvidence:
+    kind: str
+    archive_id: str
+    suite: str
+    path: str
+    href: str
+
+
+@dataclasses.dataclass
 class ResourceCell:
     discovery_pass: bool | None = None
     invocation_icons: tuple[str, ...] = ()
     error: str | None = None
+    evidence: tuple[CellEvidence, ...] = ()
 
 
 RunId = NewType("RunId", str)
@@ -140,6 +153,7 @@ class ArchiveManifest:
     schema_version: int
     run_id: RunId
     created_at: str
+    source_snapshot: str | None
     status: str
     plugins: dict[str, ArchivePluginRecord]
     models: tuple[str, ...]
@@ -162,7 +176,11 @@ class EvalRunArchive:
 
     @classmethod
     def create_at(
-        cls, root: Path, run_id: RunId | None = None, created_at: str | None = None
+        cls,
+        root: Path,
+        run_id: RunId | None = None,
+        created_at: str | None = None,
+        source_snapshot: str | None = None,
     ) -> "EvalRunArchive":
         archive_run_id = run_id or RunId(root.name)
         archive_created_at = created_at or utc_now()
@@ -173,6 +191,7 @@ class EvalRunArchive:
                 schema_version=1,
                 run_id=archive_run_id,
                 created_at=archive_created_at,
+                source_snapshot=source_snapshot,
                 status="running",
                 plugins={},
                 models=(),
@@ -190,7 +209,12 @@ class EvalRunArchive:
         cls, repo: Path, run_id: RunId | None = None, created_at: str | None = None
     ) -> "EvalRunArchive":
         archive_run_id = run_id or generate_run_id()
-        return cls.create_at(repo / "e2e" / "artifacts" / str(archive_run_id), archive_run_id, created_at)
+        return cls.create_at(
+            repo / "e2e" / "artifacts" / str(archive_run_id),
+            archive_run_id,
+            created_at,
+            current_source_snapshot(repo),
+        )
 
     @classmethod
     def open(cls, root: Path) -> "EvalRunArchive":
@@ -289,7 +313,10 @@ class EvalRunArchive:
         return record
 
     def capture_inputs(self, unit: ArchiveUnit) -> tuple[str, ...]:
-        paths = [unit.suite.path, unit.project.path / "evals" / f"{unit.suite.name}.yaml"]
+        eval_path = unit.project.path / "evals" / f"{unit.suite.name}.yaml"
+        paths = [unit.suite.path, eval_path]
+        for script_path in parse_eval_script_paths(eval_path):
+            paths.append(unit.project.path / script_path)
         for referenced in unit.suite.prompt_paths + unit.suite.prefix_paths:
             for expanded in expand_suite_input_path(unit.suite, referenced):
                 paths.append(unit.project.path / expanded)
@@ -498,6 +525,7 @@ def archive_manifest_to_json(manifest: ArchiveManifest) -> dict:
         "schema_version": manifest.schema_version,
         "run_id": str(manifest.run_id),
         "created_at": manifest.created_at,
+        "source_snapshot": manifest.source_snapshot,
         "status": manifest.status,
         "plugins": {
             plugin_name: plugin_record_to_json(plugin_record)
@@ -564,6 +592,7 @@ def parse_archive_manifest(path: Path) -> ArchiveManifest:
         schema_version=int(data.get("schema_version", 0)),
         run_id=RunId(str(data.get("run_id", ""))),
         created_at=str(data.get("created_at", "")),
+        source_snapshot=data.get("source_snapshot"),
         status=str(data.get("status", "")),
         plugins=plugins,
         models=tuple(str(model) for model in data.get("models", ())),
@@ -581,6 +610,65 @@ def shell_env() -> dict[str, str]:
     env = os.environ.copy()
     env.setdefault("PYTHONUNBUFFERED", "1")
     return env
+
+
+def git_output(repo: Path, args: list[str]) -> str | None:
+    result = subprocess.run(
+        ["git", *args],
+        cwd=repo,
+        text=True,
+        capture_output=True,
+    )
+    if result.returncode:
+        return None
+    return result.stdout
+
+
+def split_nul_list(value: str | None) -> tuple[str, ...]:
+    if not value:
+        return ()
+    return tuple(item for item in value.split("\0") if item)
+
+
+def is_generated_e2e_output(relative_path: str) -> bool:
+    normalized = relative_path.replace(os.sep, "/")
+    return (
+        normalized == "e2e-dashboard.html"
+        or normalized.startswith("e2e/artifacts/")
+        or "/e2e/runs/" in normalized
+        or "/e2e/evals/reports/" in normalized
+    )
+
+
+def current_source_snapshot(repo: Path) -> str | None:
+    head = git_output(repo, ["rev-parse", "--verify", "HEAD"])
+    if head is None:
+        return None
+    commit = head.strip()
+    changed = tuple(
+        path
+        for path in split_nul_list(git_output(repo, ["diff", "--name-only", "HEAD", "-z"]))
+        if not is_generated_e2e_output(path)
+    )
+    untracked = tuple(
+        path
+        for path in split_nul_list(git_output(repo, ["ls-files", "--others", "--exclude-standard", "-z"]))
+        if not is_generated_e2e_output(path)
+    )
+    if not changed and not untracked:
+        return commit
+
+    digest = hashlib.sha256()
+    digest.update(commit.encode("utf-8"))
+    if changed:
+        diff = git_output(repo, ["diff", "HEAD", "--binary", "--", *changed]) or ""
+        digest.update(diff.encode("utf-8", errors="surrogateescape"))
+    for relative in sorted(untracked):
+        path = repo / relative
+        if path.is_file():
+            digest.update(relative.encode("utf-8", errors="surrogateescape"))
+            digest.update(path.read_bytes())
+    return f"{commit}+dirty.{digest.hexdigest()[:12]}"
 
 
 def ailly_command(args: argparse.Namespace) -> list[str]:
@@ -701,6 +789,17 @@ def parse_eval_cases(path: Path) -> tuple[str, ...]:
         if match:
             cases.append(match.group(1))
     return tuple(cases)
+
+
+def parse_eval_script_paths(path: Path) -> tuple[str, ...]:
+    paths: list[str] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if "path:" not in line:
+            continue
+        script_path = extract_path(line)
+        if script_path and script_path.startswith("evals/scripts/"):
+            paths.append(script_path)
+    return tuple(dict.fromkeys(paths))
 
 
 def parse_discovery_resources(path: Path, plugin: str) -> dict[str, set[str]]:
@@ -935,6 +1034,26 @@ def initial_project_cells(
 
 
 def invocation_icon_for_assertion(assertion: dict) -> str:
+    slot = invocation_evaluator_slot(assertion)
+    if not slot:
+        return DISCOVERY_UNKNOWN
+
+    invocation_outcome = str(assertion.get("arm_b") or assertion.get("outcome") or "").lower()
+    if invocation_outcome in {"errored", "error", "malformed"}:
+        return INVOCATION_FAILURE
+    if slot == "check":
+        if invocation_outcome == "pass":
+            return DISCOVERY_PASS
+        if invocation_outcome == "fail":
+            return DISCOVERY_FAIL
+        return DISCOVERY_UNKNOWN
+    if slot == "tokens":
+        if invocation_outcome == "pass":
+            return INVOCATION_TOKEN_SAVINGS
+        if invocation_outcome == "fail":
+            return INVOCATION_TOKEN_BURN
+        return DISCOVERY_UNKNOWN
+
     change = assertion.get("change")
     if change in INVOCATION_CHANGE_ICONS:
         return INVOCATION_CHANGE_ICONS[change]
@@ -952,8 +1071,52 @@ def invocation_icon_for_assertion(assertion: dict) -> str:
     return INVOCATION_NOISE
 
 
+def invocation_evaluator_slot(assertion: dict) -> str:
+    evaluator = str(assertion.get("class") or assertion.get("type") or assertion.get("name") or "").lower()
+    if evaluator in {"script", "static"}:
+        return "check"
+    if evaluator == "judge":
+        return "judge"
+    if evaluator == "tokens":
+        return "tokens"
+    return ""
+
+
+def merge_invocation_slot_icons(slot: str, icons: list[str]) -> str:
+    if not icons:
+        return DISCOVERY_UNKNOWN
+    if len(icons) == 1:
+        return icons[0]
+    if INVOCATION_FAILURE in icons:
+        return INVOCATION_FAILURE
+    if slot == "check":
+        if DISCOVERY_FAIL in icons:
+            return DISCOVERY_FAIL
+        if DISCOVERY_UNKNOWN in icons:
+            return DISCOVERY_UNKNOWN
+        return DISCOVERY_PASS
+    if slot == "tokens":
+        if INVOCATION_TOKEN_BURN in icons:
+            return INVOCATION_TOKEN_BURN
+        if DISCOVERY_UNKNOWN in icons:
+            return DISCOVERY_UNKNOWN
+        return INVOCATION_TOKEN_SAVINGS
+    for icon in (INVOCATION_LOSS, INVOCATION_WIN, INVOCATION_NOISE, INVOCATION_UNNEEDED):
+        if icon in icons:
+            return icon
+    return DISCOVERY_UNKNOWN
+
+
 def comparison_invocation_icons(case: dict) -> tuple[str, ...]:
-    return tuple(invocation_icon_for_assertion(assertion) for assertion in case.get("assertions", []))
+    buckets = {slot: [] for slot in INVOCATION_EVALUATOR_ORDER}
+    for assertion in case.get("assertions", []):
+        slot = invocation_evaluator_slot(assertion)
+        if slot:
+            buckets[slot].append(invocation_icon_for_assertion(assertion))
+    return tuple(
+        merge_invocation_slot_icons(slot, buckets[slot])
+        for slot in INVOCATION_EVALUATOR_ORDER
+    )
 
 
 def archive_unit_for(
@@ -1045,10 +1208,6 @@ def run_model_project(
                 mark_cells_error(cells, f"assemble:{suite_name}")
                 return cells
             run_dirs[suite_name] = run_dir_for(project, suite_name)
-            if archive is not None:
-                archive_captures[suite_name]["run_paths"].append(
-                    archive.capture_run_dir(archive_units[suite_name], run_dirs[suite_name])
-                )
 
         for suite_name, run_dir in run_dirs.items():
             result = run_command(
@@ -1064,6 +1223,10 @@ def run_model_project(
                     archive.fail_unit(archive_units[suite_name], f"run:{suite_name}")
                 mark_cells_error(cells, f"run:{suite_name}")
                 return cells
+            if archive is not None:
+                archive_captures[suite_name]["run_paths"].append(
+                    archive.capture_run_dir(archive_units[suite_name], run_dir)
+                )
 
         for suite_name, run_dir in run_dirs.items():
             run_id = run_dir.name
@@ -1275,6 +1438,18 @@ def archive_models(
     return models
 
 
+def archive_group_models(
+    archives: Iterable[EvalRunArchive],
+    requested_plugins: set[str] | None = None,
+) -> list[str]:
+    models: list[str] = []
+    for archive in archives:
+        for model in archive_models(archive.manifest, requested_plugins):
+            if model not in models:
+                models.append(model)
+    return models
+
+
 def archive_model_record(
     plugin: ArchivePluginRecord,
     model: str,
@@ -1292,6 +1467,118 @@ def archive_json(archive: EvalRunArchive, relative_path: str) -> dict | None:
     if not path.is_file():
         return None
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def archive_evidence(
+    archive: EvalRunArchive,
+    kind: str,
+    suite_name: str,
+    relative_path: str,
+) -> CellEvidence:
+    path = archive.root / relative_path
+    return CellEvidence(
+        kind=kind,
+        archive_id=str(archive.manifest.run_id),
+        suite=suite_name,
+        path=relative_path,
+        href=path.resolve().as_uri(),
+    )
+
+
+def archive_root_for_path(path: Path) -> Path:
+    if path.name == "manifest.json":
+        return path.parent
+    return path
+
+
+def archive_roots(path: Path) -> tuple[Path, ...]:
+    root = archive_root_for_path(path)
+    if (root / "manifest.json").is_file():
+        return (root,)
+    if root.is_dir():
+        return tuple(
+            sorted(
+                child
+                for child in root.iterdir()
+                if child.is_dir() and (child / "manifest.json").is_file()
+            )
+        )
+    return ()
+
+
+def archive_sort_key(archive: EvalRunArchive) -> tuple[str, str]:
+    return (archive.manifest.created_at, str(archive.manifest.run_id))
+
+
+def related_archives_from_arg(
+    repo: Path,
+    archive_arg: str,
+    source_snapshot: str | None = None,
+) -> tuple[EvalRunArchive, ...]:
+    target = resolve_archive_path(repo, archive_arg)
+    roots = archive_roots(target)
+    if not roots:
+        raise FileNotFoundError(f"No archive manifest found at {target}")
+
+    archives = [EvalRunArchive.open(root) for root in roots]
+    selected_snapshot = source_snapshot
+
+    if len(archives) == 1:
+        anchor = archives[0]
+        if selected_snapshot is None:
+            selected_snapshot = anchor.manifest.source_snapshot
+        if selected_snapshot is None:
+            return (anchor,)
+        sibling_roots = archive_roots(anchor.root.parent)
+        archives = [EvalRunArchive.open(root) for root in sibling_roots]
+
+    if selected_snapshot is None:
+        keyed_archives = [archive for archive in archives if archive.manifest.source_snapshot]
+        if not keyed_archives:
+            return (max(archives, key=archive_sort_key),)
+        selected_snapshot = max(keyed_archives, key=archive_sort_key).manifest.source_snapshot
+
+    related = [
+        archive
+        for archive in archives
+        if archive.manifest.source_snapshot == selected_snapshot
+    ]
+    return tuple(sorted(related, key=archive_sort_key))
+
+
+def merge_cell(existing: ResourceCell | None, incoming: ResourceCell) -> ResourceCell:
+    if existing is None:
+        return ResourceCell(
+            discovery_pass=incoming.discovery_pass,
+            invocation_icons=incoming.invocation_icons,
+            error=incoming.error,
+            evidence=incoming.evidence,
+        )
+    if incoming.discovery_pass is not None:
+        if existing.discovery_pass is None:
+            existing.discovery_pass = incoming.discovery_pass
+        else:
+            existing.discovery_pass = existing.discovery_pass and incoming.discovery_pass
+    if incoming.invocation_icons:
+        existing.invocation_icons = existing.invocation_icons + incoming.invocation_icons
+    if incoming.error:
+        if existing.error and incoming.error not in existing.error:
+            existing.error = f"{existing.error}; {incoming.error}"
+        elif not existing.error:
+            existing.error = incoming.error
+    if incoming.evidence:
+        existing.evidence = existing.evidence + incoming.evidence
+    return existing
+
+
+def merge_matrix(
+    matrix: dict[str, dict[str, ResourceCell]],
+    incoming: dict[str, dict[str, ResourceCell]],
+) -> None:
+    for resource, per_model in incoming.items():
+        target = matrix.setdefault(resource, {})
+        for model, cell in per_model.items():
+            target[model] = merge_cell(target.get(model), cell)
 
 
 def mark_suite_error(
@@ -1318,6 +1605,7 @@ def apply_archive_discovery_report(
     cells: dict[str, ResourceCell],
     discovery_resources: dict[str, set[str]],
     report: dict,
+    evidence: CellEvidence | None = None,
 ) -> None:
     case_status = {
         case.get("name"): case_passes(case)
@@ -1326,9 +1614,12 @@ def apply_archive_discovery_report(
     }
     for resource, cases in discovery_resources.items():
         if cases:
-            cells.setdefault(resource, ResourceCell()).discovery_pass = all(
+            cell = cells.setdefault(resource, ResourceCell())
+            cell.discovery_pass = all(
                 case_status.get(case, False) for case in cases
             )
+            if evidence is not None:
+                cell.evidence = cell.evidence + (evidence,)
 
 
 def apply_archive_comparison_report(
@@ -1336,10 +1627,14 @@ def apply_archive_comparison_report(
     project: Project,
     suite: Suite,
     comparison: dict,
+    evidence: CellEvidence | None = None,
 ) -> None:
     for case in comparison.get("cases", []):
         resource = resource_name(project, suite, case.get("case", ""))
-        cells.setdefault(resource, ResourceCell()).invocation_icons = comparison_invocation_icons(case)
+        cell = cells.setdefault(resource, ResourceCell())
+        cell.invocation_icons = cell.invocation_icons + comparison_invocation_icons(case)
+        if evidence is not None:
+            cell.evidence = cell.evidence + (evidence,)
 
 
 def archive_project_matrix(
@@ -1375,7 +1670,12 @@ def archive_project_matrix(
                             )
                             continue
                         if suite_name == "discovery":
-                            apply_archive_discovery_report(cells, discovery_resources, report)
+                            apply_archive_discovery_report(
+                                cells,
+                                discovery_resources,
+                                report,
+                                archive_evidence(archive, "discovery", suite_name, report_path),
+                            )
                     if suite is None or baseline_for(suite_name, set(suites)) is None:
                         continue
                     for comparison_path in suite_record.comparison_paths:
@@ -1389,7 +1689,13 @@ def archive_project_matrix(
                                 f"archive missing:{comparison_path}",
                             )
                             continue
-                        apply_archive_comparison_report(cells, project, suite, comparison)
+                        apply_archive_comparison_report(
+                            cells,
+                            project,
+                            suite,
+                            comparison,
+                            archive_evidence(archive, "invocation", suite_name, comparison_path),
+                        )
 
             for resource, cell in cells.items():
                 project_matrix.setdefault(resource, {})[model] = cell
@@ -1397,11 +1703,26 @@ def archive_project_matrix(
     return project_matrix
 
 
+def archive_group_matrix(
+    archives: Iterable[EvalRunArchive],
+    projects: list[Project],
+    models: list[str],
+) -> dict[str, dict[str, ResourceCell]]:
+    matrix: dict[str, dict[str, ResourceCell]] = {}
+    for archive in archives:
+        merge_matrix(matrix, archive_project_matrix(archive, projects, models))
+    return matrix
+
+
 def create_live_archive(repo: Path, archive_arg: str | None) -> EvalRunArchive:
     if not archive_arg:
         return EvalRunArchive.create(repo)
     archive_path = resolve_archive_path(repo, archive_arg)
-    return EvalRunArchive.create_at(archive_path, RunId(archive_path.name))
+    return EvalRunArchive.create_at(
+        archive_path,
+        RunId(archive_path.name),
+        source_snapshot=current_source_snapshot(repo),
+    )
 
 
 def run_static_project(project: Project, args: argparse.Namespace) -> bool:
@@ -1455,6 +1776,94 @@ def report_title(cell: ResourceCell | None) -> str:
     return ""
 
 
+def cell_evidence(cell: ResourceCell | None, kind: str) -> tuple[CellEvidence, ...]:
+    if cell is None:
+        return ()
+    return tuple(evidence for evidence in cell.evidence if evidence.kind == kind)
+
+
+def safe_html_id(*parts: str) -> str:
+    base = "-".join(parts)
+    safe = re.sub(r"[^a-zA-Z0-9_-]+", "-", base).strip("-")
+    return safe or "detail"
+
+
+def status_html(icon_text: str, detail_id: str | None) -> str:
+    if detail_id is None:
+        return icon_text
+    return (
+        f'<button type="button" class="e2e-cell-button" '
+        f'data-e2e-detail="{html.escape(detail_id, quote=True)}">'
+        f"{icon_text}</button>"
+    )
+
+
+def format_detail_section(
+    detail_id: str,
+    resource: str,
+    model: str,
+    kind: str,
+    evidence_links: tuple[CellEvidence, ...],
+) -> str:
+    lines = [
+        f'<article id="{html.escape(detail_id, quote=True)}" class="e2e-detail" hidden tabindex="-1">',
+        f"<h3>{html.escape(resource)} · {html.escape(model)} · {html.escape(kind.title())}</h3>",
+        "<ul>",
+    ]
+    for evidence in evidence_links:
+        label = f"{evidence.archive_id} / {evidence.suite}"
+        lines.append(
+            "<li>"
+            f'<a href="{html.escape(evidence.href, quote=True)}">'
+            f"{html.escape(label)}</a>"
+            f" <code>{html.escape(evidence.path)}</code>"
+            "</li>"
+        )
+    lines.extend(["</ul>", "</article>"])
+    return "\n".join(lines)
+
+
+def report_legend() -> str:
+    return (
+        "<figcaption>"
+        f"Discovery: {DISCOVERY_PASS} pass, {DISCOVERY_FAIL} fail, {DISCOVERY_UNKNOWN} unknown. "
+        f"Invocation checks: {DISCOVERY_PASS}/{DISCOVERY_FAIL}; "
+        f"tokens: {INVOCATION_TOKEN_SAVINGS}/{INVOCATION_TOKEN_BURN}; "
+        f"failure: {INVOCATION_FAILURE}."
+        '<table class="e2e-legend">'
+        "<thead><tr><th>Judge</th><th>Ailly Good</th><th>Bad</th></tr></thead>"
+        "<tbody>"
+        f"<tr><th>Model Good</th><td>{INVOCATION_UNNEEDED}</td><td>{INVOCATION_LOSS}</td></tr>"
+        f"<tr><th>Bad</th><td>{INVOCATION_WIN}</td><td>{INVOCATION_NOISE}</td></tr>"
+        "</tbody></table>"
+        "</figcaption>"
+    )
+
+
+def report_script() -> str:
+    return """<script>
+(() => {
+  const script = document.currentScript;
+  const root = script ? script.closest(".e2e-report") : document.querySelector(".e2e-report");
+  if (!root) return;
+  const empty = root.querySelector(".e2e-detail-empty");
+  root.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const trigger = target.closest("[data-e2e-detail]");
+    if (!trigger || !root.contains(trigger)) return;
+    const detailId = trigger.getAttribute("data-e2e-detail");
+    for (const detail of root.querySelectorAll(".e2e-detail")) {
+      detail.hidden = detail.id !== detailId;
+    }
+    if (empty) empty.hidden = true;
+    const selected = detailId ? document.getElementById(detailId) : null;
+    if (selected) selected.focus({ preventScroll: false });
+  });
+})();
+</script>"""
+
+
 def report_styles() -> str:
     return """<style>
 .e2e-report {
@@ -1465,7 +1874,7 @@ def report_styles() -> str:
   max-width: 100%;
   overflow-x: auto;
 }
-.e2e-report table {
+.e2e-report .e2e-dashboard {
   border-collapse: separate;
   border-spacing: 0;
   min-width: max-content;
@@ -1473,8 +1882,8 @@ def report_styles() -> str:
   overflow-wrap: normal;
   word-break: keep-all;
 }
-.e2e-report th,
-.e2e-report td {
+.e2e-report .e2e-dashboard th,
+.e2e-report .e2e-dashboard td {
   background: #fff;
   border: 1px solid #d0d7de;
   border-left: 0;
@@ -1485,16 +1894,16 @@ def report_styles() -> str:
   overflow-wrap: normal;
   word-break: keep-all;
 }
-.e2e-report th {
+.e2e-report .e2e-dashboard th {
   background: #f6f8fa;
   font-weight: 600;
 }
-.e2e-report thead tr:first-child th {
+.e2e-report .e2e-dashboard thead tr:first-child th {
   position: sticky;
   top: 0;
   z-index: 4;
 }
-.e2e-report thead tr:nth-child(2) th {
+.e2e-report .e2e-dashboard thead tr:nth-child(2) th {
   position: sticky;
   top: 2.25rem;
   z-index: 3;
@@ -1518,10 +1927,43 @@ def report_styles() -> str:
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
   letter-spacing: 0;
 }
+.e2e-report .e2e-cell-button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: 0;
+  padding: 0;
+  white-space: nowrap;
+}
 .e2e-report figcaption,
 .e2e-report .e2e-report-notes {
   margin-top: 0.75rem;
   white-space: nowrap;
+}
+.e2e-report .e2e-legend {
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+.e2e-report .e2e-legend th,
+.e2e-report .e2e-legend td {
+  border: 1px solid #d0d7de;
+  padding: 0.25rem 0.45rem;
+}
+.e2e-report .e2e-drilldown {
+  border-top: 1px solid #d0d7de;
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+}
+.e2e-report .e2e-detail h3 {
+  font-size: 1rem;
+  margin: 0 0 0.5rem;
+}
+.e2e-report .e2e-detail ul {
+  margin: 0;
+  padding-left: 1.25rem;
 }
 </style>"""
 
@@ -1533,10 +1975,11 @@ def format_report(
     coverage_errors: list[str],
 ) -> str:
     lines: list[str] = []
+    detail_sections: list[str] = []
     lines.append('<figure class="e2e-report">')
     lines.append(report_styles())
     lines.append('<div class="e2e-report-scroll">')
-    lines.append("<table>")
+    lines.append('<table class="e2e-dashboard">')
     lines.append("<thead>")
     lines.append("<tr>")
     lines.append('<th class="e2e-resource" rowspan="2" scope="col">Resource</th>')
@@ -1558,20 +2001,53 @@ def format_report(
         for model in models:
             cell = matrix[resource].get(model)
             title = report_title(cell)
-            lines.append(f'<td class="e2e-discovery"{title}>{discovery_icon(cell)}</td>')
-            lines.append(f'<td class="e2e-invocation"{title}>{invocation_icon_text(cell)}</td>')
+            discovery_evidence = cell_evidence(cell, "discovery")
+            discovery_detail_id = None
+            if discovery_evidence:
+                discovery_detail_id = safe_html_id("e2e", "detail", resource, model, "discovery")
+                detail_sections.append(
+                    format_detail_section(
+                        discovery_detail_id,
+                        resource,
+                        model,
+                        "discovery",
+                        discovery_evidence,
+                    )
+                )
+            invocation_evidence = cell_evidence(cell, "invocation")
+            invocation_detail_id = None
+            if invocation_evidence:
+                invocation_detail_id = safe_html_id("e2e", "detail", resource, model, "invocation")
+                detail_sections.append(
+                    format_detail_section(
+                        invocation_detail_id,
+                        resource,
+                        model,
+                        "invocation",
+                        invocation_evidence,
+                    )
+                )
+            lines.append(
+                f'<td class="e2e-discovery"{title}>'
+                f"{status_html(discovery_icon(cell), discovery_detail_id)}</td>"
+            )
+            lines.append(
+                f'<td class="e2e-invocation"{title}>'
+                f"{status_html(invocation_icon_text(cell), invocation_detail_id)}</td>"
+            )
         lines.append("</tr>")
     lines.append("</tbody>")
     lines.append("</table>")
     lines.append("</div>")
 
-    lines.append(
-        "<figcaption>"
-        f"Discovery: {DISCOVERY_PASS} pass, {DISCOVERY_FAIL} fail, {DISCOVERY_UNKNOWN} unknown. "
-        f"Invocation: {INVOCATION_WIN} win, {INVOCATION_UNNEEDED} unneeded, "
-        f"{INVOCATION_LOSS} loss, {INVOCATION_NOISE} noise, {INVOCATION_FAILURE} failure."
-        "</figcaption>"
-    )
+    if detail_sections:
+        lines.append('<section class="e2e-drilldown" aria-label="Report drilldown">')
+        lines.append('<p class="e2e-detail-empty">Select a status cell to inspect archived reports.</p>')
+        lines.extend(detail_sections)
+        lines.append("</section>")
+        lines.append(report_script())
+
+    lines.append(report_legend())
 
     if static_results:
         lines.append('<div class="e2e-report-notes"><strong>Static checks:</strong><ul>')
@@ -1610,6 +2086,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--archive",
         help="Archive run id or path for live evidence capture, or replay source with --from-existing.",
     )
+    parser.add_argument(
+        "--source-snapshot",
+        help="When replaying an archive directory, render archives with this source snapshot.",
+    )
     parser.add_argument("--fail-fast", dest="continue_on_error", action="store_false")
     parser.add_argument("--skip-static", action="store_true")
     parser.set_defaults(continue_on_error=True)
@@ -1629,9 +2109,16 @@ def main(argv: list[str] | None = None) -> int:
         coverage_errors.extend(validate_project(project))
 
     archive: EvalRunArchive | None = None
+    archives: tuple[EvalRunArchive, ...] = ()
     if args.from_existing and args.archive:
-        archive = EvalRunArchive.open(resolve_archive_path(REPO, args.archive))
-        model_fallback = archive_models(archive.manifest, {project.name for project in model_projects})
+        try:
+            archives = related_archives_from_arg(REPO, args.archive, args.source_snapshot)
+        except FileNotFoundError as error:
+            return fail(str(error))
+        model_fallback = archive_group_models(
+            archives,
+            {project.name for project in model_projects},
+        )
     else:
         model_fallback = existing_models(model_projects) if args.from_existing else default_models(model_projects)
     models = expand_model_args(args.model, model_fallback)
@@ -1639,13 +2126,12 @@ def main(argv: list[str] | None = None) -> int:
         return fail("No model-driven plugin e2e projects found.")
 
     matrix: dict[str, dict[str, ResourceCell]] = {}
-    if archive is not None:
-        matrix = archive_project_matrix(archive, model_projects, models)
+    if archives:
+        matrix = archive_group_matrix(archives, model_projects, models)
     elif args.from_existing:
         for project in model_projects:
             project_matrix = load_existing_project_matrix(project, models)
-            for resource, per_model in project_matrix.items():
-                matrix.setdefault(resource, {}).update(per_model)
+            merge_matrix(matrix, project_matrix)
     else:
         if not args.dry_run:
             archive = create_live_archive(REPO, args.archive)
