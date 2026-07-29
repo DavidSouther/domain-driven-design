@@ -94,6 +94,10 @@ def section(text: str, heading_re: str) -> str:
     return m.group(1) if m else ""
 
 
+def markdown_cells(line: str):
+    return [cell.strip() for cell in line.strip().strip("|").split("|")]
+
+
 def dated_provider_table(text: str):
     """Return (section text, headers, tier rows) for the dated example table.
 
@@ -110,14 +114,11 @@ def dated_provider_table(text: str):
     if len(table_lines) < 3:
         return example, [], {}
 
-    def cells(line: str):
-        return [cell.strip() for cell in line.strip().strip("|").split("|")]
-
-    headers = cells(table_lines[0])
+    headers = markdown_cells(table_lines[0])
     normalized_headers = [header.lower() for header in headers]
     rows = {}
     for line in table_lines[2:]:
-        values = cells(line)
+        values = markdown_cells(line)
         if len(values) != len(headers):
             continue
         normalized_values = [value.lower() for value in values]
@@ -274,13 +275,13 @@ def main() -> int:
          if line.lstrip().startswith("|") and "input ($/1m)" in line.lower()),
         "",
     )
-    cost_header_cells = [cell.strip() for cell in cost_header.strip().strip("|").split("|")]
+    cost_header_cells = markdown_cells(cost_header)
     opus_row = next(
         (line.lower() for line in THRESHOLDS.read_text().splitlines()
          if line.lstrip().startswith("|") and "opus 5" in line.lower()),
         "",
     )
-    opus_cells = [cell.strip() for cell in opus_row.strip().strip("|").split("|")]
+    opus_cells = markdown_cells(opus_row)
     if (
         "july 2026" not in thresholds_low
         or "verified against provider documentation" not in thresholds_low
