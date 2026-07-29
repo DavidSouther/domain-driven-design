@@ -56,13 +56,14 @@ under-merges silently.
 
 ## Cost Grounding
 
-Claude API list pricing June 2026 per 1M tokens:
+Claude API list pricing, July 2026 snapshot verified against provider
+documentation, per 1M tokens:
 
 | Model | Input ($/1M) | Output ($/1M) | Context |
 | --- | --- | --- | --- |
 | Haiku 4.5 | $1 | $5 | 200K |
 | Sonnet 5 / 4.6 | $3 | $15 | 1M |
-| Opus 4.6-4.8 | $5 | $25 | 1M |
+| Opus 5 | $5 | $25 | 1M |
 | Fable 5 | $10 | $50 | 1M |
 
 | Input size | Haiku | Sonnet | Opus | Fable |

@@ -4,7 +4,15 @@
 
 Match the model to the task's complexity profile, not to which phase or skill happens to be dispatching. Work with high reasoning depth, heavy constraint- or rule-following, deep domain specificity, or a pronounced generation-vs-evaluation asymmetry (the task is far harder to produce correctly than to check) favors the strongest available reasoner for that provider. Work that is low-complexity, rote, orchestration over an already-settled task list, or narrowly scoped favors a cheaper, faster model — provided that cheaper model clears an eval suite scoped to the work it is being asked to do.
 
-Express this as a bare alias, never a dated pinned version: `opus`, `sonnet`, or `haiku` for Anthropic, and the equivalent bare-alias tier for any other provider (a provider's own "recommended" or "latest" pointer, not a specific dated release). Aliases track a provider's own current recommendation over time; a pinned version is frozen the day it is written and goes stale the moment the provider ships a new generation. The dated table below is the one deliberate, clearly-stamped exception to this rule — see Frontier-Model Caution.
+Express the recommendation using the most portable identifier the active
+harness actually accepts. Prefer a harness-level family alias such as `opus`,
+`sonnet`, or `haiku` when the harness documents one, but do not assume every
+provider offers a uniformly evergreen bare alias. A provider's display name,
+its API identifier, and a harness dispatch value are separate contracts. Use
+a pinned provider API ID when reproducibility requires it, and treat `latest`
+or preview IDs according to that provider's lifecycle guarantees. The dated
+table below is a deliberately human-facing exception: it names candidate
+families for evaluation, not universally callable identifiers.
 
 ## Complexity Dimensions
 
@@ -17,14 +25,31 @@ Classify a task along these axes before choosing a model. A task rarely sits at 
 
 ## Principle → Provider Example
 
-<!-- Last reviewed 2026-07-03. Illustrative only. Re-verify against each provider's current every few months.
--->
+<!-- Last reviewed 2026-07-29. -->
 
-| Complexity profile | Anthropic | OpenAI | Open Source | Ailly Phases |
-| --- | --- | --- | --- | --- |
-| High reasoning depth / strict constraints / high generation-evaluation asymmetry | `opus` | `gpt-5.1` (high-reasoning tier) | DeepSeek-R1-class or Llama-4-Maverick-class model | Design |
-| Moderate reasoning depth, domain-specific but not judgment-heavy | `sonnet` | `gpt-5.1` (standard tier) | Llama-4-class mid-size model | Plan, Implement |
-| Low reasoning depth, rote or narrowly-scoped, orchestration over a settled task list | `haiku` | `gpt-5.1-mini` | Llama-4-Scout-class or Qwen3-class small model | Research, Cleanup |
+These provider-documented mappings are illustrative candidates for the eval
+suite that remains future work. They have not earned defaults merely by
+appearing here.
+
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| --- | --- | --- | --- | --- | --- |
+| high — sustained reasoning / strict constraints / high generation-evaluation asymmetry | Opus 5; Fable 5 only as an exceptional highest-capability, long-horizon option | GPT-5.6 Sol | Gemini 3.6 Flash for sustained work | Kimi K2.7 Code as a coding specialist, subject to scoped eval results and substantial hardware feasibility | Research, Design; complex Build/Cleanup |
+| balanced — moderate reasoning depth, domain-specific but not judgment-heavy | Sonnet 5 | GPT-5.6 Terra | Gemini 3.5 Flash | A current mid-size model that clears the scoped eval and fits available hardware | Plan; moderate Build/Cleanup |
+| economy — low reasoning depth, rote or narrowly scoped | Haiku 4.5 | GPT-5.6 Luna | Gemini 3.5 Flash-Lite | A current small model that clears the scoped eval and fits available hardware | Mechanical Build/Cleanup |
+
+Fable 5 is not automatic as a replacement for Opus 5 in the high tier; evaluate
+its exceptional capability, cost, and long-horizon behavior against the
+specific task. Likewise, Kimi K2.7 Code is a high-end specialist rather than a
+universal cheap default. API-only DeepSeek products are not open-weight
+releases and therefore do not belong in the open-weight / self-hosted column.
+
+Provider availability does not establish API-ID stability or harness
+dispatchability. Anthropic harness aliases such as `opus` are distinct from
+pinned provider API IDs. Google stable, preview, and `latest` identifiers have
+different lifecycle guarantees. For every provider, the active harness's tool
+schema is authoritative for accepted dispatch values; if a listed family is
+not accepted there, announce the recommendation but do not pass the display
+name as a model argument.
 
 **Worked mapping example (not the organizing key):** Ailly's five phases illustrate how the principle applies, not a separate table to memorize. Research and design lean toward the high-reasoning-depth row (open-ended exploration, judgment about tradeoffs). Plan sits in the moderate row (structured but still judgment-heavy). Build (red-green-refactor) and cleanup vary step-by-step: implementing a novel algorithm is high-reasoning-depth; running a lint fix or a mechanical rename is low-reasoning-depth. Classify each dispatch by its own complexity profile rather than by which phase issued it.
 

@@ -15,7 +15,14 @@ Codex adapter for the harness contract in `developer:ailly`. When a skill refere
 
 ## Model Mandate
 
-Each `spawn_agent` call accepts a per-agent `model` field in its TOML configuration — a confirmed model-selection mechanism. Per `general/skills/dispatching-agents/model-selection.md`'s mandate-with-announce rule: set that field directly from that guidance on every `spawn_agent` dispatch this skill package performs — the phase-level dispatch and any qualifying within-phase sub-dispatch alike; announce the model chosen to the developer either way.
+The active `spawn_agent` tool schema is authoritative for model dispatch. On
+every dispatch this skill package performs, inspect that schema and set its
+`model` field only when the field exists and the recommended value is among
+the schema's advertised accepted model values. A provider catalog entry or
+human-facing family name does not prove that Codex accepts it. If the active
+schema exposes no matching value, omit the field and announce the
+recommendation instead. Apply this mandate-with-announce rule to phase-level
+dispatch and every qualifying within-phase sub-dispatch.
 
 ## Subagent dispatch requires multi-agent support
 
