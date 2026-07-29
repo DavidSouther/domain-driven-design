@@ -269,15 +269,15 @@ def main() -> int:
     # exact Opus 5 price/context row.
     if not THRESHOLDS.is_file():
         return fail(f"T7 {THRESHOLDS.relative_to(REPO)} not found")
-    thresholds_low = THRESHOLDS.read_text().lower()
+    thresholds_low = " ".join(THRESHOLDS.read_text().lower().split())
     cost_header = next(
-        (line.lower() for line in THRESHOLDS.read_text().splitlines()
+        (line for line in THRESHOLDS.read_text().splitlines()
          if line.lstrip().startswith("|") and "input ($/1m)" in line.lower()),
         "",
     )
     cost_header_cells = markdown_cells(cost_header)
     opus_row = next(
-        (line.lower() for line in THRESHOLDS.read_text().splitlines()
+        (line for line in THRESHOLDS.read_text().splitlines()
          if line.lstrip().startswith("|") and "opus 5" in line.lower()),
         "",
     )
@@ -285,8 +285,8 @@ def main() -> int:
     if (
         "july 2026" not in thresholds_low
         or "verified against provider documentation" not in thresholds_low
-        or cost_header_cells != ["model", "input ($/1m)", "output ($/1m)", "context"]
-        or opus_cells != ["opus 5", "$5", "$25", "1m"]
+        or cost_header_cells != ["Model", "Input ($/1M)", "Output ($/1M)", "Context"]
+        or opus_cells != ["Opus 5", "$5", "$25", "1M"]
     ):
         return fail(
             f"T7 cost grounding: {THRESHOLDS.relative_to(REPO)} does not "

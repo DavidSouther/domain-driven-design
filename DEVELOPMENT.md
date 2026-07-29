@@ -22,6 +22,10 @@ Issues tracked in Github under DavidSouther/domain-driven-design.
 
 Feature and unit tests for Ailly should be in the form of evals. Feature tests are authored in the root e2e/ folder; unit tests are authored in individual plugin e2e/ folders.
 
+Periodically review the dated model-selection snapshot table in
+`general/skills/dispatching-agents/model-selection.md` against current provider
+documentation and scoped eval results.
+
 ## Releasing
 
 Review RELEASING.md when changing or troubleshooting the release process.
