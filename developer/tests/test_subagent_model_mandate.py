@@ -31,13 +31,13 @@ EXPECTED_TIER_TERMS = {
     "high": {
         "anthropic": ["opus 5", "fable 5"],
         "openai": ["gpt-5.6 sol"],
-        "google": ["gemini 3.5 flash", "sustained"],
+        "google": ["gemini 3.6 flash", "sustained"],
         "open-weight / self-hosted": ["kimi k2.7 code", "specialist", "hardware", "eval"],
     },
     "balanced": {
         "anthropic": ["sonnet 5"],
         "openai": ["gpt-5.6 terra"],
-        "google": ["gemini 3.6 flash"],
+        "google": ["gemini 3.5 flash"],
     },
     "economy": {
         "anthropic": ["haiku 4.5"],
@@ -430,11 +430,24 @@ def main() -> int:
     # T8 - harness adapters accurately describe whether model selection is
     # confirmed and do not equate provider availability with accepted values.
     codex = (ADAPTERS / "codex.md").read_text().lower()
+    codex_contract = " ".join(codex.replace("`", "").split())
     gemini = (ADAPTERS / "gemini.md").read_text().lower()
-    if not any(term in codex for term in ("tool schema", "advertised", "accepted model")):
+    if not all(
+        term in codex_contract
+        for term in ("model field", "field exists", "advertised accepted model values")
+    ):
         return fail(
-            "T8 Codex adapter: model dispatch guidance does not constrain "
-            "values to those confirmed by the active harness"
+            "T8 Codex adapter: supported-dispatch branch must require both an "
+            "existing model field and a recommended value among the schema's "
+            "advertised accepted model values"
+        )
+    if not all(
+        term in codex_contract
+        for term in ("omit the field", "announce the recommendation")
+    ):
+        return fail(
+            "T8 Codex adapter: unsupported-dispatch branch must omit the model "
+            "field and announce the recommendation"
         )
     if "no confirmed model-selection field" not in gemini or "announce" not in gemini:
         return fail(

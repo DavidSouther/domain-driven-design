@@ -33,9 +33,9 @@ appearing here.
 
 | Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
 | --- | --- | --- | --- | --- | --- |
-| high — sustained reasoning / strict constraints / high generation-evaluation asymmetry | Opus 5; Fable 5 only as an exceptional highest-capability, long-horizon option | GPT-5.6 Sol | Gemini 3.5 Flash for sustained work | Kimi K2.7 Code as a coding specialist, subject to scoped eval results and substantial hardware feasibility | Design |
-| balanced — moderate reasoning depth, domain-specific but not judgment-heavy | Sonnet 5 | GPT-5.6 Terra | Gemini 3.6 Flash | A current mid-size model that clears the scoped eval and fits available hardware | Plan, Implement |
-| economy — low reasoning depth, rote or narrowly scoped | Haiku 4.5 | GPT-5.6 Luna | Gemini 3.5 Flash-Lite | A current small model that clears the scoped eval and fits available hardware | Research, Cleanup |
+| high — sustained reasoning / strict constraints / high generation-evaluation asymmetry | Opus 5; Fable 5 only as an exceptional highest-capability, long-horizon option | GPT-5.6 Sol | Gemini 3.6 Flash for sustained work | Kimi K2.7 Code as a coding specialist, subject to scoped eval results and substantial hardware feasibility | Research, Design; complex Build/Cleanup |
+| balanced — moderate reasoning depth, domain-specific but not judgment-heavy | Sonnet 5 | GPT-5.6 Terra | Gemini 3.5 Flash | A current mid-size model that clears the scoped eval and fits available hardware | Plan; moderate Build/Cleanup |
+| economy — low reasoning depth, rote or narrowly scoped | Haiku 4.5 | GPT-5.6 Luna | Gemini 3.5 Flash-Lite | A current small model that clears the scoped eval and fits available hardware | Mechanical Build/Cleanup |
 
 Fable 5 is not automatic as a replacement for Opus 5 in the high tier; evaluate
 its exceptional capability, cost, and long-horizon behavior against the
