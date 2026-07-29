@@ -98,6 +98,10 @@ def markdown_cells(line: str):
     return [cell.strip() for cell in line.strip().strip("|").split("|")]
 
 
+def is_markdown_separator(values):
+    return all(re.fullmatch(r":?-{3,}:?", value) for value in values)
+
+
 def dated_provider_table(text: str):
     """Return (section text, headers, tier rows) for the dated example table.
 
@@ -109,27 +113,59 @@ def dated_provider_table(text: str):
     table_lines = []
     for index, line in enumerate(lines):
         if line.lstrip().startswith("|") and "complexity profile" in line.lower():
-            table_lines = [candidate for candidate in lines[index:] if candidate.lstrip().startswith("|")]
+            for candidate in lines[index:]:
+                if not candidate.lstrip().startswith("|"):
+                    break
+                table_lines.append(candidate)
             break
-    if len(table_lines) < 3:
+    if not table_lines:
         return example, [], {}
 
     headers = markdown_cells(table_lines[0])
+    if len(table_lines) < 2:
+        return example, headers, {"<invalid separator>": {}}
+
+    separator = markdown_cells(table_lines[1])
+    if (
+        len(headers) != len(EXPECTED_PROVIDER_HEADERS)
+        or len(separator) != len(headers)
+        or not is_markdown_separator(separator)
+    ):
+        return example, headers, {"<invalid separator>": {}}
+
     normalized_headers = [header.lower() for header in headers]
     rows = {}
-    for line in table_lines[2:]:
+    for index, line in enumerate(table_lines[2:]):
         values = markdown_cells(line)
-        if len(values) != len(headers):
+        if len(values) != len(headers) or is_markdown_separator(values):
+            rows[f"<invalid row {index}>"] = {}
             continue
         normalized_values = [value.lower() for value in values]
         profile = normalized_values[0]
-        for tier in EXPECTED_TIER_TERMS:
-            if profile.startswith(tier):
-                if tier in rows:
-                    rows[tier] = {}
-                    break
-                rows[tier] = dict(zip(normalized_headers, normalized_values))
+        matching_tiers = [
+            tier
+            for tier in EXPECTED_TIER_TERMS
+            if profile == tier or profile.startswith(f"{tier} — ")
+        ]
+        if len(matching_tiers) != 1:
+            rows[f"<invalid row {index}: {profile}>"] = dict(
+                zip(normalized_headers, normalized_values)
+            )
+            continue
+        tier = matching_tiers[0]
+        if tier in rows:
+            rows[tier] = {}
+            continue
+        rows[tier] = dict(zip(normalized_headers, normalized_values))
     return example, headers, rows
+
+
+def has_exact_provider_schema(headers, tier_rows):
+    return (
+        headers == EXPECTED_PROVIDER_HEADERS
+        and set(tier_rows) == set(EXPECTED_TIER_TERMS)
+        and all(tier_rows.values())
+    )
 
 
 def main() -> int:
@@ -169,12 +205,103 @@ def main() -> int:
             f"T3 provider schema: {path.relative_to(REPO)} has headers "
             f"{headers}; expected {EXPECTED_PROVIDER_HEADERS}"
         )
-    if set(tier_rows) != set(EXPECTED_TIER_TERMS) or any(
-        not row for row in tier_rows.values()
-    ):
+    if not has_exact_provider_schema(headers, tier_rows):
         return fail(
             f"T3 provider schema: {path.relative_to(REPO)} must contain "
             "exactly one high, balanced, and economy row"
+        )
+
+    # Arrange malformed tables that previously slipped past the row parser.
+    negative_table_cases = {
+        "unknown tier": """
+## Principle → Provider Example
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| --- | --- | --- | --- | --- | --- |
+| high | a | b | c | d | e |
+| balanced | a | b | c | d | e |
+| economy | a | b | c | d | e |
+| archival | a | b | c | d | e |
+""",
+        "duplicate tier": """
+## Principle → Provider Example
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| --- | --- | --- | --- | --- | --- |
+| high | a | b | c | d | e |
+| high — duplicate | a | b | c | d | e |
+| balanced | a | b | c | d | e |
+| economy | a | b | c | d | e |
+""",
+        "missing separator": """
+## Principle → Provider Example
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| high | a | b | c | d | e |
+| balanced | a | b | c | d | e |
+| economy | a | b | c | d | e |
+""",
+        "malformed separator": """
+## Principle → Provider Example
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| --- | --- | -- | --- | --- | --- |
+| high | a | b | c | d | e |
+| balanced | a | b | c | d | e |
+| economy | a | b | c | d | e |
+""",
+        "short row": """
+## Principle → Provider Example
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| --- | --- | --- | --- | --- | --- |
+| high | a | b | c | d |
+| balanced | a | b | c | d | e |
+| economy | a | b | c | d | e |
+""",
+        "long row": """
+## Principle → Provider Example
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| --- | --- | --- | --- | --- | --- |
+| high | a | b | c | d | e | extra |
+| balanced | a | b | c | d | e |
+| economy | a | b | c | d | e |
+""",
+        "hyphenated tier label": """
+## Principle → Provider Example
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| --- | --- | --- | --- | --- | --- |
+| high-ish | a | b | c | d | e |
+| balanced | a | b | c | d | e |
+| economy | a | b | c | d | e |
+""",
+        "slash tier label": """
+## Principle → Provider Example
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| --- | --- | --- | --- | --- | --- |
+| high/economy | a | b | c | d | e |
+| balanced | a | b | c | d | e |
+| economy | a | b | c | d | e |
+""",
+        "space tier label": """
+## Principle → Provider Example
+| Complexity profile | Anthropic | OpenAI | Google | Open-weight / self-hosted | Ailly Phases |
+| --- | --- | --- | --- | --- | --- |
+| high nonsense | a | b | c | d | e |
+| balanced | a | b | c | d | e |
+| economy | a | b | c | d | e |
+""",
+    }
+    # Act.
+    negative_parse_results = {
+        name: dated_provider_table(case)[1:]
+        for name, case in negative_table_cases.items()
+    }
+    # Assert every malformed table fails the same exact-schema predicate as T3.
+    accepted_negative_cases = [
+        name
+        for name, (case_headers, case_rows) in negative_parse_results.items()
+        if has_exact_provider_schema(case_headers, case_rows)
+    ]
+    if accepted_negative_cases:
+        return fail(
+            "T3 parser regression: malformed in-memory tables passed the "
+            f"exact-schema predicate: {accepted_negative_cases}"
         )
 
     # T4 - provider-grounded illustrative candidates are mapped by tier in the
@@ -212,8 +339,14 @@ def main() -> int:
     open_weight_column = "\n".join(
         row["open-weight / self-hosted"] for row in tier_rows.values()
     )
-    if "kimi k2.7 code" in tier_rows["economy"]["open-weight / self-hosted"]:
-        return fail("T4 Kimi mapping: Kimi K2.7 Code must not be an economy default")
+    if any(
+        "kimi k2.7 code" in tier_rows[tier]["open-weight / self-hosted"]
+        for tier in ("balanced", "economy")
+    ):
+        return fail(
+            "T4 Kimi mapping: Kimi K2.7 Code must not appear in any non-high "
+            "open-weight/self-hosted cell"
+        )
     if "deepseek" in open_weight_column:
         return fail(
             "T4 open-weight accuracy: API-only DeepSeek products must not "

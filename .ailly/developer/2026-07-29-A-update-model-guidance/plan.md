@@ -17,7 +17,7 @@ Apply `arrange-act-assert` when restructuring or extending the executable contra
 - [x] Step 1: Refresh the central provider snapshot and portability guidance
 - [x] Step 2: Add maintenance and Code Mode grounding
 - [x] Step 3: Align harness adapter behavior
-- [ ] Step 4: Verify the integrated model-guidance contract
+- [x] Step 4: Verify the integrated model-guidance contract
 
 ## Step 0: Fix the documentation contract surface
 
