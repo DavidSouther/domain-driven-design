@@ -25,6 +25,8 @@ Two sibling workflows outside Ailly get the same dedicated-tool treatment for th
 
 All three tools (`ailly_subagent`, `research_dispatch`, `review_run`) share one spawning primitive, `.pi/extensions/lib/subprocess.ts`, so the isolation mechanics (temp-file system prompts, JSON-mode child parsing, abort handling) and the deterministic dated-notes-folder naming are implemented once, not three times.
 
+`review_run`'s specialist reviewers resolve through a second shared module, `.pi/extensions/lib/skills.ts`: it looks up a specialist by pi's own skill `name`, searching the calling project's own `.pi/skills`/`.agents/skills` first, then this package's plugin skills, then user-global skills — the same precedence pi's own resource loader uses. This is why a project that installs this package can hand `review_run` a specialist it wrote itself, or one it got from an entirely different installed pi package, without editing this adapter or `general:review`.
+
 ## Subagent Dispatch
 
 Pi has no built-in `Task` tool, so this repository registers one: `ailly_subagent`, defined in `.pi/extensions/ailly-subagent/index.ts`. It spawns an isolated `pi` subprocess per dispatch — a real separate context window, not a same-session role-play.

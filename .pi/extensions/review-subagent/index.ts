@@ -27,6 +27,7 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
+import { findSkillByName, specialistSkillName } from "../lib/skills.ts";
 import { isFailed, runPiSubprocess } from "../lib/subprocess.ts";
 
 const EXTENSION_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -43,18 +44,12 @@ function extractSection(markdown: string, heading: string): string {
 	return body.join("\n").trim();
 }
 
-function resolveSpecialistPath(specialist: string): string | null {
-	const [plugin, skill] = specialist.split(":");
-	if (!plugin || !skill) return null;
-	return `${plugin}/skills/${skill}/SKILL.md`;
-}
-
 const ReviewRunParams = Type.Object({
 	artifactPath: Type.String({ description: "Path (relative to cwd or absolute) to the artifact under review." }),
 	specialists: Type.Optional(
 		Type.Array(Type.String(), {
 			description:
-				'Specialist skills to compose in alongside the always-present base reviewer, as "<plugin>:<skill>" (e.g. "developer:clean-comments-review", "domain:using-domain"). Choosing which specialists apply is your call; dispatch and convergence are handled by this tool.',
+				'Specialist skills to compose in alongside the always-present base reviewer, named the way pi knows them (frontmatter `name`, e.g. "clean-comments-review", "using-domain"). Resolved by searching the current project\'s own .pi/skills or .agents/skills first, then this package\'s skills, then user-global skills — the same precedence pi itself uses — so a newly installed or project-authored specialist works with no change here. A legacy "<plugin>:<skill>" form is also accepted; only the part after the colon is used. Choosing which specialists apply is your call; dispatch and convergence are handled by this tool.',
 		}),
 	),
 	model: Type.Optional(Type.String({ description: "Model id/pattern every reviewer and the convergence step run with." })),
@@ -91,12 +86,12 @@ export default function (pi: ExtensionAPI) {
 			const reviewSkillText = await fs.promises.readFile(path.join(REPO_ROOT, REVIEW_SKILL_PATH), "utf-8");
 			const baseRubric = extractSection(reviewSkillText, "Base Reviewer");
 
-			type ReviewerJob = { id: string; relPath: string | null; systemPrompt: string | null; error?: string };
+			type ReviewerJob = { id: string; skillPath: string | null; systemPrompt: string | null; error?: string };
 
 			const jobs: ReviewerJob[] = [
 				{
 					id: "base",
-					relPath: REVIEW_SKILL_PATH,
+					skillPath: path.join(REPO_ROOT, REVIEW_SKILL_PATH),
 					systemPrompt: [
 						"You are the always-present base reviewer from general:review's composed set.",
 						"Evaluate the artifact below against exactly these four criteria. Do not fix",
@@ -110,38 +105,47 @@ export default function (pi: ExtensionAPI) {
 					].join("\n"),
 				},
 				...(params.specialists ?? []).map((specialist): ReviewerJob => {
-					const relPath = resolveSpecialistPath(specialist);
-					if (!relPath) {
-						return { id: specialist, relPath: null, systemPrompt: null, error: `Invalid specialist id: "${specialist}" (expected "<plugin>:<skill>")` };
+					const name = specialistSkillName(specialist);
+					const absPath = findSkillByName(name, REPO_ROOT, ctx.cwd);
+					if (!absPath) {
+						return {
+							id: specialist,
+							skillPath: null,
+							systemPrompt: null,
+							error: `No loaded skill named "${name}" found in the project's .pi/skills or .agents/skills, this package's skills, or user-global skills`,
+						};
 					}
-					return { id: specialist, relPath, systemPrompt: null };
+					return { id: specialist, skillPath: absPath, systemPrompt: null };
 				}),
 			];
 
 			for (const job of jobs) {
-				if (job.id === "base" || job.error) continue;
+				if (job.error) continue;
 				try {
-					const body = await fs.promises.readFile(path.join(REPO_ROOT, job.relPath!), "utf-8");
-					job.systemPrompt = [
-						`You are the specialist reviewer "${job.id}", composed into general:review's set because its`,
-						"description matched this artifact. Produce your own critique per your skill",
-						"below against the artifact. Your critique document is your findings — do not",
-						"write a generic rubric first. Do not fix anything.",
-						"",
-						body,
-						"",
-						`## Artifact (${params.artifactPath})`,
-						"",
-						artifactContent,
-					].join("\n");
+					const body = await fs.promises.readFile(job.skillPath!, "utf-8");
+					job.systemPrompt =
+						job.id === "base"
+							? job.systemPrompt
+							: [
+									`You are the specialist reviewer "${job.id}", composed into general:review's set because its`,
+									"description matched this artifact. Produce your own critique per your skill",
+									"below against the artifact. Your critique document is your findings — do not",
+									"write a generic rubric first. Do not fix anything.",
+									"",
+									body,
+									"",
+									`## Artifact (${params.artifactPath})`,
+									"",
+									artifactContent,
+								].join("\n");
 				} catch (err) {
-					job.error = `Could not read specialist skill ${job.relPath}: ${(err as Error).message}`;
+					job.error = `Could not read specialist skill ${job.skillPath}: ${(err as Error).message}`;
 				}
 			}
 
 			const reviewerResults = await Promise.all(
 				jobs.map(async (job) => {
-					if (job.error || !job.systemPrompt) return { id: job.id, relPath: job.relPath, error: job.error ?? "unknown error" };
+					if (job.error || !job.systemPrompt) return { id: job.id, skillPath: job.skillPath, error: job.error ?? "unknown error" };
 					const result = await runPiSubprocess({
 						label: `review-${job.id}`,
 						systemPrompt: job.systemPrompt,
@@ -150,7 +154,7 @@ export default function (pi: ExtensionAPI) {
 						cwd: ctx.cwd,
 						signal,
 					});
-					return { id: job.id, relPath: job.relPath, result };
+					return { id: job.id, skillPath: job.skillPath, result };
 				}),
 			);
 

@@ -44,10 +44,12 @@ item inside the artifact under review.
 
 Under pi, run Dispatch and Converge (steps 2 and 3 above) with the `review_run` tool (`.pi/extensions/review-subagent/`) instead of relying on the orchestrating model to remember both. One call spawns an isolated subprocess per composed reviewer — the base four-criterion reviewer plus any `specialists` you name — in parallel, then always runs a dedicated convergence subprocess against the raw findings before returning anything: convergence cannot be skipped because it is not a separate step the calling model has to remember, it is inside the tool call. Composition (step 1: which specialists apply) stays your call, same as skill selection in `research:using-research`; fix (step 4) and re-evaluate (step 5) stay separate turns, since this tool only ever evaluates.
 
+Name specialists in `specialists` the way pi knows them — by frontmatter `name` (`"clean-comments-review"`, `"using-domain"`), not this document's `<plugin>:<skill>` prose form (accepted too, but only the part after the colon is used). `review_run` resolves each name by searching the calling project's own `.pi/skills`/`.agents/skills` first, then this package's skills, then user-global skills — pi's own discovery precedence. That is what keeps "a newly installed specialist is composed in with no edit here" true for a project that installs this package: a project can write its own brand-new specialist skill under its own `.pi/skills/`, or pull one from a different installed pi package, and pass its name straight through with no change to this skill or to `review_run` itself.
+
 ```
 review_run({
   artifactPath: "src/session/manager.ts",
-  specialists: ["developer:clean-comments-review"],
+  specialists: ["clean-comments-review"],
   model: "<the model general/skills/dispatching-agents/model-selection.md recommends>"
 })
 ```
