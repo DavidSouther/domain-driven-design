@@ -1,6 +1,6 @@
 ---
 name: dispatching-agents
-description: Use when preparing to start subagents. Especially multiple independent task.
+description: Use when preparing to dispatch subagents. Applies before starting any subagent, and especially when multiple independent tasks (unrelated test failures, parallel research areas) could run concurrently without shared state.
 ---
 
 # Dispatching Agents

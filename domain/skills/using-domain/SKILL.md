@@ -1,6 +1,6 @@
 ---
 name: using-domain
-description: Bootstrap and routing skill for Domain-Driven Design. Loaded when brainstorming, researching, or designing, to decide which domain ability applies: managing a single term's definition, synonym, or ambiguity (glossary), developing the whole bounded-context language (ubiquitous-language), mapping subdomains and bounded contexts for a new project (domain-model), defining contracts and invariants for an API boundary (contracts-and-invariants), and selecting the architectural stage under scaling or friction (arrow-of-maturity). Names the applicable ability and points at its reference under references/. Not loaded during implementation, as the domain knowledge has already been summarized in the prompt.
+description: "Bootstrap and routing skill for Domain-Driven Design. Loaded when brainstorming, researching, or designing, to decide which domain ability applies: managing a single term's definition, synonym, or ambiguity (glossary), developing the whole bounded-context language (ubiquitous-language), mapping subdomains and bounded contexts for a new project (domain-model), defining contracts and invariants for an API boundary (contracts-and-invariants), and selecting the architectural stage under scaling or friction (arrow-of-maturity). Not loaded during implementation, as the domain knowledge has already been summarized in the prompt."
 ---
 
 # Domain-Driven Design Workflow
