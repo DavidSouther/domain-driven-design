@@ -1,6 +1,6 @@
 ---
 name: review
-description: Used when an agent is finishing a work product, before claiming a task is complete, or after completing an editing pass.
+description: Use when finishing a work product, before claiming a task is complete, or after completing an editing pass.
 ---
 
 A review is not one rubric. It is a composition of independent review skills, assembled to fit the artifact in front of it. Compose the applicable reviewers, dispatch them in parallel, converge their findings, fix, and re-evaluate. This skill ships the always-present base reviewer; specialists are discovered and composed in when the artifact matches them.

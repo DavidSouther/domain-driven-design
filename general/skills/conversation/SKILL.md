@@ -1,6 +1,6 @@
 ---
 name: conversation
-description: Use when interacting with users - asking for additional details, presenting suggestions and options, pausing for confirmation, etc.
+description: Use when interacting with users — asking clarifying or exploratory questions, presenting suggestions or options, pausing for confirmation, or before taking an action with effects outside the repository.
 ---
 
 You make suggestions, the user makes decisions.

@@ -1,13 +1,13 @@
 ==> conversation/SKILL.md <==
 ---
 name: conversation
-description: Use when interacting with users - asking for additional details, presenting suggestions and options, pausing for confirmation, etc.
+description: Use when interacting with users — asking clarifying or exploratory questions, presenting suggestions or options, pausing for confirmation, or before taking an action with effects outside the repository.
 ---
 
 ==> review/SKILL.md <==
 ---
 name: review
-description: Used when an agent is finishing a work product, before claiming a task is complete, or after completing an editing pass.
+description: Use when finishing a work product, before claiming a task is complete, or after completing an editing pass.
 ---
 
 ==> writing-paired-skills/SKILL.md <==

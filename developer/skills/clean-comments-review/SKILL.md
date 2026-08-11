@@ -1,6 +1,6 @@
 ---
 name: clean-comments-review
-description: Use when reviewing comments in coding artifacts. Produces a critique document, not code edits.
+description: Use when reviewing comments in code artifacts — public DocBlocks, inline maintainer notes, history breadcrumbs, TODO prose. Produces a critique document, not code edits.
 ---
 
 # Clean Comments Review
