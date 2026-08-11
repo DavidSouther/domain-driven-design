@@ -5,48 +5,22 @@
  * (and any other skill in this repository that needs isolated subagent
  * dispatch, e.g. `general:dispatching-agents`).
  *
- * Spawns a separate `pi` process per dispatch, giving it an isolated context
- * window. Unlike the generic pi subagent example, this tool does not depend
- * on `.pi/agents/` or `~/.pi/agent/agents/` discovery: every reference file it
- * can dispatch is resolved *relative to this extension's own module path*, so
- * it keeps working no matter where this package is installed (`pi install
- * git:...`, a local path, or straight from this checkout) and no matter what
- * the caller's cwd is. That is the whole point: Ailly's phase-isolation
- * contract ("read only the one matching references/<phase>.md") has to
- * survive being installed into someone else's project, not just work while
- * developing this repo.
+ * The dispatch mechanics live in `../lib/ailly-phases.ts` so `ailly_quick_loop`
+ * and the long-loop driver can reuse the exact same reference resolution and
+ * subprocess isolation without going through this tool's own LLM-facing call.
  */
 
-import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
-import { isFailed, runPiSubprocess } from "../lib/subprocess.ts";
+import { PHASE_REFERENCES, runAillyReference } from "../lib/ailly-phases.ts";
+import { isFailed } from "../lib/subprocess.ts";
 
-// Repo root is three levels up from .pi/extensions/ailly-subagent/index.ts.
 const EXTENSION_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(EXTENSION_DIR, "..", "..", "..");
 
-/**
- * Canonical reference names Ailly (and other skills) dispatch by. Each maps
- * to a file resolved relative to REPO_ROOT, not to the caller's cwd, so the
- * mapping holds regardless of where this package ends up installed.
- */
-const REFERENCES: Record<string, string> = {
-	research: "developer/skills/ailly/references/phases/research.md",
-	design: "developer/skills/ailly/references/phases/design.md",
-	plan: "developer/skills/ailly/references/phases/plan.md",
-	"red-green-refactor": "developer/skills/ailly/references/phases/red-green-refactor.md",
-	build: "developer/skills/ailly/references/phases/red-green-refactor.md",
-	cleanup: "developer/skills/ailly/references/phases/cleanup.md",
-	thinking: "developer/skills/ailly/references/abilities/thinking.md",
-	refactor: "developer/skills/ailly/references/abilities/refactor.md",
-	initialize: "developer/skills/ailly/references/abilities/initialize.md",
-	"intent-review": "developer/skills/ailly/references/abilities/intent-review.md",
-};
-
-const ReferenceEnum = Object.keys(REFERENCES) as [string, ...string[]];
+const ReferenceEnum = Object.keys(PHASE_REFERENCES) as [string, ...string[]];
 
 const AillySubagentParams = Type.Object({
 	reference: Type.Union(
@@ -77,55 +51,43 @@ export default function (pi: ExtensionAPI) {
 			"phase or ability reference and executes it. This is Ailly's Task-tool",
 			"equivalent for pi: use it for every phase dispatch (research, design,",
 			"plan, red-green-refactor/build, cleanup) and for thinking/refactor/",
-			"initialize/intent-review whenever dispatch is warranted. Reference",
-			`paths resolve relative to this extension's own install location`,
-			`(currently ${REPO_ROOT}), not the caller's cwd, so this keeps working`,
-			"after the package is installed anywhere.",
-			`Available references: ${ReferenceEnum.join(", ")}.`,
+			"initialize/intent-review whenever dispatch is warranted. For a full",
+			"unattended quick-loop or long-loop run, prefer ailly_quick_loop or",
+			"ailly_long_loop_start, which drive this same dispatch sequentially with",
+			"review calls wired in. Reference paths resolve relative to this",
+			`extension's own install location (currently ${REPO_ROOT}), not the`,
+			"caller's cwd, so this keeps working after the package is installed",
+			`anywhere. Available references: ${ReferenceEnum.join(", ")}.`,
 		].join(" "),
 		parameters: AillySubagentParams,
 
 		async execute(_toolCallId, params, signal, _onUpdate, ctx) {
-			const relPath = REFERENCES[params.reference];
-			const absPath = path.join(REPO_ROOT, relPath);
-
-			let referenceBody: string;
-			try {
-				referenceBody = await fs.promises.readFile(absPath, "utf-8");
-			} catch (err) {
-				return {
-					content: [{ type: "text", text: `Could not read reference ${relPath}: ${(err as Error).message}` }],
-					isError: true,
-					details: { reference: params.reference, referencePath: relPath },
-				};
-			}
-
-			const systemPrompt = [
-				"You are an isolated Ailly phase/ability subagent, dispatched by developer:ailly.",
-				`Read only the reference below (sourced from ${relPath}) and execute it exactly.`,
-				"Do not read any other developer:ailly phase or ability reference in this process.",
-				"",
-				referenceBody,
-			].join("\n");
-
-			const result = await runPiSubprocess({
-				label: params.reference,
-				systemPrompt,
+			const outcome = await runAillyReference({
+				reference: params.reference,
 				task: params.task,
 				model: params.model,
 				cwd: ctx.cwd,
+				repoRoot: REPO_ROOT,
 				signal,
 			});
 
-			const header = `Ailly subagent [${params.reference}] via ${relPath}${result.model ? ` (model: ${result.model})` : ""}`;
-			const body = isFailed(result)
-				? `FAILED: ${result.errorMessage || result.stderr || "(no output)"}`
-				: result.output || "(no output)";
+			if (outcome.error || !outcome.run) {
+				return {
+					content: [{ type: "text", text: outcome.error ?? "Unknown failure" }],
+					isError: true,
+					details: outcome,
+				};
+			}
+
+			const header = `Ailly subagent [${outcome.reference}] via ${outcome.referencePath}${outcome.run.model ? ` (model: ${outcome.run.model})` : ""}`;
+			const body = isFailed(outcome.run)
+				? `FAILED: ${outcome.run.errorMessage || outcome.run.stderr || "(no output)"}`
+				: outcome.run.output || "(no output)";
 
 			return {
 				content: [{ type: "text", text: `${header}\n\n${body}` }],
-				isError: isFailed(result),
-				details: { reference: params.reference, referencePath: relPath, ...result },
+				isError: isFailed(outcome.run),
+				details: outcome,
 			};
 		},
 	});

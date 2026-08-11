@@ -58,7 +58,7 @@ function getFinalOutput(messages: Message[]): string {
 }
 
 /** Resolve the same command used to invoke the current pi process. */
-function getPiInvocation(args: string[]): { command: string; args: string[] } {
+export function getPiInvocation(args: string[]): { command: string; args: string[] } {
 	const currentScript = process.argv[1];
 	const isBunVirtualScript = currentScript?.startsWith("/$bunfs/root/");
 	if (currentScript && !isBunVirtualScript && fs.existsSync(currentScript)) {

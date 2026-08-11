@@ -18,12 +18,14 @@
 
 This repository ships its own pi package resources directly: `developer/skills`, `general/skills`, `domain/skills`, `patterns/skills`, and `research/skills` are referenced from the root `package.json`'s `pi.skills` array (and, for local development inside this checkout, from `.pi/settings.json`). `prompts/` holds the slash-command surface (`/ailly` and its phase aliases), and `.pi/extensions/` holds the custom tools this adapter depends on. None of this duplicates `.claude-plugin/` or `.codex-plugin/`; it is a third, independent packaging adapter alongside them, not a replacement.
 
-Two sibling workflows outside Ailly get the same dedicated-tool treatment for the same reason — pi has no `Task` tool, so their prose "dispatch a subagent" steps need a real mechanism too:
+Sibling workflows outside the five-phase coordinator get the same dedicated-tool treatment for the same reason — pi has no `Task` tool, so their prose "dispatch a subagent" steps need a real mechanism too:
 
 - `research:using-research` dispatches through `research_dispatch` (`.pi/extensions/research-subagent/`) — see that skill's own "Pi Workflow" section.
 - `general:review` dispatches and converges through `review_run` (`.pi/extensions/review-subagent/`) — see that skill's own "Pi Workflow" section.
+- Quick-loop Mode runs end to end through `ailly_quick_loop` (`.pi/extensions/ailly-quick-loop/`) — see the Quick-loop Mode section's own "Pi Workflow" note in this coordinator's `SKILL.md`.
+- Long-loop Mode runs as a detached background process managed by `ailly_long_loop_start`/`_status`/`_stop` (`.pi/extensions/ailly-long-loop/`) — see `references/shapes/long-loop.md`'s own "Pi Workflow" section (8).
 
-All three tools (`ailly_subagent`, `research_dispatch`, `review_run`) share one spawning primitive, `.pi/extensions/lib/subprocess.ts`, so the isolation mechanics (temp-file system prompts, JSON-mode child parsing, abort handling) and the deterministic dated-notes-folder naming are implemented once, not three times.
+All five tools (`ailly_subagent`, `research_dispatch`, `review_run`, `ailly_quick_loop`, `ailly_long_loop_start`) share one spawning primitive, `.pi/extensions/lib/subprocess.ts`, so the isolation mechanics (temp-file system prompts, JSON-mode child parsing, abort handling) and the deterministic dated-notes-folder naming are implemented once, not five times. `ailly_quick_loop` and the long-loop driver reuse `ailly_subagent`'s and `review_run`'s own dispatch logic directly (`.pi/extensions/lib/ailly-phases.ts`, `.pi/extensions/lib/review.ts`) rather than re-implementing it, so all entry points — a single phase dispatch, a full quick loop, or an autonomous long loop — run the exact same phase-isolation and review contract.
 
 `review_run`'s specialist reviewers resolve through a second shared module, `.pi/extensions/lib/skills.ts`: it looks up a specialist by pi's own skill `name`, searching the calling project's own `.pi/skills`/`.agents/skills` first, then this package's plugin skills, then user-global skills — the same precedence pi's own resource loader uses. This is why a project that installs this package can hand `review_run` a specialist it wrote itself, or one it got from an entirely different installed pi package, without editing this adapter or `general:review`.
 

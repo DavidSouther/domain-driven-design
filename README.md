@@ -27,7 +27,15 @@ Repo-local Codex marketplace metadata lives at `.agents/plugins/marketplace.json
 
 1. To develop this repo itself with pi, add `{ "packages": ["."] }` to `.pi/settings.json` (already present in this checkout) and approve the project (`pi -a`). Pi then discovers all five skill plugins, the `/ailly*` prompt templates in `prompts/`, and the two extensions in `.pi/extensions/`.
 2. To use these skills from another project, `pi install git:davidsouther/domain-driven-design` (or a local path during development). The same manifest applies unchanged — nothing in it is specific to this checkout's location.
-3. Pi has no built-in `Task` tool, so this repository ships dedicated workflow tools that model each skill package's mechanics as code instead of leaving them to model orchestration: `ailly_subagent` (developer:ailly's phase/ability dispatch), `research_dispatch` (research:using-research's skill dispatch — computes the dated notes folder, runs skills in parallel, verifies each one's findings file actually landed), and `review_run` (general:review's dispatch-then-converge, so convergence can't be silently skipped). `todo` is Ailly's `TodoWrite` equivalent. All three subagent tools share one subprocess-spawning module (`.pi/extensions/lib/subprocess.ts`) with reference paths resolved relative to the extension itself, so they survive being installed elsewhere. See `developer/skills/ailly/references/agents/pi.md` for the full tool-mapping table.
+3. Pi has no built-in `Task` tool, so this repository ships dedicated workflow tools that model each skill package's mechanics as code instead of leaving them to model orchestration:
+   - `ailly_subagent` — developer:ailly's single phase/ability dispatch.
+   - `research_dispatch` — research:using-research's skill dispatch: computes the dated notes folder, runs skills in parallel, verifies each one's findings file actually landed.
+   - `review_run` — general:review's dispatch-then-converge, so convergence can't be silently skipped.
+   - `ailly_quick_loop` — runs Quick-loop Mode end to end: every phase, `review_run` on every artifact including the build diff, halting with a diagnosable report at the first missing artifact or aborted build step.
+   - `ailly_long_loop_start` / `_status` / `_stop` — runs Long-loop Mode as a detached background `pi` process instead of one blocking call, with a background watcher that nudges the live session if the run stalls, escalates, or exits.
+   - `todo` is Ailly's `TodoWrite` equivalent.
+
+   All five subagent-dispatching tools share one subprocess-spawning module (`.pi/extensions/lib/subprocess.ts`) with reference paths resolved relative to the extension itself, so they survive being installed elsewhere; the loop tools reuse `ailly_subagent`'s and `review_run`'s own dispatch logic rather than re-implementing it. See `developer/skills/ailly/references/agents/pi.md` for the full tool-mapping table.
 4. `/ailly [phase] <request>` is the same slash-command surface described below; `/ailly-research`, `/ailly-design`, `/ailly-plan`, `/ailly-build`, and `/ailly-cleanup` are direct phase shortcuts. `/research <question>` and `/review <artifact> [specialists]` front the two sibling workflows.
 
 ### Other Agent Harnesses
