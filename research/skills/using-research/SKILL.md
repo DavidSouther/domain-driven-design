@@ -62,3 +62,15 @@ Most research questions benefit from more than one skill. Dispatch them in paral
 - "Why does this dependency exist and what does it actually do?" → `dependencies` + `archaeology`
 - "What does the domain say this should be, and is the code correct?" → `domain` + `codebase`
 - "Is this pattern documented anywhere internally or publicly?" → `internal` + `public`
+
+## Pi Workflow
+
+Under pi, dispatch through the `research_dispatch` tool (`.pi/extensions/research-subagent/`) instead of assembling `Task` calls and notes-folder paths by hand. It models everything downstream of skill selection as code: it computes the `YYYY-MM-DD-<letter>-<topic>` notes folder deterministically, runs each dispatched skill in its own isolated subprocess reading only that skill's `SKILL.md`, fans multiple `skills` out concurrently in one call for the Combining Skills pattern above, and verifies each skill's promised `<skill>.md` file actually landed in the notes folder rather than trusting the subagent's self-report. Skill selection — which row of the table above fits the question — stays your call; pass the chosen skill name(s) straight through.
+
+```
+research_dispatch({
+  skills: ["dependencies", "archaeology"],
+  question: "Why does this dependency exist and what does it actually do?",
+  model: "<the model general/skills/dispatching-agents/model-selection.md recommends>"
+})
+```

@@ -40,6 +40,18 @@ there as a dated entry. Once the human answers a finding — by revising the art
 dismissing it — mark that entry **resolved** and **closed** in place. It does not remain an open
 item inside the artifact under review.
 
+## Pi Workflow
+
+Under pi, run Dispatch and Converge (steps 2 and 3 above) with the `review_run` tool (`.pi/extensions/review-subagent/`) instead of relying on the orchestrating model to remember both. One call spawns an isolated subprocess per composed reviewer — the base four-criterion reviewer plus any `specialists` you name — in parallel, then always runs a dedicated convergence subprocess against the raw findings before returning anything: convergence cannot be skipped because it is not a separate step the calling model has to remember, it is inside the tool call. Composition (step 1: which specialists apply) stays your call, same as skill selection in `research:using-research`; fix (step 4) and re-evaluate (step 5) stay separate turns, since this tool only ever evaluates.
+
+```
+review_run({
+  artifactPath: "src/session/manager.ts",
+  specialists: ["developer:clean-comments-review"],
+  model: "<the model general/skills/dispatching-agents/model-selection.md recommends>"
+})
+```
+
 ## Common Mistakes
 
 - Skipping convergence: handing the fix pass a flat, unverified, unranked list. Verify against the artifact, deduplicate, and severity-rank first.

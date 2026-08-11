@@ -10,13 +10,20 @@
 | `Bash` (run commands) | `bash` |
 | `Skill` tool (invoke a skill) | Skills load natively — pi surfaces the matching skill from its always-on description list, or invoke it explicitly with `/skill:<name>` |
 | `TodoWrite` (task tracking) | `todo` tool (registered by `.pi/extensions/todo.ts`, bundled in this repo) |
-| `Task` tool (dispatch subagent) | `ailly_subagent` tool (see [Subagent dispatch](#subagent-dispatch)) |
-| Multiple `Task` calls (parallel) | Multiple `ailly_subagent` calls in the same assistant turn — pi executes sibling tool calls from one turn concurrently |
+| `Task` tool (dispatch subagent) | `ailly_subagent` for developer:ailly phases/abilities, `research_dispatch` for research:* skills, `review_run` for general:review's composed reviewers (see [Subagent dispatch](#subagent-dispatch)) |
+| Multiple `Task` calls (parallel) | Pass multiple items to one call (`research_dispatch`'s `skills` array, `review_run`'s `specialists` array) or make multiple calls in the same assistant turn — pi executes sibling tool calls from one turn concurrently |
 | `WebSearch` / `WebFetch` | No built-in equivalent. Use `bash` with `curl`/an installed search CLI, or a web-search/web-fetch pi extension if one is installed for the project |
 
 ## Packaging Adapter
 
-This repository ships its own pi package resources directly: `developer/skills`, `general/skills`, `domain/skills`, `patterns/skills`, and `research/skills` are referenced from the root `package.json`'s `pi.skills` array (and, for local development inside this checkout, from `.pi/settings.json`). `prompts/` holds the slash-command surface (`/ailly` and its phase aliases), and `.pi/extensions/` holds the two custom tools this adapter depends on. None of this duplicates `.claude-plugin/` or `.codex-plugin/`; it is a third, independent packaging adapter alongside them, not a replacement.
+This repository ships its own pi package resources directly: `developer/skills`, `general/skills`, `domain/skills`, `patterns/skills`, and `research/skills` are referenced from the root `package.json`'s `pi.skills` array (and, for local development inside this checkout, from `.pi/settings.json`). `prompts/` holds the slash-command surface (`/ailly` and its phase aliases), and `.pi/extensions/` holds the custom tools this adapter depends on. None of this duplicates `.claude-plugin/` or `.codex-plugin/`; it is a third, independent packaging adapter alongside them, not a replacement.
+
+Two sibling workflows outside Ailly get the same dedicated-tool treatment for the same reason — pi has no `Task` tool, so their prose "dispatch a subagent" steps need a real mechanism too:
+
+- `research:using-research` dispatches through `research_dispatch` (`.pi/extensions/research-subagent/`) — see that skill's own "Pi Workflow" section.
+- `general:review` dispatches and converges through `review_run` (`.pi/extensions/review-subagent/`) — see that skill's own "Pi Workflow" section.
+
+All three tools (`ailly_subagent`, `research_dispatch`, `review_run`) share one spawning primitive, `.pi/extensions/lib/subprocess.ts`, so the isolation mechanics (temp-file system prompts, JSON-mode child parsing, abort handling) and the deterministic dated-notes-folder naming are implemented once, not three times.
 
 ## Subagent Dispatch
 
