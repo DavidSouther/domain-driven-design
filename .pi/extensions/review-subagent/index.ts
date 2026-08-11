@@ -51,7 +51,7 @@ export default function (pi: ExtensionAPI) {
 		].join(" "),
 		parameters: ReviewRunParams,
 
-		async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+		async execute(_toolCallId, params, signal, onUpdate, ctx) {
 			const result = await runReview({
 				artifactPath: params.artifactPath,
 				specialists: params.specialists,
@@ -59,6 +59,7 @@ export default function (pi: ExtensionAPI) {
 				cwd: ctx.cwd,
 				repoRoot: REPO_ROOT,
 				signal,
+				onProgress: (text) => onUpdate?.({ content: [{ type: "text", text: `Reviewing ${params.artifactPath}...\n\n${text}` }] }),
 			});
 
 			if ("error" in result) {

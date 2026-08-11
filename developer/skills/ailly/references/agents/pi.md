@@ -33,6 +33,8 @@ All five tools (`ailly_subagent`, `research_dispatch`, `review_run`, `ailly_quic
 
 Pi has no built-in `Task` tool, so this repository registers one: `ailly_subagent`, defined in `.pi/extensions/ailly-subagent/index.ts`. It spawns an isolated `pi` subprocess per dispatch — a real separate context window, not a same-session role-play.
 
+While the subprocess runs, its tool calls and assistant text stream back live through the tool's own progress channel (`.pi/extensions/lib/subprocess.ts`'s `onProgress`, fed by the child's `--mode json` event stream) instead of a static "Working..." spinner. `research_dispatch` and `review_run` multiplex several concurrent subprocesses' progress into one labeled view (`createProgressMultiplexer`) when dispatching more than one skill or reviewer at once. `ailly_quick_loop` forwards the same live view for whichever phase or review is currently running.
+
 Two properties make it match Ailly's phase-isolation contract exactly, not just approximate it:
 
 1. **One reference per dispatch.** The tool's `reference` parameter is a closed enum of Ailly's five phases (`research`, `design`, `plan`, `red-green-refactor` — also accepted as `build` — `cleanup`) plus its progressive abilities (`thinking`, `refactor`, `initialize`, `intent-review`). The tool reads exactly that one `references/<phase or ability>.md` file, writes it into the child process's system prompt, and instructs the child not to read any other Ailly reference. The parent (pi) session never reads the other four phase files either — it only ever calls this tool with the one it needs.

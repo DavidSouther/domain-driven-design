@@ -61,7 +61,8 @@ export default function (pi: ExtensionAPI) {
 		].join(" "),
 		parameters: AillySubagentParams,
 
-		async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+		async execute(_toolCallId, params, signal, onUpdate, ctx) {
+			const progressHeader = `Ailly subagent [${params.reference}] via ${PHASE_REFERENCES[params.reference] ?? "?"}`;
 			const outcome = await runAillyReference({
 				reference: params.reference,
 				task: params.task,
@@ -69,6 +70,7 @@ export default function (pi: ExtensionAPI) {
 				cwd: ctx.cwd,
 				repoRoot: REPO_ROOT,
 				signal,
+				onProgress: (recentLines) => onUpdate?.({ content: [{ type: "text", text: `${progressHeader}\n\n${recentLines.join("\n")}` }] }),
 			});
 
 			if (outcome.error || !outcome.run) {

@@ -57,6 +57,28 @@ function getFinalOutput(messages: Message[]): string {
 	return "";
 }
 
+function truncate(text: string, max: number): string {
+	return text.length > max ? `${text.slice(0, max)}…` : text;
+}
+
+/** Render one `tool_execution_start` event as a short, human-scannable line. */
+function formatToolCallLine(toolName: string, args: Record<string, unknown>): string {
+	switch (toolName) {
+		case "bash":
+			return `$ ${truncate(String(args.command ?? ""), 100)}`;
+		case "read":
+			return `read ${args.path ?? "?"}${args.offset ? `:${args.offset}` : ""}`;
+		case "write":
+			return `write ${args.path ?? "?"}`;
+		case "edit":
+			return `edit ${args.path ?? "?"}`;
+		default: {
+			const preview = truncate(JSON.stringify(args ?? {}), 100);
+			return `${toolName} ${preview}`;
+		}
+	}
+}
+
 /** Resolve the same command used to invoke the current pi process. */
 export function getPiInvocation(args: string[]): { command: string; args: string[] } {
 	const currentScript = process.argv[1];
@@ -91,6 +113,13 @@ export interface RunPiSubprocessOptions {
 	model?: string;
 	cwd: string;
 	signal?: AbortSignal;
+	/**
+	 * Called with a rolling, human-readable transcript of the child's recent
+	 * tool calls and assistant text as they happen, so a caller's own tool
+	 * `onUpdate` can replace a static "Working..." spinner with a live view
+	 * into what the isolated subagent is actually doing.
+	 */
+	onProgress?: (recentLines: string[]) => void;
 }
 
 /**
@@ -100,7 +129,7 @@ export interface RunPiSubprocessOptions {
  * not a same-session role-play.
  */
 export async function runPiSubprocess(opts: RunPiSubprocessOptions): Promise<SubprocessRunResult> {
-	const { label, systemPrompt, task, model, cwd, signal } = opts;
+	const { label, systemPrompt, task, model, cwd, signal, onProgress } = opts;
 	const args: string[] = ["--mode", "json", "-p", "--no-session"];
 	if (model) args.push("--model", model);
 
@@ -123,6 +152,13 @@ export async function runPiSubprocess(opts: RunPiSubprocessOptions): Promise<Sub
 
 		const messages: Message[] = [];
 		let wasAborted = false;
+		const recentLines: string[] = [];
+		const pushProgress = (line: string) => {
+			if (!onProgress) return;
+			recentLines.push(line);
+			if (recentLines.length > 20) recentLines.shift();
+			onProgress([...recentLines]);
+		};
 
 		result.exitCode = await new Promise<number>((resolve) => {
 			const invocation = getPiInvocation(args);
@@ -141,6 +177,9 @@ export async function runPiSubprocess(opts: RunPiSubprocessOptions): Promise<Sub
 				} catch {
 					return;
 				}
+				if (event.type === "tool_execution_start" && event.toolName) {
+					pushProgress(formatToolCallLine(event.toolName, event.args ?? {}));
+				}
 				if (event.type === "message_end" && event.message) {
 					const msg = event.message as Message;
 					messages.push(msg);
@@ -158,6 +197,9 @@ export async function runPiSubprocess(opts: RunPiSubprocessOptions): Promise<Sub
 						if (!result.model && msg.model) result.model = msg.model;
 						if (msg.stopReason) result.stopReason = msg.stopReason;
 						if (msg.errorMessage) result.errorMessage = msg.errorMessage;
+						for (const part of msg.content) {
+							if (part.type === "text" && part.text.trim()) pushProgress(`\u{1F4AC} ${truncate(part.text.trim(), 300)}`);
+						}
 					}
 				}
 			};
@@ -258,4 +300,30 @@ export function slugify(text: string, maxWords = 6): string {
 
 export function todayIso(): string {
 	return new Date().toISOString().slice(0, 10);
+}
+
+/**
+ * Combine several concurrent subprocesses' `onProgress` streams into one
+ * live view, keyed by a caller-chosen lane id (e.g. a skill name or
+ * reviewer id). Used by every tool that dispatches more than one
+ * `runPiSubprocess` in parallel (`research_dispatch`, `review_run`) so the
+ * live "Working..." replacement shows all lanes at once, not just whichever
+ * one last called back.
+ */
+export function createProgressMultiplexer(onUpdate: (combinedText: string) => void) {
+	const lanes = new Map<string, string[]>();
+	const render = () => {
+		const combined = Array.from(lanes.entries())
+			.map(([id, lines]) => `## ${id}\n${lines.join("\n")}`)
+			.join("\n\n");
+		onUpdate(combined);
+	};
+	return {
+		lane(id: string): (recentLines: string[]) => void {
+			return (recentLines: string[]) => {
+				lanes.set(id, recentLines);
+				render();
+			};
+		},
+	};
 }

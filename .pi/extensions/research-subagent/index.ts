@@ -32,7 +32,7 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
-import { isFailed, nextDatedSlug, runPiSubprocess, slugify, todayIso } from "../lib/subprocess.ts";
+import { createProgressMultiplexer, isFailed, nextDatedSlug, runPiSubprocess, slugify, todayIso } from "../lib/subprocess.ts";
 
 const EXTENSION_DIR = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(EXTENSION_DIR, "..", "..", "..");
@@ -104,8 +104,9 @@ export default function (pi: ExtensionAPI) {
 		].join(" "),
 		parameters: ResearchDispatchParams,
 
-		async execute(_toolCallId, params, signal, _onUpdate, ctx) {
+		async execute(_toolCallId, params, signal, onUpdate, ctx) {
 			const notesFolder = resolveNotesFolder(ctx.cwd, params);
+			const progress = createProgressMultiplexer((text) => onUpdate?.({ content: [{ type: "text", text: `Notes folder: ${notesFolder}\n\n${text}` }] }));
 
 			const runs = await Promise.all(
 				params.skills.map(async (skill) => {
@@ -139,6 +140,7 @@ export default function (pi: ExtensionAPI) {
 						model: params.model,
 						cwd: ctx.cwd,
 						signal,
+						onProgress: progress.lane(skill),
 					});
 
 					const notesFile = path.join(notesFolder, `${skill}.md`);

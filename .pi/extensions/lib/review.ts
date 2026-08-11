@@ -10,7 +10,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { findSkillByName, specialistSkillName } from "./skills.ts";
-import { isFailed, runPiSubprocess, type SubprocessRunResult } from "./subprocess.ts";
+import { createProgressMultiplexer, isFailed, runPiSubprocess, type SubprocessRunResult } from "./subprocess.ts";
 
 const REVIEW_SKILL_PATH = "general/skills/review/SKILL.md";
 
@@ -38,6 +38,8 @@ export interface RunReviewOptions {
 	cwd: string;
 	repoRoot: string;
 	signal?: AbortSignal;
+	/** Combined live progress across every reviewer lane, then the convergence lane. */
+	onProgress?: (combinedText: string) => void;
 }
 
 export interface RunReviewResult {
@@ -54,7 +56,8 @@ export interface RunReviewResult {
  * isolated subprocesses, followed by one dedicated convergence subprocess.
  */
 export async function runReview(opts: RunReviewOptions): Promise<RunReviewResult | { error: string }> {
-	const { artifactPath, specialists, model, cwd, repoRoot, signal } = opts;
+	const { artifactPath, specialists, model, cwd, repoRoot, signal, onProgress } = opts;
+	const progress = onProgress ? createProgressMultiplexer(onProgress) : undefined;
 	const artifactAbsPath = path.resolve(cwd, artifactPath);
 	let artifactContent: string;
 	try {
@@ -133,6 +136,7 @@ export async function runReview(opts: RunReviewOptions): Promise<RunReviewResult
 				model,
 				cwd,
 				signal,
+				onProgress: progress?.lane(job.id),
 			});
 			return { id: job.id, skillPath: job.skillPath, run };
 		}),
@@ -170,6 +174,7 @@ export async function runReview(opts: RunReviewOptions): Promise<RunReviewResult
 		model,
 		cwd,
 		signal,
+		onProgress: progress?.lane("converge"),
 	});
 
 	return {

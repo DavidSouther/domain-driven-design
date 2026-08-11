@@ -43,11 +43,13 @@ export interface RunAillyReferenceOptions {
 	cwd: string;
 	repoRoot: string;
 	signal?: AbortSignal;
+	/** Rolling recent-activity lines from the dispatched subprocess, for live progress display. */
+	onProgress?: (recentLines: string[]) => void;
 }
 
 /** Dispatch exactly one Ailly phase/ability reference as an isolated pi subprocess. */
 export async function runAillyReference(opts: RunAillyReferenceOptions): Promise<RunAillyReferenceResult> {
-	const { reference, task, model, cwd, repoRoot, signal } = opts;
+	const { reference, task, model, cwd, repoRoot, signal, onProgress } = opts;
 	const relPath = PHASE_REFERENCES[reference];
 	if (!relPath) {
 		return { reference, referencePath: "", error: `Unknown reference: "${reference}"` };
@@ -68,6 +70,6 @@ export async function runAillyReference(opts: RunAillyReferenceOptions): Promise
 		referenceBody,
 	].join("\n");
 
-	const run = await runPiSubprocess({ label: reference, systemPrompt, task, model, cwd, signal });
+	const run = await runPiSubprocess({ label: reference, systemPrompt, task, model, cwd, signal, onProgress });
 	return { reference, referencePath: relPath, run };
 }

@@ -121,6 +121,7 @@ export default function (pi: ExtensionAPI) {
 					cwd,
 					repoRoot: REPO_ROOT,
 					signal,
+					onProgress: (lines) => report(`Dispatching ${phase}...\n\n${lines.join("\n")}`),
 				});
 
 				const artifactPath = path.join(sessionFolder, file);
@@ -137,7 +138,15 @@ export default function (pi: ExtensionAPI) {
 
 				report(`Reviewing ${file}...`);
 				const specialists = (params.reviewSpecialists as Record<string, string[] | undefined> | undefined)?.[phase];
-				const review = await runReview({ artifactPath, specialists, model, cwd, repoRoot: REPO_ROOT, signal });
+				const review = await runReview({
+					artifactPath,
+					specialists,
+					model,
+					cwd,
+					repoRoot: REPO_ROOT,
+					signal,
+					onProgress: (text) => report(`Reviewing ${file}...\n\n${text}`),
+				});
 				outcome.review = "error" in review
 					? { converged: review.error, failed: true }
 					: { converged: review.convergence.output || "(no output)", failed: review.anyReviewerFailed || review.convergenceFailed };
@@ -168,6 +177,7 @@ export default function (pi: ExtensionAPI) {
 					cwd,
 					repoRoot: REPO_ROOT,
 					signal,
+					onProgress: (lines) => report(`Dispatching red-green-refactor for step ${step}/${stepCount - 1}...\n\n${lines.join("\n")}`),
 				});
 
 				const planContentNow = await fs.promises.readFile(planPath, "utf-8");
@@ -205,6 +215,7 @@ export default function (pi: ExtensionAPI) {
 							cwd,
 							repoRoot: REPO_ROOT,
 							signal,
+							onProgress: (text) => report(`Reviewing build.diff...\n\n${text}`),
 						});
 						outcomes.push({
 							phase: "build",
@@ -229,6 +240,7 @@ export default function (pi: ExtensionAPI) {
 					cwd,
 					repoRoot: REPO_ROOT,
 					signal,
+					onProgress: (lines) => report(`Dispatching cleanup...\n\n${lines.join("\n")}`),
 				});
 				outcomes.push({
 					phase: "cleanup",
