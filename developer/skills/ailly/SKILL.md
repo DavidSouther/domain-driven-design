@@ -45,6 +45,7 @@ Ailly's shared references use a canonical tool vocabulary (`Read`, `Edit`, `Bash
 - `references/agents/codex.md` — Codex tool and subagent mappings.
 - `references/agents/copilot.md` — Copilot CLI tool and async-session mappings.
 - `references/agents/gemini.md` — Gemini CLI tool and subagent mappings.
+- `references/agents/pi.md` — pi tool mappings, and the `ailly_subagent`/`todo` extensions this repository ships for pi's `Task`/`TodoWrite` equivalents.
 
 ```dot
 digraph phases {

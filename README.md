@@ -21,9 +21,18 @@ Codex uses the `*/.codex-plugin/plugin.json` manifests as its plugin adapter. Th
 
 Repo-local Codex marketplace metadata lives at `.agents/plugins/marketplace.json`. Its entries point back to the plugin folders in this checkout, where each `.codex-plugin/plugin.json` lives. The `characters` package remains Claude Code-specific because it is an output-style package rather than a portable skill plugin.
 
+### Pi Package
+
+[Pi](https://github.com/badlogic/pi-mono) uses the root `package.json`'s `pi` manifest (`pi.skills`, `pi.prompts`, `pi.extensions`) as its packaging adapter, the same role `.claude-plugin/` and `.codex-plugin/` play for their harnesses.
+
+1. To develop this repo itself with pi, add `{ "packages": ["."] }` to `.pi/settings.json` (already present in this checkout) and approve the project (`pi -a`). Pi then discovers all five skill plugins, the `/ailly*` prompt templates in `prompts/`, and the two extensions in `.pi/extensions/`.
+2. To use these skills from another project, `pi install git:davidsouther/domain-driven-design` (or a local path during development). The same manifest applies unchanged — nothing in it is specific to this checkout's location.
+3. Two custom tools stand in for capabilities pi has no built-in equivalent for: `ailly_subagent` (Ailly's `Task` equivalent — spawns an isolated `pi` subprocess per phase/ability dispatch, reference paths resolved relative to the extension itself so it survives being installed elsewhere) and `todo` (Ailly's `TodoWrite` equivalent). See `developer/skills/ailly/references/agents/pi.md` for the full tool-mapping table.
+4. `/ailly [phase] <request>` is the same slash-command surface described below; `/ailly-research`, `/ailly-design`, `/ailly-plan`, `/ailly-build`, and `/ailly-cleanup` are direct phase shortcuts.
+
 ### Other Agent Harnesses
 
-Install or expose the `*/skills/*/SKILL.md` trees using your harness's native skill mechanism. `developer:ailly` is the lifecycle coordinator; it consults `developer/skills/ailly/references/agents/<harness>.md` for host-specific tool names and behavior. Mappings currently exist for Claude Code, Codex, Copilot, and Gemini.
+Install or expose the `*/skills/*/SKILL.md` trees using your harness's native skill mechanism. `developer:ailly` is the lifecycle coordinator; it consults `developer/skills/ailly/references/agents/<harness>.md` for host-specific tool names and behavior. Mappings currently exist for Claude Code, Codex, Copilot, Gemini, and pi.
 
 The `.claude-plugin/` and `.codex-plugin/` manifests are packaging metadata only. They are not the source of truth for the skill behavior.
 

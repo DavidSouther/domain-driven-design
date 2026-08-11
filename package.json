@@ -1,0 +1,30 @@
+{
+  "name": "domain-driven-design",
+  "private": true,
+  "description": "DDD & design-pattern skills for agentic development, packaged as a pi package alongside the Claude Code and Codex adapters.",
+  "keywords": [
+    "pi-package",
+    "skills",
+    "ddd",
+    "tdd",
+    "domain-driven-design"
+  ],
+  "homepage": "https://github.com/davidsouther/domain-driven-design",
+  "repository": "https://github.com/davidsouther/domain-driven-design",
+  "license": "MIT",
+  "pi": {
+    "extensions": [
+      ".pi/extensions"
+    ],
+    "skills": [
+      "developer/skills",
+      "general/skills",
+      "domain/skills",
+      "patterns/skills",
+      "research/skills"
+    ],
+    "prompts": [
+      "prompts"
+    ]
+  }
+}
