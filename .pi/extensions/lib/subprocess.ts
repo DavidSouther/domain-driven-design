@@ -1,12 +1,8 @@
 /**
- * Shared isolated-`pi`-subprocess runner.
- *
- * Every dedicated-workflow tool in this package (`ailly_subagent`,
- * `research_dispatch`, `review_run`) needs the same primitive: spawn a
- * separate `pi` process with a specific system prompt and task, capture its
- * final text output plus usage, and clean up. This module is that primitive,
- * factored out so the workflow-specific tools stay focused on *what* to
- * dispatch (which reference file, which reviewer) rather than *how*.
+ * Shared isolated-`pi`-subprocess runner: spawn a separate `pi` process with
+ * a given system prompt and task, capture its final text output plus usage,
+ * and clean up. Also holds the dated-slug naming helpers the workflow tools
+ * share.
  */
 
 import { spawn } from "node:child_process";
@@ -14,7 +10,6 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 import type { Message } from "@earendil-works/pi-ai";
-import { withFileMutationQueue } from "@earendil-works/pi-coding-agent";
 
 export interface UsageStats {
 	input: number;
@@ -41,6 +36,7 @@ export function emptyUsage(): UsageStats {
 	return { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, cost: 0, contextTokens: 0, turns: 0 };
 }
 
+// A pi child can exit 0 yet fail at the model layer, so check both.
 export function isFailed(result: SubprocessRunResult): boolean {
 	return result.exitCode !== 0 || result.stopReason === "error";
 }
@@ -49,9 +45,8 @@ function getFinalOutput(messages: Message[]): string {
 	for (let i = messages.length - 1; i >= 0; i--) {
 		const msg = messages[i];
 		if (msg.role === "assistant") {
-			for (const part of msg.content) {
-				if (part.type === "text") return part.text;
-			}
+			const texts = msg.content.filter((part) => part.type === "text").map((part) => part.text);
+			if (texts.length > 0) return texts.join("\n");
 		}
 	}
 	return "";
@@ -79,7 +74,12 @@ function formatToolCallLine(toolName: string, args: Record<string, unknown>): st
 	}
 }
 
-/** Resolve the same command used to invoke the current pi process. */
+/**
+ * Resolve the same command used to invoke the current pi process. A
+ * `/$bunfs/root/` script path is a bun-compiled binary's virtual filesystem
+ * and cannot be re-spawned as a script; a non-node/bun `execPath` is assumed
+ * to be a compiled pi binary itself.
+ */
 export function getPiInvocation(args: string[]): { command: string; args: string[] } {
 	const currentScript = process.argv[1];
 	const isBunVirtualScript = currentScript?.startsWith("/$bunfs/root/");
@@ -96,9 +96,7 @@ async function writePromptToTempFile(label: string, prompt: string): Promise<{ d
 	const tmpDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "pi-workflow-"));
 	const safeName = label.replace(/[^\w.-]+/g, "_");
 	const filePath = path.join(tmpDir, `prompt-${safeName}.md`);
-	await withFileMutationQueue(filePath, async () => {
-		await fs.promises.writeFile(filePath, prompt, { encoding: "utf-8", mode: 0o600 });
-	});
+	await fs.promises.writeFile(filePath, prompt, { encoding: "utf-8", mode: 0o600 });
 	return { dir: tmpDir, filePath };
 }
 
@@ -112,21 +110,19 @@ export interface RunPiSubprocessOptions {
 	/** Model id/pattern passed straight to the child's `--model` flag. */
 	model?: string;
 	cwd: string;
+	/** When aborted, the run throws after the child exits; partial usage is discarded. */
 	signal?: AbortSignal;
 	/**
 	 * Called with a rolling, human-readable transcript of the child's recent
-	 * tool calls and assistant text as they happen, so a caller's own tool
-	 * `onUpdate` can replace a static "Working..." spinner with a live view
-	 * into what the isolated subagent is actually doing.
+	 * tool calls and assistant text as they happen, for live progress display.
 	 */
 	onProgress?: (recentLines: string[]) => void;
 }
 
 /**
  * Spawn an isolated `pi` subprocess, feed it `systemPrompt` + `task`, and
- * collect its final assistant text plus usage. This is the mechanism behind
- * every dedicated workflow tool's subagent dispatch: real process isolation,
- * not a same-session role-play.
+ * collect its final assistant text plus usage: real process isolation, not a
+ * same-session role-play.
  */
 export async function runPiSubprocess(opts: RunPiSubprocessOptions): Promise<SubprocessRunResult> {
 	const { label, systemPrompt, task, model, cwd, signal, onProgress } = opts;
@@ -192,6 +188,7 @@ export async function runPiSubprocess(opts: RunPiSubprocessOptions): Promise<Sub
 							result.usage.cacheRead += usage.cacheRead || 0;
 							result.usage.cacheWrite += usage.cacheWrite || 0;
 							result.usage.cost += usage.cost?.total || 0;
+							// Snapshot of the latest turn, unlike the accumulating siblings.
 							result.usage.contextTokens = usage.totalTokens || 0;
 						}
 						if (!result.model && msg.model) result.model = msg.model;
@@ -213,19 +210,25 @@ export async function runPiSubprocess(opts: RunPiSubprocessOptions): Promise<Sub
 			proc.stderr.on("data", (data) => {
 				result.stderr += data.toString();
 			});
+			let exited = false;
 			proc.on("close", (code) => {
+				exited = true;
 				if (buffer.trim()) processLine(buffer);
 				resolve(code ?? 0);
 			});
-			proc.on("error", () => resolve(1));
+			proc.on("error", (err) => {
+				result.errorMessage = `Failed to spawn ${invocation.command}: ${err.message}`;
+				resolve(1);
+			});
 
 			if (signal) {
 				const kill = () => {
 					wasAborted = true;
 					proc.kill("SIGTERM");
+					// proc.killed only records that a signal was sent; track actual exit.
 					setTimeout(() => {
-						if (!proc.killed) proc.kill("SIGKILL");
-					}, 5000);
+						if (!exited) proc.kill("SIGKILL");
+					}, 5000).unref();
 				};
 				if (signal.aborted) kill();
 				else signal.addEventListener("abort", kill, { once: true });
@@ -254,18 +257,14 @@ export async function runPiSubprocess(opts: RunPiSubprocessOptions): Promise<Sub
 }
 
 /**
- * Deterministic `YYYY-MM-DD-<letter>-<slug>` folder naming, shared by every
- * workflow that follows Ailly's session-folder / research-notes convention.
- * Doing this in code (not asking the orchestrating model to compute "today's
- * date" and scan for the next free letter) removes a step models reliably
- * get wrong: stale dates, wrong timezone, or reusing an already-taken letter.
+ * Deterministic `YYYY-MM-DD-<letter>-<slug>` naming for Ailly's session and
+ * research-notes folders, computed in code because models reliably get it
+ * wrong: stale dates, wrong timezone, or reusing an already-taken letter.
  */
 export function nextDatedSlug(parentDir: string, date: string, topicSlug: string): string {
 	// Match by name prefix regardless of entry type: some callers create a
-	// session/notes *directory* per dated slug (research_dispatch, session.ts),
-	// others write one flat *file* per dated slug (clarify's `<slug>.md`).
-	// Filtering to directories only would let a same-day flat-file caller
-	// always compute letter "A" and silently collide with an earlier note.
+	// directory per dated slug, others one flat file. Filtering to directories
+	// only would let flat-file callers silently collide.
 	let existingLetters: string[] = [];
 	try {
 		existingLetters = fs
@@ -309,10 +308,7 @@ export function todayIso(): string {
 /**
  * Combine several concurrent subprocesses' `onProgress` streams into one
  * live view, keyed by a caller-chosen lane id (e.g. a skill name or
- * reviewer id). Used by every tool that dispatches more than one
- * `runPiSubprocess` in parallel (`research_dispatch`, `review_run`) so the
- * live "Working..." replacement shows all lanes at once, not just whichever
- * one last called back.
+ * reviewer id), so parallel dispatches show all lanes at once.
  */
 export function createProgressMultiplexer(onUpdate: (combinedText: string) => void) {
 	const lanes = new Map<string, string[]>();

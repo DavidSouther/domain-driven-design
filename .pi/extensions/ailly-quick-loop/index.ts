@@ -1,24 +1,9 @@
 /**
- * Ailly Quick Loop
- *
- * Models the Quick-loop Mode section of developer/skills/ailly/SKILL.md as a
- * single deterministic driver instead of trusting the orchestrating model to
- * remember, on every quick-loop request: run all five phases in order,
- * auto-clear each draft gate, and — the part quick-loop's own text does not
- * mention at all — actually review every artifact it produces. Reviewing is
- * general:review's own trigger ("before claiming a task complete"), which
- * quick-loop's speed easily crowds out under model orchestration.
- *
- * This tool chains, in one call: research → review research.md → design →
- * review design.md → plan → review plan.md → red-green-refactor once per
- * plan step (verified via a sentinel line, not the subagent's self-report)
- * → review the resulting diff. It stops and reports at the first missing
- * artifact or aborted build step, the same "stop immediately and report"
- * discipline red-green-refactor.md itself asks for — a driver that plowed
- * through failures would be worse than the model orchestration it replaces.
- *
- * It pauses before Cleanup unless `noReview` is set, matching quick-loop's
- * own "review pause" and "no review" escape hatch.
+ * ailly_quick_loop: developer:ailly's Quick-loop Mode as one deterministic
+ * driver — research → design → plan (each reviewed) → red-green-refactor per
+ * plan step (verified via a plan.md sentinel, not self-report) → diff review.
+ * Stops at the first missing artifact or aborted step; pauses before Cleanup
+ * unless `noReview` is set.
  */
 
 import * as fs from "node:fs";
@@ -27,6 +12,7 @@ import { fileURLToPath } from "node:url";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
 import { runAillyReference } from "../lib/ailly-phases.ts";
+import { loadPrompt } from "../lib/prompts.ts";
 import { countPlanSteps, findStepSentinel } from "../lib/plan.ts";
 import { runReview } from "../lib/review.ts";
 import { isFailed, nextDatedSlug, slugify, todayIso } from "../lib/subprocess.ts";
@@ -112,11 +98,7 @@ export default function (pi: ExtensionAPI) {
 				report(`Dispatching ${phase}...`);
 				const dispatch = await runAillyReference({
 					reference: phase,
-					task: [
-						`Quick-loop mode: auto-clear the draft gate, minimal artifact — just enough to drive the work.`,
-						`Topic: ${params.topic}.`,
-						`Session folder: ${sessionFolder}.`,
-					].join(" "),
+					task: loadPrompt("quick-loop-phase", { topic: params.topic, sessionFolder }),
 					model,
 					cwd,
 					repoRoot: REPO_ROOT,
@@ -167,12 +149,7 @@ export default function (pi: ExtensionAPI) {
 				report(`Dispatching red-green-refactor for step ${step}/${stepCount - 1}...`);
 				const buildDispatch = await runAillyReference({
 					reference: "red-green-refactor",
-					task: [
-						`Quick-loop mode. Implement exactly plan Step ${step} of ${planPath} for session ${sessionFolder}, then stop — do not continue to the next step.`,
-						`After committing, or after hitting the Loop Abort condition, append exactly one new line at the very end of plan.md:`,
-						`"STEP ${step} COMPLETE" if this step's checks/tests are green, or "STEP ${step} ABORTED: <short reason>" if you hit the abort condition.`,
-						`State explicitly in your final message whether the full feature test is green yet.`,
-					].join(" "),
+					task: loadPrompt("quick-loop-step", { step: String(step), planPath, sessionFolder }),
 					model,
 					cwd,
 					repoRoot: REPO_ROOT,

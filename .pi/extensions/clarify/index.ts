@@ -1,39 +1,21 @@
 /**
- * Clarify
- *
- * A general-purpose "I have a question mid-thought" tool, usable by any
- * (sub)agent in this project — the top-level interactive session, or any
- * subagent dispatched by ailly_subagent/research_dispatch/review_run/
- * ailly_quick_loop/ailly_long_loop_start, since all of those are just `pi`
- * processes that have this tool available too.
- *
- * It does not answer the question itself inline. It dispatches a fresh,
- * isolated subagent — with research_dispatch, ailly_subagent, and the
- * native read/grep/bash tools available to it — whose job is to work the
- * question the way a person would: check local convention/style first
- * (often the fastest path for "how should this look" questions), then reach
- * for the relevant research:* skill(s) (public, internal, domain, codebase,
- * dependencies, archaeology, papers, books) for anything research can
- * settle, applying the same Jeopardy-search and falsification discipline
- * those skills already carry.
- *
- * Some questions cannot be settled by research at all — a preference, a
- * business decision, or something the evidence leaves genuinely
- * contradictory or absent even after investigating. For those, the
- * dispatched subagent does not guess: it returns a structured escalation
- * (question, the contradicting/unclear findings, and its best-guess
- * recommendation) instead of a confident answer, verified against a written
- * note rather than trusted from its own return text — this tool's
- * equivalent of long-loop.md's research-and-decide reviewer contract,
- * generalized to any ad hoc question instead of only Ailly's draft gates.
+ * Clarify: a general-purpose "I have a question mid-thought" tool. It does
+ * not answer inline; it dispatches a fresh, isolated research-and-decide
+ * subagent that checks local convention first, uses research_dispatch for
+ * anything research can settle, and either answers with evidence or returns
+ * a structured escalation instead of guessing past genuine ambiguity. Its
+ * status is parsed from a strict contract line, and its note file's
+ * existence is verified on disk, rather than trusting free-form text alone.
  */
 
 import * as fs from "node:fs";
 import * as path from "node:path";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
+import { loadPrompt } from "../lib/prompts.ts";
 import { nextDatedSlug, runPiSubprocess, slugify, todayIso } from "../lib/subprocess.ts";
 
+// Must mirror the skills research_dispatch accepts (research-subagent/index.ts).
 const RESEARCH_SKILLS = ["archaeology", "codebase", "dependencies", "domain", "internal", "public", "books", "papers"];
 
 const ClarifyParams = Type.Object({
@@ -47,7 +29,11 @@ const ClarifyParams = Type.Object({
 	model: Type.Optional(Type.String({ description: "Model id/pattern the dispatched research-and-decide subagent runs with." })),
 });
 
-const CLARIFY_MARKER = /^CLARIFY:\s*(ANSWERED|NEEDS_HUMAN)\s*$/im;
+// The regex half of the contract whose prompt half is lib/prompts/clarify.md
+// step 5; breaking either side alone silently degrades every result to
+// no_contract. The *last* occurrence wins, in case the subagent quotes the
+// contract line before emitting the real one.
+const CLARIFY_MARKER = /^CLARIFY:\s*(ANSWERED|NEEDS_HUMAN)\s*$/gim;
 
 interface ParsedClarifyResult {
 	status: "answered" | "needs_human" | "no_contract";
@@ -55,55 +41,12 @@ interface ParsedClarifyResult {
 }
 
 function parseClarifyOutput(output: string): ParsedClarifyResult {
-	const match = CLARIFY_MARKER.exec(output);
+	const matches = [...output.matchAll(CLARIFY_MARKER)];
+	const match = matches[matches.length - 1];
 	if (!match) return { status: "no_contract", body: output };
 	const status = match[1].toUpperCase() === "ANSWERED" ? "answered" : "needs_human";
-	const body = output.slice(match.index + match[0].length).trim();
+	const body = output.slice(match.index! + match[0].length).trim();
 	return { status, body: body || output };
-}
-
-function buildSystemPrompt(notePath: string): string {
-	return [
-		"You are Clarify: an isolated research-and-decide subagent answering one specific question that came up during",
-		"another (sub)agent's work. You are not that agent's whole session — you have only the question and context below,",
-		"plus your own tools. Work the question the way a careful person would, then report back in a strict format so the",
-		"caller can act on it deterministically.",
-		"",
-		"## Process",
-		"",
-		"1. Classify the question first:",
-		"   - **Local style/convention** (\"how should this look/be named/be structured here\") — check this repo directly",
-		`     first: read AGENTS.md/DEVELOPMENT.md/README.md, grep for existing examples, and consult the \`patterns:using-patterns\``,
-		"     or other loaded skills before reaching for external research. Local precedent usually settles these fastest.",
-		"   - **Factual/external, domain, historical, or dependency-related** — dispatch the `research_dispatch` tool with",
-		`     whichever skill(s) fit (${RESEARCH_SKILLS.join(", ")}); pass more than one in the same call when the question`,
-		"     spans skills (e.g. \"why does this exist and what does it do\" -> dependencies + archaeology). Each skill already",
-		"     applies Jeopardy-search query expansion and, for load-bearing claims, a falsification pass — you do not need to",
-		"     re-derive that discipline yourself.",
-		"   - **Preference or business decision** (\"should we accept this breaking change\", \"which vendor/approach did we pick\") —",
-		"     do not assume this is undiscoverable just because it is a business question. Business decisions are frequently",
-		"     already made and recorded somewhere: dispatch `research_dispatch` with the `internal` skill (Slack, Confluence,",
-		"     Linear, Notion, tickets, design docs) to check whether this decision already exists before treating it as",
-		"     NEEDS_HUMAN. A prior decision found there, even an old one, is a sourced answer — cite it and its date/staleness",
-		"     risk rather than re-litigating it. Only skip straight to NEEDS_HUMAN without checking `internal` when there is no",
-		"     plausible internal source to check at all (e.g. a brand-new project with no history yet).",
-		"2. If research or local convention gives a clear, sourced answer with no real contradiction, that is your answer.",
-		"3. Decide ANSWERED vs NEEDS_HUMAN. Use NEEDS_HUMAN when any of these hold, even after investigating:",
-		"   - **Irreversible or high-blast-radius**: acting on the wrong guess here is not cheaply undone.",
-		"   - **Authority-only and undocumented**: it is a preference/business decision, you checked `research:internal`",
-		"     (when there was any plausible source to check), and no prior decision turned up — or what turned up is stale or",
-		"     contradicted elsewhere. Only humans can make the call now; do not treat 'it's a business question' alone as a",
-		"     reason to skip the check.",
-		"   - **Underdetermined or contradictory**: local convention and research disagree, or neither says anything usable.",
-		"   Do not guess past these triggers. A wrong confident answer is worse than an honest escalation.",
-		`4. Write a note to this exact path: ${notePath}`,
-		"   Markdown, with sections: `# Clarify: <question>`, `## Status` (Answered/Needs human), `## Findings` (what you",
-		"   checked, what you found, contradictions if any), `## Answer` (the answer if ANSWERED) or `## Recommended Answer`",
-		"   (your best guess if NEEDS_HUMAN, clearly labeled as unconfirmed), and `## Sources` (files read, skills",
-		"   dispatched, commands run).",
-		"5. End your final message with exactly one line, verbatim, then the same content as the note body beneath it:",
-		"   `CLARIFY: ANSWERED` or `CLARIFY: NEEDS_HUMAN` — nothing else on that line, no extra formatting around it.",
-	].join("\n");
 }
 
 export default function (pi: ExtensionAPI) {
@@ -137,7 +80,7 @@ export default function (pi: ExtensionAPI) {
 
 			const run = await runPiSubprocess({
 				label: "clarify",
-				systemPrompt: buildSystemPrompt(notePath),
+				systemPrompt: loadPrompt("clarify", { notePath, researchSkills: RESEARCH_SKILLS.join(", ") }),
 				task,
 				model: params.model,
 				cwd: ctx.cwd,

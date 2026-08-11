@@ -1,10 +1,7 @@
 /**
- * Minimal plan.md parsing shared by the quick-loop and long-loop drivers.
- *
- * `plan.md`'s own format (developer/skills/ailly/references/phases/plan.md)
- * is a `- [ ] Step N: <name>` checklist. Counting those steps deterministically
- * is what lets a driver know how many red-green-refactor dispatches to run
- * without asking a model to "remember" the plan's shape.
+ * Minimal plan.md parsing: `plan.md`'s format (references/phases/plan.md) is
+ * a `- [ ] Step N: <name>` checklist; counting steps deterministically tells
+ * a driver how many red-green-refactor dispatches to run.
  */
 
 const STEP_LINE = /^-\s*\[[ xX]\]\s*Step\s+(\d+)\s*:/;
@@ -19,10 +16,10 @@ export function countPlanSteps(planMarkdown: string): number {
 }
 
 /**
- * Build-step completion is verified by a sentinel line the quick-loop/
- * long-loop dispatch instructions ask the red-green-refactor subagent to
- * append to plan.md, not by trusting the subagent's own return text:
- * "STEP <n> COMPLETE" or "STEP <n> ABORTED: <reason>".
+ * Build-step completion is verified by a sentinel line the dispatch
+ * instructions (lib/prompts/quick-loop-step.md) ask the subagent to append
+ * to plan.md — "STEP <n> COMPLETE" or "STEP <n> ABORTED: <reason>" — not by
+ * trusting its return text.
  */
 export type StepSentinel = { status: "complete" } | { status: "aborted"; reason: string } | { status: "missing" };
 

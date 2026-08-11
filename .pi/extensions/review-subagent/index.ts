@@ -1,19 +1,8 @@
 /**
- * Review Workflow
- *
- * Models `general:review`'s Journey (Compose → Dispatch → Converge → Fix →
- * Re-evaluate) as a dedicated pi tool for its two steps that are pure
- * mechanics, not judgment. The Dispatch+Converge implementation lives in
- * `../lib/review.ts` so `ailly_quick_loop` and the long-loop driver can run
- * the exact same contract automatically after every artifact-producing
- * phase, not only when the top-level model remembers to call this tool.
- *
- * Composition (step 1: which specialists apply) stays a judgment call for
- * the calling model, since it requires reading the artifact and matching it
- * against installed specialists' descriptions — genuine selection, not
- * mechanical process. Fix (step 4) and re-evaluate (step 5) likewise stay
- * separate turns/agents per the skill's own "evaluation never emits edits"
- * rule; this tool only ever evaluates.
+ * review_run: general:review's Dispatch + Converge as one tool call (the
+ * implementation lives in `../lib/review.ts`). Composition, fixing, and
+ * re-evaluation stay with the calling model — those are judgment, not
+ * mechanics, and "evaluation never emits edits" per the skill.
  */
 
 import * as path from "node:path";

@@ -1,13 +1,6 @@
 /**
- * Ailly Subagent Runner
- *
- * A pi-native `Task` equivalent for the `developer:ailly` lifecycle coordinator
- * (and any other skill in this repository that needs isolated subagent
- * dispatch, e.g. `general:dispatching-agents`).
- *
- * The dispatch mechanics live in `../lib/ailly-phases.ts` so `ailly_quick_loop`
- * and the long-loop driver can reuse the exact same reference resolution and
- * subprocess isolation without going through this tool's own LLM-facing call.
+ * ailly_subagent: a pi-native `Task` equivalent for the `developer:ailly`
+ * lifecycle coordinator. Dispatch mechanics live in `../lib/ailly-phases.ts`.
  */
 
 import * as path from "node:path";

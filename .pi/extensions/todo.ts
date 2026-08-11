@@ -1,3 +1,7 @@
+// Vendored unchanged from @earendil-works/pi-coding-agent
+// examples/extensions/todo.ts, as Ailly's TodoWrite equivalent (see
+// developer/skills/ailly/references/agents/pi.md). Do not review or edit as
+// original code; re-vendor to update.
 /**
  * Todo Extension - Demonstrates state management via session entries
  *

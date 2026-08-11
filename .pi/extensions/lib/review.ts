@@ -1,19 +1,17 @@
 /**
- * Shared general:review Dispatch + Converge implementation.
- *
- * Factored out of `review_run` so `ailly_quick_loop` and the long-loop
- * driver can run the same "every artifact gets reviewed, convergence is
- * mandatory" contract automatically after each phase, not only when the
- * top-level model remembers to call the tool itself.
+ * Shared general:review Dispatch + Converge implementation, used by both
+ * `review_run` and `ailly_quick_loop`'s automatic per-phase reviews.
  */
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { loadPrompt } from "./prompts.ts";
 import { findSkillByName, specialistSkillName } from "./skills.ts";
 import { createProgressMultiplexer, isFailed, runPiSubprocess, type SubprocessRunResult } from "./subprocess.ts";
 
 const REVIEW_SKILL_PATH = "general/skills/review/SKILL.md";
 
+/** Body of the `## <heading>` section (exact match, stops at the next `##`); "" on miss. */
 export function extractSection(markdown: string, heading: string): string {
 	const lines = markdown.split("\n");
 	const startIndex = lines.findIndex((line) => line.trim() === `## ${heading}`);
@@ -51,9 +49,13 @@ export interface RunReviewResult {
 }
 
 /**
- * Run general:review's Dispatch (step 2) and mandatory Converge (step 3) for
- * one artifact: the base reviewer plus any named specialists, in parallel,
- * isolated subprocesses, followed by one dedicated convergence subprocess.
+ * Run general:review's Dispatch and mandatory Converge for one artifact: the
+ * base reviewer plus any named specialists, in parallel, isolated
+ * subprocesses, followed by one dedicated convergence subprocess.
+ *
+ * Returns `{ error }` only when an input file cannot be read; reviewer or
+ * convergence subprocess failures surface on the success shape via
+ * `anyReviewerFailed`/`convergenceFailed`.
  */
 export async function runReview(opts: RunReviewOptions): Promise<RunReviewResult | { error: string }> {
 	const { artifactPath, specialists, model, cwd, repoRoot, signal, onProgress } = opts;
@@ -66,8 +68,14 @@ export async function runReview(opts: RunReviewOptions): Promise<RunReviewResult
 		return { error: `Could not read artifact ${artifactPath}: ${(err as Error).message}` };
 	}
 
-	const reviewSkillText = await fs.promises.readFile(path.join(repoRoot, REVIEW_SKILL_PATH), "utf-8");
+	let reviewSkillText: string;
+	try {
+		reviewSkillText = await fs.promises.readFile(path.join(repoRoot, REVIEW_SKILL_PATH), "utf-8");
+	} catch (err) {
+		return { error: `Could not read ${REVIEW_SKILL_PATH}: ${(err as Error).message}` };
+	}
 	const baseRubric = extractSection(reviewSkillText, "Base Reviewer");
+	if (!baseRubric) return { error: `No "## Base Reviewer" section found in ${REVIEW_SKILL_PATH}` };
 
 	type ReviewerJob = { id: string; skillPath: string | null; systemPrompt: string | null; error?: string };
 
@@ -75,17 +83,7 @@ export async function runReview(opts: RunReviewOptions): Promise<RunReviewResult
 		{
 			id: "base",
 			skillPath: path.join(repoRoot, REVIEW_SKILL_PATH),
-			systemPrompt: [
-				"You are the always-present base reviewer from general:review's composed set.",
-				"Evaluate the artifact below against exactly these four criteria. Do not fix",
-				"anything. List verified findings ranked by severity (High/Medium/Low).",
-				"",
-				baseRubric,
-				"",
-				`## Artifact (${artifactPath})`,
-				"",
-				artifactContent,
-			].join("\n"),
+			systemPrompt: loadPrompt("review-base", { baseRubric, artifactPath, artifactContent }),
 		},
 		...(specialists ?? []).map((specialist): ReviewerJob => {
 			const name = specialistSkillName(specialist);
@@ -103,24 +101,10 @@ export async function runReview(opts: RunReviewOptions): Promise<RunReviewResult
 	];
 
 	for (const job of jobs) {
-		if (job.error) continue;
+		if (job.error || job.systemPrompt) continue;
 		try {
-			const body = await fs.promises.readFile(job.skillPath!, "utf-8");
-			job.systemPrompt =
-				job.id === "base"
-					? job.systemPrompt
-					: [
-							`You are the specialist reviewer "${job.id}", composed into general:review's set because its`,
-							"description matched this artifact. Produce your own critique per your skill",
-							"below against the artifact. Your critique document is your findings — do not",
-							"write a generic rubric first. Do not fix anything.",
-							"",
-							body,
-							"",
-							`## Artifact (${artifactPath})`,
-							"",
-							artifactContent,
-						].join("\n");
+			const skillBody = await fs.promises.readFile(job.skillPath!, "utf-8");
+			job.systemPrompt = loadPrompt("review-specialist", { id: job.id, skillBody, artifactPath, artifactContent });
 		} catch (err) {
 			job.error = `Could not read specialist skill ${job.skillPath}: ${(err as Error).message}`;
 		}
@@ -142,6 +126,8 @@ export async function runReview(opts: RunReviewOptions): Promise<RunReviewResult
 		}),
 	);
 
+	// Failed reviewers still feed a FAILED block into convergence rather than
+	// aborting: convergence is mandatory even when some reviewers fail.
 	const findingsBlocks = reviewerOutcomes.map((r) => {
 		if (r.error) return `### ${r.id}\n\nFAILED: ${r.error}`;
 		const failed = isFailed(r.run!);
@@ -149,27 +135,9 @@ export async function runReview(opts: RunReviewOptions): Promise<RunReviewResult
 		return `### ${r.id}\n\n${body}`;
 	});
 
-	const convergencePrompt = [
-		"You are the mandatory convergence step of general:review's Journey (step 3).",
-		"Below are raw findings from every composed reviewer for one artifact.",
-		"Perform, in order:",
-		"1. VERIFY each candidate finding against the actual artifact (re-read it; trace the claim). Drop what does not hold.",
-		"2. DEDUPLICATE findings more than one reviewer raised.",
-		"3. SEVERITY-RANK the survivors (High/Medium/Low).",
-		"Output only the verified, deduplicated, ranked list. Do not fix anything.",
-		"",
-		`## Artifact (${artifactPath})`,
-		"",
-		artifactContent,
-		"",
-		"## Raw reviewer findings",
-		"",
-		findingsBlocks.join("\n\n"),
-	].join("\n");
-
 	const convergence = await runPiSubprocess({
 		label: "review-converge",
-		systemPrompt: convergencePrompt,
+		systemPrompt: loadPrompt("review-converge", { artifactPath, artifactContent, findings: findingsBlocks.join("\n\n") }),
 		task: `Converge the reviewer findings for ${artifactPath} per the instructions above.`,
 		model,
 		cwd,

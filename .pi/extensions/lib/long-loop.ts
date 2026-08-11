@@ -1,14 +1,7 @@
 /**
- * Long-loop background-run bookkeeping.
- *
- * The long loop (developer/skills/ailly/references/shapes/long-loop.md) is
- * an autonomous, potentially hours-long run — too long to hold an
- * interactive tool call open for. This module makes it a detached
- * background `pi` process instead: `runPiSubprocessDetached` spawns it with
- * its own `--mode json` stream redirected to a journal file on disk, and
- * the rest of this module reads that journal and a small status header back
- * deterministically, so status/steering never has to trust the background
- * run's own self-report while it is still going.
+ * Long-loop background-run bookkeeping: spawn the detached `pi` process with
+ * its `--mode json` stream redirected to a journal file, and read that
+ * journal plus a small status header back deterministically.
  */
 
 import { spawn } from "node:child_process";

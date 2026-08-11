@@ -1,36 +1,17 @@
 /**
- * Ailly Long Loop
- *
- * Models developer/skills/ailly/references/shapes/long-loop.md as a
- * dedicated pi workflow. Long loop is fundamentally different from quick
- * loop: it runs autonomously at project scale, potentially for hours, with
- * a research-and-decide reviewer clearing each draft gate instead of a
- * human. Holding one synchronous tool call open for that long blocks the
- * interactive session with no way to interject, and loses everything on a
- * transient error. So this models it as three tools plus a background
- * watcher instead of one big call:
- *
- * - `ailly_long_loop_start` spawns the loop as a **detached background pi
- *   process** — a real second agent, with its own session file colocated in
- *   the session folder, given the same ailly_subagent/review_run tools this
- *   package provides — and returns immediately. Its `--mode json` event
- *   stream is redirected straight to a journal file; nothing about status
- *   reporting trusts the background run's self-report.
- * - `ailly_long_loop_status` reads that journal and a small status header
- *   back deterministically: process liveness, staleness (no journal growth
- *   in the last several minutes), and a scan for the long-loop reviewer
- *   contract's own `ESCALATE:` markers across the session folder's artifacts.
- * - `ailly_long_loop_stop` ends it.
- * - A `session_start`-registered background watcher is the "background LLM
- *   steering" piece: every few minutes it checks every long loop running
- *   under the current project, and when one goes stale, escalates, or exits,
- *   it notifies and injects a follow-up message into the *live* interactive
- *   session so the foreground model picks it up and can decide whether to
- *   intervene — without the human having to remember to poll status by hand.
+ * Ailly's long loop (references/shapes/long-loop.md) runs autonomously for
+ * potentially hours — too long for one synchronous tool call. So: three
+ * tools plus a watcher. `ailly_long_loop_start` spawns a detached background
+ * pi process whose `--mode json` stream lands in a journal file;
+ * `ailly_long_loop_status` reads liveness/staleness/`ESCALATE:` markers back
+ * deterministically rather than trusting the run's self-report;
+ * `ailly_long_loop_stop` ends it; and a `session_start` watcher injects a
+ * follow-up into the live session when a loop stalls, escalates, or exits.
  */
 
 import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
+import { loadPrompt } from "../lib/prompts.ts";
 import {
 	isPidAlive,
 	journalLastModified,
@@ -45,20 +26,6 @@ import { resolveAillySessionFolder, listAillySessionDirs } from "../lib/session.
 
 const STALE_MINUTES = 10;
 const WATCH_INTERVAL_MS = 3 * 60 * 1000;
-
-function buildLongLoopTask(topic: string, sessionFolder: string): string {
-	return [
-		`Read developer/skills/ailly/SKILL.md, developer/skills/ailly/references/shapes/long-loop.md,`,
-		`and developer/skills/ailly/references/agents/pi.md.`,
-		`Run the long loop, exactly as those three documents specify, for topic "${topic}" at session folder ${sessionFolder}.`,
-		`Dispatch every phase through the ailly_subagent tool, one reference at a time. Review every artifact through the`,
-		`review_run tool. At each draft gate, dispatch a fresh research-and-decide reviewer per long-loop.md section 2`,
-		`(use ailly_subagent's thinking/intent-review reference, or run the reviewer contract inline if no closer match`,
-		`applies) to resolve open items and clear the gate, escalating per the three triggers in section 4 rather than`,
-		`guessing. The human merge gate and the Closing Bell are never auto-cleared by any reviewer — stop there and wait.`,
-		`When you stop, your final message must be the end-of-run report from long-loop.md section 7.`,
-	].join(" ");
-}
 
 const StartParams = Type.Object({
 	topic: Type.String({ description: "Short topic/feature description for the session folder slug and the run's task." }),
@@ -188,7 +155,7 @@ export default function (pi: ExtensionAPI) {
 				};
 			}
 
-			const task = buildLongLoopTask(params.topic, sessionFolder);
+			const task = loadPrompt("long-loop-task", { topic: params.topic, sessionFolder });
 			const status = startLongLoopProcess({ sessionFolder, task, topic: params.topic, model: params.model, cwd: ctx.cwd });
 			notifiedDone.delete(sessionFolder);
 			notifiedStale.delete(sessionFolder);

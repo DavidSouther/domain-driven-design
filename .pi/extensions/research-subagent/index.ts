@@ -1,30 +1,8 @@
 /**
- * Research Dispatch Workflow
- *
- * Models `research:using-research` as a dedicated pi tool instead of leaving
- * its mechanics to model orchestration. The skill's own routing table
- * ("which question type maps to which research skill") stays a judgment
- * call for the calling model — that is genuine language understanding, not
- * busywork. What this tool takes over is everything downstream of that
- * choice, which is exactly where prose-only orchestration tends to drift:
- *
- * - **Notes-folder naming.** `YYYY-MM-DD-<letter>-<topic>` requires knowing
- *   today's date and scanning existing folders for the next free letter.
- *   Models get this wrong in ordinary ways: stale dates, timezone slips, or
- *   picking a letter another topic already used today. This tool computes
- *   it deterministically (see `nextDatedSlug` in `../lib/subprocess.ts`).
- * - **Isolation.** Each dispatched skill gets its own subprocess reading
- *   only that skill's `SKILL.md`, not the `using-research` router or any
- *   sibling skill's file — the isolation the skill package asks for but
- *   cannot enforce on itself.
- * - **Parallel dispatch.** "Combining Skills" in `using-research` asks the
- *   caller to remember to fan out and synthesize. Passing multiple `skills`
- *   dispatches them concurrently in one tool call; the model never has to
- *   remember to issue N separate Task calls for a combined question.
- * - **Contract verification.** Every research skill promises to write
- *   `<skill>.md` into the notes folder. This tool checks that the file
- *   actually landed there after the subprocess exits, instead of trusting
- *   the child's self-report.
+ * research_dispatch: models `research:using-research`'s downstream mechanics
+ * (notes-folder naming, per-skill subprocess isolation, parallel dispatch,
+ * and verifying each skill's promised `<skill>.md` actually landed on disk)
+ * as code. Which skill fits the question stays the calling model's judgment.
  */
 
 import * as fs from "node:fs";
@@ -32,6 +10,7 @@ import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { Type } from "typebox";
+import { loadPrompt } from "../lib/prompts.ts";
 import { createProgressMultiplexer, isFailed, nextDatedSlug, runPiSubprocess, slugify, todayIso } from "../lib/subprocess.ts";
 
 const EXTENSION_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -124,18 +103,9 @@ export default function (pi: ExtensionAPI) {
 						};
 					}
 
-					const systemPrompt = [
-						"You are an isolated research subagent, dispatched by research:using-research.",
-						`Read only the skill below (sourced from ${relPath}) and execute it exactly.`,
-						"Do not read any other research:* skill or the using-research router in this process.",
-						`Write your findings file into this exact notes folder: ${notesFolder}`,
-						"",
-						skillBody,
-					].join("\n");
-
 					const result = await runPiSubprocess({
 						label: skill,
-						systemPrompt,
+						systemPrompt: loadPrompt("research-skill", { relPath, notesFolder, skillBody }),
 						task: params.question,
 						model: params.model,
 						cwd: ctx.cwd,

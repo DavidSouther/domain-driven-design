@@ -1,13 +1,11 @@
 /**
- * Shared Ailly phase/ability reference dispatch.
- *
- * Factored out of `ailly_subagent` so `ailly_quick_loop` and the long-loop
- * driver can dispatch the same isolated-reference contract without going
- * through the tool-calling LLM in between phases.
+ * Shared Ailly phase/ability reference dispatch, used by `ailly_subagent`
+ * and `ailly_quick_loop`.
  */
 
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { loadPrompt } from "./prompts.ts";
 import { runPiSubprocess, type SubprocessRunResult } from "./subprocess.ts";
 
 /**
@@ -62,14 +60,7 @@ export async function runAillyReference(opts: RunAillyReferenceOptions): Promise
 		return { reference, referencePath: relPath, error: `Could not read reference ${relPath}: ${(err as Error).message}` };
 	}
 
-	const systemPrompt = [
-		"You are an isolated Ailly phase/ability subagent, dispatched by developer:ailly.",
-		`Read only the reference below (sourced from ${relPath}) and execute it exactly.`,
-		"Do not read any other developer:ailly phase or ability reference in this process.",
-		"",
-		referenceBody,
-	].join("\n");
-
+	const systemPrompt = loadPrompt("ailly-reference", { relPath, referenceBody });
 	const run = await runPiSubprocess({ label: reference, systemPrompt, task, model, cwd, signal, onProgress });
 	return { reference, referencePath: relPath, run };
 }

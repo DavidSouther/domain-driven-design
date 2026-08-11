@@ -1,19 +1,8 @@
 /**
- * Skill-name resolution, mirroring pi's own discovery precedence.
- *
- * `review_run`'s `specialists` parameter names a skill the way pi itself
- * knows it — by frontmatter `name`, not by a directory convention this
- * package invents. That is what makes "a newly installed specialist is
- * composed in with no edit here" (general:review's own words) actually true
- * for pi: a project using this package can add its own brand-new specialist
- * skill under its own `.pi/skills/` or `.agents/skills/`, or get one from a
- * *different* installed pi package, and name it here with zero changes to
- * this extension or to general/skills/review/SKILL.md.
- *
- * This resolves by walking the same locations pi's own resource loader
- * checks, project scope before package scope before global scope, so a
- * project-local override of a same-named specialist wins the way it would
- * for pi's own skill discovery.
+ * Skill-name resolution mirroring pi's own discovery precedence — project
+ * scope, then this package's skill dirs, then user-global — so specialists
+ * are named by frontmatter `name` exactly the way pi knows them, and a newly
+ * installed or project-local skill resolves with no edit here.
  */
 
 import * as fs from "node:fs";
