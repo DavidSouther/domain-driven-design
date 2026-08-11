@@ -30,3 +30,7 @@ Do not present multiple questions or suggestions at once. If there are several s
 ## Just do the simple thing
 
 If the suggestion is for a typo or minor formatting, just tell the user about the change and then make it.
+
+## Pi Workflow
+
+Before posing a clarifying question the repo's own conventions or research could settle, try the `clarify` tool (`.pi/extensions/clarify/`) first. It dispatches an isolated research-and-decide subagent — local convention check, then `research_dispatch` as needed — and only asks for human input when the question is genuinely a preference/business decision or the evidence stays contradictory after investigating. When it does escalate, relay its question, findings, and recommended answer to the user as a Clarifying Question above (present the recommendation as the suggestion to accept or correct), not as a raw dump of its output.

@@ -261,11 +261,15 @@ export async function runPiSubprocess(opts: RunPiSubprocessOptions): Promise<Sub
  * get wrong: stale dates, wrong timezone, or reusing an already-taken letter.
  */
 export function nextDatedSlug(parentDir: string, date: string, topicSlug: string): string {
+	// Match by name prefix regardless of entry type: some callers create a
+	// session/notes *directory* per dated slug (research_dispatch, session.ts),
+	// others write one flat *file* per dated slug (clarify's `<slug>.md`).
+	// Filtering to directories only would let a same-day flat-file caller
+	// always compute letter "A" and silently collide with an earlier note.
 	let existingLetters: string[] = [];
 	try {
 		existingLetters = fs
 			.readdirSync(parentDir, { withFileTypes: true })
-			.filter((e) => e.isDirectory())
 			.map((e) => e.name)
 			.filter((name) => name.startsWith(`${date}-`))
 			.map((name) => name.slice(date.length + 1, date.length + 2))

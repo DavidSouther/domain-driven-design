@@ -22,10 +22,11 @@ Sibling workflows outside the five-phase coordinator get the same dedicated-tool
 
 - `research:using-research` dispatches through `research_dispatch` (`.pi/extensions/research-subagent/`) — see that skill's own "Pi Workflow" section.
 - `general:review` dispatches and converges through `review_run` (`.pi/extensions/review-subagent/`) — see that skill's own "Pi Workflow" section.
+- `general:conversation`'s "investigate before you ask" step runs through `clarify` (`.pi/extensions/clarify/`) — see that skill's own "Pi Workflow" section and [Clarify](#clarify) below.
 - Quick-loop Mode runs end to end through `ailly_quick_loop` (`.pi/extensions/ailly-quick-loop/`) — see the Quick-loop Mode section's own "Pi Workflow" note in this coordinator's `SKILL.md`.
 - Long-loop Mode runs as a detached background process managed by `ailly_long_loop_start`/`_status`/`_stop` (`.pi/extensions/ailly-long-loop/`) — see `references/shapes/long-loop.md`'s own "Pi Workflow" section (8).
 
-All five tools (`ailly_subagent`, `research_dispatch`, `review_run`, `ailly_quick_loop`, `ailly_long_loop_start`) share one spawning primitive, `.pi/extensions/lib/subprocess.ts`, so the isolation mechanics (temp-file system prompts, JSON-mode child parsing, abort handling) and the deterministic dated-notes-folder naming are implemented once, not five times. `ailly_quick_loop` and the long-loop driver reuse `ailly_subagent`'s and `review_run`'s own dispatch logic directly (`.pi/extensions/lib/ailly-phases.ts`, `.pi/extensions/lib/review.ts`) rather than re-implementing it, so all entry points — a single phase dispatch, a full quick loop, or an autonomous long loop — run the exact same phase-isolation and review contract.
+All six tools (`ailly_subagent`, `research_dispatch`, `review_run`, `clarify`, `ailly_quick_loop`, `ailly_long_loop_start`) share one spawning primitive, `.pi/extensions/lib/subprocess.ts`, so the isolation mechanics (temp-file system prompts, JSON-mode child parsing, abort handling) and the deterministic dated-notes-folder naming are implemented once, not six times. `ailly_quick_loop` and the long-loop driver reuse `ailly_subagent`'s and `review_run`'s own dispatch logic directly (`.pi/extensions/lib/ailly-phases.ts`, `.pi/extensions/lib/review.ts`) rather than re-implementing it, so all entry points — a single phase dispatch, a full quick loop, or an autonomous long loop — run the exact same phase-isolation and review contract.
 
 `review_run`'s specialist reviewers resolve through a second shared module, `.pi/extensions/lib/skills.ts`: it looks up a specialist by pi's own skill `name`, searching the calling project's own `.pi/skills`/`.agents/skills` first, then this package's plugin skills, then user-global skills — the same precedence pi's own resource loader uses. This is why a project that installs this package can hand `review_run` a specialist it wrote itself, or one it got from an entirely different installed pi package, without editing this adapter or `general:review`.
 
@@ -52,7 +53,23 @@ ailly_subagent({
 
 Per `general/skills/dispatching-agents/model-selection.md`'s mandate-with-announce rule: `model` is a confirmed model-selection mechanism for this tool (it is passed straight through to the child `pi` process's `--model` flag) — set it directly on every dispatch this skill package performs, and announce the model chosen to the developer either way.
 
-For dispatch outside Ailly's five closed references — e.g. `general:dispatching-agents`' independent research/investigation tasks — call `ailly_subagent` is not applicable (its `reference` enum is deliberately closed to Ailly's own contract). Run those tasks inline within the current pi session instead, or extend `.pi/extensions/ailly-subagent/index.ts` locally with an open-ended `systemPrompt` mode if a project needs general-purpose subagent dispatch beyond Ailly's phases.
+For dispatch outside Ailly's five closed references — e.g. `general:dispatching-agents`' independent research/investigation tasks — `ailly_subagent` is not applicable (its `reference` enum is deliberately closed to Ailly's own contract). Use `research_dispatch` for a specific research:* skill, `review_run` to compose reviewers, or `clarify` for a single ad hoc question that needs its own research-and-decide pass (see below).
+
+## Clarify
+
+`clarify` (`.pi/extensions/clarify/index.ts`) is the general-purpose counterpart to `ailly_subagent`: usable by any (sub)agent in this project — the top-level session, or any subagent dispatched by one of this package's own tools, since all of them are just `pi` processes with `clarify` available too — for one specific question that comes up mid-thinking rather than a named Ailly reference or research skill.
+
+It dispatches a single isolated subagent with an open-ended system prompt, not a closed reference file: the subagent decides whether the question is local convention (check the repo directly), researchable (dispatch `research_dispatch` with whatever skill(s) fit), or authority-only (a preference/business decision no research settles). It ends with exactly one contract line, `CLARIFY: ANSWERED` or `CLARIFY: NEEDS_HUMAN`, which `clarify` parses deterministically rather than trusting free-form text — a missing line is treated as unresolved, the same fail-safe direction as `research_dispatch`'s notes-file check. It also writes a note to `.ailly/clarify/YYYY-MM-DD-<letter>-<topic>.md` and verifies that file landed on disk.
+
+```
+clarify({
+  question: "Should this field be camelCase or snake_case in the new endpoint?",
+  context: "Adding a field to src/api/routes.ts; existing endpoints are mixed.",
+  model: "<the model general/skills/dispatching-agents/model-selection.md recommends>"
+})
+```
+
+On `NEEDS_HUMAN`, relay the returned question, findings, and recommended answer to the user per `general:conversation`'s Clarifying Questions guidance — present the recommendation as the suggestion to accept or correct, not a raw dump of the tool's output. `clarify` also fires a non-blocking `ctx.ui.notify` when running interactively, so the need for input is visible even before that turn's text renders.
 
 ## Model Mandate
 

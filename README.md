@@ -33,6 +33,7 @@ Repo-local Codex marketplace metadata lives at `.agents/plugins/marketplace.json
    - `review_run` — general:review's dispatch-then-converge, so convergence can't be silently skipped.
    - `ailly_quick_loop` — runs Quick-loop Mode end to end: every phase, `review_run` on every artifact including the build diff, halting with a diagnosable report at the first missing artifact or aborted build step.
    - `ailly_long_loop_start` / `_status` / `_stop` — runs Long-loop Mode as a detached background `pi` process instead of one blocking call, with a background watcher that nudges the live session if the run stalls, escalates, or exits.
+   - `clarify` — usable by any (sub)agent for one ad hoc question mid-thinking: dispatches a research-and-decide subagent (local convention, then `research_dispatch` as needed) that answers with evidence or returns a structured escalation (question, findings, recommended answer) instead of guessing past genuine ambiguity or an authority-only decision.
    - `todo` is Ailly's `TodoWrite` equivalent.
 
    All five subagent-dispatching tools share one subprocess-spawning module (`.pi/extensions/lib/subprocess.ts`) with reference paths resolved relative to the extension itself, so they survive being installed elsewhere; the loop tools reuse `ailly_subagent`'s and `review_run`'s own dispatch logic rather than re-implementing it. See `developer/skills/ailly/references/agents/pi.md` for the full tool-mapping table.
