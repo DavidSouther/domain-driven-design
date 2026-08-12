@@ -86,3 +86,14 @@ When the run reaches the human merge gate or otherwise finishes, the coordinator
 - **Where it stopped.** The merge gate (awaiting human approval).
 
 The destination follows the loop's retention rule. For a feature loop the report is inline only, because the feature cleanup removes the session folder and a persisted file would earn nothing. For a project loop the coordinator also writes a `report.md` that becomes a supporting sub-page in the long-lived documents (`project-cycle.md`, "Long-Lived Documentation"), persisted alongside the design and the Closing Bell.
+
+## 8. Pi Workflow
+
+A long loop runs autonomously for project-scale durations — too long to hold one interactive tool call open for, and a synchronous call gives the human no way to interject or recover from a transient failure mid-run. Under pi, this is modeled as a detached background process plus a background watcher, not one blocking call:
+
+- `ailly_long_loop_start` (`.pi/extensions/ailly-long-loop/`) spawns the loop as a real second `pi` process — with its own session file colocated in the session folder and this same package's `ailly_subagent`/`review_run` tools available to it — and returns immediately. Its `--mode json` event stream is redirected straight to a journal file on disk.
+- `ailly_long_loop_status` reports progress by reading that journal and a small status file back, not by trusting the background run's self-report: process liveness, staleness (no journal growth in the last several minutes), and a scan of the session folder's artifacts for this reference's own `ESCALATE:` contract (section 4).
+- `ailly_long_loop_stop` ends it.
+- This is also where the "background LLM steering" the loop's autonomy needs comes from: a watcher registered at session start checks every running long loop every few minutes and, when one stalls, escalates, or exits, notifies and injects a follow-up message into the *live* interactive session — so the human does not have to remember to poll status by hand to catch a stuck or escalated run.
+
+See `developer/skills/ailly/references/agents/pi.md` for the full contract.

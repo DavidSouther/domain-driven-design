@@ -1,3 +1,4 @@
 docs
 .DS_Store
 chat/ailly-workspace
+__pycache__/

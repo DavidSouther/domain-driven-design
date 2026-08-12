@@ -21,9 +21,29 @@ Codex uses the `*/.codex-plugin/plugin.json` manifests as its plugin adapter. Th
 
 Repo-local Codex marketplace metadata lives at `.agents/plugins/marketplace.json`. Its entries point back to the plugin folders in this checkout, where each `.codex-plugin/plugin.json` lives. The `characters` package remains Claude Code-specific because it is an output-style package rather than a portable skill plugin.
 
+### Pi Package
+
+On [pi](https://github.com/badlogic/pi-mono), Ailly's workflow is implemented as tools rather than prose. The skills describe the process; the extensions in `.pi/extensions/` carry out the mechanical parts — spawning subagents, naming folders, checking that promised files exist — so those steps don't depend on a model following instructions correctly.
+
+Install with `pi install git:davidsouther/domain-driven-design` from any project. To work on this repo itself, `.pi/settings.json` already self-references the package; approve the project (`pi -a`) and pi discovers the five skill plugins, the `/ailly*` prompt templates in `prompts/`, and the extensions. The root `package.json`'s `pi` manifest (`pi.skills`, `pi.prompts`, `pi.extensions`) contains nothing specific to this checkout's location.
+
+Pi has no built-in `Task` tool, so subagent dispatch is a separate `pi` subprocess per call:
+
+- `ailly_subagent` — runs one Ailly phase or ability in an isolated subprocess that reads exactly one reference file.
+- `research_dispatch` — runs one or more research skills, in parallel when combined; computes the dated notes folder and checks each skill's findings file landed on disk.
+- `review_run` — general:review's dispatch and converge steps in one call, returning a verified, deduplicated, severity-ranked findings list.
+- `ailly_quick_loop` — the quick loop end to end: each phase, a review of each artifact including the build diff, and each build step verified by a sentinel line in `plan.md`. Halts and reports at the first missing artifact or aborted step.
+- `ailly_long_loop_start` / `_status` / `_stop` — the long loop as a detached background process, so it doesn't hold a tool call open for hours; a watcher notifies the interactive session when the run stalls, escalates, or exits.
+- `clarify` — answers one ad hoc question mid-task: a subagent checks local convention, researches what research can settle, and returns either a sourced answer or a structured escalation rather than a guess.
+- `todo` — Ailly's `TodoWrite` equivalent.
+
+The dispatching tools share one subprocess module and resolve reference paths relative to their own install location, so they work wherever the package is installed. The full tool-mapping table is in `developer/skills/ailly/references/agents/pi.md`.
+
+The slash commands are the same as described below: `/ailly [phase] <request>`, the `/ailly-research` through `/ailly-cleanup` phase shortcuts, `/research <question>`, and `/review <artifact> [specialists]`.
+
 ### Other Agent Harnesses
 
-Install or expose the `*/skills/*/SKILL.md` trees using your harness's native skill mechanism. `developer:ailly` is the lifecycle coordinator; it consults `developer/skills/ailly/references/agents/<harness>.md` for host-specific tool names and behavior. Mappings currently exist for Claude Code, Codex, Copilot, and Gemini.
+Install or expose the `*/skills/*/SKILL.md` trees using your harness's native skill mechanism. `developer:ailly` is the lifecycle coordinator; it consults `developer/skills/ailly/references/agents/<harness>.md` for host-specific tool names and behavior. Mappings currently exist for Claude Code, Codex, Copilot, Gemini, and pi.
 
 The `.claude-plugin/` and `.codex-plugin/` manifests are packaging metadata only. They are not the source of truth for the skill behavior.
 
