@@ -1,6 +1,6 @@
 {
   "name": "patterns",
-  "version": "2026.07.1",
+  "version": "2026.08.0",
   "description": "Design patterns to ensure high-quality, idiomatic domain driven design.",
   "author": {
     "name": "David Souther",
