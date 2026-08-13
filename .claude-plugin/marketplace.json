@@ -9,7 +9,7 @@
     {
       "name": "developer",
       "description": "Skills for a software developer agent to follow a strict Domain- and Test-Driven Development lifecycle.",
-      "version": "2026.08.0",
+      "version": "2026.08.1",
       "source": "./developer",
       "owner": {
         "name": "David Souther",
@@ -19,7 +19,7 @@
     {
       "name": "domain",
       "description": "Domain driven design skills library: Bounded Contexts, domain modelling, ubiquitous language, hexagonal architecture, event-sourced architecture.",
-      "version": "2026.08.0",
+      "version": "2026.08.1",
       "source": "./domain",
       "author": {
         "name": "David Souther",
@@ -29,7 +29,7 @@
     {
       "name": "general",
       "description": "General skills library: subagents, skill development, and git worktrees. From obra/superpowers.",
-      "version": "2026.08.0",
+      "version": "2026.08.1",
       "source": "./general",
       "author": {
         "name": "David Souther",
@@ -49,7 +49,7 @@
     {
       "name": "research",
       "description": "Research skills library: public internet, internal documents, domain model, local codebase, and project dependencies.",
-      "version": "2026.07.2",
+      "version": "2026.08.1",
       "source": "./research",
       "author": {
         "name": "David Souther",
