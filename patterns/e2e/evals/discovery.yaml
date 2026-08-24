@@ -132,6 +132,12 @@ cases:
       - { type: text_contains, value: "references/patterns/triangulate.md" }
       - { type: text_not_contains, value: "references/patterns/arrange-act-assert.md" }
 
+  - name: bifurcate-plausible-causes
+    assertions:
+      - { type: text_contains, value: "bifurcate" }
+      - { type: text_contains, value: "references/patterns/bifurcate.md" }
+      - { type: text_not_contains, value: "references/patterns/triangulate.md" }
+
   - name: type-conversion-extract-rewrap
     assertions:
       - { type: text_contains, value: "type-conversion" }

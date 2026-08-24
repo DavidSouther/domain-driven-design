@@ -1,6 +1,6 @@
 ---
 name: using-patterns
-description: Bootstrap and routing skill for design patterns. Loaded at session start to match a design pressure to a pattern — wrapping a primitive as a domain type (newtype), modeling entities and value objects (domain-objects), constructing many-field objects (builder), encapsulating fields (visibility), parsing untrusted input (parse-dont-validate), signalling typed or stringly errors (errors-typed-untyped), encoding lifecycle phases (type-states), persisting without coupling to storage (repository), holding a transactional consistency boundary (aggregate), flushing changes atomically (unit-of-work), wiring a testable service layer (bootstrap-and-service), structuring tests (arrange-act-assert), forcing a real implementation (triangulate), converting between domain types (type-conversion), logging pipeline setup (configuring-logging) versus each log record (emitting-logs), and feature-flag harness setup (configuring-feature-flags) versus flagging one feature (using-feature-flags).
+description: Use when a design pressure needs a named pattern from this catalog — wrapping a primitive (newtype), modeling entities or value objects (domain-objects), many-field construction (builder), encapsulation (visibility), untrusted input (parse-dont-validate), failure signalling (errors-typed-untyped), lifecycle phases (type-states), persistence (repository, aggregate, unit-of-work), application wiring (bootstrap-and-service), tests (arrange-act-assert, triangulate, bifurcate), conversions (type-conversion), logging (configuring-logging, emitting-logs), or feature flags (configuring-feature-flags, using-feature-flags).
 ---
 
 # Design Patterns Workflow
@@ -34,6 +34,7 @@ immediate design pressure.
 | Writing or reviewing any test so it has a clear setup phase, a single action, and focused assertions; or untangling a test whose setup and assertions are interleaved | arrange-act-assert — `references/patterns/arrange-act-assert.md` |
 | A UI screen or console is driven repeatedly across acceptance/e2e tests, and selector/wait duplication should localize behind verb-phrase actions | page-objects — `references/patterns/page-objects.md` |
 | A fake (hardcoded) implementation passes the first test and the correct generalization is not yet obvious — write a second test that forces the real implementation rather than guessing the abstraction | triangulate — `references/patterns/triangulate.md` |
+| Several plausible root causes remain after a failure and the next diagnostic test should eliminate roughly half of them — pass/fail (or two explicit outcomes) each implicate a different partition of the hypothesis space | bifurcate — `references/patterns/bifurcate.md` |
 | Converting one domain type to another, extracting a wrapped primitive to rewrap as something else, or reshaping an aggregate across lifecycle stages — visible as `as` casts, primitive extraction, or duplicated `to_X`/`from_X` pairs | type-conversion — `references/patterns/type-conversion.md` |
 | Bootstrapping a service's logging pipeline ONCE at process start — subscriber/registry, formatter/filter/enricher/exporter, resource attributes, installing a W3C trace propagator, sampling, redaction, graceful shutdown flush | configuring-logging — `references/patterns/configuring-logging.md` |
 | Writing a single log call site INSIDE an already-running handler — choosing a severity, attaching structured fields under semantic conventions, scoping a span to a unit of work, recording an error chain once at a boundary, naming a business event | emitting-logs — `references/patterns/emitting-logs.md` |
@@ -97,6 +98,12 @@ These pairs route to different patterns. State the discriminator before choosing
 - **triangulate vs arrange-act-assert.** Forcing a real implementation by writing a
   second test is triangulate (`references/patterns/triangulate.md`). Structuring any one
   test cleanly is arrange-act-assert (`references/patterns/arrange-act-assert.md`).
+
+- **bifurcate vs triangulate.** Shrinking a hypothesis set after a failure with a
+  discriminating probe whose pass/fail splits remaining causes is bifurcate
+  (`references/patterns/bifurcate.md`). Adding a second example to force a real
+  implementation when a fake passes the first test is triangulate
+  (`references/patterns/triangulate.md`).
 
 - **page-objects vs arrange-act-assert.** Encapsulating a reusable UI surface
   (a screen or console) behind verb-phrase actions, reused across many

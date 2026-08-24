@@ -27,8 +27,9 @@ The invoking skill must pass:
 1. Read the inputs without editorializing.
 2. Use `research:` skills to investigate the problem if needed (e.g., API docs, similar patterns in the codebase, error message semantics).
 3. apply the forward-backward method: work backward from the desired green (passing) outcome and forward from the current red (failing) state. See `developer/skills/ailly/references/abilities/forward-backward.md`. Note: for thinking skills, the map can be part of the file in the `thinking/<problem-slug>.md` file, rather than in the `maps/` directory.
-4. Produce a thinking doc.
-5. Return control to the Build phase (red-green-refactor) with a pointer to the thinking doc.
+4. When root-cause analysis leaves **multiple live explanations**, choose the next step as a bifurcating probe: one test or direct call whose pass/fail (or two explicit outcomes) each rule out roughly half the candidates, with the prediction written before running. See `patterns:using-patterns`, `references/patterns/bifurcate.md`.
+5. Produce a thinking doc.
+6. Return control to the Build phase (red-green-refactor) with a pointer to the thinking doc.
 
 ## Thinking Doc Format
 
