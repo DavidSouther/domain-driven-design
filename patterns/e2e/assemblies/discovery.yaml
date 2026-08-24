@@ -16,6 +16,7 @@ matrix:
     - builder-many-fields
     - errors-library-failure
     - triangulate-fake-passes
+    - bifurcate-plausible-causes
     - type-conversion-extract-rewrap
     - unit-of-work-atomic-handler
     - visibility-public-fields

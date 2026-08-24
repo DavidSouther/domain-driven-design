@@ -134,7 +134,7 @@ surface. Each pattern's full guidance lives in a reference under
 design pressure and points at its `references/patterns/<name>.md`.
 
 The patterns it routes to (each a `references/patterns/<name>.md` reference): aggregate,
-arrange-act-assert, bootstrap-and-service, builder, configuring-feature-flags,
+arrange-act-assert, bifurcate, bootstrap-and-service, builder, configuring-feature-flags,
 configuring-logging, domain-objects, emitting-logs, errors-typed-untyped, newtype,
 parse-dont-validate, repository, triangulate, type-conversion, type-states,
 unit-of-work, using-feature-flags, visibility.

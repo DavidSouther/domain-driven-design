@@ -148,6 +148,18 @@ cases:
           examples are non-degenerate (the second would fail the fake).
       - { type: tokens, metric: output, op: "<", value: 3500 }
 
+  - name: bifurcate
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_bifurcate.py } }
+      - type: judge
+        prompt: |
+          The answer names at least two live hypotheses, includes a small test or
+          probe snippet, designs one discriminating probe with pass/fail (or two
+          explicit outcomes) predicted before running, treats the observation as
+          evidence refuting one partition, and bifurcates again on the surviving
+          space until one cause is isolated.
+      - { type: tokens, metric: output, op: "<", value: 4500 }
+
   - name: type-conversion
     assertions:
       - { type: script, runtime: python, script: { path: evals/scripts/check_type_conversion.py } }

@@ -15,6 +15,7 @@ matrix:
     - domain-objects
     - errors-typed-untyped
     - triangulate
+    - bifurcate
     - type-conversion
     - type-states
     - unit-of-work
