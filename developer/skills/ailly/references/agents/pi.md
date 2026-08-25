@@ -71,6 +71,18 @@ clarify({
 
 On `NEEDS_HUMAN`, relay the returned question, findings, and recommended answer to the user per `general:conversation`'s Clarifying Questions guidance — present the recommendation as the suggestion to accept or correct, not a raw dump of the tool's output. `clarify` also fires a non-blocking `ctx.ui.notify` when running interactively, so the need for input is visible even before that turn's text renders.
 
+## File Permissions Mode
+
+`ailly-file-permissions` (`.pi/extensions/ailly-file-permissions/index.ts`) is not a tool the model calls; it registers a `tool_call` gate (the same pattern as `examples/extensions/protected-paths.ts` and `permission-gate.ts` in `@earendil-works/pi-coding-agent`) that blocks `read`/`grep`/`find`/`ls`/`write`/`edit` calls whose path falls outside the current Ailly phase's allowed area, so a session cannot silently step outside the phase it is in.
+
+The phase itself is not tracked by the extension — it is detected fresh on every gated call from the same on-disk signal `developer:ailly`'s own Resume table uses (`SKILL.md`'s "Session Folder" section: which of `research.md`/`design.md`/`plan.md` exist in the most recently touched `.ailly/developer/<session>/` folder, and whether each has cleared its `*Draft*` marker), so it stays correct across process restarts and isolated `ailly_subagent` dispatches without any extra state file.
+
+- **Design phase**: reads are confined to `research/` and `.ailly/`; writes/edits are confined to `.ailly/` only.
+- **Build phase (red-green-refactor)**: reads are unrestricted. Edits are confined to implementation files while the last test run this phase failed ("red" — the loop is trying to make it pass) and to test files while it last passed ("green" — the loop is writing the next one). The extension watches `bash` `tool_result` events for commands that look like a test runner (`npm test`, `pytest`, `cargo test`, `go test`, and similar) to learn the current color; before any test has run this build phase, nothing is gated.
+- **Research, plan, and cleanup phases** are unrestricted.
+
+This is a simplification, not a full encoding of `references/phases/red-green-refactor.md`: `references/abilities/refactor.md`'s post-green implementation cleanup falls inside the "green" window this mode confines to test-only edits. Drop a `.ailly/.file-mode-override` marker file (any content) to disable the gate until it is removed again — e.g. for the duration of a refactor pass.
+
 ## Model Mandate
 
 Pi's model selection is a CLI flag (`--model <pattern>`), not a per-tool-call schema field on a built-in dispatch tool — but because `ailly_subagent` is this repository's own extension, its `model` parameter is wired straight to that flag on the spawned child process. That makes pi one of the harnesses with a *confirmed* model-selection mechanism, not a degraded announce-only one: set `model` on every `ailly_subagent` call per the mandate-with-announce rule, and announce the choice either way.
