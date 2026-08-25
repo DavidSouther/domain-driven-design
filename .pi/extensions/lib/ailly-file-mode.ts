@@ -139,7 +139,12 @@ const TEST_RUN_COMMAND_PATTERNS: RegExp[] = [
 	/\bdotnet\s+test\b/i,
 	/\bctest\b/i,
 	/\btox\b/i,
-	/\bmake\s+test\b/i,
+	/\bmake\s+tests?\b/i,
+	/\bmise\s+(run\s+)?tests?\b/i,
+	/\bjust\s+tests?\b/i,
+	/\bbazel\s+tests?\b/i,
+	/\btask\s+tests?\b/i,
+	/\b(nx|turbo)\s+(run\s+)?tests?\b/i,
 ];
 
 export function looksLikeTestRun(command: string): boolean {
