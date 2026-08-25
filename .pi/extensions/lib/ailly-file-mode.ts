@@ -145,3 +145,22 @@ const TEST_RUN_COMMAND_PATTERNS: RegExp[] = [
 export function looksLikeTestRun(command: string): boolean {
 	return TEST_RUN_COMMAND_PATTERNS.some((re) => re.test(command));
 }
+
+// Commands that remove or clobber files, matched against a bash command
+// string. Deliberately broad (word-boundary verbs only, no path awareness)
+// since the caller pairs this with its own check that the command actually
+// references a `.ailly` path before treating it as a threat to session
+// artifacts.
+const DESTRUCTIVE_COMMAND_PATTERNS: RegExp[] = [
+	/\brm\b/i,
+	/\brmdir\b/i,
+	/\bgit\s+rm\b/i,
+	/\bfind\b[^\n]*-delete\b/i,
+	/\bshred\b/i,
+	/\btruncate\b/i,
+	/>\s*[^\s&|;]+/, // shell redirection can clobber a file's contents same as deleting it
+];
+
+export function looksDestructive(command: string): boolean {
+	return DESTRUCTIVE_COMMAND_PATTERNS.some((re) => re.test(command));
+}

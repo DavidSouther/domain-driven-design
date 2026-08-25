@@ -36,7 +36,7 @@ Pi has no built-in `Task` tool, so subagent dispatch is a separate `pi` subproce
 - `ailly_long_loop_start` / `_status` / `_stop` — the long loop as a detached background process, so it doesn't hold a tool call open for hours; a watcher notifies the interactive session when the run stalls, escalates, or exits.
 - `clarify` — answers one ad hoc question mid-task: a subagent checks local convention, researches what research can settle, and returns either a sourced answer or a structured escalation rather than a guess.
 - `todo` — Ailly's `TodoWrite` equivalent.
-- `ailly-file-permissions` — not a tool the model calls, but a passive gate on every read/write/edit that dynamically confines file access to the current Ailly phase (design confines reads to `research/`/`.ailly/` and writes to `.ailly/`; the build phase confines edits to implementation or test files depending on the last test run's outcome).
+- `ailly-file-permissions` — not a tool the model calls, but a passive gate on every read/write/edit/destructive-bash call that dynamically confines file access to the current Ailly phase, enforcing that phase's own "Hard gate": research and plan confine writes to `.ailly/` (their outputs are docs, not code); design further confines reads to `research/`/`.ailly/` and writes to `.ailly/` plus exactly one feature test file; build confines edits to implementation or test files depending on the last test run's outcome; cleanup is the only phase allowed to delete a session folder.
 
 The dispatching tools share one subprocess module and resolve reference paths relative to their own install location, so they work wherever the package is installed. The full tool-mapping table is in `developer/skills/ailly/references/agents/pi.md`.
 
