@@ -1,61 +1,19 @@
 /**
- * Ailly File Permissions Mode
+ * ailly-file-permissions: a `tool_call` gate (see `protected-paths.ts` and
+ * `permission-gate.ts` in @earendil-works/pi-coding-agent's own
+ * `examples/extensions/`) that confines read/write/edit/destructive-bash
+ * calls to whatever developer:ailly's *current phase* allows. Each phase's
+ * rule is sourced from that phase's own reference doc's stated "Hard gate"
+ * — see developer/skills/ailly/references/agents/pi.md's "File Permissions
+ * Mode" section for the full per-phase breakdown; don't re-derive it here.
  *
- * A pi files-allowed permission mode (see `permission-gate.ts` and
- * `protected-paths.ts` in @earendil-works/pi-coding-agent's own
- * `examples/extensions/` for the base `tool_call` gating pattern this
- * builds on) that dynamically restricts which files can be read, written,
- * edited, or `bash`-deleted based on developer:ailly's *current phase* —
- * detected from the on-disk session folder under `.ailly/developer/` (see
- * developer/skills/ailly/SKILL.md's "Session Folder" table), not a static
- * allowlist config file. Every rule below is lifted from that phase's own
- * reference doc's stated "Hard gate" or "Do not" clause, not invented here.
+ * The phase is re-detected from the on-disk session folder on every call,
+ * never cached, so a draft cleared mid-session takes effect immediately.
  *
- * - **Research phase**: `references/phases/research.md` ends with "Do not
- *   write a design or a feature test. Do not enter the design phase." —
- *   reads are unrestricted (research has to survey the whole project), but
- *   writes/edits are confined to `.ailly/` (research.md and its `research/`
- *   notes folder). No source-tree file exists yet by design.
- * - **Design phase**: reads are confined to `research/` (the research:*
- *   skill content the design checklist's "Research additional context"
- *   step permits consulting) and `.ailly/` (the session workspace).
- *   `research/` only resolves to anything in a project that vendors a
- *   top-level `research/` tree the way this package's own repo does —
- *   installed elsewhere, that half of the allowlist is inert and reads
- *   narrow to `.ailly/`. Writes are confined to `.ailly/` plus exactly one
- *   test-file path — `references/phases/design.md`'s "single exception to
- *   the no-code rule" — the one feature test the phase records in
- *   `design.md`; a second, different test-file path is refused so "exactly
- *   one executable feature test" stays true even under this gate.
- * - **Plan phase**: `references/phases/plan.md`'s Hard gate is explicit —
- *   "Do not implement any step. Do not write unit tests or implementation
- *   code" — every code sample in the plan (including Step 0's API stubs)
- *   is markdown *inside* `plan.md`, never a real source file. Writes are
- *   confined to `.ailly/`; reads stay unrestricted (planning has to see the
- *   existing codebase the new steps land in).
- * - **Build phase (red-green-refactor)**: once a test run's outcome is
- *   known, edits are confined to implementation files while the last run
- *   failed ("red"), and to test files while it last passed ("green") — the
- *   inverse of the phase's own vocabulary, because that is what drives the
- *   loop forward: red means "make it pass" (implementation edits), green
- *   means "write the next test" (test edits). Before any test has run this
- *   build phase (writing type-first signatures, then the first test),
- *   nothing is restricted, since there is no outcome yet to gate against.
- * - **Cleanup phase**: `references/phases/cleanup.md` is the only phase
- *   whose job includes "Remove the `.ailly/developer/YYYY-MM-DD-A-<topic>`
- *   folder" — so it is the only phase this mode lets delete anything under
- *   `.ailly/`. Every other phase has a `bash` command blocked if it looks
- *   destructive (`rm`, `git rm`, `find -delete`, a clobbering `>` redirect,
- *   …) and references a `.ailly` path, protecting the session's research,
- *   design, and plan artifacts from being wiped mid-flight. Reads and
- *   writes are otherwise unrestricted in cleanup, matching its own mandate
- *   to run formatters and refactor passes across the whole tree.
- *
- * Known trade-off: `references/abilities/refactor.md`'s post-green
- * implementation cleanup falls inside the "green" window the build-phase
- * rule confines to test-only edits. Drop a `.ailly/.file-mode-override`
- * marker file (any content) to disable every rule in this mode — including
- * the deletion guard — until the marker is removed again.
+ * Drop a `.ailly/.file-mode-override` marker file (any content) to disable
+ * every rule below, including the deletion guard — needed because the
+ * build phase's "green" rule blocks `references/abilities/refactor.md`'s
+ * own implementation edits.
  */
 
 import * as fs from "node:fs";

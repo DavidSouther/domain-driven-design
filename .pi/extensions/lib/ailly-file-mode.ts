@@ -126,7 +126,9 @@ export function isTestPath(relPath: string): boolean {
 	return TEST_PATH_PATTERNS.some((re) => re.test(relPath));
 }
 
-// Common test-runner invocations, matched against a bash command string.
+// Common test-runner invocations, matched against a bash command string. A
+// false positive here just mis-times a red/green transition, corrected by
+// the next real test run — never a reason to widen a build-phase block.
 const TEST_RUN_COMMAND_PATTERNS: RegExp[] = [
 	/\b(npm|pnpm|yarn|bun)\s+(run\s+)?test\b/i,
 	/\bpytest\b/i,
