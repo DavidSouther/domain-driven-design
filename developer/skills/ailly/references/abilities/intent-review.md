@@ -1,6 +1,6 @@
 # Intent Review
 
-> Ability referenced at every `developer:ailly` phase or stage when that phase or stage creates or materially revises its artifact. Invoked through the active harness's isolation path. There is no standalone `developer:intent-review` skill.
+> Ability referenced any time `developer:ailly` substantially modifies an artifact. Invoked through the active harness's isolation path. There is no standalone `developer:intent-review` skill.
 
 ## Intent Alignment Gap
 
@@ -40,9 +40,13 @@ Its question form:
 > request implies [Z]; our research oriented around [W]. What has orienting on [W] made
 > invisible?
 
-## Continuous Timing and the Never-Clears Invariant
+## Continuous Feedback
 
-Intent review runs at **every phase or stage** whenever that phase or stage creates or materially revises its artifact, before the artifact feeds the next decision. It is a continuous request-alignment check, not a final-handoff C3 review. It surfaces questions that require user feedback before incorporating.
+Perform intent review at **every phase or stage**, whenever Ailly substantially modifies an artifact.
+Substantial modifications are those that would substantively change the future trajectory of the project.
+Editing or refining prose, correcting an implementation to work with a new test, or adding a triangulation test case align with intent.
+Adding a new step to a plan, changing a database column, or introducing new areas of testing are substantive changes, and must be confirmed to align with intent.
+It is a continuous request-alignment check, not a final-handoff C3 review. It surfaces questions that require user feedback before incorporating.
 
 Intent review **never clears** a draft gate, merge gate, or Closing Bell. It is not an autonomous
 gate-clearer, unlike long-loop's research-and-decide reviewer, which does auto-clear. It

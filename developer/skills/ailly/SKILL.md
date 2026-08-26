@@ -30,7 +30,7 @@ The coordinator's other abilities are progressive references it consults when th
 | Writing a small standalone script or automation, condensed but allowing ambiguity | `references/shapes/code-mode.md` |
 | Implementing a plan step with TDD | `/ailly red-green-refactor` → `references/phases/red-green-refactor.md` |
 | Finishing the topic: final review, extract deferred tasks, prepare the squash-merge | `/ailly cleanup` → `references/phases/cleanup.md` |
-| Surfacing intent-alignment questions against the original prompt at every phase or stage | `references/abilities/intent-review.md` |
+| Surfacing intent-alignment questions against the original prompt before substantive artifact changes | `references/abilities/intent-review.md` |
 | Stuck on a red compiler/test/lint error during build, especially a recurring one after a fix | `references/abilities/thinking.md` (run through the harness isolation path when available) |
 | Code is green and you want to clean up before finishing | `references/abilities/refactor.md` |
 | Setting up a new project or a language environment (layout, tooling, dev hooks) | `references/abilities/initialize.md` |
@@ -219,7 +219,7 @@ Generally, be persistent in enforcing the draft structure. However, when first s
 - The draft gates **auto-clear**: each phase produces its artifact and the next phase begins in the same flow, without stopping for human review between them.
 - Artifacts are **minimal**: just enough research, design, plan, and feature test to drive the work, not the full documents.
 - The loop **churns straight to a green feature test**, then pauses before Cleanup so the user can review the intermediate session artifacts, including `research.md`, `design.md`, `plan.md`, `maps/`, and `thinking/`.
-- **Run continuous Intent review at each artifact transition.** After research, design, and plan each save their draft, and after the build phase produces its diff, run `references/abilities/intent-review.md` before moving on. Auto-clearing the draft gate skips the human's read; it does not let Intent review clear a gate. Reserve C3 and specialist review for a final artifact handoff.
+- **Verify intent at each artifact transition.** After research, design, and plan each save their draft, and after the build phase produces its diff, run `references/abilities/intent-review.md` before moving on. Auto-clearing the draft gate skips the human's read; it does not let Intent review clear a gate. Reserve general:review for a final artifact handoff.
 - During that review pause, do **not** run Cleanup, remove the session folder, or tidy away intermediate artifacts.
 - If the user says **"no review"** when starting the quick loop, skip that post-green review pause and run Cleanup immediately. "No review" waives the human's pre-cleanup read, not the continuous per-artifact Intent reviews above — those still run.
 - After the review pause, proceed to Cleanup only when the user asks to proceed, continue, finish, or run cleanup.

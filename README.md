@@ -95,6 +95,8 @@ Utilities for skill authoring, parallel agent dispatch, and git worktree isolati
 | `general:using-git-worktrees` | Starting feature work that needs isolation from the current workspace |
 | `general:dispatching-agents` | Multiple independent tasks with no shared state or sequential dependencies |
 | `general:writing-skills` | Creating, editing, or verifying skills before deployment |
+| `general:c3-review` | An isolated final-handoff subagent collecting Correctness, Conciseness, and Clarity feedback for `general:review` |
+| `general:review` | Composing C3 and applicable specialists for a final handoff review |
 
 ### Developer (`developer:*`)
 

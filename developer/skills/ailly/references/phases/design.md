@@ -64,14 +64,14 @@ Create a task for each of these items and complete them in order:
 5. **Write the design doc draft** directly, scaling each section to its complexity, saved to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`. Write the whole draft; do not read it out section by section for approval first.
 6. **Surface open artifact decisions.** For any concrete artifact choice not prescribed by a skill template, an existing project convention, or the cleared `research.md`, record it in an **Open Artifact Decisions** subsection under **Summary** in the draft. Do this before writing the feature test, since the test binds to the artifacts the draft settles.
 7. **Write the feature test** in the project test tree, and record its path in `design.md` (see "The Feature Test").
-8. **Run continuous Intent review** using `references/abilities/intent-review.md` before the design and feature-test artifacts feed the plan decision. Resolve its feedback so both artifacts read as cohesive wholes, with no leftover lists of open or reviewed questions and no conversation transcript. Reserve C3 and specialist review for final artifact handoff.
+8. **Validate alignment with intent** using `references/abilities/intent-review.md` before the design and feature-test artifacts feed the plan decision. Resolve its feedback so both artifacts read as cohesive wholes, with no leftover lists of open or reviewed questions and no conversation transcript. Reserve general:review for final artifact handoff.
 9. **Collaborate on the written draft** — refer the user to the design, the test and the intent review, work through their edits on the written draft, and tell them how to begin the next phase in a new session. Stop at this point.
 
 ## Sub-Dispatch
 
 Per `developer/skills/ailly/SKILL.md`'s Phase Isolation mandate (item 7) and the delegation signals in `general/skills/dispatching-agents/SKILL.md`, two Checklist steps qualify for their own subagent dispatch rather than running inline: **Explore project context** (step 1) and **Propose 2-3 approaches** (step 4) — both are independently scoped with a clear input/output boundary and can proceed in parallel with other design work. Dispatch each through the harness's subagent mechanism wherever it is available, following the mandate-with-announce rule for the model.
 
-The remaining steps stay inline, deliberately, not by omission: **Research additional context** (step 2) is conditional and tightly coupled to whatever gap step 1 surfaces; **Ask clarifying questions** (step 3) and **Collaborate on the written draft** (step 9) require synchronous, multi-turn exchange with the user that a subagent cannot hold; **Write the design doc draft** (step 5), **Surface open artifact decisions** (step 6), and **Write the feature test** (step 7) need low-latency access to the full context accumulated in-session up to that point; **Run continuous Intent review** (step 8) is the focused gate-preserving check before planning, not an inline substitute for final-handoff C3.
+The remaining steps stay inline: **Research additional context** (step 2) is conditional and tightly coupled to whatever gap step 1 surfaces; **Ask clarifying questions** (step 3) and **Collaborate on the written draft** (step 9) require synchronous, multi-turn exchange with the user that a subagent cannot hold; **Write the design doc draft** (step 5), **Surface open artifact decisions** (step 6), and **Write the feature test** (step 7) need low-latency access to the full context accumulated in-session up to that point; **Validate alignment with intent** (step 8) is the focused gate-preserving check before planning, not an inline substitute for general:review.
 
 ## Process Flow
 
@@ -153,7 +153,7 @@ When the research refine pass sized the task as a bug, smaller than a feature or
 
 ## After the Design
 
-Write the validated design to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`. Include `*Draft YYYY-MM-DD*` at the beginning of the document, after the title. A human will remove the `*Draft*` mark when the design and its feature test are ready. Write the feature test to the project test tree and record its path in `design.md`. Run Intent review on both, then resolve its feedback so the artifacts read as cohesive wholes with no leftover lists of open or reviewed questions and no conversation transcript.
+Write the validated design to `.ailly/developer/YYYY-MM-DD-A-<topic>/design.md`. Include `*Draft YYYY-MM-DD*` at the beginning of the document, after the title. A reviewer will remove the `*Draft*` mark when the design and its feature test are ready. Write the feature test to the project test tree and record its path in `design.md`. Run Intent review on both, then resolve its feedback so the artifacts read as cohesive wholes with no leftover lists of open or reviewed questions and no conversation transcript.
 
 **User Review Gate:**
 After the review loop passes, ask the user to review the written design and feature test before proceeding.

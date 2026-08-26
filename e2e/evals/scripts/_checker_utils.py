@@ -27,6 +27,7 @@ DESIGN_PHASE = AILLY_DIR / "references" / "phases" / "design.md"
 PLAN_PHASE = AILLY_DIR / "references" / "phases" / "plan.md"
 RESEARCH_PHASE = AILLY_DIR / "references" / "phases" / "research.md"
 GENERAL_REVIEW = REPO / "general" / "skills" / "review" / "SKILL.md"
+C3_REVIEW = REPO / "general" / "skills" / "c3-review" / "SKILL.md"
 
 # The four question categories; they must survive into the ability's text
 # unchanged.

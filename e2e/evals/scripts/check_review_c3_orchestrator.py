@@ -10,10 +10,9 @@ selecting a verdict.
 Given an Ailly artifact is being developed, intent review checks request
 alignment at each phase or stage without invoking final-handoff C3 review.
 
-This is a deterministic root-e2e contract test scoped to the skill
-definitions only (general:review and developer:ailly). It stays red until
-those skill files implement the whole story in prose. It does not assert
-against any runtime implementation.
+This is a deterministic root-e2e contract test scoped to the review skills,
+their Pi dispatch wiring, and developer:ailly. It stays red until the
+dedicated C3 skill is both described and invoked by the base review lane.
 """
 
 import sys
@@ -22,7 +21,7 @@ from typing import Optional
 import re
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from _checker_utils import AILLY_DIR, GENERAL_REVIEW, INTENT_REVIEW, REPO, fail, read  # noqa: E402
+from _checker_utils import AILLY_DIR, C3_REVIEW, GENERAL_REVIEW, INTENT_REVIEW, REPO, fail, read  # noqa: E402
 
 
 def require(path: Path, phrase: str, reason: str) -> Optional[int]:
@@ -41,45 +40,47 @@ def require_pattern(path: Path, pattern: str, reason: str) -> Optional[int]:
     return None
 
 
-def section(path: Path, heading: str) -> str:
-    """Return one exact level-two Markdown section for scoped contract checks."""
-    content = read(path)
-    match = re.search(r"^##\s+" + re.escape(heading) + r"\s*$([\s\S]*?)(?=^##\s+|\Z)", content, flags=re.MULTILINE)
-    return match.group(1) if match else ""
-
-
 def main() -> int:
-    c3 = section(GENERAL_REVIEW, "C3")
+    c3 = read(C3_REVIEW) if C3_REVIEW.is_file() else ""
     if not c3:
-        return fail("C3 feature: general:review must have an exact `## C3` section")
+        return fail("C3 feature: missing dedicated general:c3-review skill")
     if not re.search(
         r"Correctness.*?Conciseness.*?Clarity", c3, flags=re.IGNORECASE | re.DOTALL
     ):
-        return fail("C3 feature: the `## C3` section must define Correctness, Conciseness, and Clarity")
+        return fail("C3 feature: general:c3-review must define Correctness, Conciseness, and Clarity")
     result = require_pattern(
-        GENERAL_REVIEW,
-        r"##\s+C3.*?Correctness.*?Conciseness.*?Clarity",
-        "general:review must define C3 as Correctness, Conciseness, and Clarity",
+        C3_REVIEW,
+        r"Correctness.*?Conciseness.*?Clarity",
+        "general:c3-review must define Correctness, Conciseness, and Clarity",
+    )
+    if result is not None:
+        return result
+
+    pi_review = REPO / ".pi" / "extensions" / "lib" / "review.ts"
+    result = require_pattern(
+        pi_review,
+        r'general/skills/c3-review/SKILL\.md.*?id:\s*"c3-review"',
+        "Pi review_run must invoke the dedicated general:c3-review lane",
     )
     if result is not None:
         return result
     result = require_pattern(
         GENERAL_REVIEW,
-        r"specialist.*?description.*?matches.*?final artifact",
-        "the final-handoff C3 contract must retain applicable-specialist composition",
+        r"general:c3-review.*?always.*?(set|present|dispatch).*?specialist.*?description.*?matches.*?final artifact",
+        "general:review must dispatch general:c3-review and retain applicable-specialist composition",
     )
     if result is not None:
         return result
     result = require_pattern(
         GENERAL_REVIEW,
-        r"final artifact.*?handoff.*?Intent review.*?(continuous|every phase|every stage)",
+        r"final artifact.*?handoff.*?Intent review.*?(continuous|every.phase|every.stage)",
         "the handoff-only C3 boundary and continuous Intent-review boundary must be explicit",
     )
     if result is not None:
         return result
     result = require_pattern(
-        GENERAL_REVIEW,
-        r"cold challenger.*?evidence.*?(falsifiable|refut)",
+        C3_REVIEW,
+        r"cold challenge.*?evidence.*?(falsification|refut)",
         "the challenger must be cold, evidence-located, and falsifiable",
     )
     if result is not None:
@@ -108,7 +109,7 @@ def main() -> int:
         (r"(both presentation orders|order.swap|order-swap)", "the C3 section must require the order-swap check for a consequential, disputed challenge"),
         (r"accepted.*?(remove|omit).*?rejected.*?(retain|keep).*?(unresolved|failed).*?(remove|omit)", "the C3 section must state how each challenge status controls whether a finding stays actionable"),
     ]:
-        result = require_pattern(GENERAL_REVIEW, pattern, reason)
+        result = require_pattern(C3_REVIEW, pattern, reason)
         if result is not None:
             return result
 
