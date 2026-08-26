@@ -1,0 +1,9 @@
+name: review-c3-orchestrator
+model: none
+
+# This deterministic static suite has no model-facing assembly. It retains the
+# conventional three-way root-e2e layout; e2e/ci.sh runs the paired eval's
+# source-level checker directly.
+matrix: {}
+prefix: []
+conversation: []

@@ -43,8 +43,8 @@ cases:
       - { type: script, runtime: python, script: { path: evals/scripts/check_review.py } }
       - type: judge
         prompt: |
-          The review builds a task-specific rubric covering correctness,
-          completeness, clarity, and conciseness, and evaluates the diff against
+          The review builds a task-specific C3 rubric covering correctness,
+          conciseness, and clarity, and evaluates the diff against
           it. It identifies real issues in THIS diff — at minimum the unrelated
           rename of format_timestamp to fmt_ts (scope creep), the removed
           test_format_timestamp test, and the missing test or the breaking

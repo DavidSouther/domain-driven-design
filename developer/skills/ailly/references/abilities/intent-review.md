@@ -1,6 +1,6 @@
 # Intent Review
 
-> Ability referenced by each `developer:ailly` phase at its draft gate. Invoked through the active harness's isolation path and as one reviewer for `general:review`. There is no standalone `developer:intent-review` skill.
+> Ability referenced at every `developer:ailly` phase or stage when that phase or stage creates or materially revises its artifact. Invoked through the active harness's isolation path. There is no standalone `developer:intent-review` skill.
 
 ## Intent Alignment Gap
 
@@ -12,7 +12,7 @@ checking whether the theory built up along the way has quietly drifted from what
 asked for. It generates falsifiable questions of the form:
 
 > As [designed / planned / implemented], the program will **[X]**. The original request asked
-> for **[Y]**. Do they align?
+> for **[Y]**. Is that what you intended?
 
 Every question is a falsifiable claim about behavior paired with a quote or paraphrase of the
 original request — never a vague quality judgment like "is this good code?"
@@ -40,10 +40,9 @@ Its question form:
 > request implies [Z]; our research oriented around [W]. What has orienting on [W] made
 > invisible?
 
-## Draft-Gate Timing and the Never-Clears Invariant
+## Continuous Timing and the Never-Clears Invariant
 
-Intent review runs as part of artifact review when reaching the **draft gate**, before the human clears the marker. It is a
-**recommended default**, not an enforcement: the developer may invoke it earlier, or dismiss it entirely. Where `general:review` may immediately apply edits, intent review surfaces questions that require user feedback before incorporating.
+Intent review runs at **every phase or stage** whenever that phase or stage creates or materially revises its artifact, before the artifact feeds the next decision. It is a continuous request-alignment check, not a final-handoff C3 review. It surfaces questions that require user feedback before incorporating.
 
 Intent review **never clears** a draft gate, merge gate, or Closing Bell. It is not an autonomous
 gate-clearer, unlike long-loop's research-and-decide reviewer, which does auto-clear. It

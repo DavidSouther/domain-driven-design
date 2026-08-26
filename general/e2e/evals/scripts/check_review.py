@@ -8,8 +8,8 @@ stderr is left untouched.
 
 Rules:
 - R1 an explicit rubric: >= 3 markdown list items.
-- R2 names >= 3 of the four canonical criteria (correctness, completeness,
-     clarity, conciseness).
+- R2 names >= 2 of the three canonical C3 criteria (correctness,
+     conciseness, clarity).
 - R3 flags >= 1 concrete issue grounded in this diff (not an all-clear).
 - R4 does not produce inline edits (no `git apply`, no ```suggestion fence).
 """
@@ -19,7 +19,7 @@ import sys
 
 from _checker_utils import fail, read_candidate
 
-CRITERIA = ("correctness", "completeness", "clarity", "conciseness")
+CRITERIA = ("correctness", "conciseness", "clarity")
 ISSUE_TERMS = (
     "missing",
     "removed",
@@ -48,8 +48,8 @@ def main() -> int:
     named = [c for c in CRITERIA if c in low]
     if len(named) < 2:
         return fail(
-            f"R2 criteria: named {len(named)} of correctness/completeness/clarity/"
-            "conciseness, expected >= 2 (a rubric built from the skill's criteria)"
+            f"R2 criteria: named {len(named)} of correctness/conciseness/clarity, "
+            "expected >= 2 (a rubric built from the skill's C3 criteria)"
         )
 
     if not any(term in low for term in ISSUE_TERMS):

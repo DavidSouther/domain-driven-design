@@ -2,7 +2,7 @@
 
 *Ailly with Dynamic Workflows*
 
-When a topic is run autonomously at project scale, the five-phase lifecycle still runs unchanged. Only the crossing of each draft gate differs. Where the normal loop stops and waits for a human to clear the `*Draft*` marker, the long loop dispatches a research-and-decide reviewer through the active harness's isolation path. That reviewer resolves the gate's open questions and clears the marker, so the run proceeds without user intervention. It is the autonomous counterpart reached for instead of quick-loop when the work has ambiguities to resolve, which quick-loop is not built for. `developer:ailly` consults this reference when acting autonomously over project durations.
+When a topic is run autonomously at project scale, the five-phase lifecycle still runs unchanged. Intent review runs continuously at every artifact or gate transition and never clears a gate. Only the crossing of each draft gate differs. Where the normal loop stops and waits for a human to clear the `*Draft*` marker, the long loop dispatches a distinct research-and-decide reviewer through the active harness's isolation path. That reviewer resolves the gate's open questions and clears the marker, so the run proceeds without user intervention. It is the autonomous counterpart reached for instead of quick-loop when the work has ambiguities to resolve, which quick-loop is not built for. `developer:ailly` consults this reference when acting autonomously over project durations.
 
 ## 1. When the long loop applies
 

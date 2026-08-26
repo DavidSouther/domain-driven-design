@@ -1,6 +1,6 @@
 # Project Shape
 
-When a topic needs several features that deliver value only as a unified whole, the five-phase lifecycle scales up into a project loop. Three things change. Each plan step is a dedicated development cycle. The exit criterion is a "Closing Bell" usability study rather than one executable feature test. The documents are long-lived. They are marked completed rather than deleted, and replicated to the organization's document repository once accepted. The research refine pass sizes a topic as a project when it fits, and the `developer:` skills consult this reference when the task is project shaped.
+When a topic needs several features that deliver value only as a unified whole, the five-phase lifecycle scales up into a project loop. Three things change. Each plan step is a dedicated development cycle. The exit criterion is a "Closing Bell" usability study rather than one executable feature test. The documents are long-lived. They are marked completed rather than deleted, and replicated to the organization's document repository once accepted. Run continuous Intent review at every feature and Closing-Bell stage that creates or materially revises an artifact; it never clears a gate. The research refine pass sizes a topic as a project when it fits, and the `developer:` skills consult this reference when the task is project shaped.
 
 ## Feature Loop vs Project Loop
 

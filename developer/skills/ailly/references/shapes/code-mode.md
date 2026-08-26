@@ -48,8 +48,7 @@ combined planning doc.
 Add the design and plan into a single short document in the session
 folder, in place of the standard loop's three separate artifacts.
 
-One human-cleared draft gate covers the combined planning doc. Apply review skills,
-including `intent-review.md` to find intent gaps.
+One human-cleared draft gate covers the combined planning doc. Run continuous Intent review using `intent-review.md` whenever the combined stage creates or materially revises the planning artifact; it never clears the gate. Reserve C3 and specialist review for a final artifact handoff.
 The developer resolves each question at the single draft gate below.
 Once the
 developer clears it, the build runs. The standard human merge gate still applies
