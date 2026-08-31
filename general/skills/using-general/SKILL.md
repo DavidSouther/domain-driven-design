@@ -54,6 +54,7 @@ digraph skill_flow {
 |-------|-------------|
 | `conversation` | Before asking a question, presenting options, or pausing for confirmation |
 | `review` | After finishing a work product, before claiming a task complete, or after an editing pass |
+| `c3-review` | In an isolated final-handoff reviewer subagent that collects Correctness, Conciseness, and Clarity feedback for `review` |
 | `writing-skills` | When creating or improving skill documents |
 | `writing-pattern-skills` | When authoring or revising a skill in the patterns plugin |
 | `writing-paired-skills` | When two skills cover the same topic at different cadences (wiring once, practice often) |

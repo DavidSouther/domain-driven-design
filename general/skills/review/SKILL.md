@@ -1,65 +1,46 @@
 ---
 name: review
-description: Use when finishing a work product, before claiming a task is complete, or after completing an editing pass.
+description: Use when preparing a final work product for handoff, before claiming a task is complete.
 ---
 
-A review is not one rubric. It is a composition of independent review skills, assembled to fit the artifact in front of it. Compose the applicable reviewers, dispatch them in parallel, converge their findings, fix, and re-evaluate. This skill ships the always-present base reviewer; specialists are discovered and composed in when the artifact matches them.
+No single review format works for every document type. This skill orchestrates a number of reviewers as appropriate for the current deliverable or artifact. It composes independent reviewers for the final artifact. The skill always includes `general:c3-review`, and specialists compose in when the artifact matches them. The skill dispatches reviewers in parallel, converges, deduplicates, and verifies their findings, dispatches an agent to apply fixes, and then re-evaluates the edited artifacts.
 
-## Journey
+## Process
 
-1. **Compose.** Read the artifact and the available review skills, and assemble the set of reviewers that apply. The base four-criterion reviewer (below) is always in the set. Add a specialist when the artifact matches that specialist's `description` — for example `developer:clean-comments-review` when reviewing code with DocBlocks or inline comments, or `domain:using-domain` when a domain model, its objects, or its ubiquitous language changed. Selection is model-decided from the available skills, not a maintained table, so a newly installed specialist is composed in with no edit here.
-2. **Dispatch.** Run each composed reviewer in parallel, each in its own subagent with isolated context so the lenses do not cross-contaminate (see `general:dispatching-agents`). The base reviewer writes its rubric from the criteria below and evaluates against it. A specialist produces its own critique document; that document is its findings — do not prompt a specialist to write a rubric first. Below six reviewers, dispatch with static parallel `Agent` calls. At six or more, use a dynamic workflow that pipelines the assembled list.
-3. **Converge (mandatory).** One subagent collects every reviewer's findings and performs three steps in order: **verify** each candidate against the actual artifact (read the code, trace the claim) and drop what does not hold; **deduplicate** findings that more than one reviewer raised; **severity-rank** the survivors. The fix pass receives a verified, deduplicated, ranked list, never a flat dump.
-4. **Fix.** A separate subagent addresses the ranked findings. Evaluation never emits edits; fixing is always a different agent.
+1. **Compose.** Read the final artifact and the available review skills. Dispatch one isolated subagent that invokes `general:c3-review`; it is always in the set. Add a specialist when its `description` matches the final artifact — for example `developer:clean-comments-review` when reviewing code with DocBlocks or inline comments, or `domain:using-domain` when a domain model, its objects, or its ubiquitous language changed. Selection is model-decided from the available skills, not a maintained table, so a newly installed specialist is composed in with no edit here.
+2. **Dispatch.** Run each composed reviewer in parallel, each in its own subagent with isolated context so the lenses do not cross-contaminate (see `general:dispatching-agents`). When the environment cannot spawn agents, apply each reviewer's instructions in a clearly separated pass instead. C3's subagent collects feedback per `general:c3-review`; a specialist produces its own critique document. Those documents are their findings — do not prompt a specialist to write a rubric first. Below six reviewers, dispatch with static parallel `Agent` calls when available. At six or more, use a dynamic workflow that pipelines the assembled list when the harness supports one.
+3. **Converge (mandatory).** One isolated subagent, or a separate inline pass when agents are unavailable, collects every reviewer's findings and performs three steps in order: **verify** each candidate against the actual artifact (read the code, trace the claim) and drop what does not hold; **deduplicate** findings that more than one reviewer raised; **severity-rank** the survivors. The fix pass receives a verified, deduplicated, ranked list, never a flat dump.
+4. **Fix.** A separate subagent or inline pass addresses the ranked findings. Evaluation never emits edits; fixing is always a separate pass.
 5. **Re-evaluate** and flag any remaining issues to the user. Repeated LLM editing risks attractor states, so handing the residue to the user mitigates that.
 
-When the environment has no tools or file system (a self-contained review prompt), perform this inline: build the rubric from the base criteria, evaluate the artifact against it, list the verified findings ranked by severity, and stop short of editing.
+After initial convergence, dispatch a separate cold challenger and fresh final verifier under `general:c3-review`'s High-severity challenge protocol. C3 and any specialists run only to prepare a final artifact for handoff; Intent review is the continuous, every-phase-or-stage mechanism for an evolving Ailly artifact instead.
 
-## Base Reviewer
+When the environment has no tools or file system (a self-contained review prompt), perform this inline. Compose from the reviewer instructions supplied in the prompt or session context, always include `general:c3-review`, evaluate each lens in a separate pass, then verify, deduplicate, and severity-rank the combined findings. State which reviewer sources were unavailable, and stop short of editing.
 
-The four criteria below are the always-present member of every composed set. They are the floor of every review, regardless of which specialists compose in. The base rubric lifts each criterion's diagnostic into concrete checks.
+## Finding Specialist Reviewers
 
-- **Correctness** ensures claims match the sources, citations, and evidence available. Flag fabricated or unsupported assertions for review. Treat every concrete statement as a claim to verify rather than trust: file paths, identifiers, environment variables, API and function signatures, URLs, version numbers, and quoted values are the details most often invented to look plausible. Trace each load-bearing statement to its source by reading the code, running the command, or citing the document, and flag any that cannot be traced. A confident tone is not evidence. Words like "should" or "probably" often stand in for a check that was never run.
-- **Completeness** ensures the work fully addresses what was requested. Nothing important is missing or glossed over. Check both directions. Map each requirement in the request to the place the work satisfies it, and flag any requirement with no matching artifact. Flag the reverse too. Work that answers no requirement is unrequested scope. Gaps often hide in unhappy paths: error handling, empty or boundary inputs, and failure modes the happy path skips. A gap acknowledged and deferred with a note is acceptable. A gap left silent is not.
-- **Clarity** ensures no filler terms or weasel words. Jargon is acceptable when the context is appropriate. Vague hedges are not. Tone is professional but cordial. Favor complete, clear sentences and clauses, and read atypical punctuation as a symptom of where that fails. When an em-dash, colon, semicolon, parenthetical aside, or comma splice fuses two independent ideas, buries the subject behind qualifiers, or smuggles a list of full clauses into prose, the sentence structure is weak. Flag the entire sentence and its paragraph for restructuring, not just the punctuation. A colon introducing a real list and a parenthetical carrying a genuine cross-reference are not crutches.
-- **Conciseness** ensures longer passages are tightened without losing meaning. Defer to correctness and clarity first, and do not shorten everything. Look for the tells of padding: a trailing clause that only restates the subject, an intensifier that adds nothing, a summary that repeats what a detail already said, or a clause kept for rhythm. Cut what does not change the meaning. Necessary depth is not padding.
+Discover specialists from the environment rather than assuming a particular harness or directory layout:
+
+1. Identify the artifact's domains, media, technologies, and risk areas. Use those concerns as search terms alongside `review`, `critique`, and `audit`.
+2. Inventory every reviewer source the environment exposes: project-local skill and agent descriptions; harness-provided skills, agents, reviewer roles, and review-capable tools; installed Ailly or other plugin skills; and reviewer definitions supplied in the prompt or session context. Prefer the harness's native catalog or discovery command as a starting point, then check the other exposed sources. Inspect conventional files only when a filesystem is available.
+3. Read each shortlisted reviewer's entrypoint before selecting it. A name is not enough. When metadata is missing or vague, inspect the entrypoint if its location or declared role suggests review; otherwise record it as unresolved rather than assuming it applies. Select candidates whose instructions provide a distinct, read-only critique lens applicable to the artifact. A routing skill may lead to a specialist, and an agent description may qualify directly when review is its stated role.
+4. Deduplicate aliases, wrappers, and reviewers with materially identical lenses. Record why each remaining candidate was selected or rejected, and note any source that was absent or inaccessible. Without persistent storage, include this record in the review response or session context.
+5. Stop discovery only after every source class visible in the current environment has been checked. Then invoke the selected reviewers using the environment's available mechanism; discovery does not require subagents, a filesystem, Pi, or any particular tool name.
+
+When no specialist can be discovered or applied, run `general:c3-review` and state that specialist coverage was unavailable. If a specialist's instructions are readable but no invocation mechanism exists, apply them as a distinct inline pass. Do not present a C3-only review as specialist coverage. When a source is inaccessible, report the resulting coverage gap rather than guessing what it contains.
 
 ## Recording: the `reviews/` Folder
 
-A reviewer that poses falsifiable questions rather than deciding or editing directly — Ailly's
-`developer/skills/ailly/references/abilities/intent-review.md` is one such reviewer — notates
-its findings instead of writing them in place into the artifact under review. Feedback resolves
-into an edit or a closed note; it does not become a standing unresolved section living forever
-inside the primary artifact.
+A reviewer that poses falsifiable questions rather than deciding or editing directly — Ailly's `developer/skills/ailly/references/abilities/intent-review.md` is one such reviewer — notates its findings instead of writing them in place into the artifact under review. Feedback resolves into an edit or a closed note; it does not become a standing unresolved section living forever inside the primary artifact.
 
-Reuse long-loop's dispatch shape and dated-block entry format
-(`developer/skills/ailly/references/shapes/long-loop.md`), adapted for posing rather than
-deciding. In a session-folder harness such as Ailly's, this lands in a `reviews/` folder sibling
-to the session's `research/` folder (`.ailly/developer/<session>/reviews/`); notate each finding
-there as a dated entry. Once the human answers a finding — by revising the artifact, replying, or
-dismissing it — mark that entry **resolved** and **closed** in place. It does not remain an open
-item inside the artifact under review.
-
-## Pi Workflow
-
-Under pi, run Dispatch and Converge (steps 2 and 3 above) with the `review_run` tool (`.pi/extensions/review-subagent/`) instead of relying on the orchestrating model to remember both. One call spawns an isolated subprocess per composed reviewer — the base four-criterion reviewer plus any `specialists` you name — in parallel, then always runs a dedicated convergence subprocess against the raw findings before returning anything: convergence cannot be skipped because it is not a separate step the calling model has to remember, it is inside the tool call. Composition (step 1: which specialists apply) stays your call, same as skill selection in `research:using-research`; fix (step 4) and re-evaluate (step 5) stay separate turns, since this tool only ever evaluates.
-
-Name specialists in `specialists` the way pi knows them — by frontmatter `name` (`"clean-comments-review"`, `"using-domain"`), not this document's `<plugin>:<skill>` prose form (accepted too, but only the part after the colon is used). `review_run` resolves each name by searching the calling project's own `.pi/skills`/`.agents/skills` first, then this package's skills, then user-global skills — pi's own discovery precedence. That is what keeps "a newly installed specialist is composed in with no edit here" true for a project that installs this package: a project can write its own brand-new specialist skill under its own `.pi/skills/`, or pull one from a different installed pi package, and pass its name straight through with no change to this skill or to `review_run` itself.
-
-```
-review_run({
-  artifactPath: "src/session/manager.ts",
-  specialists: ["clean-comments-review"],
-  model: "<the model general/skills/dispatching-agents/model-selection.md recommends>"
-})
-```
+Reuse long-loop's dispatch shape and dated-block entry format (`developer/skills/ailly/references/shapes/long-loop.md`), adapted for posing rather than deciding. In a session-folder harness such as Ailly's, this lands in a `reviews/` folder sibling to the session's `research/` folder (`.ailly/developer/<session>/reviews/`); notate each finding there as a dated entry. Once the human answers a finding — by revising the artifact, replying, or dismissing it — mark that entry **resolved** and **closed** in place. It does not remain an open item inside the artifact under review.
 
 ## Common Mistakes
 
 - Skipping convergence: handing the fix pass a flat, unverified, unranked list. Verify against the artifact, deduplicate, and severity-rank first.
 - Prompting a specialist to write a rubric instead of consuming its critique. The specialist's critique document is already its findings.
 - Treating the review as a single rubric instead of a composed set, so orthogonal concerns get a thinner pass than a dedicated reviewer would give them.
-- Dropping the base reviewer from the set, so the artifact ships without the four-criterion floor.
+- Dropping `general:c3-review` from the set, so the final artifact ships without the C3 floor.
 - Running a dynamic workflow below the six-reviewer threshold where static `Agent` calls would do.
 - Combining evaluation and editing into one pass. These happen in separate agents, to reduce context bloat.
 - Claiming the task is complete before the review cycle finishes.

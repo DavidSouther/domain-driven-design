@@ -1,6 +1,6 @@
 # Intent Review
 
-> Ability referenced by each `developer:ailly` phase at its draft gate. Invoked through the active harness's isolation path and as one reviewer for `general:review`. There is no standalone `developer:intent-review` skill.
+> Ability referenced any time `developer:ailly` substantially modifies an artifact. Invoked through the active harness's isolation path. There is no standalone `developer:intent-review` skill.
 
 ## Intent Alignment Gap
 
@@ -12,7 +12,7 @@ checking whether the theory built up along the way has quietly drifted from what
 asked for. It generates falsifiable questions of the form:
 
 > As [designed / planned / implemented], the program will **[X]**. The original request asked
-> for **[Y]**. Do they align?
+> for **[Y]**. Is that what you intended?
 
 Every question is a falsifiable claim about behavior paired with a quote or paraphrase of the
 original request — never a vague quality judgment like "is this good code?"
@@ -40,10 +40,13 @@ Its question form:
 > request implies [Z]; our research oriented around [W]. What has orienting on [W] made
 > invisible?
 
-## Draft-Gate Timing and the Never-Clears Invariant
+## Continuous Feedback
 
-Intent review runs as part of artifact review when reaching the **draft gate**, before the human clears the marker. It is a
-**recommended default**, not an enforcement: the developer may invoke it earlier, or dismiss it entirely. Where `general:review` may immediately apply edits, intent review surfaces questions that require user feedback before incorporating.
+Perform intent review at **every phase or stage**, whenever Ailly substantially modifies an artifact.
+Substantial modifications are those that would substantively change the future trajectory of the project.
+Editing or refining prose, correcting an implementation to work with a new test, or adding a triangulation test case align with intent.
+Adding a new step to a plan, changing a database column, or introducing new areas of testing are substantive changes, and must be confirmed to align with intent.
+It is a continuous request-alignment check, not a final-handoff C3 review. It surfaces questions that require user feedback before incorporating.
 
 Intent review **never clears** a draft gate, merge gate, or Closing Bell. It is not an autonomous
 gate-clearer, unlike long-loop's research-and-decide reviewer, which does auto-clear. It
