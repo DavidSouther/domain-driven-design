@@ -8,7 +8,7 @@
       "name": "developer",
       "source": {
         "source": "local",
-        "path": "../../developer"
+        "path": "./developer"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -20,7 +20,7 @@
       "name": "domain",
       "source": {
         "source": "local",
-        "path": "../../domain"
+        "path": "./domain"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -32,7 +32,7 @@
       "name": "general",
       "source": {
         "source": "local",
-        "path": "../../general"
+        "path": "./general"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -44,7 +44,7 @@
       "name": "patterns",
       "source": {
         "source": "local",
-        "path": "../../patterns"
+        "path": "./patterns"
       },
       "policy": {
         "installation": "AVAILABLE",
@@ -56,7 +56,7 @@
       "name": "research",
       "source": {
         "source": "local",
-        "path": "../../research"
+        "path": "./research"
       },
       "policy": {
         "installation": "AVAILABLE",

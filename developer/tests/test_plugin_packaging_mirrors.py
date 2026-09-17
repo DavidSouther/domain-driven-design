@@ -62,11 +62,23 @@ def main() -> int:
         path = source.get("path")
         if not isinstance(path, str):
             return fail(f"R5 Codex marketplace entry for {plugin} has no path")
-        plugin_root = (marketplace.parent / path).resolve()
-        if plugin_root != (REPO / plugin).resolve():
-            return fail(f"R5 Codex marketplace path for {plugin} resolves to {plugin_root}")
-        if not (plugin_root / ".codex-plugin" / "plugin.json").is_file():
+        if not path.startswith("./"):
+            return fail(f"R5 Codex marketplace path for {plugin} must start with ./: {path}")
+        if ".." in Path(path).parts:
+            return fail(f"R5 Codex marketplace path for {plugin} must not contain ..: {path}")
+        plugin_root = (REPO / path).resolve()
+        try:
+            plugin_root.relative_to(REPO)
+        except ValueError:
+            return fail(f"R5 Codex marketplace path for {plugin} escapes repo root: {plugin_root}")
+        if not plugin_root.is_dir():
+            return fail(f"R5 Codex marketplace path for {plugin} does not resolve to a directory: {plugin_root}")
+        mirror = plugin_root / ".codex-plugin" / "plugin.json"
+        if not mirror.is_file():
             return fail(f"R5 Codex marketplace path for {plugin} does not contain a mirror")
+        mirror_data = read_json(mirror)
+        if mirror_data.get("name") != plugin:
+            return fail(f"R5 Codex marketplace entry name {plugin} does not match manifest name {mirror_data.get('name')}")
 
     print("PASS: plugin packaging mirrors contract holds")
     return 0
