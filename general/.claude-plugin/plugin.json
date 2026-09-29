@@ -1,6 +1,6 @@
 {
   "name": "general",
-  "description": "General skills library: subagents, skill development, and git worktrees. From obra/superpowers.",
+  "description": "Deprecated: install the successor from github.com/davidsouther/ailly. General skills library: subagents, skill development, and git worktrees. From obra/superpowers.",
   "version": "2026.09.0",
   "owner": {
     "name": "David Souther",

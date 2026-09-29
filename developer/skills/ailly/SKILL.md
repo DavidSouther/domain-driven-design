@@ -5,6 +5,8 @@ description: "Use when starting, resuming, or routing any software development t
 
 # developer:ailly
 
+> Successor repository: [`davidsouther/ailly`](https://github.com/davidsouther/ailly).
+
 ## Overview
 
 The developer skill package's bootstrap and session coordinator. It routes every developer task to the right ability, creates and manages the session folder, drives each of the five lifecycle phases, enforces draft gates, and determines where to resume when re-entering an existing session.

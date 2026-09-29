@@ -1,5 +1,7 @@
 # DDD & Design Patterns Skills for Agentic Development
 
+> **This repository is deprecated as of 2026-09-29 and will stop shipping releases on 2026-12-28.** Active development has moved to [`davidsouther/ailly`](https://github.com/davidsouther/ailly). Update your marketplace or plugin installation to point at that repository before the deprecation date.
+
 An agent skills collection for Domain-Driven Design, software design patterns, research, and a strict test-driven developer lifecycle. The repository ships Claude Code marketplace packaging today, and the skill instructions are written so other agent harnesses such as Codex, Copilot, and Gemini can adapt the same workflows through explicit tool mappings.
 
 ## Installation & Getting Started
@@ -8,7 +10,7 @@ An agent skills collection for Domain-Driven Design, software design patterns, r
 
 Claude Code uses the `.claude-plugin/` directories as its marketplace adapter.
 
-1. Add the marketplace from GitHub: run `/plugin marketplace add davidsouther/domain-driven-design`.
+1. Add the successor marketplace from GitHub: run `/plugin marketplace add davidsouther/ailly`.
    * You can also run `/plugin` to open the interactive browser and add it from the **Marketplaces** tab.
 2. Install the skills with `/plugin install <name>@ailly` — install `general`, `developer`, `patterns`, and `research` (`domain` is optional). Browse and toggle them anytime from the **Installed** tab of `/plugin`.
 
@@ -25,7 +27,7 @@ Repo-local Codex marketplace metadata lives at `.agents/plugins/marketplace.json
 
 On [pi](https://github.com/badlogic/pi-mono), Ailly's workflow is implemented as tools rather than prose. The skills describe the process; the extensions in `.pi/extensions/` carry out the mechanical parts — spawning subagents, naming folders, checking that promised files exist — so those steps don't depend on a model following instructions correctly.
 
-Install with `pi install git:davidsouther/domain-driven-design` from any project. To work on this repo itself, `.pi/settings.json` already self-references the package; approve the project (`pi -a`) and pi discovers the five skill plugins, the `/ailly*` prompt templates in `prompts/`, and the extensions. The root `package.json`'s `pi` manifest (`pi.skills`, `pi.prompts`, `pi.extensions`) contains nothing specific to this checkout's location.
+Install the successor with `pi install git:davidsouther/ailly` from any project. To work on this legacy repo itself, `.pi/settings.json` already self-references the package; approve the project (`pi -a`) and pi discovers the five skill plugins, the `/ailly*` prompt templates in `prompts/`, and the extensions. The root `package.json`'s `pi` manifest (`pi.skills`, `pi.prompts`, `pi.extensions`) contains nothing specific to this checkout's location.
 
 Pi has no built-in `Task` tool, so subagent dispatch is a separate `pi` subprocess per call:
 
