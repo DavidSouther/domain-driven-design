@@ -1,5 +1,7 @@
 """Unit tests for release.py — each function in isolation with mocked subprocess."""
 
+import contextlib
+import io
 import json
 import subprocess
 import tempfile
@@ -79,14 +81,40 @@ class TestFindChangedPlugins(unittest.TestCase):
 
 
 class TestComputeVersion(unittest.TestCase):
-    def test_micro_is_zero_when_no_prior_tags(self) -> None:
-        with patch("release.subprocess.run", return_value=_make_proc("")):
-            self.assertEqual(_r.compute_version(REPO, "2026.06"), "2026.06.0")
+    def _compute(self, tags: str) -> str:
+        with patch("release.subprocess.run", return_value=_make_proc(tags)) as mock:
+            result = _r.compute_version(REPO)
+        mock.assert_called_once_with(
+            ["git", "tag", "-l", "release/2026.09.*"],
+            cwd=REPO,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return result
 
-    def test_micro_increments_with_existing_tags(self) -> None:
-        existing = "release/2026.06.0\nrelease/2026.06.1\n"
-        with patch("release.subprocess.run", return_value=_make_proc(existing)):
-            self.assertEqual(_r.compute_version(REPO, "2026.06"), "2026.06.2")
+    def test_starts_at_first_release_when_no_prior_tags(self) -> None:
+        self.assertEqual(self._compute(""), "2026.09.3")
+
+    def test_skips_reserved_successor_version_after_historical_tags(self) -> None:
+        existing = "release/2026.09.0\nrelease/2026.09.1\n"
+        self.assertEqual(self._compute(existing), "2026.09.3")
+
+    def test_never_returns_reserved_version(self) -> None:
+        existing = "release/2026.09.0\nrelease/2026.09.1\nrelease/2026.09.2\n"
+        self.assertEqual(self._compute(existing), "2026.09.3")
+
+    def test_increments_past_highest_existing_micro(self) -> None:
+        existing = "release/2026.09.0\nrelease/2026.09.1\nrelease/2026.09.3\n"
+        self.assertEqual(self._compute(existing), "2026.09.4")
+
+    def test_compares_micro_numerically(self) -> None:
+        existing = "release/2026.09.9\nrelease/2026.09.10\n"
+        self.assertEqual(self._compute(existing), "2026.09.11")
+
+    def test_ignores_gaps_and_unparseable_tags(self) -> None:
+        existing = "release/2026.09.7\nrelease/2026.09.x\n"
+        self.assertEqual(self._compute(existing), "2026.09.8")
 
 
 class TestUpdatePluginJson(unittest.TestCase):
@@ -233,12 +261,43 @@ class TestVersionOverride(unittest.TestCase):
         marketplace_data = json.loads(marketplace.read_text())
         self.assertEqual(marketplace_data["plugins"][0]["version"], "2026.09.3")
 
-    def test_version_and_date_mutually_exclusive(self) -> None:
-        """Test that --version and --date cannot be used together."""
+    def test_date_flag_is_not_accepted(self) -> None:
+        """The release line is pinned, so there is no --date override."""
         repo, _ = self._setup_repo()
 
         with self.assertRaises(SystemExit):
-            _r.main(["--repo", str(repo), "--version", "2026.09.3", "--date", "2026.09"])
+            _r.main(["--repo", str(repo), "--date", "2026.09"])
+
+    def test_version_outside_line_is_rejected_with_reason(self) -> None:
+        repo, _ = self._setup_repo()
+        cases = {
+            "2026.10.0": "davidsouther/ailly",
+            "2026.11.4": "davidsouther/ailly",
+            "2027.09.3": "davidsouther/ailly",
+            "2026.08.2": "2026.09",
+            "2026.09.0": "2026.09.3",
+            "2026.09.1": "2026.09.3",
+            "2026.09.2": "reserved",
+        }
+        for version, expected in cases.items():
+            with self.subTest(version=version):
+                stderr = io.StringIO()
+                with contextlib.redirect_stderr(stderr):
+                    with self.assertRaises(SystemExit) as ctx:
+                        _r.main(["--repo", str(repo), "--version", version])
+                self.assertEqual(ctx.exception.code, 2)
+                self.assertIn(version, stderr.getvalue())
+                self.assertIn(expected, stderr.getvalue())
+
+    def test_version_at_or_after_first_release_is_accepted(self) -> None:
+        repo, _ = self._setup_repo()
+
+        for version in ("2026.09.3", "2026.09.12"):
+            with self.subTest(version=version):
+                with patch("release.find_changed_plugins", return_value=["developer"]):
+                    self.assertEqual(
+                        _r.main(["--repo", str(repo), "--version", version]), 0
+                    )
 
     def test_version_format_validation(self) -> None:
         """Test that malformed versions are rejected."""
@@ -257,11 +316,11 @@ class TestVersionOverride(unittest.TestCase):
         repo, marketplace = self._setup_repo()
 
         with patch("release.find_changed_plugins", return_value=["developer"]):
-            with patch("release.compute_version", return_value="2026.10.0"):
+            with patch("release.compute_version", return_value="2026.09.4"):
                 result = _r.main(["--repo", str(repo)])
 
         self.assertEqual(result, 0)
 
         dev_manifest = repo / "developer" / ".claude-plugin" / "plugin.json"
         data = json.loads(dev_manifest.read_text())
-        self.assertEqual(data["version"], "2026.10.0")
+        self.assertEqual(data["version"], "2026.09.4")

@@ -98,26 +98,26 @@ class ReleaseFeatureTests(unittest.TestCase):
         return result, stdout.getvalue(), stderr.getvalue()
 
     def test_full_release_cycle(self) -> None:
-        result, out, _ = self._run_main(["--repo", str(self.repo), "--date", "2026.06"])
+        result, out, _ = self._run_main(["--repo", str(self.repo)])
 
         self.assertEqual(result, 0)
-        self.assertEqual(out.strip(), "2026.06.0")
+        self.assertEqual(out.strip(), "2026.09.3")
 
         plugin_data = json.loads(
             (self.repo / "developer" / ".claude-plugin" / "plugin.json").read_text()
         )
-        self.assertEqual(plugin_data["version"], "2026.06.0")
+        self.assertEqual(plugin_data["version"], "2026.09.3")
 
         codex_plugin_data = json.loads(
             (self.repo / "developer" / ".codex-plugin" / "plugin.json").read_text()
         )
-        self.assertEqual(codex_plugin_data["version"], "2026.06.0")
+        self.assertEqual(codex_plugin_data["version"], "2026.09.3")
 
         mp_data = json.loads(
             (self.repo / ".claude-plugin" / "marketplace.json").read_text()
         )
         dev_entry = next(p for p in mp_data["plugins"] if p["name"] == "developer")
-        self.assertEqual(dev_entry["version"], "2026.06.0")
+        self.assertEqual(dev_entry["version"], "2026.09.3")
 
     def test_no_changes_prints_nothing(self) -> None:
         subprocess.run(
@@ -126,10 +126,22 @@ class ReleaseFeatureTests(unittest.TestCase):
             check=True,
         )
 
-        result, out, err = self._run_main(
-            ["--repo", str(self.repo), "--date", "2026.06"]
-        )
+        result, out, err = self._run_main(["--repo", str(self.repo)])
 
         self.assertEqual(result, 0)
         self.assertEqual(out, "")
         self.assertIn("No changes", err)
+
+    def test_next_release_follows_existing_tag_on_the_line(self) -> None:
+        _git(
+            ["tag", "-a", "release/2026.09.3", "-m", "prev", "--no-sign"],
+            cwd=self.repo,
+        )
+        (self.repo / "developer" / "MORE.md").write_text("# more\n")
+        _git(["add", "."], cwd=self.repo)
+        _git(["commit", "-m", "feat: more", "--no-gpg-sign"], cwd=self.repo)
+
+        result, out, _ = self._run_main(["--repo", str(self.repo)])
+
+        self.assertEqual(result, 0)
+        self.assertEqual(out.strip(), "2026.09.4")
