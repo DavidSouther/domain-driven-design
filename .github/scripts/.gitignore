@@ -1,6 +1,7 @@
 *
 !.gitignore
 !release.py
+!check_version_line.py
 !pyproject.toml
 !pyrightconfig.json
 !uv.lock

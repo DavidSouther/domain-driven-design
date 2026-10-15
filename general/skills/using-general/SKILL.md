@@ -1,6 +1,6 @@
 ---
 name: using-general
-description: Bootstrap skill for general skills. Use to find the most relevant skills before thinking or acting.
+description: "Bootstrap skill for general skills. Use to find the most relevant skills before thinking or acting. Ailly moved to davidsouther/ailly; general/MOVED.md says how to repoint this install."
 ---
 
 Always prefer skills to guide thinking when available. Use general skills first, then find specific skills later in the session.
