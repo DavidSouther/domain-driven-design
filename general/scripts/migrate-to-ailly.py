@@ -46,6 +46,7 @@ def _repo_pattern(slugs: tuple) -> "re.Pattern[str]":
 
 _LEGACY = _repo_pattern(LEGACY_NAMES)
 _SUCCESSOR = _repo_pattern((SUCCESSOR,))
+_CHECKOUT_NAMES = tuple(slug.rsplit("/", 1)[-1] for slug in LEGACY_NAMES + (SUCCESSOR,))
 
 
 @dataclass(frozen=True)
@@ -54,7 +55,6 @@ class Step:
 
     argv: list[str]
     cwd: Optional[Path]
-    mutating: bool = True
 
     def render(self) -> str:
         """Return the shell form, prefixed with "cd <cwd> && " when cwd is set."""
@@ -137,11 +137,17 @@ def plan_claude() -> tuple[list[Step], list[str]]:
     if kind != "legacy":
         return [], [note]
 
+    reinstalls, notes = _claude_reinstalls(harness, plugins)
     steps = [
         Step(["claude", "plugin", "marketplace", "remove", MARKETPLACE], None),
         Step(["claude", "plugin", "marketplace", "add", SUCCESSOR], None),
-    ]
-    notes = []
+    ] + reinstalls
+    return steps, [f"{harness}: the `{MARKETPLACE}` marketplace comes from {source}; repointing it."] + notes
+
+
+def _claude_reinstalls(harness: str, plugins: list) -> tuple[list[Step], list[str]]:
+    """Return install steps (then disable, for disabled plugins) restoring each @ailly entry."""
+    steps, notes = [], []
     for plugin in plugins:
         if not isinstance(plugin, dict):
             continue
@@ -164,7 +170,6 @@ def plan_claude() -> tuple[list[Step], list[str]]:
         steps.append(Step(["claude", "plugin", "install", plugin_id, "--scope", scope], cwd))
         if plugin.get("enabled") is False:
             steps.append(Step(["claude", "plugin", "disable", plugin_id, "--scope", scope], cwd))
-    notes.insert(0, f"{harness}: the `{MARKETPLACE}` marketplace comes from {source}; repointing it.")
     return steps, notes
 
 
@@ -241,7 +246,7 @@ def plan_pi() -> tuple[list[Step], list[str]]:
         for source in sources:
             if is_local(source):
                 last = source.rstrip("/").rsplit("/", 1)[-1].lower()
-                if is_legacy(source) or is_successor(source) or last in ("domain-driven-design", "ailly"):
+                if is_legacy(source) or is_successor(source) or last in _CHECKOUT_NAMES:
                     notes.append(f"{harness}: the {scope} package {source} is a local path; left untouched.")
             elif is_legacy(source):
                 steps.append(Step(["pi", "remove", source] + flag, None))
