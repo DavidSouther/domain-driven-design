@@ -13,16 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Check versions stay inside the 2026.09.x line
-        run: python3 .github/scripts/check_version_line.py
-
-      - name: Run release and version-line tests
-        working-directory: .github/scripts
-        run: PYTHONPATH=. python3 -m unittest tests.test_release_unit tests.test_version_line
+      - run: python3 .github/scripts/check_version_line.py

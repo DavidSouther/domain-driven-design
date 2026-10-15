@@ -4,6 +4,6 @@ Keep main clean. Always use worktrees for any work. Keep worktrees in `.worktree
 
 ## Releases
 
-ddd releases stay inside the `2026.09.x` line: every new release is `2026.09.N` with `N >= 3`. `2026.09.2` and anything at or above `2026.10.0` belong to davidsouther/ailly, which shares the `ailly` marketplace name and version sequence. Older versions already shipped (`2026.08.x`, `2026.06.8`) stay as they are. Run `python3 .github/scripts/check_version_line.py` before any version change; it must pass.
+Releases stay in the `2026.09.x` line, at `2026.09.3` or later. `2026.09.2` and `2026.10.0`+ belong to davidsouther/ailly. `.github/scripts/check_version_line.py` enforces this in CI.
 
 @DEVELOPMENT.md
