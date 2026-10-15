@@ -9,9 +9,11 @@ Releases follow `YYYY.MM.MICRO`:
 
 Examples: `2026.06.0`, `2026.06.1`, `2026.07.0`.
 
+This repository is deprecated: its releases are pinned to the `2026.09.x` line (see [Pinned version line](#pinned-version-line)), not to the current month.
+
 ## Automated release
 
-A nightly workflow (`.github/workflows/nightly-release.yml`) runs at 02:00 UTC every day.
+The nightly workflow (`.github/workflows/nightly-release.yml`) was removed in `775bfc2`; the description below is historical. See [Final release](#final-release).
 
 - If no plugin has new commits since the last `release/*` tag the workflow exits 0 with "No changes since last release, skipping."
 - Otherwise it bumps Claude and Codex plugin manifest versions together, generates `CHANGELOG.md`, creates a signed release commit with those files, pushes `main`, creates a signed umbrella tag from that committed state, and publishes a GitHub Release.
@@ -23,14 +25,24 @@ A nightly workflow (`.github/workflows/nightly-release.yml`) runs at 02:00 UTC e
 
 The nightly workflow was removed in `775bfc2`. The last release of this repository, `2026.09.3`, covers `developer` and `general` only and is cut by hand. This is a human-approved step: the release commit, tag, push, and GitHub Release are not part of any automated change.
 
-`2026.09.3` is reserved for this repository. The successor (`davidsouther/ailly`) computes only current-month versions, and its September versions closed at `2026.09.2`, so the successor never produces this value.
+### Pinned version line
+
+This repository shares the `ailly` marketplace name and one CalVer sequence with the successor (`davidsouther/ailly`). Claude Code and Codex cache plugins at `<marketplace>/<plugin>/<version>/` and update when the version differs, so this repository must never ship a version the successor has used or will use.
+
+- Every release is `2026.09.N` with `N >= 3`. `2026.09.0` and `2026.09.1` are this repository's historical releases.
+- `2026.09.2` is the successor's first release and is reserved. Anything at or above `2026.10.0` belongs to the successor.
+- `release.py` enforces the line: with no `--version` it picks `2026.09.(highest existing release/2026.09.* micro + 1)`, never below `2026.09.3` and never reserved, and `--version` rejects anything outside the line. There is no `--date` flag.
+- `python3 .github/scripts/check_version_line.py` checks every plugin manifest, `.claude-plugin/marketplace.json`, and local `release/*` tag, prints one reason line per violation, and exits 1. It must pass before any version change. The `Version line` workflow (`.github/workflows/version-line.yml`) runs it, with the script tests, on every pull request and push to `main`.
+
+### Steps for `2026.09.3`
 
 1. Set the manifest versions: `python3 .github/scripts/release.py --version 2026.09.3`. The script rewrites the `developer` and `general` Claude and Codex manifests and `.claude-plugin/marketplace.json`, and prints the version. It does not commit, tag, push, or write `CHANGELOG.md`.
-2. Generate `CHANGELOG.md` with git-cliff.
-3. Create the signed release commit with the manifests and `CHANGELOG.md`.
-4. Create the signed tag `release/2026.09.3` on that commit.
-5. Push `main` and the tag.
-6. Publish a GitHub Release whose note states that Ailly moved to `davidsouther/ailly` and points at `general/scripts/migrate-to-ailly.py`.
+2. Run `python3 .github/scripts/check_version_line.py`; it must print nothing.
+3. Generate `CHANGELOG.md` with git-cliff.
+4. Create the signed release commit with the manifests and `CHANGELOG.md`.
+5. Create the signed tag `release/2026.09.3` on that commit.
+6. Push `main` and the tag.
+7. Publish a GitHub Release whose note states that Ailly moved to `davidsouther/ailly` and points at `general/scripts/migrate-to-ailly.py`.
 
 ## Optional developer SSH signing
 
