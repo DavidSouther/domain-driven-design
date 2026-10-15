@@ -1,0 +1,17 @@
+{
+  "description": "Tell a legacy Ailly install that Ailly moved to davidsouther/ailly and offer the migration script",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/scripts/migrate-to-ailly.py\" --notice",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

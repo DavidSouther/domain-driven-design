@@ -450,5 +450,23 @@ class NoticeTest(unittest.TestCase):
         self.assertIn(str(SCRIPT), json.loads(out.getvalue())["hookSpecificOutput"]["additionalContext"])
 
 
+class HookTest(unittest.TestCase):
+    HOOKS = SCRIPT.parents[1] / "hooks" / "hooks.json"
+
+    def test_session_start_runs_the_notice_only_on_startup(self):
+        # Arrange
+        config = json.loads(self.HOOKS.read_text(encoding="utf-8"))
+        # Act
+        groups = config["hooks"]["SessionStart"]
+        # Assert
+        self.assertEqual(["SessionStart"], list(config["hooks"]))
+        self.assertEqual(1, len(groups))
+        self.assertEqual("startup", groups[0]["matcher"])
+        (hook,) = groups[0]["hooks"]
+        self.assertEqual("command", hook["type"])
+        self.assertIn('"${CLAUDE_PLUGIN_ROOT}/scripts/migrate-to-ailly.py" --notice', hook["command"])
+        self.assertLessEqual(hook["timeout"], 10)
+
+
 if __name__ == "__main__":
     sys.exit(0 if unittest.main(exit=False).result.wasSuccessful() else 1)
