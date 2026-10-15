@@ -173,3 +173,95 @@ class TestUpdateMarketplaceJson(unittest.TestCase):
 
         with self.assertRaises(SystemExit):
             _r.update_marketplace_json(path, "developer", "2026.06.0")
+
+
+class TestVersionOverride(unittest.TestCase):
+    def setUp(self) -> None:
+        self._tmpdir = tempfile.TemporaryDirectory()
+        self.tmp = Path(self._tmpdir.name)
+
+    def tearDown(self) -> None:
+        self._tmpdir.cleanup()
+
+    def _setup_repo(self) -> tuple[Path, Path]:
+        """Create a temporary repo with minimal manifests."""
+        repo = self.tmp / "repo"
+        repo.mkdir()
+
+        # Initialize git repo
+        _r._run(["git", "init"], cwd=repo)
+        _r._run(["git", "config", "user.email", "test@example.com"], cwd=repo)
+        _r._run(["git", "config", "user.name", "Test User"], cwd=repo)
+
+        # Create developer plugin with manifests
+        dev_dir = repo / "developer"
+        dev_dir.mkdir()
+        for manifest_dir in _r.MANIFEST_DIRS:
+            path = dev_dir / manifest_dir / "plugin.json"
+            path.parent.mkdir(parents=True)
+            path.write_text(
+                json.dumps({"name": "developer", "version": "0.0.0"}, indent=2) + "\n"
+            )
+
+        # Create marketplace.json
+        marketplace = repo / ".claude-plugin" / "marketplace.json"
+        marketplace.parent.mkdir(parents=True)
+        marketplace.write_text(
+            json.dumps({"plugins": [{"name": "developer", "version": "0.0.0"}]}, indent=2)
+            + "\n"
+        )
+
+        # Create initial commit
+        _r._run(["git", "add", "."], cwd=repo)
+        _r._run(["git", "commit", "-m", "initial"], cwd=repo)
+
+        return repo, marketplace
+
+    def test_version_override_replaces_computed_version(self) -> None:
+        repo, marketplace = self._setup_repo()
+
+        with patch("release.find_changed_plugins", return_value=["developer"]):
+            result = _r.main(["--repo", str(repo), "--version", "2026.09.3"])
+
+        self.assertEqual(result, 0)
+
+        # Check that the version was set to the override
+        dev_manifest = repo / "developer" / ".claude-plugin" / "plugin.json"
+        data = json.loads(dev_manifest.read_text())
+        self.assertEqual(data["version"], "2026.09.3")
+
+        marketplace_data = json.loads(marketplace.read_text())
+        self.assertEqual(marketplace_data["plugins"][0]["version"], "2026.09.3")
+
+    def test_version_and_date_mutually_exclusive(self) -> None:
+        """Test that --version and --date cannot be used together."""
+        repo, _ = self._setup_repo()
+
+        with self.assertRaises(SystemExit):
+            _r.main(["--repo", str(repo), "--version", "2026.09.3", "--date", "2026.09"])
+
+    def test_version_format_validation(self) -> None:
+        """Test that malformed versions are rejected."""
+        repo, _ = self._setup_repo()
+
+        # Missing micro version
+        with self.assertRaises(SystemExit):
+            _r.main(["--repo", str(repo), "--version", "2026.09"])
+
+        # Non-numeric parts
+        with self.assertRaises(SystemExit):
+            _r.main(["--repo", str(repo), "--version", "abc"])
+
+    def test_no_version_override_uses_computed_version(self) -> None:
+        """Test that computed version is used when no override is provided."""
+        repo, marketplace = self._setup_repo()
+
+        with patch("release.find_changed_plugins", return_value=["developer"]):
+            with patch("release.compute_version", return_value="2026.10.0"):
+                result = _r.main(["--repo", str(repo)])
+
+        self.assertEqual(result, 0)
+
+        dev_manifest = repo / "developer" / ".claude-plugin" / "plugin.json"
+        data = json.loads(dev_manifest.read_text())
+        self.assertEqual(data["version"], "2026.10.0")

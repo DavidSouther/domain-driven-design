@@ -6,7 +6,7 @@ to stdout (and a notice to stderr) when there is nothing to release.  Git
 commit, tag, and push are left to the caller (the CI workflow).
 
 Usage:
-    python3 .github/scripts/release.py [--repo PATH] [--date YYYY.MM]
+    python3 .github/scripts/release.py [--repo PATH] [--date YYYY.MM | --version X.Y.Z]
 
 Exit codes:
     0  success OR no changes detected (early-exit path)
@@ -23,6 +23,24 @@ from typing import Optional
 
 PLUGINS = ["developer", "general", "patterns", "domain", "research", "characters"]
 MANIFEST_DIRS = [".claude-plugin", ".codex-plugin"]
+
+
+def _calver(value: str) -> str:
+    """Validate and return a CalVer version string YYYY.MM.MICRO."""
+    parts = value.split(".")
+    if len(parts) != 3:
+        raise argparse.ArgumentTypeError(
+            f"version must be YYYY.MM.MICRO (got {value!r})"
+        )
+    try:
+        year, month, micro = (int(p) for p in parts)
+        if not (2000 <= year <= 9999) or not (1 <= month <= 12):
+            raise ValueError("invalid year or month")
+    except ValueError:
+        raise argparse.ArgumentTypeError(
+            f"version must be YYYY.MM.MICRO with numeric parts (got {value!r})"
+        )
+    return value
 
 
 def _run(args: list[str], *, cwd: Path, capture: bool = True) -> str:
@@ -101,14 +119,17 @@ def main(argv: Optional[list[str]] = None) -> int:
     _ = parser.add_argument(
         "--skip-gh", action="store_true", help="Skip GitHub Release creation"
     )
-    _ = parser.add_argument(
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
         "--date", help="Override release date as YYYY.MM (default: today)"
+    )
+    group.add_argument(
+        "--version", type=_calver, help="Override version as X.Y.Z (mutually exclusive with --date)"
     )
     args = parser.parse_args(argv)
 
     repo = Path(args.repo).resolve()
     marketplace = repo / ".claude-plugin" / "marketplace.json"
-    ym = args.date or _date.today().strftime("%Y.%m")
 
     last_tag = find_last_tag(repo)
     changed = find_changed_plugins(repo, last_tag)
@@ -117,7 +138,11 @@ def main(argv: Optional[list[str]] = None) -> int:
         print("No changes since last release, skipping.", file=sys.stderr)
         return 0
 
-    version = compute_version(repo, ym)
+    if args.version:
+        version = args.version
+    else:
+        ym = args.date or _date.today().strftime("%Y.%m")
+        version = compute_version(repo, ym)
 
     for plugin in changed:
         update_plugin_manifests(repo, plugin, version)
