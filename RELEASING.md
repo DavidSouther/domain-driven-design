@@ -19,6 +19,19 @@ A nightly workflow (`.github/workflows/nightly-release.yml`) runs at 02:00 UTC e
 - Trigger on demand via **Actions → Nightly Release → Run workflow**.
 - Logs are in the Actions tab; investigate and re-trigger if a push step fails.
 
+## Final release
+
+The nightly workflow was removed in `775bfc2`. The last release of this repository, `2026.09.3`, covers `developer` and `general` only and is cut by hand. This is a human-approved step: the release commit, tag, push, and GitHub Release are not part of any automated change.
+
+`2026.09.3` is reserved for this repository. The successor (`davidsouther/ailly`) computes only current-month versions, and its September versions closed at `2026.09.2`, so the successor never produces this value.
+
+1. Set the manifest versions: `python3 .github/scripts/release.py --version 2026.09.3`. The script rewrites the `developer` and `general` Claude and Codex manifests and `.claude-plugin/marketplace.json`, and prints the version. It does not commit, tag, push, or write `CHANGELOG.md`.
+2. Generate `CHANGELOG.md` with git-cliff.
+3. Create the signed release commit with the manifests and `CHANGELOG.md`.
+4. Create the signed tag `release/2026.09.3` on that commit.
+5. Push `main` and the tag.
+6. Publish a GitHub Release whose note states that Ailly moved to `davidsouther/ailly` and points at `general/scripts/migrate-to-ailly.py`.
+
 ## Optional developer SSH signing
 
 Register your public key on GitHub under **Settings → SSH and GPG keys → New SSH key → Signing Key**.

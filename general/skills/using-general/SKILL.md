@@ -1,6 +1,6 @@
 ---
 name: using-general
-description: Bootstrap skill for general skills. Use to find the most relevant skills before thinking or acting.
+description: "Bootstrap skill for general skills. Use to find the most relevant skills before thinking or acting. Ailly has moved to davidsouther/ailly; this install receives no further updates, and general/scripts/migrate-to-ailly.py repoints it."
 ---
 
 Always prefer skills to guide thinking when available. Use general skills first, then find specific skills later in the session.
