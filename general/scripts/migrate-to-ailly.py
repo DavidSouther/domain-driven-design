@@ -349,14 +349,12 @@ def notice_json(script_path: Path) -> str:
 
 
 def main(argv: Optional[list[str]] = None) -> int:
-    """Parse flags: --apply, --notice."""
-    parser = argparse.ArgumentParser(
-        description="Migrate Ailly plugins from legacy to successor repository."
-    )
+    """Print the dry-run plan; --apply runs it; --notice prints the hook JSON."""
+    parser = argparse.ArgumentParser(description=f"Repoint legacy Ailly installs at {SUCCESSOR}.")
     group = parser.add_mutually_exclusive_group()
-    group.add_argument("--apply", action="store_true", help="Apply the migration")
+    group.add_argument("--apply", action="store_true", help="run the planned commands in order")
     group.add_argument(
-        "--notice", action="store_true", help="Output JSON for SessionStart hook"
+        "--notice", action="store_true", help="print the SessionStart hook JSON; no harness call"
     )
     args = parser.parse_args(argv)
 
