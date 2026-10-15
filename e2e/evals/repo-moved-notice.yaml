@@ -1,0 +1,11 @@
+name: repo-moved-notice
+model: none
+
+# A deterministic feature suite over the legacy repository's final release:
+# the general plugin's SessionStart notice, the bundled migration script (run
+# against stub harness CLIs, never the real ones), the skill-description
+# notices, and the 2026.09.3 manifests.
+cases:
+  - name: legacy-install-is-told-and-repointed
+    assertions:
+      - { type: script, runtime: python, script: { path: evals/scripts/check_repo_moved_notice.py } }
