@@ -31,6 +31,13 @@ LEGACY_NAMES = ("davidsouther/domain-driven-design", "davidsouther/ddd_skill")
 MARKETPLACE = "ailly"
 PI_SUCCESSOR = f"git:github.com/{SUCCESSOR}"
 READ_TIMEOUT = 60
+APPLY_TIMEOUT = 600
+
+NOTHING_TO_CHANGE = "No commands planned: nothing needs changing."
+CLOSING = (
+    f"Done. Restart Claude Code, Codex, and pi to load Ailly from {SUCCESSOR};"
+    " the current session keeps the legacy skills until its harness restarts."
+)
 
 HEADER = (
     f"Ailly moved from {LEGACY_NAMES[0]} to {SUCCESSOR}. On each repointed harness,"
@@ -272,11 +279,15 @@ def plan_all() -> tuple[list[Step], list[str]]:
     return steps, notes
 
 
+def _preamble(notes: list[str]) -> list[str]:
+    return [HEADER, ""] + notes + [""]
+
+
 def render_plan(steps: list[Step], notes: list[str]) -> str:
     """Return the header, the notes, and one rendered command per line."""
-    lines = [HEADER, ""] + notes + [""]
+    lines = _preamble(notes)
     if not steps:
-        lines.append("No commands planned: nothing needs changing.")
+        lines.append(NOTHING_TO_CHANGE)
     else:
         lines.append("This dry run changed nothing. With --apply, this script runs these commands in order:")
         lines += [f"  {step.render()}" for step in steps]
@@ -284,13 +295,57 @@ def render_plan(steps: list[Step], notes: list[str]) -> str:
 
 
 def apply_plan(steps: list[Step]) -> int:
-    """Execute each Step in order; stop at first failure, return non-zero exit code."""
-    ...
+    """Run each Step in order; at the first failure, list the rest and return 1."""
+    if not steps:
+        print(NOTHING_TO_CHANGE)
+        return 0
+    for index, step in enumerate(steps):
+        print(f"$ {step.render()}", flush=True)
+        try:
+            code = subprocess.run(
+                step.argv, cwd=step.cwd, stdin=subprocess.DEVNULL, timeout=APPLY_TIMEOUT
+            ).returncode
+            reason = f"exit {code}"
+        except (OSError, subprocess.TimeoutExpired) as error:
+            code, reason = 1, str(error)
+        if code != 0:
+            print(f"Failed ({reason}): {step.render()}")
+            print("Not run:")
+            print("\n".join(f"  {rest.render()}" for rest in steps[index + 1 :]) or "  (none)")
+            return 1
+    print(CLOSING)
+    return 0
 
 
 def notice_json(script_path: Path) -> str:
-    """Return hook JSON, json.dumps-escaped."""
-    ...
+    """Return the SessionStart hook output: one JSON object, escaped by json.dumps."""
+    command = f"python3 {shlex.quote(str(script_path))}"
+    context = (
+        f"Ailly moved from {LEGACY_NAMES[0]} to {SUCCESSOR}. The Ailly plugins in this"
+        " session come from the legacy repository, which receives no further updates."
+        " At the start of the first reply in this session, tell the user in one sentence"
+        " that Ailly moved and suggest repointing the install, accepting a plain \"yes\";"
+        " then continue with the user's request."
+        f" On a yes, run `{command}` with no flags. That dry run only reads Claude Code,"
+        " Codex, and pi plugin state and changes nothing. Show the user the plan it prints."
+        " If the plan lists no commands (a local clone or an already-migrated install),"
+        " tell the user nothing needs changing and drop the topic."
+        f" Otherwise, state that the listed commands remove the legacy `{MARKETPLACE}`"
+        f" marketplace, add {SUCCESSOR}, and reinstall each Ailly plugin at its previous"
+        " scope, then ask one yes/no question."
+        f" Run `{command} --apply` only after an explicit yes, and relay its closing line"
+        " about restarting each harness."
+        " After a decline at any point, do not raise the topic again in this session."
+    )
+    return json.dumps(
+        {
+            "systemMessage": (
+                f"Ailly moved to {SUCCESSOR}. This install from {LEGACY_NAMES[0]}"
+                " receives no further updates."
+            ),
+            "hookSpecificOutput": {"hookEventName": "SessionStart", "additionalContext": context},
+        }
+    )
 
 
 def main(argv: Optional[list[str]] = None) -> int:
@@ -312,6 +367,7 @@ def main(argv: Optional[list[str]] = None) -> int:
     steps, notes = plan_all()
 
     if args.apply:
+        print("\n".join(_preamble(notes)), flush=True)
         return apply_plan(steps)
 
     print(render_plan(steps, notes))

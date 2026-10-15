@@ -364,5 +364,91 @@ class DryRunTest(unittest.TestCase):
         self.assertNotIn("pi remove", header)
 
 
+def recorder(log: Path, code: int = 0) -> list:
+    """argv for a command that appends its cwd to log and exits with code."""
+    script = f"import os, sys; open({str(log)!r}, 'a').write(os.getcwd() + '\\n'); sys.exit({code})"
+    return [sys.executable, "-c", script]
+
+
+class ApplyTest(unittest.TestCase):
+    def test_runs_every_step_in_order_from_its_cwd(self):
+        # Arrange
+        root = Path(tempfile.mkdtemp()).resolve()
+        log = root / "log"
+        steps = [migrate.Step(recorder(log), root), migrate.Step(recorder(log), Path("/"))]
+        out = io.StringIO()
+        # Act
+        with redirect_stdout(out):
+            code = migrate.apply_plan(steps)
+        # Assert
+        self.assertEqual(0, code)
+        self.assertEqual([str(root), "/"], log.read_text().splitlines())
+        self.assertIn("restart", out.getvalue().lower())
+
+    def test_failure_stops_and_lists_the_commands_not_run(self):
+        # Arrange
+        root = Path(tempfile.mkdtemp()).resolve()
+        log = root / "log"
+        last = migrate.Step(["echo", "never-runs"], None)
+        steps = [migrate.Step(recorder(log), root), migrate.Step(recorder(log, code=1), root), last]
+        out = io.StringIO()
+        # Act
+        with redirect_stdout(out):
+            code = migrate.apply_plan(steps)
+        # Assert
+        self.assertNotEqual(0, code)
+        self.assertEqual(2, len(log.read_text().splitlines()))
+        failed, not_run = out.getvalue().split("Not run:", 1)
+        self.assertIn(steps[1].render(), failed)
+        self.assertIn(last.render(), not_run)
+
+    def test_missing_project_directory_is_a_failure_not_a_crash(self):
+        # Arrange
+        gone = Path(tempfile.mkdtemp()) / "deleted"
+        out = io.StringIO()
+        # Act
+        with redirect_stdout(out):
+            code = migrate.apply_plan([migrate.Step(["true"], gone)])
+        # Assert
+        self.assertNotEqual(0, code)
+
+    def test_apply_with_nothing_planned_exits_zero(self):
+        # Arrange
+        out = io.StringIO()
+        # Act
+        with Harnesses({}, present=()), redirect_stdout(out):
+            code = migrate.main(["--apply"])
+        # Assert
+        self.assertEqual(0, code)
+        self.assertIn("nothing needs changing", out.getvalue())
+
+
+class NoticeTest(unittest.TestCase):
+    def test_notice_is_one_json_object_for_session_start(self):
+        # Arrange
+        path = Path('/tmp/odd "dir" \\ name/migrate-to-ailly.py')
+        # Act
+        notice = json.loads(migrate.notice_json(path))
+        # Assert
+        context = notice["hookSpecificOutput"]["additionalContext"]
+        self.assertEqual("SessionStart", notice["hookSpecificOutput"]["hookEventName"])
+        self.assertIn("davidsouther/ailly", notice["systemMessage"])
+        self.assertIn("davidsouther/ailly", context)
+        self.assertIn(str(path), context)
+        self.assertIn("--apply", context)
+
+    def test_notice_flag_makes_no_harness_call(self):
+        # Arrange
+        harnesses = Harnesses({})
+        out = io.StringIO()
+        # Act
+        with harnesses, redirect_stdout(out):
+            code = migrate.main(["--notice"])
+        # Assert
+        self.assertEqual(0, code)
+        self.assertEqual([], harnesses.reads)
+        self.assertIn(str(SCRIPT), json.loads(out.getvalue())["hookSpecificOutput"]["additionalContext"])
+
+
 if __name__ == "__main__":
     sys.exit(0 if unittest.main(exit=False).result.wasSuccessful() else 1)
