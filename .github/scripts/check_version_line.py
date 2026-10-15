@@ -51,7 +51,9 @@ def violation(version: str) -> Optional[str]:
     try:
         parsed = parse_version(version)
     except ValueError:
-        return f"version {version!r} is not a dotted numeric version"
+        parsed = ()
+    if len(parsed) != 3:
+        return f"version {version!r} is not a YYYY.MM.MICRO version"
     if parsed in {parse_version(r) for r in RESERVED}:
         return f"version {version} is reserved for davidsouther/ailly"
     if parsed >= parse_version(CEILING):

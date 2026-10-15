@@ -56,6 +56,12 @@ class TestViolation(unittest.TestCase):
         assert reason is not None
         self.assertIn("latest", reason)
 
+    def test_rejects_wrong_part_count(self) -> None:
+        for version in ("2026.09.2.1", "2026.09"):
+            reason = _c.violation(version)
+            assert reason is not None, version
+            self.assertIn("YYYY.MM.MICRO", reason)
+
 
 class RepoFixture(unittest.TestCase):
     def setUp(self) -> None:
